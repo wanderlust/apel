@@ -175,23 +175,23 @@ load-path（Emacs と MULE の場合）
   ならば、load-path を設定する必要はありません。
 
 
-Version specific information
-============================
+Emacs のバージョンに関連した情報
+================================
 
 「古い byte-compiler」と「新しい byte-compiler」
 Emacs 18 のユーザのみなさんへ:
 
   このパッケージではコンパイル時における条件判断をたくさん行なっていま
   す。残念ながら Emacs 18 に付属している byte-compiler には、例えば
-  `eval-when-compile' や `eval-and-compile' の機能が無いので、代用品の
-  マクロを用意してありますが、これらはコンパイル時だけでなく load 時ま
-  たは実行時にも働いてしまいます!   加えて「古い byte-compiler」はトッ
-  プレベルのマクロをコンパイルしてくれないので、APEL の多くのコードが
-  コンパイルされないままになってしまいます。
+  `eval-when-compile' や `eval-and-compile' の機能が無いので代用品のマ
+  クロを用意してありますが、これらはコンパイル時だけでなく load 時また
+  は実行時にも働いてしまいます!   加えて「古い byte-compiler」はトップ
+  レベルのマクロをコンパイルしてくれないので、APEL の多くのコードがコ
+  ンパイルされないままになってしまいます。
 
-  そのため、最適化を行なう「新しい byte-compiler」を使うことをお勧めし
-  ます。それは Emacs 19 以降に付属している byte-compiler の元になって
-  いるものです。
+  そこで、最適化を行なう「新しい byte-compiler」を使うことをお勧めしま
+  す。それは Emacs 19 以降に付属している byte-compiler の元になってい
+  るものです。
 
   最適化を行なう byte-compiler は Emacs Lisp Archive およびそれらのミ
   ラーから入手することができます。
