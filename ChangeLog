@@ -1,5 +1,9 @@
 1998-04-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* README.en (What's APEL?): Modify for latest emu.
+
+1998-04-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* APEL: Version 8.3 was released.
 
 	* emu-nemacs.el, emu-mule.el, emu-latin1.el, emu-e20_2.el,
