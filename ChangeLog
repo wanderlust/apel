@@ -1,3 +1,7 @@
+2000-11-09  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* path-util.el (add-path): Check for both "path" and "path/".
+
 2000-10-06  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* poe.el (require): Update `current-load-list'.
