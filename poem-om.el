@@ -250,21 +250,21 @@ find-file-hooks, etc.
    ;; Returns list absolute file name and length of data inserted.
    (insert-file-contents-literally filename visit beg end replace)))
 
-(cond
- ((>= emacs-major-version 19)
-  ;; for MULE 2.*.
-  (defun insert-file-contents-as-binary (filename
-					 &optional visit beg end replace)
-    "Like `insert-file-contents', q.v., but don't code and format conversion.
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
 Like `insert-file-contents-literary', but it allows find-file-hooks,
 automatic uncompression, etc.
 
 Namely this function ensures that only format decoding and character
 code conversion will not take place."
-    ;; Returns list absolute file name and length of data inserted.
-    (insert-file-contents-as-coding-system 'binary
-					   filename visit beg end replace))
+  (as-binary-input-file
+   ;; Returns list absolute file name and length of data inserted.
+   (insert-file-contents filename visit beg end replace)))
 
+(cond
+ ((>= emacs-major-version 19)
+  ;; for MULE 2.*.
   (defun insert-file-contents-as-raw-text (filename
 					   &optional visit beg end replace)
     "Like `insert-file-contents', q.v., but don't code and format conversion.
@@ -301,18 +301,6 @@ conversion except for line-break code."
   )
  (t
   ;; for MULE 1.*.
-  (defun insert-file-contents-as-binary (filename
-					 &optional visit beg end replace)
-    "Like `insert-file-contents', q.v., but don't code and format conversion.
-Like `insert-file-contents-literary', but it allows find-file-hooks,
-automatic uncompression, etc.
-
-Namely this function ensures that only format decoding and character
-code conversion will not take place."
-    (as-binary-input-file
-     ;; Returns list absolute file name and length of data inserted.
-     (insert-file-contents filename visit beg end replace)))
-
   (defun insert-file-contents-as-raw-text (filename
 					   &optional visit beg end replace)
     "Like `insert-file-contents', q.v., but don't code and format conversion.
