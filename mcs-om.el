@@ -103,7 +103,9 @@
 ;;; @ to coding-system
 ;;;
 
-(require 'cyrillic)
+(condition-case nil
+    (require 'cyrillic)
+  (error nil))
 
 (defvar mime-charset-coding-system-alist
   '((iso-8859-1      . *ctext*)
@@ -189,10 +191,19 @@
 It is used when MIME-charset is not specified.
 It must be symbol.")
 
+(defvar default-mime-charset-for-write
+  default-mime-charset
+  "Default value of MIME-charset for encoding.
+It is used when suitable MIME-charset is not found.
+It must be symbol."
+  :group 'i18n
+  :type 'mime-charset)
+
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END."
-  (charsets-to-mime-charset
-   (cons lc-ascii (find-charset-region start end))))
+  (or (charsets-to-mime-charset
+       (cons lc-ascii (find-charset-region start end)))
+      default-mime-charset-for-write))
 
 
 ;;; @ end
