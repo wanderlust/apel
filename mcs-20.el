@@ -103,6 +103,8 @@ is specified, it is used as line break code type of coding-system."
 		   charset lbt cs)
 	))))
 
+(defalias 'mime-charset-p 'mime-charset-to-coding-system)
+
 (defvar widget-mime-charset-prompt-value-history nil
   "History of input to `widget-mime-charset-prompt-value'.")
 
