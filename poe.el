@@ -95,27 +95,6 @@
 	       ))
 	 )))
 
-(defmacro defun-maybe-cond (name args &optional doc &rest everything-else)
-  (unless (stringp doc)
-    (setq everything-else (cons doc everything-else)
-	  doc nil)
-    )
-  (or (and (fboundp name)
-	   (not (get name 'defun-maybe)))
-      (` (unless (fboundp (quote (, name)))
-	   (cond (,@ (mapcar (lambda (case)
-			       (list (car case)
-				     (if doc
-					 (` (defun (, name) (, args)
-					      (, doc)
-					      (,@ (cdr case))))
-				       (` (defun (, name) (, args)
-					    (,@ (cdr case))))
-				       )))
-			     everything-else)))
-	   (put (quote (, name)) 'defun-maybe t)
-	   ))))
-
 (defsubst subr-fboundp (symbol)
   "Return t if SYMBOL's function definition is a built-in function."
   (and (fboundp symbol)
@@ -151,8 +130,13 @@
        ))
 
 
-;;; @ Emacs 19.23 emulation
+;;; @ Emacs 19 emulation
 ;;;
+
+(defmacro-maybe eval-and-compile (&rest body)
+  "Like `progn', but evaluates the body at compile time and at load time."
+  ;; Remember, it's magic.
+  (cons 'progn body))
 
 (defun-maybe minibuffer-prompt-width ()
   "Return the display width of the minibuffer prompt."
@@ -297,22 +281,6 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
   "(unless COND BODY...): if COND yields nil, do BODY, else return nil."
   (cons 'if (cons cond (cons nil body))))
 
-;; imported from Emacs 20.3.
-(defun-maybe last (x &optional n)
-  "Return the last link of the list X.  Its car is the last element.
-If X is nil, return nil.
-If N is non-nil, return the Nth-to-last link of X.
-If N is bigger than the length of X, return X."
-  (if n
-      (let ((m 0) (p x))
-	(while (consp p)
-	  (setq m (1+ m) p (cdr p)))
-	(if (<= n 0) p
-	  (if (< n m) (nthcdr (- m n) x) x)))
-    (while (cdr x)
-      (setq x (cdr x)))
-    x))
-
 (defmacro-maybe save-current-buffer (&rest body)
   "Save the current buffer; execute BODY; restore the current buffer.
 Executes BODY just like `progn'."
@@ -363,9 +331,21 @@ See also `with-temp-file' and `with-output-to-string'."
 	   (and (buffer-name (, temp-buffer))
 		(kill-buffer (, temp-buffer))))))))
 
-(defmacro-maybe combine-after-change-calls (&rest body)
-  "Execute BODY."
-  (cons 'progn body))
+;; imported from Emacs 20.3.
+(defun-maybe last (x &optional n)
+  "Return the last link of the list X.  Its car is the last element.
+If X is nil, return nil.
+If N is non-nil, return the Nth-to-last link of X.
+If N is bigger than the length of X, return X."
+  (if n
+      (let ((m 0) (p x))
+	(while (consp p)
+	  (setq m (1+ m) p (cdr p)))
+	(if (<= n 0) p
+	  (if (< n m) (nthcdr (- m n) x) x)))
+    (while (cdr x)
+      (setq x (cdr x)))
+    x))
 
 ;; imported from Emacs 20.3. (cl function)
 (defun-maybe butlast (x &optional n)
@@ -497,23 +477,33 @@ as obsolete. [XEmacs emulating function]"
 
 (when (subr-fboundp 'read-event)
   ;; for Emacs 19 or later
-
-  (defun-maybe-cond next-command-event (&optional event prompt)
-    "Read an event object from the input stream.
+  (cond
+   ((subr-fboundp 'string)
+    ;; for Emacs 20.3 or later
+    (defun-maybe next-command-event (&optional event prompt)
+      "Read an event object from the input stream.
 If EVENT is non-nil, it should be an event object and will be filled
 in and returned; otherwise a new event object will be created and
 returned.
 If PROMPT is non-nil, it should be a string and will be displayed in
 the echo area while this function is waiting for an event.
 \[XEmacs emulating function]"
-    ((subr-fboundp 'string)
-     ;; for Emacs 20.3 or later
-     (read-event prompt t)
-     )
-    (t
-     (if prompt (message prompt))
-     (read-event)
-     ))
+      (read-event prompt t)
+      )
+    )
+   (t
+    (defun-maybe next-command-event (&optional event prompt)
+      "Read an event object from the input stream.
+If EVENT is non-nil, it should be an event object and will be filled
+in and returned; otherwise a new event object will be created and
+returned.
+If PROMPT is non-nil, it should be a string and will be displayed in
+the echo area while this function is waiting for an event.
+\[XEmacs emulating function]"
+      (message prompt)
+      (read-event)
+      )
+    ))
 
   (defsubst-maybe character-to-event (ch)
     "Convert keystroke CH into an event structure, replete with bucky bits.
@@ -541,18 +531,19 @@ If the event isn't a keypress, this returns nil.
 ;;; @ MULE 2 emulation
 ;;;
 
-(defun-maybe-cond cancel-undo-boundary ()
-  "Cancel undo boundary. [MULE 2.3 emulating function]"
-  ((boundp 'buffer-undo-list)
-   ;; for Emacs 19.7 or later
-   (if (and (consp buffer-undo-list)
-	    ;; if car is nil.
-	    (null (car buffer-undo-list)))
-       (setq buffer-undo-list (cdr buffer-undo-list))
-     ))
-  (t
-   ;; for anything older than Emacs 19.7.    
-   ))
+(if (boundp 'buffer-undo-list)
+    ;; for Emacs 19.7 or later
+    (defun-maybe cancel-undo-boundary ()
+      "Cancel undo boundary. [MULE 2.3 emulating function]"
+      (if (and (consp buffer-undo-list)
+	       ;; if car is nil.
+	       (null (car buffer-undo-list)))
+	  (setq buffer-undo-list (cdr buffer-undo-list))
+	))
+  ;; for anything older than Emacs 19.7.    
+  (defun-maybe cancel-undo-boundary ()
+    "Cancel undo boundary. [MULE 2.3 emulating function]")
+  )
 
 
 ;;; @ end
