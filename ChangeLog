@@ -1,10 +1,10 @@
 1999-06-16  Katsumi Yamaoka   <yamaoka@jpl.org>
 
-	* static.el (static-cond): New function.
+	* static.el (static-cond): New macro.
 
 1999-06-11  Tanaka Akira      <akr@jaist.ac.jp>
 
-	* static.el (static-defconst): New function.
+	* static.el (static-defconst): New macro.
 
 1999-06-04  MORIOKA Tomohiko  <tomo@m17n.org>
 
