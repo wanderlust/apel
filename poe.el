@@ -230,13 +230,6 @@ Both SYMBOL and SPEC are unevaluated. The SPEC can be 0, t, a symbol
   (cons 'if (cons cond (cons nil body))))
 ;; (def-edebug-spec unless (&rest form))
 
-(defvar-maybe frame-background-mode nil
-  "*The brightness of the background.
-Set this to the symbol dark if your background color is dark, light if
-your background is light, or nil (default) if you want Emacs to
-examine the brightness for you.  However, the old Emacsen might not
-examine the brightness, so you should set this value definitely.")
-
 
 ;;; @ Emacs 19.23 emulation
 ;;;
