@@ -29,6 +29,7 @@
 ;;; Code:
 
 (require 'emu-e19)
+(require 'emu-e20_2)
 
 (defun fontset-pixel-size (fontset)
   (let* ((info (fontset-info fontset))
@@ -72,8 +73,66 @@ in the region between START and END."
 (defalias 'set-process-input-coding-system 'set-process-coding-system)
 
 
+;;; @ binary access
+;;;
+
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+
+Namely this function ensures that only format decoding and character
+code conversion will not take place."
+  (let ((flag enable-multibyte-characters)
+	(coding-system-for-read 'binary)
+	format-alist)
+    (insert-file-contents filename visit beg end replace)
+    (setq enable-multibyte-characters flag)
+    ))
+
+(defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
+(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
+
+(defalias 'insert-binary-file-contents-literally
+  'insert-file-contents-literally)
+
+
 ;;; @ MIME charset
 ;;;
+
+(defsubst encode-mime-charset-region (start end charset)
+  "Encode the text between START and END as MIME CHARSET."
+  (let (cs)
+    (if (and enable-multibyte-characters
+	     (setq cs (mime-charset-to-coding-system charset)))
+	(encode-coding-region start end cs)
+      )))
+
+(defsubst decode-mime-charset-region (start end charset)
+  "Decode the text between START and END as MIME CHARSET."
+  (let (cs)
+    (if (and enable-multibyte-characters
+	     (setq cs (mime-charset-to-coding-system charset)))
+	(decode-coding-region start end cs)
+      )))
+
+(defsubst encode-mime-charset-string (string charset)
+  "Encode the STRING as MIME CHARSET."
+  (let (cs)
+    (if (and enable-multibyte-characters
+	     (setq cs (mime-charset-to-coding-system charset)))
+	(encode-coding-string string cs)
+      string)))
+
+(defsubst decode-mime-charset-string (string charset)
+  "Decode the STRING as MIME CHARSET."
+  (let (cs)
+    (if (and enable-multibyte-characters
+	     (setq cs (mime-charset-to-coding-system charset)))
+	(decode-coding-string string cs)
+      string)))
+
 
 (defvar charsets-mime-charset-alist
   '(((ascii)						. us-ascii)
@@ -131,7 +190,6 @@ TABLE defaults to the current buffer's category table."
 ;;; @ end
 ;;;
 
-(require 'emu-e20_2)
 (require 'emu-20)
 
 (provide 'emu-e20)
