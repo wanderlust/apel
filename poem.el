@@ -43,7 +43,7 @@
        (require 'poem-nemacs)
        )
       (t
-       (require 'poem-ltn1)
+       (require 'poem-latin1)
        ))
 
 

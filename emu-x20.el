@@ -1,13 +1,11 @@
-;;; pccl.el --- Portable CCL utility for Mule 1.* and Mule 2.*
+;;; emu-x20.el --- emu API implementation for XEmacs with mule
 
-;; Copyright (C) 1998 Free Software Foundation, Inc.
-;; Copyright (C) 1998 Tanaka Akira
+;; Copyright (C) 1994,1995,1996,1997,1998 MORIOKA Tomohiko
 
-;; Author: Tanaka Akira <akr@jaist.ac.jp>
-;;         Shuhei KOBAYASHI <shuhei-k@jaist.ac.jp>
-;; Keywords: emulation, compatibility, Mule
+;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Keywords: emulation, compatibility, Mule, XEmacs
 
-;; This file is part of APEL (A Portable Emacs Library).
+;; This file is part of emu.
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -24,20 +22,29 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;;    This module requires XEmacs 20.3-b5 or later with mule.
+
 ;;; Code:
 
-(if (featurep 'mule)
-    (if (>= emacs-major-version 20)
-	;; for Emacs 20 and XEmacs-mule
-	(require 'pccl-20)
-      ;; for MULE 1.* and 2.*
-      (require 'pccl-om)
-      ))
+(require 'poem)
+
+
+;;; @ CCL
+;;;
+
+(defun make-ccl-coding-system (name mnemonic doc-string decoder encoder)
+  (make-coding-system
+   name 'ccl doc-string
+   (list 'mnemonic (char-to-string mnemonic)
+         'decode (symbol-value decoder)
+         'encode (symbol-value encoder))))
 
 
 ;;; @ end
 ;;;
 
-(provide 'pccl)
+(provide 'emu-x20)
 
-;;; pccl.el ends here
+;;; emu-x20.el ends here
