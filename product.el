@@ -1,7 +1,6 @@
 ;;; product.el --- Functions for product version information.
 
 ;; Copyright (C) 1999 Free Software Foundation, Inc.
-;; Copyright (C) 1999 Keiichi Suzuki
 
 ;; Author: Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
 ;;	Keiichi Suzuki <keiichi@nanap.org>
@@ -110,7 +109,9 @@ numbers.  Optional 4th argument CODE-NAME is a string."
   (aset product 7 version-string))
 
 (defun product-add-to-family (family product-name)
-  "Add PRODUCT-NAME to FAMILY product."
+  "Add a product to a family.
+FAMILY is a product structure which returned by `product-define'.
+PRODUCT-NAME is a string of the product's name ."
   (let ((family-product (product-find-by-name family)))
     (if family-product
 	(let ((dest (product-family-products family-product)))
@@ -120,7 +121,9 @@ numbers.  Optional 4th argument CODE-NAME is a string."
       (error "Family product `%s' is not defined" family))))
 
 (defun product-remove-from-family (family product-name)
-  "Remove PRODUCT-NAME from FAMILY product."
+  "Remove a product from a family.
+FAMILY is a product string which returned by `product-define'.
+PRODUCT-NAME is a string of the product's name."
   (let ((family-product (product-find-by-name family)))
     (if family-product
 	(product-set-family-products
@@ -129,7 +132,11 @@ numbers.  Optional 4th argument CODE-NAME is a string."
       (error "Family product `%s' is not defined" family))))
 
 (defun product-add-checkers (product &rest checkers)
-  "Add CHECKERS to checker functions list of PRODUCT.
+  "Add checker function(s) to a product.
+PRODUCT is a product structure which returned by `product-define'.
+The rest arguments CHECKERS should be functions.  These functions
+are regist to the product's checkers list, and will be called by
+ `product-run-checkers'.
 If a checker is `ignore' will be ignored all checkers after this."
   (setq product (product-find product))
   (or product-ignore-checkers
@@ -143,7 +150,10 @@ If a checker is `ignore' will be ignored all checkers after this."
 	(product-set-checkers product dest))))
 
 (defun product-remove-checkers (product &rest checkers)
-  "Remove CHECKERS from checker functions list of PRODUCT."
+  "Remove checker function(s) from a product.
+PRODUCT is a product structure which returned by `product-define'.
+The rest arguments CHECKERS should be functions.  These functions removed
+from the product's checkers list."
   (setq product (product-find product))
   (let ((dest (product-checkers product)))
     (while checkers
@@ -152,22 +162,27 @@ If a checker is `ignore' will be ignored all checkers after this."
     (product-set-checkers product dest)))
 
 (defun product-add-feature (product feature)
-  "Add FEATURE to features list of PRODUCT."
+  "Add a feature to the features list of a product.
+PRODUCT is a product structure which returned by `product-define'.
+FEATURE is a feature in the PRODUCT's."
   (setq product (product-find product))
   (let ((dest (product-features product)))
     (or (memq feature dest)
 	(product-set-features product (cons feature dest)))))
 
 (defun product-remove-feature (product feature)
-  "Remove FEATURE from features list of PRODUCT."
+  "Remove a feature from the features list of a product.
+PRODUCT is a product structure which returned by `product-define'.
+FEATURE is a feature which registered in the products list of PRODUCT."
   (setq product (product-find product))
   (product-set-features product
 			(delq feature (product-features product))))
 
 (defun product-run-checkers (product version &optional force)
-  "Run checker functions of PRODUCT.
+  "Run checker functions of product.
+PRODUCT is a product structure which returned by `product-define'.
 VERSION is target version.
-If optional 2nd argument FORCE is non-nil then do not ignore
+If optional 3rd argument FORCE is non-nil then do not ignore
 all checkers."
   (let ((checkers (product-checkers product)))
     (if (or force
@@ -179,15 +194,21 @@ all checkers."
 	    (setq checkers (cdr checkers)))))))
 
 (defun product-find-by-name (name)
-  "Return PRODUCT information of NAME."
+  "Find product by name and return a product structure.
+NAME is a string of the product's name."
   (symbol-value (intern-soft name product-obarray)))
 
 (defun product-find-by-feature (feature)
-  "Get product information of FEATURE."
+  "Get a product structure of a feature's product.
+FEATURE is a symbol of the feature."
   (get feature 'product))
 
 (defun product-find (product)
-  "Get product information."
+  "Find product information.
+If PROCUCT is a product structure, then return PRODUCT itself.
+If PRODUCT is a string, then find product by name and return a
+product structure.  If PRODUCT is symbol of feature, then return
+the feature's product."
   (cond
    ((and (symbolp product)
 	 (featurep product))
@@ -201,7 +222,9 @@ all checkers."
 
 (put 'product-provide 'lisp-indent-function 1)
 (defmacro product-provide (feature-def product-def)
-  "Declare FEATURE as a part of PRODUCT."
+  "Declare a feature as a part of product.
+FEATURE-DEF is a definition of the feature.
+PRODUCT-DEF is a definition of the product."
   (let* ((feature feature-def)
 	 (product (product-find (eval product-def)))
 	 (product-name (product-name product))
@@ -226,7 +249,8 @@ all checkers."
 	 (, feature-def)))))
 
 (defun product-string-1 (product &optional verbose)
-  "Return information of PRODUCT as a string of \"NAME/VERSION\".
+  "Return information of product as a string of \"NAME/VERSION\".
+PRODUCT is a product structure which returned by `product-define'.
 If optional argument VERBOSE is non-nil, then return string of
 \"NAME/VERSION (CODE-NAME)\"."
   (setq product (product-find product))
@@ -247,8 +271,11 @@ If optional argument VERBOSE is non-nil, then return string of
 	    "")))
 
 (defun product-for-each (product all function &rest args)
-  "Apply FUNCTION to PRODUCT and PRODUCT's family with ARGS.
-If ALL is nil, apply function to only products which provide feature."
+  "Apply a function to a product and the product's family with args.
+PRODUCT is a product structure which returned by `product-define'.
+If ALL is nil, apply function to only products which provided feature.
+FUNCTION is a function.  The function called with following arguments.
+The 1st argument is a product structure.  The rest arguments are ARGS."
   (setq product (product-find product))
   (let ((family (product-family-products product)))
     (and (or all (product-features product))
@@ -258,7 +285,8 @@ If ALL is nil, apply function to only products which provide feature."
       (setq family (cdr family)))))
 
 (defun product-string (product)
-  "Return information of PRODUCT as a string of \"NAME/VERSION\"."
+  "Return information of product as a string of \"NAME/VERSION\".
+PRODUCT is a product structure which returned by `product-define'."
   (let (dest)
     (product-for-each product nil
      (function
@@ -271,7 +299,8 @@ If ALL is nil, apply function to only products which provide feature."
     dest))
 
 (defun product-string-verbose (product)
-  "Return information of PRODUCT as a string of \"NAME/VERSION (CODE-NAME)\"."
+  "Return information of product as a string of \"NAME/VERSION (CODE-NAME)\".
+PRODUCT is a product structure which returned by `product-define'."
   (let (dest)
     (product-for-each product nil
      (function
@@ -284,13 +313,20 @@ If ALL is nil, apply function to only products which provide feature."
     dest))
 
 (defun product-version-compare (v1 v2)
-  "Compare version of product."
+  "Compare two versions.
+Return an integer greater than, equal to, or less than 0,
+according as the version V1 is greater than, equal to, or less
+than the version V2.
+Both V1 and V2 are a list of integer(s) respectively."
   (while (and v1 v2 (= (car v1) (car v2)))
     (setq v1 (cdr v1)
 	  v2 (cdr v2)))
   (if v1 (if v2 (- (car v1) (car v2)) 1) (if v2 -1 0)))
 
 (defun product-version>= (product require-version)
+  "Compare product version with required version.
+PRODUCT is a product structure which returned by `product-define'.
+REQUIRE-VERSION is a list of integer."
   (>= (product-version-compare (product-version (product-find product))
 			       require-version)
       0))
@@ -307,7 +343,8 @@ If ALL is nil, apply function to only products which provide feature."
 
 (defun product-parse-version-string (verstr)
   "Parse version string \".*v1.v2... (CODE-NAME)\".
-Return list of version, code-name, and version-string."
+Return list of version, code-name, and version-string.
+VERSTR is a string."
   (let (version version-string code-name)
     (and (string-match "\\(\\([0-9.]+\\)[^ ]*\\)[^(]*\\((\\(.+\\))\\)?" verstr)
 	 (let ((temp (substring verstr (match-beginning 2) (match-end 2))))
