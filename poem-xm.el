@@ -79,6 +79,9 @@ but the contents viewed as characters do change.
 (defun-maybe string-to-int-list (str)
   (mapcar #'char-int str))
 
+(defun-maybe string-to-char-list (str)
+  (mapcar #'identity str))
+
 (defalias 'looking-at-as-unibyte 'looking-at)
 
 
