@@ -11,6 +11,7 @@
 
 	* poe-18.el (byte-code-function-p): Check if the CDR of OBJECT is
 	a cons cell.
+
 
 2000-01-21  Yuuichi Teranishi  <teranisi@gohome.org>
 
