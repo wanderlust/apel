@@ -1,3 +1,25 @@
+1998-04-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (decode-mime-charset-string): Use
+ 	'decode-mime-charset-region.
+
+1998-04-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (mime-charset-decoder-alist): Add
+ 	'decode-mime-charset-region-for-hz for 'hz-gb-2312.
+	(decode-mime-charset-region-for-hz): New function.
+
+1998-03-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (mime-charset-decoder-alist): New variable.
+	(decode-mime-charset-region-default): New function.
+	(mime-iso646-character-unification-alist): New variable.
+	(mime-unified-character-face): New variable.
+	(decode-mime-charset-region-with-iso646-unification): New
+ 	function.
+	(decode-mime-charset-region): Use 'mime-charset-decoder-alist.
+
+
 1998-04-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 8.4 was released.
