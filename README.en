@@ -159,8 +159,8 @@ load-path (for Emacs or MULE)
 =============================
 
   If you are using Emacs or Mule, please add directory of apel to
-  load-path.  If you install by default setting with Emacs 20.1/20.2,
-  you can write subdirs.el for example:
+  load-path.  If you install by default setting with Emacs 19.29 or
+  later or Emacs 20.1/20.2, you can write subdirs.el for example:
 
   --------------------------------------------------------------------
   (normal-top-level-add-to-load-path '("apel"))
