@@ -1,3 +1,16 @@
+1999-11-30  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe-18.el (current-time-string): New local variable `lyear'
+	for leap year; renamed from `uru' and bind locally.
+
+	* poe.el (emacs-major-version, emacs-minor-version): Define
+	at compile-time as well as at load-time in order to do compile-
+	time version check.
+	(tcp): Require if `open-network-stream' is not available;
+	moved from "pces.el".
+
+	* pym.el: Removed comment.
+
 1999-11-28  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* poe.el, poe-18.el, poe-xemacs.el, pym.el: Modified comments.
@@ -76,6 +89,7 @@
 1999-11-12  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* README.en (Version specific information): New section.
+	(Bug reports): Updated description of APEL mailing-lists.
 
 	* pcustom.el [old custom]: Refer to it.
 
