@@ -28,13 +28,15 @@
 	 )
 	((>= emacs-major-version 19)
 	 (setq invisible-modules (cons 'inv-19 invisible-modules))
+	 (if (and (= emacs-major-version 19)
+		  (<= emacs-minor-version 28))
+	     (setq poe-modules (cons 'localhook poe-modules))
+	   )
 	 )
 	(t
-	 (setq poe-modules (cons 'poe-18 poe-modules)
+	 (setq poe-modules (cons 'poe-18 (cons 'localhook poe-modules))
 	       invisible-modules (cons 'inv-18 invisible-modules))
 	 ))
-  (or running-emacs-19_29-or-later
-      (setq poe-modules (cons 'localhook poe-modules)))
   (cond ((featurep 'mule)
 	 (cond ((featurep 'xemacs)
 		(setq poem-modules (cons 'poem-xm (cons 'poem-20
