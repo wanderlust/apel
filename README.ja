@@ -35,6 +35,8 @@ APEL とは？
       mcs-e20.el    --- Emacs 20 用
       mcs-xm.el     --- XEmacs-MULE 用
 
+    static.el --- 静的評価のためのユーティリティー
+
     broken.el --- Emacs の壊れている機能の情報を提供する
 
     pccl.el --- 移植可能な CCL プログラムを書くためのユーティリティー

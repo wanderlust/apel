@@ -35,7 +35,9 @@ What's APEL?
       mcs-e20.el    --- for Emacs 20
       mcs-xm.el     --- for XEmacs-MULE
 
-    broken.el --- provide information of broken facilities of Emacs.
+    static.el --- utility for static evaluation
+
+    broken.el --- provide information of broken facilities of Emacs
 
     pccl.el --- utility to write portable CCL program
       pccl-om.el --- for MULE 2.*

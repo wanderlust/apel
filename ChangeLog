@@ -1,3 +1,9 @@
+1999-05-08  Tanaka Akira      <akr@jaist.ac.jp>
+
+	* README.en (What's APEL?): Add notice for static.el.
+
+	* README.ja: Ditto.
+
 1999-05-08  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* APEL: Version 9.18 released.
