@@ -89,6 +89,10 @@
   (std11-analyze-enclosure str 'quoted-string ?\" ?\")
   )
 
+(defun std11-analyze-domain-literal (str)
+  (std11-analyze-enclosure str 'domain-literal ?\[ ?\])
+  )
+
 
 ;;; @ end
 ;;;
