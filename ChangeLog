@@ -1,9 +1,14 @@
-2003-07-03  Yuuichi Teranishi  <teranisi@gohome.org>
+2003-07-03  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe.el (make-temp-file) [2-args make-temp-file]:
+	Don't use octal number for file modes.
 
 	* poe.el (toplevel): Fixed the compile-time check for the definition of
 	`make-temp-file' [apel-ja: 00874].
 	(make-temp-file) [no make-temp-file, single-user system]:
-	Don't use set-default-file-modes nor default-file-modes.
+	Don't use `set-default-file-modes' nor `default-file-modes'.
+
+2003-07-03  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* poe-18.el (make-directory-internal): Signal an error according to
 	the exit status of mkdir.

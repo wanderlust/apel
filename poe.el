@@ -1660,7 +1660,7 @@ If SUFFIX is non-nil, add that at the end of the file name."
             ;; Create temp files with strict access rights.  
             ;; It's easy toloosen them later, whereas it's impossible
             ;;  to close the time-window of loose permissions otherwise.
-            (set-default-file-modes ?\700)
+            (set-default-file-modes 448)
             (while (condition-case ()
                        (progn
                          (setq file
