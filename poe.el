@@ -136,17 +136,6 @@
 	      (string-match (format "%d\\." emacs-major-version)
 			    emacs-version))))
 
-(defmacro condition-case-if (cond var bodyform &rest handlers)
-  "If COND yields non-nil at run-time, do wrapped BODYFORM in 
-`condition-case' with VAR and HANDLERS, else do bare BODYFORM."
-  (` (if (, cond)
-       (condition-case (, var)
-           (, bodyform)
-         (,@ handlers))
-       (, bodyform)
-       )))
-(put 'condition-case-if 'lisp-indent-function 2)
-
 (cond ((featurep 'xemacs)
        (require 'poe-xemacs)
        )
