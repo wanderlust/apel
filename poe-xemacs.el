@@ -78,6 +78,39 @@ When called interactively, prompt for the name of the color to use."
   (switch-to-buffer-other-frame (dired-noselect dirname switches)))
 
 
+;;; @ timer
+;;;
+
+(condition-case nil
+    (require 'timer)
+  (error
+   (require 'itimer)
+   (defun-maybe run-at-time (time repeat function &rest args)
+     (start-itimer (make-temp-name "rat")
+		   `(lambda ()
+		      (,function ,@args))
+		   time repeat))
+   (defalias 'cancel-timer 'delete-itimer)
+   (defun with-timeout-handler (tag)
+     (throw tag 'timeout))
+   (defmacro-maybe with-timeout (list &rest body)
+     (let ((seconds (car list))
+	   (timeout-forms (cdr list)))
+     `(let ((with-timeout-tag (cons nil nil))
+	    with-timeout-value with-timeout-timer)
+	(if (catch with-timeout-tag
+	      (progn
+		(setq with-timeout-timer
+		      (run-at-time ,seconds nil
+				   'with-timeout-handler
+				   with-timeout-tag))
+		(setq with-timeout-value (progn . ,body))
+		nil))
+	    (progn . ,timeout-forms)
+	  (cancel-timer with-timeout-timer)
+	  with-timeout-value))))))
+
+
 ;;; @ to avoid bug of XEmacs 19.14
 ;;;
 
@@ -105,6 +138,17 @@ When called interactively, prompt for the name of the color to use."
 (defalias-maybe 'line-beginning-position 'point-at-bol)
 (defalias-maybe 'line-end-position 'point-at-eol)
 
+;;; @ XEmacs 21 emulation
+;;;
+
+;; XEmacs 20.5 and later: (set-extent-properties EXTENT PLIST)
+(defun-maybe set-extent-properties (extent plist)
+  "Change some properties of EXTENT.
+PLIST is a property list.
+For a list of built-in properties, see `set-extent-property'."
+  (while plist
+    (set-extent-property extent (car plist) (cadr plist))
+    (setq plist (cddr plist))))  
 
 ;;; @ end
 ;;;
