@@ -143,7 +143,7 @@
 ;;; @ Emacs 19.29 emulation
 ;;;
 
-(defvar-maybe path-separator ":"
+(defvar path-separator ":"
   "Character used to separate concatenated paths.")
 
 (defun-maybe buffer-substring-no-properties (start end)
@@ -177,37 +177,10 @@ STRING should be given if the last search was by `string-match' on STRING.
       (defun read-string (prompt &optional initial-input history)
 	"Read a string from the minibuffer, prompting with string PROMPT.
 If non-nil, second arg INITIAL-INPUT is a string to insert before reading.
-The third arg HISTORY, is dummy for compatibility.
+The third arg HISTORY, is dummy for compatibility. [emu.el]
 See `read-from-minibuffer' for details of HISTORY argument."
 	(si:read-string prompt initial-input))
       ))
-
-(defun-maybe rassoc (key list)
-  "Return non-nil if KEY is `equal' to the cdr of an element of LIST.
-The value is actually the element of LIST whose cdr equals KEY."
-  (catch 'found
-    (while list
-      (if (equal (cdr (car list)) key)
-	  (throw 'found (car list))
-	)
-      (setq list (cdr list)))
-    ))
-
-(defmacro-maybe make-local-hook (hook))
-
-;; They are not Emacs features
-
-(defmacro-maybe add-local-hook (hook function &optional append)
-  (if (fboundp 'make-local-hook)
-      (list 'add-hook hook function append t)
-    (list 'add-hook hook function append)
-    ))
-
-(defmacro-maybe remove-local-hook (hook function)
-  (if (fboundp 'make-local-hook)
-      (list 'remove-hook hook function t)
-    (list 'remove-hook hook function)
-    ))
 
 
 ;;; @ Emacs 19.30 emulation
