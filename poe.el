@@ -24,106 +24,124 @@
 
 ;;; Commentary:
 
-;; This modules does not includes MULE related features.  MULE related
-;; features are supported by `poem'.
+;; This modules does not includes MULE related features.
+;; MULE related features are supported by `poem'.
+
+;; Note to developers:
+;; 
+;; In this file, `eval-when-compile' and `eval-and-compile' does not work
+;; for v18.  If you really need them, require 'poe-18 at outermost level.
 
 ;;; Code:
 
 (provide 'poe)
 
+(put 'defun-maybe 'lisp-indent-function 'defun)
+(put 'defun-maybe 'edebug-form-spec 'defun)
 (defmacro defun-maybe (name &rest everything-else)
+  "Define NAME as a function if NAME is not defined.
+See also the function `defun'."
   (or (and (fboundp name)
 	   (not (get name 'defun-maybe)))
       (` (or (fboundp (quote (, name)))
-	     (progn
-	       (defun (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defun-maybe t)
-	       ))
-	 )))
+	     (prog1
+		 (defun (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defun-maybe t))))))
 
+(put 'defmacro-maybe 'lisp-indent-function 'defun)
+(put 'defmacro-maybe 'edebug-form-spec '(&define name lambda-list def-body))
 (defmacro defmacro-maybe (name &rest everything-else)
+  "Define NAME as a macro if NAME is not defined.
+See also the function `defmacro'."
   (or (and (fboundp name)
 	   (not (get name 'defmacro-maybe)))
       (` (or (fboundp (quote (, name)))
-	     (progn
-	       (defmacro (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defmacro-maybe t)
-	       ))
-	 )))
+	     (prog1
+		 (defmacro (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defmacro-maybe t))))))
 
-(defmacro-maybe defsubst (name arglist &rest body)
-  "Define an inline function.  The syntax is just like that of `defun'."
-  (cons 'defun (cons name (cons arglist body)))
-  )
-
+(put 'defsubst-maybe 'lisp-indent-function 'defun)
+(put 'defsubst-maybe 'edebug-form-spec 'defun)
 (defmacro defsubst-maybe (name &rest everything-else)
+  "Define NAME as an inline function if NAME is not defined.
+See also the macro `defsubst'."
   (or (and (fboundp name)
 	   (not (get name 'defsubst-maybe)))
       (` (or (fboundp (quote (, name)))
-	     (progn
-	       (defsubst (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defsubst-maybe t)
-	       ))
-	 )))
+	     (prog1
+		 (defsubst (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defsubst-maybe t))))))
 
 (defmacro defalias-maybe (symbol definition)
+  "Define SYMBOL as an alias for DEFINITION if SYMBOL is not defined.
+See also the function `defalias'."
   (setq symbol (eval symbol))
   (or (and (fboundp symbol)
 	   (not (get symbol 'defalias-maybe)))
       (` (or (fboundp (quote (, symbol)))
-	     (progn
-	       (defalias (quote (, symbol)) (, definition))
-	       (put (quote (, symbol)) 'defalias-maybe t)
-	       ))
-	 )))
-
-(put 'defun-maybe 'lisp-indent-function 'defun)
-(put 'defsubst-maybe 'lisp-indent-function 'defun)
-(put 'defmacro-maybe 'lisp-indent-function 'defun)
+	     (prog1
+		 (defalias (quote (, symbol)) (, definition))
+	       (put (quote (, symbol)) 'defalias-maybe t))))))
 
 (defmacro defvar-maybe (name &rest everything-else)
+  "Define NAME as a variable if NAME is not defined.
+See also the function `defvar'."
   (or (and (boundp name)
 	   (not (get name 'defvar-maybe)))
       (` (or (boundp (quote (, name)))
-	     (progn
-	       (defvar (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defvar-maybe t)
-	       ))
-	 )))
+	     (prog1
+		 (defvar (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defvar-maybe t))))))
 
 (defmacro defconst-maybe (name &rest everything-else)
+  "Define NAME as a constant variable if NAME is not defined.
+See also the function `defconst'."
   (or (and (boundp name)
-	   (not (get name 'defconst-maybe))
-	   )
+	   (not (get name 'defconst-maybe)))
       (` (or (boundp (quote (, name)))
-	     (progn
-	       (defconst (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defconst-maybe t)
-	       ))
-	 )))
+	     (prog1
+		 (defconst (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defconst-maybe t))))))
 
 (defmacro defun-maybe-cond (name args &optional doc &rest everything-else)
   (or (stringp doc)
       (setq everything-else (cons doc everything-else)
-	    doc nil)
-      )
+	    doc nil))
   (or (and (fboundp name)
 	   (not (get name 'defun-maybe)))
       (` (or (fboundp (quote (, name)))
-	     (progn
-	       (cond (,@ (mapcar (function
-				  (lambda (case)
-				    (list (car case)
-					  (if doc
+	     (prog1
+		 (cond (,@ (mapcar (function
+				    (lambda (case)
+				      (list (car case)
+					    (if doc
+						(` (defun (, name) (, args)
+						     (, doc)
+						     (,@ (cdr case))))
 					      (` (defun (, name) (, args)
-						   (, doc)
-						   (,@ (cdr case))))
-					    (` (defun (, name) (, args)
-						 (,@ (cdr case))))
-					    ))))
-				 everything-else)))
-	       (put (quote (, name)) 'defun-maybe t)
-	       )))))
+						   (,@ (cdr case))))))))
+				   everything-else)))
+	       (put (quote (, name)) 'defun-maybe t))))))
+
+(defmacro defmacro-maybe-cond (name args &optional doc &rest everything-else)
+  (or (stringp doc)
+      (setq everything-else (cons doc everything-else)
+	    doc nil))
+  (or (and (fboundp name)
+	   (not (get name 'defmacro-maybe)))
+      (` (or (fboundp (quote (, name)))
+	     (prog1
+		 (cond (,@ (mapcar (function
+				    (lambda (case)
+				      (list (car case)
+					    (if doc
+						(` (defmacro (, name) (, args)
+						     (, doc)
+						     (,@ (cdr case))))
+					      (` (defmacro (, name) (, args)
+						   (,@ (cdr case))))))))
+				   everything-else)))
+	       (put (quote (, name)) 'defmacro-maybe t))))))
 
 (defsubst subr-fboundp (symbol)
   "Return t if SYMBOL's function definition is a built-in function."
@@ -154,9 +172,18 @@
 	      (defalias 'string 'concat-chars)
 	      ))
        )
-      ((= emacs-major-version 19))
+      ((= emacs-major-version 19)
+       ;; XXX: should do compile-time and load-time check before loading
+       ;;      "localhook".  But, it is difficult since "localhook" is
+       ;;      already loaded via "install" at compile-time.  any idea?
+       (if (< emacs-minor-version 29)
+	   (require 'localhook)))
       (t
        (require 'poe-18)
+       ;; XXX: should do compile-time and load-time check before loading
+       ;;      "localhook".  But, it is difficult since "localhook" is
+       ;;      already loaded via "install" at compile-time.  any idea?
+       (require 'localhook)
        ))
 
 ;;; @ Emacs 19.23 emulation
@@ -171,127 +198,19 @@
 ;;; @ Emacs 19.29 emulation
 ;;;
 
-(eval-when-compile (require 'static))
-
-;; `add-hook' and `remove-hook' are imported from Emacs 19.28
-;; (with additional `local' argument).
-(static-condition-case nil
-    (let (test-hook)
-      (add-hook 'test-hook 'test 'append 'local)
-      (remove-hook 'test-hook 'test 'local))
-  (void-function
-   ;; emulate add-hook/remove-hook for version 18.
-   (defun-maybe add-hook (hook function &optional append local)
-     "Add to the value of HOOK the function FUNCTION.
-FUNCTION is not added if already present.
-FUNCTION is added \(if necessary\) at the beginning of the hook list
-unless the optional argument APPEND is non-nil, in which case
-FUNCTION is added at the end.
-
-The optional fourth argument, LOCAL, if non-nil, says to modify
-the hook's buffer-local value rather than its default value
-\(LOCAL is only for emulation\).
-
-HOOK should be a symbol, and FUNCTION may be any valid function.  If
-HOOK is void, it is first set to nil.  If HOOK's value is a single
-function, it is changed to a list of functions.
-\[Emacs 19.29 emulating function]"
-     (or (boundp hook)
-	 (set hook nil))
-     ;; If the hook value is a single function, turn it into a list.
-     (let ((old (symbol-value hook)))
-       (if (or (not (listp old))
-	       (eq (car old) 'lambda))
-	   (set hook (list old))))
-     (or (if (consp function)
-	     ;; Clever way to tell whether a given lambda-expression
-	     ;; is equal to anything in the hook.
-	     (let ((tail (assoc (cdr function) (symbol-value hook))))
-	       (equal function tail))
-	   (memq function (symbol-value hook)))
-	 (set hook 
-	      (if append
-		  (nconc (symbol-value hook) (list function))
-		(cons function (symbol-value hook))))))
-
-   (defun-maybe remove-hook (hook function &optional local)
-     "Remove from the value of HOOK the function FUNCTION.
-HOOK should be a symbol, and FUNCTION may be any valid function.  If
-FUNCTION isn't the value of HOOK, or, if FUNCTION doesn't appear in the
-list of hooks to run in HOOK, then nothing is done.  See `add-hook'.
-
-The optional third argument, LOCAL, if non-nil, says to modify
-the hook's buffer-local value rather than its default value
-\(LOCAL is only for emulation\).
-\[Emacs 19.29 emulating function]"
-     (if (or (not (boundp hook))
-	     (null (symbol-value hook))
-	     (null function))
-	 nil
-       (let ((hook-value (symbol-value hook)))
-	 (if (consp hook-value)
-	     (setq hook-value (delete function hook-value))
-	   (if (equal hook-value function)
-	       (setq hook-value nil)))
-	 (set hook hook-value))))
-   )
-  (wrong-number-of-arguments
-   ;; emulate `local' arg for version 19.28 and earlier.
-   (or (fboundp 'si:add-hook)
-       (progn
-	 (fset 'si:add-hook (symbol-function 'add-hook))
-	 (defun add-hook (hook function &optional append local)
-	   "Add to the value of HOOK the function FUNCTION.
-FUNCTION is not added if already present.
-FUNCTION is added \(if necessary\) at the beginning of the hook list
-unless the optional argument APPEND is non-nil, in which case
-FUNCTION is added at the end.
-
-The optional fourth argument, LOCAL, if non-nil, says to modify
-the hook's buffer-local value rather than its default value
-\(LOCAL is only for emulation\).
-
-HOOK should be a symbol, and FUNCTION may be any valid function.  If
-HOOK is void, it is first set to nil.  If HOOK's value is a single
-function, it is changed to a list of functions.
-\[Emacs 19.29 emulating function]"
-	   ;; the fourth argument LOCAL is simply ignored.
-	   (si:add-hook hook function append))))
-
-   (or (fboundp 'si:remove-hook)
-       (progn
-	 (fset 'si:remove-hook (symbol-function 'remove-hook))
-	 (defun remove-hook (hook function &optional local)
-	   "Remove from the value of HOOK the function FUNCTION.
-HOOK should be a symbol, and FUNCTION may be any valid function.  If
-FUNCTION isn't the value of HOOK, or, if FUNCTION doesn't appear in the
-list of hooks to run in HOOK, then nothing is done.  See `add-hook'.
-
-The optional third argument, LOCAL, if non-nil, says to modify
-the hook's buffer-local value rather than its default value
-\(LOCAL is only for emulation\).
-\[Emacs 19.29 emulating function]"
-	   ;; the third argument LOCAL is simply ignored.
-	   (si:remove-hook hook function))))
-   ))
-
-(defun-maybe make-local-hook (hook)
-  "Make the hook HOOK local to the current buffer.
-This function is only for emulation.
-\[Emacs 19.29 emulating function]"
-  )
-
 (defvar-maybe path-separator ":"
-  "Character used to separate concatenated paths.")
+  "The directory separator in search paths, as a string.")
 
 (defun-maybe buffer-substring-no-properties (start end)
   "Return the characters of part of the buffer, without the text properties.
 The two arguments START and END are character positions;
-they can be in either order. [Emacs 19.29 emulating function]"
+they can be in either order.
+\[Emacs 19.29 emulating function]"
   (let ((string (buffer-substring start end)))
     (set-text-properties 0 (length string) nil string)
     string))
 
+;; imported from emacs-19.34/lisp/subr.el.
 (defun-maybe match-string (num &optional string)
   "Return string of text matched by last search.
 NUM specifies which parenthesized expression in the last regexp.
@@ -310,7 +229,7 @@ STRING should be given if the last search was by `string-match' on STRING.
 	 (>= emacs-minor-version 29))
     ;; for Emacs 19.28 or earlier
     (fboundp 'si:read-string)
-    (eval-and-compile
+    (progn
       (fset 'si:read-string (symbol-function 'read-string))
       (defun read-string (prompt &optional initial-input history)
 	"Read a string from the minibuffer, prompting with string PROMPT.
@@ -322,18 +241,19 @@ See `read-from-minibuffer' for details of HISTORY argument."
 
 (defun-maybe rassoc (key list)
   "Return non-nil if KEY is `equal' to the cdr of an element of LIST.
-The value is actually the element of LIST whose cdr equals KEY."
+The value is actually the element of LIST whose cdr equals KEY.
+\[Emacs 19.29 emulating function]"
   (catch 'found
     (while list
       (if (equal (cdr (car list)) key)
-	  (throw 'found (car list))
-	)
-      (setq list (cdr list)))
-    ))
+	  (throw 'found (car list)))
+      (setq list (cdr list)))))
 
+;; imported from emacs-19.34/lisp/files.el.
 (defun-maybe file-name-sans-extension (filename)
   "Return FILENAME sans final \"extension\".
-The extension, in a file name, is the part that follows the last `.'."
+The extension, in a file name, is the part that follows the last `.'.
+\[Emacs 19.29 emulating function]"
   (save-match-data
     (let ((file (file-name-sans-versions (file-name-nondirectory filename)))
 	  directory)
@@ -347,12 +267,15 @@ The extension, in a file name, is the part that follows the last `.'."
 ;;; @ Emacs 19.30 emulation
 ;;;
 
-;; imported from Emacs 19.30.
+;; imported from emacs-19.34/lisp/subr.el.
 (defun-maybe add-to-list (list-var element)
   "Add to the value of LIST-VAR the element ELEMENT if it isn't there yet.
+The test for presence of ELEMENT is done with `equal'.
 If you want to use `add-to-list' on a variable that is not defined
 until a certain package is loaded, you should put the call to `add-to-list'
 into a hook function that will be run only after loading the package.
+`eval-after-load' provides one way to do this.  In some cases
+other hooks, such as major mode hooks, can do the job.
 \[Emacs 19.30 emulating function]"
   (or (member element (symbol-value list-var))
       (set list-var (cons element (symbol-value list-var)))))
@@ -384,9 +307,10 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
 \[Emacs 19.31 emulating function]"
   (and object
        (get-buffer object)
-       (buffer-name (get-buffer object))))
+       (buffer-name (get-buffer object))
+       t))
 
-;; imported from Emacs 19.33.
+;; imported from emacs-19.34/lisp/window.el.
 (defmacro-maybe save-selected-window (&rest body)
   "Execute BODY, then select the window that was selected before BODY.
 \[Emacs 19.31 emulating function]"
@@ -400,22 +324,37 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
 ;;; @ Emacs 20.1 emulation
 ;;;
 
-;; imported from Emacs 20.2.
+;; imported from emacs-20.3/lisp/subr.el.
 (defmacro-maybe when (cond &rest body)
-  "(when COND BODY...): if COND yields non-nil, do BODY, else return nil."
+  "If COND yields non-nil, do BODY, else return nil."
   (list 'if cond (cons 'progn body)))
 
-;; imported from Emacs 20.3.
+;; imported from emacs-20.3/lisp/subr.el.
 (defmacro-maybe unless (cond &rest body)
-  "(unless COND BODY...): if COND yields nil, do BODY, else return nil."
+  "If COND yields nil, do BODY, else return nil."
   (cons 'if (cons cond (cons nil body))))
 
-;; imported from Emacs 20.3.
+;; imported from emacs-20.3/lisp/subr.el.
 (defsubst-maybe caar (x)
   "Return the car of the car of X."
   (car (car x)))
 
-;; imported from Emacs 20.3.
+;; imported from emacs-20.3/lisp/subr.el.
+(defsubst-maybe cadr (x)
+  "Return the car of the cdr of X."
+  (car (cdr x)))
+
+;; imported from emacs-20.3/lisp/subr.el.
+(defsubst-maybe cdar (x)
+  "Return the cdr of the car of X."
+  (cdr (car x)))
+
+;; imported from emacs-20.3/lisp/subr.el.
+(defsubst-maybe cddr (x)
+  "Return the cdr of the cdr of X."
+  (cdr (cdr x)))
+
+;; imported from emacs-20.3/lisp/subr.el.
 (defun-maybe last (x &optional n)
   "Return the last link of the list X.  Its car is the last element.
 If X is nil, return nil.
@@ -431,15 +370,17 @@ If N is bigger than the length of X, return X."
       (setq x (cdr x)))
     x))
 
+;; In Emacs 20.3, save-current-buffer is defined in src/editfns.c.
 (defmacro-maybe save-current-buffer (&rest body)
   "Save the current buffer; execute BODY; restore the current buffer.
 Executes BODY just like `progn'."
   (` (let ((orig-buffer (current-buffer)))
        (unwind-protect
 	   (progn (,@ body))
-	 (set-buffer orig-buffer)))))
+	 (if (buffer-live-p orig-buffer)
+	     (set-buffer orig-buffer))))))
 
-;; imported from Emacs 20.2.
+;; imported from emacs-20.3/lisp/subr.el. (with macro style change)
 (defmacro-maybe with-current-buffer (buffer &rest body)
   "Execute the forms in BODY with BUFFER as the current buffer.
 The value returned is the value of the last form in BODY.
@@ -448,7 +389,7 @@ See also `with-temp-buffer'."
        (set-buffer (, buffer))
        (,@ body))))
 
-;; imported from Emacs 20.2.
+;; imported from emacs-20.3/lisp/subr.el. (with macro style change)
 (defmacro-maybe with-temp-file (file &rest forms)
   "Create a new buffer, evaluate FORMS there, and write the buffer to FILE.
 The value of the last form in FORMS is returned, like `progn'.
@@ -468,7 +409,7 @@ See also `with-temp-buffer'."
 	   (and (buffer-name (, temp-buffer))
 		(kill-buffer (, temp-buffer))))))))
 
-;; imported from Emacs 20.2.
+;; imported from emacs-20.3/lisp/subr.el. (with macro style change)
 (defmacro-maybe with-temp-buffer (&rest forms)
   "Create a temporary buffer, and evaluate FORMS there like `progn'.
 See also `with-temp-file' and `with-output-to-string'."
@@ -485,13 +426,20 @@ See also `with-temp-file' and `with-output-to-string'."
   "Execute BODY."
   (cons 'progn body))
 
-;; imported from Emacs 20.3. (cl function)
+;; imported from emacs-20.3/lisp/subr.el.
+(defun functionp (object)
+  "Non-nil if OBJECT is a type of object that can be called as a function."
+  (or (subrp object) (byte-code-function-p object)
+      (eq (car-safe object) 'lambda)
+      (and (symbolp object) (fboundp object))))
+
+;; imported from emacs-20.3/lisp/emacs-lisp/cl.el.
 (defun-maybe butlast (x &optional n)
   "Returns a copy of LIST with the last N elements removed."
   (if (and n (<= n 0)) x
     (nbutlast (copy-sequence x) n)))
 
-;; imported from Emacs 20.3. (cl function)
+;; imported from emacs-20.3/lisp/emacs-lisp/cl.el.
 (defun-maybe nbutlast (x &optional n)
   "Modifies LIST to remove the last N elements."
   (let ((m (length x)))
@@ -519,7 +467,7 @@ If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
 ;;; @ Emacs 20.3 emulation
 ;;;
 
-;; imported from Emacs 20.3.91.
+;; imported from emacs-20.3/lisp/files.el.
 (defvar-maybe temporary-file-directory
   (file-name-as-directory
    (cond ((memq system-type '(ms-dos windows-nt))
@@ -536,10 +484,7 @@ With argument N not nil or 1, move forward N - 1 lines first.
 If scan reaches end of buffer, return that position.
 This function does not move point."
   (save-excursion
-    (if n
-	(forward-line (1- n))
-      )
-    (beginning-of-line)
+    (forward-line (1- (or n 1)))
     (point)))
 
 (defun-maybe line-end-position (&optional n)
@@ -548,16 +493,12 @@ With argument N not nil or 1, move forward N - 1 lines first.
 If scan reaches end of buffer, return that position.
 This function does not move point."
   (save-excursion
-    (if n
-	(forward-line (1- n))
-      )
-    (end-of-line)
+    (end-of-line (or n 1))
     (point)))
 
 (defun-maybe string (&rest chars)
   "Concatenate all the argument characters and make the result a string."
-  (mapconcat (function char-to-string) chars "")
-  )
+  (mapconcat (function char-to-string) chars ""))
 
     
 ;;; @ XEmacs emulation
@@ -569,49 +510,37 @@ If FACE-OR-NAME is a face object, it is simply returned.
 Otherwise, FACE-OR-NAME should be a symbol.  If there is no such face,
 nil is returned.  Otherwise the associated face object is returned.
 \[XEmacs emulating function]"
-  (car (memq face-or-name (face-list)))
-  )
+  (car (memq face-or-name (face-list))))
 
 (defun-maybe point-at-bol (&optional n buffer)
   "Return the character position of the first character on the current line.
 With argument N not nil or 1, move forward N - 1 lines first.
 If scan reaches end of buffer, return that position.
-This function does not move point. [XEmacs emulating function]"
+This function does not move point.
+\[XEmacs emulating function]"
   (save-excursion
-    (if buffer
-	(set-buffer buffer)
-      )
-    (line-beginning-position n)
-    ))
+    (if buffer (set-buffer buffer))
+    (forward-line (1- (or n 1)))
+    (point)))
 
 (defun-maybe point-at-eol (&optional n buffer)
   "Return the character position of the last character on the current line.
 With argument N not nil or 1, move forward N - 1 lines first.
 If scan reaches end of buffer, return that position.
-This function does not move point. [XEmacs emulating function]"
-  (save-excursion
-    (if buffer
-	(set-buffer buffer)
-      )
-    (line-end-position n)
-    ))
-
-(defun-maybe functionp (obj)
-  "Returns t if OBJ is a function, nil otherwise.
+This function does not move point.
 \[XEmacs emulating function]"
-  (or (subrp obj)
-      (byte-code-function-p obj)
-      (and (symbolp obj)(fboundp obj))
-      (and (consp obj)(eq (car obj) 'lambda))
-      ))
+  (save-excursion
+    (if buffer (set-buffer buffer))
+    (end-of-line (or n 1))
+    (point)))
 
 (defsubst-maybe define-obsolete-function-alias (oldfun newfun)
   "Define OLDFUN as an obsolete alias for function NEWFUN.
 This makes calling OLDFUN equivalent to calling NEWFUN and marks OLDFUN
-as obsolete. [XEmacs emulating function]"
+as obsolete.
+\[XEmacs emulating function]"
   (defalias oldfun newfun)
-  (make-obsolete oldfun newfun)
-  )
+  (make-obsolete oldfun newfun))
 
 (when (subr-fboundp 'read-event)
   ;; for Emacs 19 or later
