@@ -12,6 +12,9 @@
 ;;; This file is part of tl and tm (Tools for MIME).
 ;;;
 
+;;; @ hook
+;;;
+
 ;; This function is imported from AUC TeX.
 (defun add-hook (hook function &optional append)
   "Add to the value of HOOK the function FUNCTION.
@@ -48,6 +51,10 @@ function, it is changed to a list of functions.
 	     ))
       ))
 
+
+;;; @ list
+;;;
+
 (defun member (elt list)
   "Return non-nil if ELT is an element of LIST.  Comparison done with EQUAL.
 The value is actually the tail of LIST whose car is ELT.
@@ -56,12 +63,34 @@ The value is actually the tail of LIST whose car is ELT.
     (setq list (cdr list)))
   list)
 
+
+;;; @ function
+;;;
+
 (defun defalias (SYM NEWDEF)
   "Set SYMBOL's function definition to NEWVAL, and return NEWVAL.
 Associates the function with the current load file, if any.
 \[emu-18 Emacs 19 emulating function]"
   (fset SYM (symbol-function NEWDEF))
   NEWDEF)
+
+(defun byte-code-function-p (exp)
+  (let* ((rest (cdr (cdr exp))) elt)
+    (if (stringp (car rest))
+        (setq rest (cdr rest))
+      )
+    (catch 'tag
+      (while rest
+        (setq elt (car rest))
+        (if (and (consp elt)(eq (car elt) 'byte-code))
+            (throw 'tag t)
+          )
+        (setq rest (cdr rest))
+        ))))
+
+
+;;; @ directory
+;;;
 
 (defun make-directory-internal (dirname)
   "Create a directory. One argument, a file name string.
@@ -102,6 +131,14 @@ to create parent directories if they don't exist.
     (make-directory-internal dir)
     ))
 
+
+;;; @ mouse
+;;;
+
 (defvar mouse-button-2 nil)
+
+
+;;; @ end
+;;;
 
 (provide 'emu-18)

@@ -20,18 +20,41 @@
 
 (defconst emacs-major-version (string-to-int emacs-version))
 
-(defconst *junet* 2)
-(defconst *internal* 3)
-(defconst *euc-japan* 3)
+
+;;; @ leading-char
+;;;
 
 (defconst lc-ascii 0)
 (defconst lc-jp  146)
 
-;; by mol. 1993/9/26
-(defun string-width (str)
-  "Return number of columns STRING will occupy.
- [Mule compatible function in tm-nemacs]"
-  (length str))
+(defun char-leading-char (chr)
+  "Return leading character of CHAR.
+\[emu-nemacs.el; Mule emulating function]"
+  (if (< chr 128)
+      lc-ascii
+    lc-jp))
+
+(defalias 'get-lc 'char-leading-char)
+
+
+;;; @ coding-system
+;;;
+
+(defconst *junet* 2)
+(defconst *internal* 3)
+(defconst *euc-japan* 3)
+
+(defun code-convert-string (str ic oc)
+  "Convert code in STRING from SOURCE code to TARGET code,
+On successful converion, returns the result string,
+else returns nil. [emu-nemacs.el; Mule emulating function]"
+  (if (not (eq ic oc))
+      (convert-string-kanji-code str ic oc)
+    str))
+
+
+;;; @ character and string
+;;;
 
 (defun char-bytes (chr)
   "Return number of bytes CHAR will occupy in a buffer.
@@ -43,13 +66,25 @@
  [Mule compatible function in tm-nemacs]"
   (if (< chr 128) 1 2))
 
-(defun code-convert-string (str ic oc)
-  "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
-else returns nil. [Mule compatible function in tm-nemacs]"
-  (if (not (eq ic oc))
-      (convert-string-kanji-code str ic oc)
-    str))
+;; by mol. 1993/9/26
+(defun string-width (str)
+  "Return number of columns STRING will occupy.
+ [Mule compatible function in tm-nemacs]"
+  (length str))
+
+(defun string-to-char-list (str)
+  (let ((i 0)(len (length str)) dest chr)
+    (while (< i len)
+      (setq chr (aref str i))
+      (if (>= chr 128)
+	  (setq i (1+ i)
+		chr (+ (lsh chr 8) (aref str i))
+		))
+      (setq dest (cons chr dest))
+      (setq i (1+ i))
+      )
+    (reverse dest)
+    ))
 
 (defun check-ASCII-string (str)
   (let ((i 0)
@@ -63,11 +98,9 @@ else returns nil. [Mule compatible function in tm-nemacs]"
 	)
       str)))
 
-(defun get-lc (chr)
-  "Return leading character of CHAR or LEADING-CHARACTER."
-  (if (< chr 128)
-      lc-ascii
-    lc-jp))
+
+;;; @ text property emulation
+;;;
 
 (setq tl:available-face-attribute-alist
       '(
