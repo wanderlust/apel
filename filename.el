@@ -71,7 +71,7 @@ Example:
 Moreover, if you want to convert Japanese filename to roman string by kakasi,
 
 \(if \(exec-installed-p \"kakasi\"\)
-    \(setq file-name-filters
+    \(setq filename-filters
 	  \(append '\(filename-japanese-to-roman-string\) filename-filters\)\)\)")
 
 ;;; @ filters
