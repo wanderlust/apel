@@ -5,7 +5,7 @@
 ;;; Code:
 
 (defun config-apel ()
-  (let (prefix lisp-dir version-specific-lisp-dir)
+  (let (prefix lisp-dir)
     (and (setq prefix (car command-line-args-left))
 	 (or (string-equal "NONE" prefix)
 	     (defvar PREFIX prefix)
@@ -14,14 +14,6 @@
     (and (setq lisp-dir (car command-line-args-left))
 	 (or (string-equal "NONE" lisp-dir)
 	     (defvar LISPDIR lisp-dir)
-	     ))
-    (setq command-line-args-left (cdr command-line-args-left))
-    (and (setq version-specific-lisp-dir (car command-line-args-left))
-	 (or (string-equal "NONE" version-specific-lisp-dir)
-	     (progn
-	       (defvar VERSION_SPECIFIC_LISPDIR version-specific-lisp-dir)
-	       (princ (format "VERSION_SPECIFIC_LISPDIR=%s\n"
-			      VERSION_SPECIFIC_LISPDIR)))
 	     ))
     (setq command-line-args-left (cdr command-line-args-left))
     (load-file "APEL-CFG")
@@ -81,22 +73,5 @@
     (byte-compile-file (expand-file-name "auto-autoloads.el" dir))
     (byte-compile-file (expand-file-name "custom-load.el" dir))
     ))
-
-(defun what-where-apel ()
-  (config-apel)
-  (load "EMU-ELS")
-  (princ (format "
-The files that belong to the EMU modules:
-  %s
-  -> %s
-
-The files that belong to the APEL modules:
-  %s
-  -> %s
-"
-		 (mapconcat 'symbol-name emu-modules ", ")
-		 EMU_DIR
-		 (mapconcat 'symbol-name apel-modules ", ")
-		 APEL_DIR)))
 
 ;;; APEL-MK ends here
