@@ -77,27 +77,28 @@
 (require 'poem)
 (require 'mcharset)
 
-(cond (running-xemacs
-       (if (featurep 'mule)
-	   ;; for XEmacs with MULE
-	   (require 'emu-x20)
-	 ;; for XEmacs without MULE
-	 (require 'emu-latin1)
-	 ))
-      (running-mule-merged-emacs
-       ;; for Emacs 20.1 and 20.2
-       (require 'emu-e20)
-       )
-      ((boundp 'MULE)
-       ;; for MULE 1.* and 2.*
-       (require 'emu-mule)
+(cond ((featurep 'mule)
+       (cond ((featurep 'xemacs)
+	      ;; for XEmacs with MULE
+	      (require 'emu-x20)
+	      )
+	     ((>= emacs-major-version 20)
+	      ;; for Emacs 20
+	      (require 'emu-e20)
+	      (defalias 'insert-binary-file-contents-literally
+		'insert-file-contents-literally)
+	      )
+	     (t
+	      ;; for MULE 1.* and 2.*
+	      (require 'emu-mule)
+	      ))
        )
       ((boundp 'NEMACS)
        ;; for NEmacs and NEpoch
        (require 'emu-nemacs)
        )
       (t
-       ;; for Emacs 19
+       ;; for Emacs 19 and XEmacs without MULE
        (require 'emu-latin1)
        ))
 
@@ -131,36 +132,6 @@ find-file-hooks, etc.
   (as-binary-input-file
    ;; Returns list absolute file name and length of data inserted.
    (insert-file-contents-literally filename visit beg end replace)))
-
-
-;;; @ Emacs 20.3 emulation
-;;;
-
-(defmacro-maybe string-as-unibyte (string)
-  "Return a unibyte string with the same individual bytes as STRING.
-If STRING is unibyte, the result is STRING itself.
-\[Emacs 20.3 emulating macro]"
-  string)
-
-(defmacro-maybe string-as-multibyte (string)
-  "Return a multibyte string with the same individual bytes as STRING.
-If STRING is multibyte, the result is STRING itself.
-\[Emacs 20.3 emulating macro]"
-  string)
-
-
-;;; @ for XEmacs 20
-;;;
-
-(or (fboundp 'char-int)
-    (fset 'char-int (symbol-function 'identity))
-    )
-(or (fboundp 'int-char)
-    (fset 'int-char (symbol-function 'identity))
-    )
-(or (fboundp 'char-or-char-int-p)
-    (fset 'char-or-char-int-p (symbol-function 'integerp))
-    )
 
 
 ;;; @ for text/richtext and text/enriched
