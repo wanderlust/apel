@@ -3,6 +3,7 @@
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;;         Katsumi Yamaoka  <yamaoka@jpl.org>
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
