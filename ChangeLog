@@ -1,5 +1,12 @@
 1998-06-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* emu-latin1.el (insert-file-contents-as-raw-text): New alias.
+
+	* emu-e20.el, emu-x20.el (insert-file-contents-as-raw-text): New
+	function.
+
+1998-06-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu-x20.el: Move `split-char' check and repair code from
 	mule-caesar.el.
 
