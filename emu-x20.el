@@ -77,12 +77,76 @@ find-file-hooks, etc.
 	(encode-coding-region start end cs)
       )))
 
-(defun decode-mime-charset-region (start end charset)
-  "Decode the text between START and END as MIME CHARSET."
+(defcustom mime-charset-decoder-alist
+  '((iso-2022-jp . decode-mime-charset-region-with-iso646-unification)
+    (iso-2022-jp-2 . decode-mime-charset-region-with-iso646-unification)
+    (x-ctext . decode-mime-charset-region-with-iso646-unification)
+    (hz-gb-2312 . decode-mime-charset-region-for-hz)
+    (t . decode-mime-charset-region-default))
+  "Alist MIME-charset vs. decoder function."
+  :group 'i18n
+  :type '(repeat (cons mime-charset function)))
+
+(defsubst decode-mime-charset-region-default (start end charset)
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(decode-coding-region start end cs)
       )))
+
+(defcustom mime-iso646-character-unification-alist
+  `,(let (dest
+	  (i 33))
+      (while (< i 92)
+	(setq dest
+	      (cons (cons (char-to-string (make-char 'latin-jisx0201 i))
+			  (format "%c" i))
+		    dest))
+	(setq i (1+ i)))
+      (setq i 93)
+      (while (< i 126)
+	(setq dest
+	      (cons (cons (char-to-string (make-char 'latin-jisx0201 i))
+			  (format "%c" i))
+		    dest))
+	(setq i (1+ i)))
+      (nreverse dest))
+  "Alist unified string vs. canonical string."
+  :group 'i18n
+  :type '(repeat (cons string string)))
+
+(defcustom mime-unified-character-face nil
+  "*Face of unified character."
+  :group 'i18n
+  :type 'face)
+
+(defun decode-mime-charset-region-with-iso646-unification (start end charset)
+  (decode-mime-charset-region-default start end charset)
+  (save-excursion
+    (let ((rest mime-iso646-character-unification-alist))
+      (while rest
+	(let ((pair (car rest)))
+	  (goto-char (point-min))
+	  (while (search-forward (car pair) nil t)
+	    (let ((str (cdr pair)))
+	      (put-text-property 0 (length str)
+				 'face mime-unified-character-face str)
+	      (replace-match str 'fixed-case 'literal)
+	      )
+	    ))
+	(setq rest (cdr rest))))))
+
+(defun decode-mime-charset-region-for-hz (start end charset)
+  (decode-hz-region start end))
+
+(defun decode-mime-charset-region (start end charset)
+  "Decode the text between START and END as MIME CHARSET."
+  (if (stringp charset)
+      (setq charset (intern (downcase charset)))
+    )
+  (let ((func (cdr (or (assq charset mime-charset-decoder-alist)
+		       (assq t mime-charset-decoder-alist)))))
+    (funcall func start end charset)
+    ))
 
 (defsubst encode-mime-charset-string (string charset)
   "Encode the STRING as MIME CHARSET."
@@ -91,12 +155,19 @@ find-file-hooks, etc.
 	(encode-coding-string string cs)
       string)))
 
-(defsubst decode-mime-charset-string (string charset)
+;; (defsubst decode-mime-charset-string (string charset)
+;;   "Decode the STRING as MIME CHARSET."
+;;   (let ((cs (mime-charset-to-coding-system charset)))
+;;     (if cs
+;;         (decode-coding-string string cs)
+;;       string)))
+(defun decode-mime-charset-string (string charset)
   "Decode the STRING as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(decode-coding-string string cs)
-      string)))
+  (with-temp-buffer
+    (insert string)
+    (decode-mime-charset-region (point-min)(point-max) charset)
+    (buffer-string)
+    ))
 
 
 (defvar charsets-mime-charset-alist
