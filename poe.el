@@ -849,11 +849,6 @@ This variable is meaningful on MS-DOG and Windows NT.
 On those systems, it is automatically local in every buffer.
 On other systems, this variable is normally always nil.")
 
-;; Emacs 20.3 or later.
-(defvar-maybe minor-mode-overriding-map-alist nil
-  "Alist of keymaps to use for minor modes, in current major mode.
-poe.el provides this as dummy for a compatibility.")
-
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (save-current-buffer &rest BODY)
 ;;
 ;; v20 defines `save-current-buffer' as a C primitive (in src/editfns.c)

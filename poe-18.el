@@ -450,6 +450,8 @@ resolution finer than a second."
 ;;; @@ Floating point numbers.
 ;;;
 
+(defalias-maybe 'numberp 'integerp)
+
 (defun abs (arg)
   "Return the absolute value of ARG."
   (if (< arg 0) (- arg) arg))
@@ -462,6 +464,8 @@ With optional DIVISOR, return the largest integer no greater than ARG/DIVISOR."
   (if (< arg 0)
       (- (/ (- divisor 1 arg) divisor))
     (/ arg divisor)))
+
+(defalias-maybe 'mod '%)
 
 ;;; @ Basic lisp subroutines.
 ;;;
@@ -529,6 +533,12 @@ poe-18.el provides this as dummy for a compatibility.")
 
 (defvar-maybe minor-mode-map-alist nil
   "Alist of keymaps to use for minor modes.
+poe-18.el provides this as dummy for a compatibility.")
+(defvar-maybe minor-mode-alist nil
+  "Alist saying how to show minor modes in the mode line.
+poe-18.el provides this as dummy for a compatibility.")
+(defvar-maybe minor-mode-overriding-map-alist nil
+  "Alist of keymaps to use for minor modes, in current major mode.
 poe-18.el provides this as dummy for a compatibility.")
 
 (defalias 'insert-and-inherit 'insert)
