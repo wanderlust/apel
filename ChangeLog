@@ -1,3 +1,8 @@
+1998-08-29  Tanaka Akira  <akr@jaist.ac.jp>
+
+        * Makefile (elc): Remove emu*.elc to use newest emu by
+        intall.el.
+
 1998-08-29  Shuhei KOBAYASHI  <shuhei-k@jaist.ac.jp>
 
 	* emu-e20.el (ccl-execute-on-string): Too few args.

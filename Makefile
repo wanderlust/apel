@@ -16,7 +16,7 @@ LISPDIR = NONE
 
 
 elc:
-	$(EMACS) $(FLAGS) -f compile-apel
+	rm emu*.elc; $(EMACS) $(FLAGS) -f compile-apel
 
 install:
 	$(EMACS) $(FLAGS) -f install-apel $(PREFIX) $(LISPDIR)
