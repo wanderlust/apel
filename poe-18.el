@@ -74,7 +74,7 @@ Associates the function with the current load file, if any."
 ;; (symbol-plist 'cyclic-function-indirection)
 (put 'cyclic-function-indirection
      'error-conditions
-     '(cyclic-function-indirection error)
+     '(cyclic-function-indirection error))
 (put 'cyclic-function-indirection
      'error-message
      "Symbol's chain of function indirections contains a loop")

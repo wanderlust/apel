@@ -1,5 +1,7 @@
 1999-12-13  Katsumi Yamaoka   <yamaoka@jpl.org>
 
+	* poe-18.el: Fix open parenthesis.
+
 	* README.ja: Sync up with README.en.
 
 	* README.en: Fix what versions of Emacsen can use
