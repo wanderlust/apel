@@ -3,7 +3,6 @@
 ;; Copyright (C) 1994,1995,1996,1997,1998 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: emulation, compatibility, Mule, XEmacs
 
 ;; This file is part of emu.

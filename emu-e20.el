@@ -3,7 +3,6 @@
 ;; Copyright (C) 1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of emu.
