@@ -25,8 +25,8 @@
 
 ;;; Commentary:
 
-;; Purpose of this program is emulating for who does not have
-;; `custom.el'.
+;; Purpose of this program is emulating for who does not have "custom".
+;; (custom.el bundled with v19 is old; does not have following macros.)
 ;;
 ;; DEFCUSTOM below has the same effect as the original DEFVAR has.
 ;; DEFFACE only makes a face.
@@ -42,7 +42,7 @@ SYMBOL does not need to be quoted.
 Third arg DOC is the group documentation.
 
 This is a nop defgroup only for emulating purpose."
-  nil )
+  nil)
     
 (defmacro-maybe defcustom (symbol value doc &rest args) 
   "Declare SYMBOL as a customizable variable that defaults to VALUE.
@@ -50,30 +50,26 @@ DOC is the variable documentation.
 
 This is a defcustom only for emulating purpose.
 Its effect is just as same as that of defvar."
-  (` (defvar (, symbol) (, value) (, doc))) )
+  (` (defvar (, symbol) (, value) (, doc))))
     
-(if (featurep 'faces)
-    (defmacro-maybe defface (face value doc &rest args) 
+(defmacro-maybe-cond defface (face value doc &rest args) 
       "Declare FACE as a customizable face that defaults to SPEC.
 FACE does not need to be quoted.
-
-This is a defface which only makes face FACE for emulating purpose."
-      (` (make-face (, face))) )
-  (defmacro-maybe defface (face value doc &rest args) 
-    "Declare FACE as a customizable face that defaults to SPEC.
-FACE does not need to be quoted.
-
-This is a nop defface only for emulating purpose."
-    nil ) )
+\[custom emulating macro]"
+      ((fboundp 'make-face)
+       (` (make-face (, face))))
+      (t
+       ;; do nothing.
+       ))
 
 (defmacro-maybe define-widget (name class doc &rest args)
   "Define a new widget type named NAME from CLASS.
 The third argument DOC is a documentation string for the widget.
 
 This is a nop define-widget only for emulating purpose."
-  nil )
+  nil)
 
 (provide 'tinycustom)
 (provide 'custom)
 
-;; end of tinycustom.el
+;;; tinycustom.el ends here.
