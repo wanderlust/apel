@@ -58,6 +58,42 @@
   (point)
   )
 
+(defun std11-field-names (&optional boundary)
+  (save-excursion
+    (save-restriction
+      (std11-narrow-to-header boundary)
+      (goto-char (point-min))
+      (let (dest name)
+	(while (re-search-forward std11-field-head-regexp nil t)
+	  (setq name (buffer-substring-no-properties
+		      (match-beginning 0)(1- (match-end 0))))
+	  (or (member name dest)
+	      (setq dest (cons name dest))
+	      )
+	  )
+	dest))))
+
+(defun std11-field-bodies (field-names &optional default-value boundary)
+  (save-excursion
+    (save-restriction
+      (std11-narrow-to-header boundary)
+      (let* ((case-fold-search t)
+	     (dest (make-list (length field-names) default-value))
+	     (s-rest field-names)
+	     (d-rest dest)
+	     field-name)
+	(while (setq field-name (car s-rest))
+	  (goto-char (point-min))
+	  (if (re-search-forward (concat "^" field-name ":[ \t]*") nil t)
+	      (setcar d-rest
+		      (buffer-substring-no-properties
+		       (match-end 0) (std11-field-end)))
+	    )
+	  (setq s-rest (cdr s-rest)
+		d-rest (cdr d-rest))
+	  )
+	dest))))
+
 
 ;;; @ header
 ;;;
@@ -103,21 +139,6 @@
 	      ))
 	  header)
 	))))
-
-(defun std11-field-names (&optional boundary)
-  (save-excursion
-    (save-restriction
-      (std11-narrow-to-header boundary)
-      (goto-char (point-min))
-      (let (dest name)
-	(while (re-search-forward std11-field-head-regexp nil t)
-	  (setq name (buffer-substring-no-properties
-		      (match-beginning 0)(1- (match-end 0))))
-	  (or (member name dest)
-	      (setq dest (cons name dest))
-	      )
-	  )
-	dest))))
 
 
 ;;; @ end
