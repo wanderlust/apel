@@ -272,21 +272,6 @@ If POS is out of range, the value is nil."
 	   (si:char-before (or pos (point)))
 	   )))))
 
-(if (subr-fboundp 'char-after)
-    (condition-case err
-	(char-after)
-      (error
-       (when (and (eq (car (get (car err) 'error-conditions))
-		      'wrong-number-of-arguments)
-		  (not (boundp 'si:char-after)))
-	 (fset 'si:char-after (symbol-function 'char-after))
-	 (defun char-after (&optional pos)
-	   "Return character in current buffer at position POS.
-POS is an integer or a buffer pointer.
-If POS is out of range, the value is nil."
-	   (si:char-after (or pos (point)))
-	   )))))
-
 ;;; @@ obsoleted aliases
 ;;;
 ;;; You should not use them.
