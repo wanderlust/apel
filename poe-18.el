@@ -583,6 +583,42 @@ Fifth arg HIST is ignored in this implementatin."
 Optional argunemt FRAME is ignored in this implementation."
 	(si:get-buffer-window buffer))))
 
+;; Add optional argument `all-frames'.
+(or (fboundp 'si:next-window)
+    (progn
+      (fset 'si:next-window (symbol-function 'next-window))
+      (defun next-window (&optional window minibuf all-frames)
+	"Return next window after WINDOW in canonical ordering of windows.
+If omitted, WINDOW defaults to the selected window.
+
+Optional second arg MINIBUF t means count the minibuffer window even
+if not active.  MINIBUF nil or omitted means count the minibuffer iff
+it is active.  MINIBUF neither t nor nil means not to count the
+minibuffer even if it is active.
+Optional third argunemt ALL-FRAMES is ignored in this implementation."
+	(si:next-window window minibuf))))
+
+(defun-maybe walk-windows (proc &optional minibuf all-frames)
+  "Cycle through all visible windows, calling PROC for each one.
+PROC is called with a window as argument.
+
+Optional second arg MINIBUF t means count the minibuffer window even
+if not active.  MINIBUF nil or omitted means count the minibuffer iff
+it is active.  MINIBUF neither t nor nil means not to count the
+minibuffer even if it is active.
+Optional third argunemt ALL-FRAMES is ignored in this implementation."
+  (if (window-minibuffer-p (selected-window))
+      (setq minibuf t))
+  (let* ((walk-windows-start (selected-window))
+	 (walk-windows-current walk-windows-start))
+    (unwind-protect
+	(while (progn
+		 (setq walk-windows-current
+		       (next-window walk-windows-current minibuf))
+		 (funcall proc walk-windows-current)
+		 (not (eq walk-windows-current walk-windows-start))))
+      (select-window walk-windows-start))))
+
 ;;; @@ Environment variables.
 ;;;
 
