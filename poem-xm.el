@@ -1,4 +1,4 @@
-;;; poem-xm.el --- poem module for XEmacs-mule; -*-byte-compile-dynamic: t;-*-
+;;; poem-xm.el --- poem implementation for XEmacs-mule
 
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 
@@ -163,7 +163,7 @@ but the contents viewed as characters do change.
 ;;; @ string
 ;;;
 
-(defun-maybe string-to-int-list (str)
+(defun string-to-int-list (str)
   (mapcar #'char-int str))
 
 (defalias 'looking-at-as-unibyte 'looking-at)

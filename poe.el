@@ -1,4 +1,4 @@
-;;; poe.el --- Portable Outfit for Emacsen; -*-byte-compile-dynamic: t;-*-
+;;; poe.el --- Emulate latest non-mule features; -*-byte-compile-dynamic: t;-*-
 
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
@@ -21,11 +21,6 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
-
-;;; Commentary:
-
-;; This modules does not includes MULE related features.  MULE related
-;; features are supported by `poem'.
 
 ;;; Code:
 
@@ -177,26 +172,10 @@ STRING should be given if the last search was by `string-match' on STRING.
       (defun read-string (prompt &optional initial-input history)
 	"Read a string from the minibuffer, prompting with string PROMPT.
 If non-nil, second arg INITIAL-INPUT is a string to insert before reading.
-The third arg HISTORY, is dummy for compatibility.
+The third arg HISTORY, is dummy for compatibility. [emu.el]
 See `read-from-minibuffer' for details of HISTORY argument."
 	(si:read-string prompt initial-input))
       ))
-
-(defmacro-maybe make-local-hook (hook))
-
-;; They are not Emacs features
-
-(defmacro-maybe add-local-hook (hook function &optional append)
-  (if (fboundp 'make-local-hook)
-      (list 'add-hook hook function append 'local)
-    (list 'add-hook hook function append)
-    ))
-
-(defmacro remove-local-hook (hook function)
-  (if (fboundp 'make-local-hook)
-      (list 'remove-hook hook function 'local)
-    (list 'remove-hook hook function)
-    ))
 
 
 ;;; @ Emacs 19.30 emulation
