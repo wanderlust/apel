@@ -2,8 +2,8 @@
 by MORIOKA Tomohiko <morioka@jaist.ac.jp>
 $Id$
 
-What's APEL
-===========
+What's APEL?
+============
 
   APEL stands for "A Portable Emacs Library".  It consists of
   following modules:
@@ -35,6 +35,12 @@ What's APEL
 	filename.el: utility to make file-name
 
 	install.el: utility to install emacs-lisp package
+
+	mule-caesar.el: ROT 13-47-48 Caesar rotation utility
+
+	std11: RFC 822/STD 11 parser and utility
+	    std11.el       --- main module
+	    std11-parse.el --- parser
 
 
 Installation
