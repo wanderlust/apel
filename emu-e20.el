@@ -1,9 +1,8 @@
-;;; emu-e20.el --- emu API implementation for Emacs 20
+;;; emu-e20.el --- emu API implementation for Emacs 20.1 and 20.2
 
-;; Copyright (C) 1996,1997 Free Software Foundation, Inc.
+;; Copyright (C) 1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of emu.
@@ -25,7 +24,7 @@
 
 ;;; Commentary:
 
-;;    This module requires Emacs 20.1 or later.
+;;    This module requires Emacs 20.1 and 20.2.
 
 ;;; Code:
 
@@ -71,6 +70,31 @@ in the region between START and END."
       obj))
 
 (defalias 'set-process-input-coding-system 'set-process-coding-system)
+
+
+;;; @ binary access
+;;;
+
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+
+Namely this function ensures that only format decoding and character
+code conversion will not take place."
+  (let ((flag enable-multibyte-characters)
+	(coding-system-for-read 'binary)
+	format-alist)
+    (insert-file-contents filename visit beg end replace)
+    (setq enable-multibyte-characters flag)
+    ))
+
+(defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
+(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
+
+(defalias 'insert-binary-file-contents-literally
+  'insert-file-contents-literally)
 
 
 ;;; @ MIME charset
@@ -150,10 +174,9 @@ in the region between START and END."
 ;;; @ character
 ;;;
 
-(defalias 'char-length 'char-bytes)
-
-(defalias 'char-columns 'char-width)
-
+(defmacro char-next-index (char index)
+  "Return index of character succeeding CHAR whose index is INDEX."
+  `(+ index (char-bytes char)))
 
 ;;; @@ Mule emulating aliases
 ;;;
@@ -165,6 +188,13 @@ CHAR can be any multilingual character
 TABLE defaults to the current buffer's category table."
   (category-set-mnemonics (char-category-set character))
   )
+
+;;; @@ obsoleted aliases
+;;;
+;;; You should not use them.
+
+(defalias 'char-length 'char-bytes)
+(defalias 'char-columns 'char-width)
 
 
 ;;; @ string

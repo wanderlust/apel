@@ -1,9 +1,8 @@
 ;;; emu-nemacs.el --- emu API implementation for NEmacs
 
-;; Copyright (C) 1995,1996,1997 MORIOKA Tomohiko
+;; Copyright (C) 1995,1996,1997,1998 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: emulation, compatibility, NEmacs, mule
 
 ;; This file is part of emu.
@@ -207,16 +206,33 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
 ;;; @ binary access
 ;;;
 
-(defun insert-binary-file-contents-literally
-  (filename &optional visit beg end replace)
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't character code conversion.
+\[emu-nemacs.el]"
+  (let (kanji-flag)
+    (insert-file-contents filename visit beg end replace)
+    ))
+
+(fset 'insert-binary-file-contents 'insert-file-contents-as-binary)
+
+(defun insert-binary-file-contents-literally (filename
+					      &optional visit beg end replace)
   "Like `insert-file-contents-literally', q.v., but don't code conversion.
 A buffer may be modified in several ways after reading into the buffer due
 to advanced Emacs features, such as file-name-handlers, format decoding,
 find-file-hooks, etc.
   This function ensures that none of these modifications will take place.
-\[emu.el]"
+\[emu-nemacs.el]"
   (let (kanji-flag)
     (insert-file-contents-literally filename visit beg end replace)
+    ))
+
+(defun write-region-as-binary (start end filename
+				     &optional append visit lockname)
+  "Like `write-region', q.v., but don't code conversion. [emu-nemacs.el]"
+  (let (kanji-flag)
+    (write-region start end filename append visit)
     ))
 
 
@@ -298,7 +314,7 @@ find-file-hooks, etc.
 
 (defun char-charset (chr)
   "Return the character set of char CHR.
-\[emu-nemacs.el; XEmacs 20 emulating function]"
+\[emu-nemacs.el; MULE emulating function]"
   (if (< chr 128)
       charset-ascii
     charset-jisx0208))
@@ -308,21 +324,29 @@ find-file-hooks, etc.
 \[emu-nemacs.el; Mule emulating function]"
   (if (< chr 128) 1 2))
 
-(defalias 'char-length 'char-bytes)
-
-(defun char-columns (character)
-  "Return number of columns a CHARACTER occupies when displayed.
+(defun char-width (char)
+  "Return number of columns a CHAR occupies when displayed.
 \[emu-nemacs.el]"
-  (if (< character 128)
+  (if (< char 128)
       1
     2))
 
-;;; @@ for Mule emulation
+(defmacro char-next-index (char index)
+  "Return index of character succeeding CHAR whose index is INDEX."
+  (` (1+ index)))
+
+;;; @@ Old Mule emulating aliases
 ;;;
+;;; You should not use them.
 
 (defalias 'char-leading-char 'char-charset)
 
-(defalias 'char-width 'char-columns)
+;;; @@ obsoleted aliases
+;;;
+;;; You should not use them.
+
+(defalias 'char-length 'char-bytes)
+(defalias 'char-columns 'char-width)
 
 
 ;;; @ string

@@ -1,9 +1,8 @@
-;;; emu-e19.el --- emu module for Emacs 19 and XEmacs 19
+;;; emu-e19.el --- emu module for Emacs 19 and XEmacs without MULE
 
-;; Copyright (C) 1995,1996,1997 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: emulation, compatibility, mule, Latin-1
 
 ;; This file is part of emu.
@@ -160,8 +159,23 @@ else returns nil. [emu-e19.el; old MULE emulating function]"
 ;;; @ binary access
 ;;;
 
-(defun insert-binary-file-contents-literally
-  (filename &optional visit beg end replace)
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+
+Namely this function ensures that only format decoding and character
+code conversion will not take place."
+  (let ((emx-binary-mode t))
+    (insert-file-contents filename visit beg end replace)
+    ))
+
+(defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
+(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
+
+(defun insert-binary-file-contents-literally (filename
+					      &optional visit beg end replace)
   "Like `insert-file-contents-literally', q.v., but don't code conversion.
 A buffer may be modified in several ways after reading into the buffer due
 to advanced Emacs features, such as file-name-handlers, format decoding,
@@ -169,6 +183,13 @@ find-file-hooks, etc.
   This function ensures that none of these modifications will take place."
   (let ((emx-binary-mode t))
     (insert-file-contents-literally filename visit beg end replace)
+    ))
+
+(defun write-region-as-binary (start end filename
+				     &optional append visit lockname)
+  "Like `write-region', q.v., but don't code conversion."
+  (let ((emx-binary-mode t))
+    (write-region start end filename append visit lockname)
     ))
 
 
@@ -222,31 +243,36 @@ find-file-hooks, etc.
 ;;; @ character
 ;;;
 
-(defun char-charset (chr)
-  "Return the character set of char CHR.
-\[emu-e19.el; XEmacs 20 emulating function]"
+(defun char-charset (char)
+  "Return the character set of char CHAR."
   (if (< chr 128)
       charset-ascii
     charset-latin-iso8859-1))
 
 (defun char-bytes (char)
-  "Return number of bytes a character in CHAR occupies in a buffer.
-\[emu-e19.el; MULE emulating function]"
+  "Return number of bytes a character in CHAR occupies in a buffer."
   1)
 
-(defalias 'char-length 'char-bytes)
-
-(defun char-columns (character)
-  "Return number of columns a CHARACTER occupies when displayed.
-\[emu-e19.el]"
+(defun char-width (char)
+  "Return number of columns a CHAR occupies when displayed."
   1)
 
-;;; @@ for old MULE emulation
+(defmacro char-next-index (char index)
+  "Return index of character succeeding CHAR whose index is INDEX."
+  (` (1+ index)))
+
+;;; @@ Mule emulating aliases
 ;;;
-
-(defalias 'char-width 'char-columns)
+;;; You should not use them.
 
 (defalias 'char-leading-char 'char-charset)
+
+;;; @@ obsoleted aliases
+;;;
+;;; You should not use them.
+
+(defalias 'char-length 'char-bytes)
+(defalias 'char-columns 'char-width)
 
 
 ;;; @ string

@@ -1,9 +1,9 @@
 ;;; emu-mule.el --- emu module for Mule 1.* and Mule 2.*
 
-;; Copyright (C) 1995,1996,1997 MORIOKA Tomohiko
+;; Copyright (C) 1995,1996,1997,1998 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
+;;         Katsumi Yamaoka <yamaoka@jpl.org>
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of emu.
@@ -141,18 +141,52 @@
 ;;; @ binary access
 ;;;
 
-(defun insert-binary-file-contents-literally
-  (filename &optional visit beg end replace)
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+
+Namely this function ensures that only format decoding and character
+code conversion will not take place."
+  (let (mc-flag
+	(file-coding-system *noconv*))
+    (insert-file-contents filename visit beg end replace)
+    ))
+
+(defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
+(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
+
+(defun insert-binary-file-contents-literally (filename
+					      &optional visit beg end replace)
   "Like `insert-file-contents-literally', q.v., but don't code conversion.
 A buffer may be modified in several ways after reading into the buffer due
 to advanced Emacs features, such as file-name-handlers, format decoding,
 find-file-hooks, etc.
   This function ensures that none of these modifications will take place."
   (let (mc-flag
-	(file-coding-system *noconv*)
-	)
+	(file-coding-system *noconv*))
     (insert-file-contents-literally filename visit beg end replace)
     ))
+
+(if running-emacs-19_29-or-later
+    ;; for MULE 2.3 based on Emacs 19.34.
+    (defun write-region-as-binary (start end filename
+					 &optional append visit lockname)
+      "Like `write-region', q.v., but don't code conversion."
+      (let (mc-flag
+	    (file-coding-system *noconv*))
+	(write-region start end filename append visit lockname)
+	))
+  ;; for MULE 2.3 based on Emacs 19.28.
+  (defun write-region-as-binary (start end filename
+				       &optional append visit lockname)
+    "Like `write-region', q.v., but don't code conversion."
+    (let (mc-flag
+	  (file-coding-system *noconv*))
+      (write-region start end filename append visit)
+      ))
+  )
 
 
 ;;; @ MIME charset
@@ -222,48 +256,50 @@ find-file-hooks, etc.
 
 (defvar charsets-mime-charset-alist
   (let ((alist
-	 '(((lc-ascii)					. 'us-ascii)
-	   ((lc-ascii lc-ltn1)				. 'iso-8859-1)
-	   ((lc-ascii lc-ltn2)				. 'iso-8859-2)
-	   ((lc-ascii lc-ltn3)				. 'iso-8859-3)
-	   ((lc-ascii lc-ltn4)				. 'iso-8859-4)
-;;;	   ((lc-ascii lc-crl)				. 'iso-8859-5)
-	   ((lc-ascii lc-crl)				. 'koi8-r)
-	   ((lc-ascii lc-arb)				. 'iso-8859-6)
-	   ((lc-ascii lc-grk)				. 'iso-8859-7)
-	   ((lc-ascii lc-hbw)				. 'iso-8859-8)
-	   ((lc-ascii lc-ltn5)				. 'iso-8859-9)
-	   ((lc-ascii lc-roman lc-jpold lc-jp)		. 'iso-2022-jp)
-	   ((lc-ascii lc-kr)				. 'euc-kr)
-	   ((lc-ascii lc-cn)				. 'gb2312)
-	   ((lc-ascii lc-big5-1 lc-big5-2)		. 'big5)
+	 '(((lc-ascii)					. us-ascii)
+	   ((lc-ascii lc-ltn1)				. iso-8859-1)
+	   ((lc-ascii lc-ltn2)				. iso-8859-2)
+	   ((lc-ascii lc-ltn3)				. iso-8859-3)
+	   ((lc-ascii lc-ltn4)				. iso-8859-4)
+;;;	   ((lc-ascii lc-crl)				. iso-8859-5)
+	   ((lc-ascii lc-crl)				. koi8-r)
+	   ((lc-ascii lc-arb)				. iso-8859-6)
+	   ((lc-ascii lc-grk)				. iso-8859-7)
+	   ((lc-ascii lc-hbw)				. iso-8859-8)
+	   ((lc-ascii lc-ltn5)				. iso-8859-9)
+	   ((lc-ascii lc-roman lc-jpold lc-jp)		. iso-2022-jp)
+	   ((lc-ascii lc-kr)				. euc-kr)
+	   ((lc-ascii lc-cn)				. gb2312)
+	   ((lc-ascii lc-big5-1 lc-big5-2)		. big5)
 	   ((lc-ascii lc-roman lc-ltn1 lc-grk
 		      lc-jpold lc-cn lc-jp lc-kr
-		      lc-jp2)				. 'iso-2022-jp-2)
+		      lc-jp2)				. iso-2022-jp-2)
 	   ((lc-ascii lc-roman lc-ltn1 lc-grk
 		      lc-jpold lc-cn lc-jp lc-kr lc-jp2
-		      lc-cns1 lc-cns2)			. 'iso-2022-int-1)
+		      lc-cns1 lc-cns2)			. iso-2022-int-1)
 	   ((lc-ascii lc-roman
 		      lc-ltn1 lc-ltn2 lc-crl lc-grk
 		      lc-jpold lc-cn lc-jp lc-kr lc-jp2
 		      lc-cns1 lc-cns2 lc-cns3 lc-cns4
-		      lc-cns5 lc-cns6 lc-cns7)		. 'iso-2022-int-1)
+		      lc-cns5 lc-cns6 lc-cns7)		. iso-2022-int-1)
 	   ))
 	dest)
     (while alist
       (catch 'not-found
 	(let ((pair (car alist)))
 	  (setq dest
-		(cons (mapcar (function
-			       (lambda (cs)
-				 (if (boundp cs)
-				     (symbol-value cs)
-				   (throw 'not-found nil)
-				   )))
-			      (car pair))
-		      (cdr pair)))))
-      (setq alist (cdr alist))))
-  )
+		(append dest
+			(list
+			 (cons (mapcar (function
+					(lambda (cs)
+					  (if (boundp cs)
+					      (symbol-value cs)
+					    (throw 'not-found nil)
+					    )))
+				       (car pair))
+			       (cdr pair)))))))
+      (setq alist (cdr alist)))
+    dest))
 
 (defvar default-mime-charset 'x-ctext
   "Default value of MIME-charset.
@@ -281,8 +317,15 @@ It must be symbol.")
 
 (defalias 'char-charset 'char-leading-char)
 
-(defalias 'char-length 'char-bytes)
+(defmacro char-next-index (char index)
+  "Return index of character succeeding CHAR whose index is INDEX."
+  (` (+ index (char-bytes char))))
 
+;;; @@ obsoleted aliases
+;;;
+;;; You should not use them.
+
+(defalias 'char-length 'char-bytes)
 (defalias 'char-columns 'char-width)
 
 
