@@ -88,7 +88,7 @@ code conversion will not take place."
 	(coding-system-for-read 'binary)
 	format-alist)
     (insert-file-contents filename visit beg end replace)
-    (setq enable-multibyte-characters flag)
+    (set-buffer-multibyte flag)
     ))
 
 (defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
