@@ -46,12 +46,12 @@
   ;; at compile-time.
   (or (condition-case nil
 	  ;; load-time check.
-	  ;; "new custom" requires widget library.
-	  (and (require 'widget)
-	       (require 'custom)
+	  ;; load "custom" if exists.
+	  (and (require 'custom)
 	       (fboundp 'custom-declare-variable))
 	(error nil))
-      ;; load emulation version.
+      ;; your custom is "old custom", or you don't have custom library.
+      ;; load emulation version of "new custom".
       (require 'tinycustom)))
 
 (provide 'pcustom)
