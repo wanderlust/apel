@@ -1,8 +1,8 @@
 ;;; poe.el --- Portable Outfit for Emacsen; -*-byte-compile-dynamic: t;-*-
 
-;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997,1998,1999 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: emulation, compatibility, NEmacs, MULE, Emacs/mule, XEmacs
 
 ;; This file is part of APEL (A Portable Emacs Library).
