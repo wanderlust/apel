@@ -32,7 +32,6 @@
 (provide 'poe)
 
 (put 'defun-maybe 'lisp-indent-function 'defun)
-(put 'defun-maybe 'edebug-form-spec 'defun)
 (defmacro defun-maybe (name &rest everything-else)
   "Define NAME as a function if NAME is not defined.
 See also the function `defun'."
@@ -44,7 +43,6 @@ See also the function `defun'."
 	       (put (quote (, name)) 'defun-maybe t))))))
 
 (put 'defmacro-maybe 'lisp-indent-function 'defun)
-(put 'defmacro-maybe 'edebug-form-spec '(&define name lambda-list def-body))
 (defmacro defmacro-maybe (name &rest everything-else)
   "Define NAME as a macro if NAME is not defined.
 See also the function `defmacro'."
@@ -56,7 +54,6 @@ See also the function `defmacro'."
 	       (put (quote (, name)) 'defmacro-maybe t))))))
 
 (put 'defsubst-maybe 'lisp-indent-function 'defun)
-(put 'defsubst-maybe 'edebug-form-spec 'defun)
 (defmacro defsubst-maybe (name &rest everything-else)
   "Define NAME as an inline function if NAME is not defined.
 See also the macro `defsubst'."
@@ -181,6 +178,21 @@ See also the function `defconst'."
        (require 'localhook)
        ))
 
+(eval-when-compile
+  (condition-case nil
+      (require 'edebug)
+    (error
+     (defmacro def-edebug-spec (symbol spec)
+       (` (put (quote (, symbol)) 'edebug-form-spec (quote (, spec)))))
+     ))
+  (require 'static)
+  )
+
+(def-edebug-spec defun-maybe defun)
+(def-edebug-spec defmacro-maybe defmacro)
+(def-edebug-spec defsubst-maybe defun)
+
+
 ;;; @ Emacs 19.23 emulation
 ;;;
 
@@ -218,21 +230,20 @@ STRING should be given if the last search was by `string-match' on STRING.
 	  (substring string (match-beginning num) (match-end num))
 	(buffer-substring (match-beginning num) (match-end num)))))
 
-(or (featurep 'xemacs)
-    (>= emacs-major-version 20)
-    (and (= emacs-major-version 19)
-	 (>= emacs-minor-version 29))
-    ;; for Emacs 19.28 or earlier
-    (fboundp 'si:read-string)
-    (progn
-      (fset 'si:read-string (symbol-function 'read-string))
-      (defun read-string (prompt &optional initial-input history)
-	"Read a string from the minibuffer, prompting with string PROMPT.
+(static-unless (or (featurep 'xemacs)
+		   (>= emacs-major-version 20)
+		   (and (= emacs-major-version 19)
+			(>= emacs-minor-version 29)))
+  ;; for Emacs 19.28 or earlier
+  (unless (fboundp 'si:read-string)
+    (fset 'si:read-string (symbol-function 'read-string))
+    (defun read-string (prompt &optional initial-input history)
+      "Read a string from the minibuffer, prompting with string PROMPT.
 If non-nil, second arg INITIAL-INPUT is a string to insert before reading.
 The third arg HISTORY, is dummy for compatibility.
 See `read-from-minibuffer' for details of HISTORY argument."
-	(si:read-string prompt initial-input))
-      ))
+      (si:read-string prompt initial-input))
+    ))
 
 (defun-maybe rassoc (key list)
   "Return non-nil if KEY is `equal' to the cdr of an element of LIST.
