@@ -31,7 +31,7 @@
 ;;; @ buffer representation
 ;;;
 
-(defsubst-maybe set-buffer-multibyte (flag)
+(defun-maybe set-buffer-multibyte (flag)
   "Set the multibyte flag of the current buffer to FLAG.
 If FLAG is t, this makes the buffer a multibyte buffer.
 If FLAG is nil, this makes the buffer a single-byte buffer.
