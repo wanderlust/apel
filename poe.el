@@ -1464,30 +1464,37 @@ Not fully compatible especially when invalid format is specified."
   (setq current-load-list (cons 'format-time-string current-load-list))
   (put 'format-time-string 'defun-maybe t))))
 
-;; Emacs 19.29-19.34/XEmacs: `format-time-string' neither supports "%z"
-;; in the format string nor the third argument `universal'.
-(when (or (not (string-match "\\`[\\-\\+][0-9]+\\'"
-			     (format-time-string "%z" (current-time))))
-	  (condition-case err
-	      (progn (format-time-string "" '(0 0) t) nil)
-	    (wrong-number-of-arguments t)))
+;; Emacs 19.29-19.34/XEmacs: `format-time-string' neither supports the
+;; format string "%z" nor the third argument `universal'.
+(unless (string-match "\\`[\\-\\+][0-9]+\\'"
+		      (format-time-string "%z" (current-time)))
   (defadvice format-time-string
     (before support-timezone-in-numeric-form-and-3rd-arg
 	    (format-string &optional time universal) activate compile)
     "Advice to support the construct `%z' and the third argument `universal'."
     (let ((tz (car (current-time-zone)))
 	  case-fold-search ms ls)
-      (if (string-match "\\(\\(\\`\\|[^%]\\)\\(%%\\)*\\)%z" format-string)
-	  (setq
-	   format-string
-	   (concat
-	    (substring format-string 0 (match-end 1))
-	    (if (< tz 0)
-		(format "-%02d%02d" (/ (- tz) 3600) (/ (% (- tz) 3600) 60))
-	      (format "+%02d%02d" (/ tz 3600) (/ (% tz 3600) 60)))
-	    (substring format-string (match-end 0)))))
-      (if (and (consp time) universal)
+      (while (string-match "\\(\\(\\`\\|[^%]\\)\\(%%\\)*\\)%z" format-string)
+	(setq format-string
+	      (concat (substring format-string 0 (match-end 1))
+		      (if universal
+			  "+0000"
+			(if (< tz 0)
+			    (format "-%02d%02d"
+				    (/ (- tz) 3600) (/ (% (- tz) 3600) 60))
+			  (format "+%02d%02d"
+				  (/ tz 3600) (/ (% tz 3600) 60))))
+		      (substring format-string (match-end 0)))))
+      (if universal
 	  (progn
+	    (while (string-match "\\(\\(\\`\\|[^%]\\)\\(%%\\)*\\)%Z"
+				 format-string)
+	      (setq format-string
+		    (concat (substring format-string 0 (match-end 1))
+			    "UTC"
+			    (substring format-string (match-end 0)))))
+	    (or time
+		(setq time (current-time)))
 	    (setq ms (car time)
 		  ls (- (nth 1 time) tz))
 	    (cond ((< ls 0)
