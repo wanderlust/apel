@@ -76,6 +76,7 @@ of this structure.")
 ;;; @ encoder
 ;;;
 
+;;;###autoload
 (defun richtext-encode (from to)
   (if enriched-verbose (message "Richtext: encoding document..."))
   (save-restriction
@@ -136,6 +137,7 @@ Return value is \(begin end name positive-p), or nil if none was found."
 	       ))
 	))))
 
+;;;###autoload
 (defun richtext-decode (from to)
   (if enriched-verbose (message "Richtext: decoding document..."))
   (save-excursion

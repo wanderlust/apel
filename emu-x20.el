@@ -8,28 +8,27 @@
 
 ;; This file is part of XEmacs.
 
-;; This program is free software; you can redistribute it and/or
-;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 2, or (at
-;; your option) any later version.
+;; XEmacs is free software; you can redistribute it and/or modify it
+;; under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
 
-;; This program is distributed in the hope that it will be useful, but
+;; XEmacs is distributed in the hope that it will be useful, but
 ;; WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU XEmacs; see the file COPYING.  If not, write to the
-;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-;; Boston, MA 02111-1307, USA.
+;; along with XEmacs; see the file COPYING.  If not, write to the Free
+;; Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+;; 02111-1307, USA.
 
 ;;; Commentary:
 
-;; This module requires XEmacs 20.1 b12 or later with mule.
+;; This module requires XEmacs 20.3-b5 or later with mule.
 
 ;;; Code:
 
-(require 'cyrillic)
 (require 'emu-xemacs)
 
 
@@ -111,13 +110,7 @@ find-file-hooks, etc.
 (defvar default-mime-charset 'x-ctext)
 
 (defvar mime-charset-coding-system-alist
-  '((iso-8859-1		. ctext)
-    (x-ctext		. ctext)
-    (hz-gb-2312		. hz)
-    (cn-gb-2312		. euc-china)
-    (gb2312		. euc-china)
-    (cn-big5		. big5)
-    (koi8-r		. koi8)
+  '((x-ctext		. ctext)
     (iso-2022-jp-2	. iso-2022-ss2-7)
     ))
 

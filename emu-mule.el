@@ -58,6 +58,8 @@
 ;;; @ character set
 ;;;
 
+(defalias 'make-char 'make-character)
+
 (defalias 'find-non-ascii-charset-string 'find-charset-string)
 (defalias 'find-non-ascii-charset-region 'find-charset-region)
 

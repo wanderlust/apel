@@ -23,6 +23,10 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;;    This module requires Emacs 20.0.90 or later.
+
 ;;; Code:
 
 ;;; @ version specific features
@@ -50,15 +54,13 @@
 ;; (defalias 'charset-columns 'charset-width)
 
 (defun find-non-ascii-charset-string (string)
-  "Return a list of charsets in the STRING except ascii.
-\[emu-e20.el; Mule emulating function]"
+  "Return a list of charsets in the STRING except ascii."
   (delq 'ascii (find-charset-string string))
   )
 
 (defun find-non-ascii-charset-region (start end)
   "Return a list of charsets except ascii
-in the region between START and END.
-\[emu-e20.el; Mule emulating function]"
+in the region between START and END."
   (delq 'ascii (find-charset-string (buffer-substring start end)))
   )
 
@@ -147,10 +149,13 @@ find-file-hooks, etc.
 (defvar mime-charset-coding-system-alist
   '((x-ctext		. ctext)
     (gb2312		. cn-gb-2312)
-    (iso-2022-jp-2	. iso-2022-ss2-7)
+    (iso-2022-jp-2	. iso-2022-7bit-ss2)
     ))
 
 (defun mime-charset-to-coding-system (charset &optional lbt)
+  "Return coding-system corresponding with charset.
+If optional argument LBT (`unix', `dos' or `mac') is specified, it is
+used as line break code type of coding-system."
   (if (stringp charset)
       (setq charset (intern (downcase charset)))
     )
@@ -163,34 +168,34 @@ find-file-hooks, etc.
       cs)))
 
 (defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END. [emu-e20.el]"
+  "Return MIME charset for region between START and END."
   (charsets-to-mime-charset
    (find-charset-string (buffer-substring start end))
    ))
 
 (defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET. [emu-e20.el]"
+  "Encode the text between START and END as MIME CHARSET."
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(encode-coding-region start end cs)
       )))
 
 (defun decode-mime-charset-region (start end charset)
-  "Decode the text between START and END as MIME CHARSET. [emu-e20.el]"
+  "Decode the text between START and END as MIME CHARSET."
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(decode-coding-region start end cs)
       )))
 
 (defun encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET. [emu-e20.el]"
+  "Encode the STRING as MIME CHARSET."
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(encode-coding-string string cs)
       string)))
 
 (defun decode-mime-charset-string (string charset)
-  "Decode the STRING as MIME CHARSET. [emu-e20.el]"
+  "Decode the STRING as MIME CHARSET."
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(decode-coding-string string cs)
@@ -209,13 +214,10 @@ find-file-hooks, etc.
 ;;;
 ;;; You should not use them.
 
-(defalias 'make-character 'make-char)
-
 (defun char-category (character)
   "Return string of category mnemonics for CHAR in TABLE.
 CHAR can be any multilingual character
-TABLE defaults to the current buffer's category table.
-\[emu-e20.el; Mule emulating function]"
+TABLE defaults to the current buffer's category table."
   (category-set-mnemonics (char-category-set character))
   )
 
@@ -228,8 +230,7 @@ TABLE defaults to the current buffer's category table.
 (defalias 'sset 'store-substring)
 
 (defun string-to-char-list (string)
-  "Return a list of which elements are characters in the STRING.
-\[emu-e20.el; Mule 2.3 emulating function]"
+  "Return a list of which elements are characters in the STRING."
   (let* ((len (length string))
 	 (i 0)
 	 l chr)

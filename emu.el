@@ -291,7 +291,10 @@ This function does not move point. [XEmacs emulating function]"
 ;;; @ for text/richtext and text/enriched
 ;;;
 
-(cond ((or running-emacs-19_29-or-later running-xemacs-19_14-or-later)
+(cond ((fboundp 'richtext-decode)
+       ;; have richtext.el
+       )
+      ((or running-emacs-19_29-or-later running-xemacs-19_14-or-later)
        ;; have enriched.el
        (autoload 'richtext-decode "richtext")
        (or (assq 'text/richtext format-alist)

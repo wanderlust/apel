@@ -1,3 +1,25 @@
+1997-07-14  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu: Version 7.44 was released.
+	* APEL: Version 3.4 was released.
+
+1997-07-13  MORIOKA Tomohiko  <morioka@mousai>
+
+	* std11-parse.el (std11-parse-ascii-token): Allow non-ASCII
+ 	characters in comments.
+
+1997-06-28  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* file-detect.el: Add autoload comments for function `add-path',
+	`add-latest-path', `get-latest-path', `file-installed-p',
+	`exec-installed-p', `module-installed-p' and variable
+	`exec-suffix-list'.
+
+Sat May 10 19:39:12 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* README.en (What's APEL?): Add std11 and mule-caesar.el.
+
+
 1997-05-09  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu: Version 7.43.1 was released.
@@ -31,6 +53,9 @@ Thu Apr  3 17:14:39 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 1997-03-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 3.3 was released.
+	
+	* APEL-CFG (EMU_PREFIX, EMU_DIR): New variables.
+	* APEL-MK: install emu.
 
 Thu Mar 20 06:09:03 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 

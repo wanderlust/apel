@@ -28,6 +28,7 @@
 
 (defvar default-load-path load-path)
 
+;;;###autoload
 (defun add-path (path &rest options)
   "Add PATH to `load-path' if it exists under `default-load-path'
 directories and it does not exist in `load-path'.
@@ -63,6 +64,7 @@ You can specify following OPTIONS:
 		))
       )))
 
+;;;###autoload
 (defun add-latest-path (pattern &optional all-paths)
   "Add latest path matched by PATTERN to `load-path'
 if it exists under `default-load-path' directories
@@ -75,6 +77,7 @@ of load-path instead of default-load-path. [file-detect.el]"
 	(add-to-list 'load-path path)
       )))
 
+;;;###autoload
 (defun get-latest-path (pattern &optional all-paths)
   "Return latest directory in default-load-path
 which is matched to regexp PATTERN.
@@ -101,6 +104,7 @@ it is searched from all of load-path instead of default-load-path."
 	(setq paths (cdr paths))
 	))))
 
+;;;###autoload
 (defun file-installed-p (file &optional paths)
   "Return absolute-path of FILE if FILE exists in PATHS.
 If PATHS is omitted, `load-path' is used."
@@ -117,9 +121,11 @@ If PATHS is omitted, `load-path' is used."
 	(setq paths (cdr paths))
 	))))
 
+;;;###autoload
 (defvar exec-suffix-list '("")
   "*List of suffixes for executable.")
 
+;;;###autoload
 (defun exec-installed-p (file &optional paths suffixes)
   "Return absolute-path of FILE if FILE exists in PATHS.
 If PATHS is omitted, `exec-path' is used.
@@ -145,6 +151,7 @@ If suffixes is omitted, `exec-suffix-list' is used."
       (setq paths (cdr paths))
       )))
 
+;;;###autoload
 (defun module-installed-p (module &optional paths)
   "Return t if module is provided or exists in PATHS.
 If PATHS is omitted, `load-path' is used."
