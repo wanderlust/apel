@@ -357,8 +357,6 @@ With optional non-nil ALL, force redisplay of all mode-lines.
 ;;; @ text property
 ;;;
 
-(defun set-text-properties (start end properties &optional object))
-
 (defun remove-text-properties (start end properties &optional object))
 
 
