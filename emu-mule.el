@@ -148,6 +148,81 @@ encoded in CODING-SYSTEM. [emu-mule.el]"
        )))
 
 
+;;; @ MIME charset
+;;;
+
+(defvar charsets-mime-charset-alist
+  (list
+   (cons (list lc-ascii)				'us-ascii)
+   (cons (list lc-ascii lc-ltn1)			'iso-8859-1)
+   (cons (list lc-ascii lc-ltn2)			'iso-8859-2)
+   (cons (list lc-ascii lc-ltn3)			'iso-8859-3)
+   (cons (list lc-ascii lc-ltn4)			'iso-8859-4)
+;;;(cons (list lc-ascii lc-crl)				'iso-8859-5)
+   (cons (list lc-ascii lc-crl)				'koi8-r)
+   (cons (list lc-ascii lc-arb)				'iso-8859-6)
+   (cons (list lc-ascii lc-grk)				'iso-8859-7)
+   (cons (list lc-ascii lc-hbw)				'iso-8859-8)
+   (cons (list lc-ascii lc-ltn5)			'iso-8859-9)
+   (cons (list lc-ascii lc-jp)				'iso-2022-jp)
+   (cons (list lc-ascii lc-kr)				'euc-kr)
+   (cons (list lc-ascii lc-big5-1 lc-big5-2)		'big5)
+   (cons (list lc-ascii lc-cn lc-jp lc-kr lc-jp2
+	       lc-ltn1 lc-grk)				'iso-2022-jp-2)
+   (cons (list lc-ascii lc-cn lc-jp lc-kr lc-jp2
+	       lc-cns1 lc-cns2 lc-ltn1 lc-grk)		'iso-2022-int-1)
+   ))
+
+(defvar default-mime-charset 'iso-2022-int-1)
+
+(defun charsets-to-mime-charset (charsets)
+  (if charsets
+      (or (catch 'tag
+	    (let ((rest charsets-mime-charset-alist)
+		  cell csl)
+	      (while (setq cell (car rest))
+		(if (catch 'not-subset
+		      (let ((set1 charsets)
+			    (set2 (car cell))
+			    obj)
+			(while set1
+			  (setq obj (car set1))
+			  (or (memq obj set2)
+			      (throw 'not-subset nil)
+			      )
+			  (setq set1 (cdr set1))
+			  )
+			t))
+		    (throw 'tag (cdr cell))
+		  )
+		(setq rest (cdr rest))
+		)))
+	  default-mime-charset)))
+
+(defun detect-mime-charset-region (beg end)
+  (charsets-to-mime-charset
+   (cons lc-ascii (find-charset-region beg end))))
+
+(defvar mime-charset-coding-system-alist
+  '((iso-8859-1      . *ctext*)
+    (gb2312          . *euc-china*)
+    (koi8-r          . *koi8*)
+    (iso-2022-jp-2   . *iso-2022-ss2-7*)
+    (x-iso-2022-jp-2 . *iso-2022-ss2-7*)
+    (shift_jis       . *sjis*)
+    (x-shiftjis      . *sjis*)
+    ))
+
+(defun mime-charset-to-coding-system (charset)
+  (if (stringp charset)
+      (setq charset (intern (downcase charset)))
+    )
+  (or (cdr (assq charset mime-charset-coding-system-alist))
+      (let ((cs (intern (concat "*" (symbol-name charset) "*"))))
+	(and (coding-system-p cs) cs)
+	)))
+
+
 ;;; @ character
 ;;;
 

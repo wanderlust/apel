@@ -37,14 +37,16 @@
 			       (= emacs-major-version 19)))
 (defvar running-xemacs-20 (and running-xemacs
 			       (= emacs-major-version 20)))
+(defvar running-xemacs-20-or-later (and running-xemacs
+					(>= emacs-major-version 20)))
 (defvar running-xemacs-19_14-or-later
   (or (and running-xemacs-19 (>= emacs-minor-version 14))
-      (>= emacs-major-version 20)))
+      running-xemacs-20-or-later))
 (defvar running-emacs-19 (and (not running-xemacs)
 			      (= emacs-major-version 19)))
 (defvar running-emacs-19_29-or-later
   (or (and running-emacs-19 (>= emacs-minor-version 29))
-      (>= emacs-major-version 20)))
+      (and (not running-xemacs)(>= emacs-major-version 20))))
 
 (cond ((boundp 'MULE)
        (require 'emu-mule)

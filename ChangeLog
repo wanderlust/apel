@@ -1,3 +1,60 @@
+Tue Jul  9 13:16:23 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.31.1 was released.
+
+	* mu-replace.el (edit-replace-mode-map): Use function
+ 	`copy-keymap'.
+
+Mon Jul  8 07:46:02 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (mime-charset-to-coding-system): New function.
+
+	* emu-mule.el (mime-charset-coding-system-alist): New variable.
+
+	* emu-mule.el (detect-mime-charset-region): New function.
+
+	* emu-mule.el (charsets-to-mime-charset): New function.
+
+Mon Jul  8 06:49:48 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (subsetp): wrote doc-string.
+
+	* emu-mule.el (default-mime-charset): New variable.
+
+	* emu-mule.el (charsets-mime-charset-alist): New variable.
+
+Thu Jul  4 16:57:52 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el (compress-cited-prefix): check Message-Id.
+
+	* mu-cite.el (compress-cited-prefix): fixed.
+
+Wed Jul  3 06:27:10 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (running-emacs-19_29-or-later): fixed.
+
+Wed Jul  3 05:59:24 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (running-xemacs-20-or-later): New variable.
+	(running-xemacs-19_14-or-later): Use variable
+ 	`running-xemacs-20-or-later'.
+
+	* emu.el (running-emacs-19_29-or-later): fixed.
+
+Sun Jun 30 01:00:37 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (char-category): New function.
+
+Sat Jun 29 08:23:05 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el (fill-cited-region):
+	modified about fill-prefix collecting.
+
+Sat Jun 29 08:03:34 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-str.el (string-compare-from-top): New function.
+
+
 Thu Jun 27 17:29:23 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.31 was released.

@@ -189,6 +189,17 @@ in the region between START and END.
 
 (defalias 'char-leading-char 'char-charset)
 
+(defun char-category (character)
+  "Return string of category mnemonics for CHAR in TABLE.
+CHAR can be any multilingual character
+TABLE defaults to the current buffer's category table.
+\[emu-x20.el; Mule emulating function]"
+  (mapconcat (lambda (chr)
+	       (char-to-string (int-char chr))
+	       )
+	     (char-category-list character)
+	     ""))
+
 
 ;;; @ string
 ;;;
