@@ -1,4 +1,9 @@
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el, emu-20.el: Move constant `*noconv*' from emu-20.el to
+	emu.el.
+
+1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 	
 	* emu.el, EMU-ELS: Split core part about MULE from emu to poem.
 
