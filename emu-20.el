@@ -127,8 +127,8 @@ MIME CHARSET and CODING-SYSTEM must be symbol."
 (defsubst mime-charset-to-coding-system (charset &optional lbt)
   "Return coding-system corresponding with CHARSET.
 CHARSET is a symbol whose name is MIME charset.
-If optional argument LBT (`unix', `dos' or `mac') is specified, it is
-used as line break code type of coding-system."
+If optional argument LBT (`CRLF', `LF', `CR', `unix', `dos' or `mac')
+is specified, it is used as line break code type of coding-system."
   (if (stringp charset)
       (setq charset (intern (downcase charset)))
     )
@@ -137,7 +137,11 @@ used as line break code type of coding-system."
 	(setq charset (cdr ret))
       ))
   (if lbt
-      (setq charset (intern (format "%s-%s" charset lbt)))
+      (setq charset (intern (format "%s-%s" charset
+				    (cond ((eq lbt 'CRLF) 'dos)
+					  ((eq lbt 'LF) 'unix)
+					  ((eq lbt 'CR) 'mac)
+					  (t lbt)))))
     )
   (if (find-coding-system charset)
       charset))
