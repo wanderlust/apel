@@ -123,7 +123,7 @@ or `cancel-timer'."
 
 (broken-facility run-at-time-tick-tock
   "`run-at-time' is not punctual."
-  ;; Note that it doesn't support XEmacsen of versions prior to 19.15
+  ;; Note that it doesn't support XEmacsen prior to the version 19.15
   ;; since `start-itimer' doesn't pass arguments to a timer function.
   (or (and (= emacs-major-version 19) (<= emacs-minor-version 14))
       (condition-case nil
