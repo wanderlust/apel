@@ -36,10 +36,10 @@
 (provide 'apel-ver)			; these two files depend on each other.
 
 (product-provide 'apel-ver
-  (product-define "APEL" nil '(9 23))	; comment.
-  ;; (product-define "APEL" nil '(9 24))	;
-  ;; (product-define "APEL" nil '(9 25))	;
-  ;; (product-define "APEL" nil '(9 26))	;
+  ;; (product-define "APEL" nil '(9 23))	; comment.
+  (product-define "APEL" nil '(10 0))	; Released 24 December 1999
+  ;; (product-define "APEL" nil '(10 1))	;
+  ;; (product-define "APEL" nil '(10 2))	;
   )
 
 (defun apel-version ()
