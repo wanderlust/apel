@@ -159,7 +159,7 @@ TABLE defaults to the current buffer's category table."
 
 ;;; @ CCL
 ;;;
-(require 'ccl)
+(eval-when-compile (require 'ccl))
 
 (eval-when-compile
   (defconst ccl-use-symbol-as-program

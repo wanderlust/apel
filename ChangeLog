@@ -1,5 +1,9 @@
 1998-08-29  Tanaka Akira  <akr@jaist.ac.jp>
 
+        * emu-e20.el: require 'ccl only for byte-compile time.
+
+1998-08-29  Tanaka Akira  <akr@jaist.ac.jp>
+
         * Makefile (elc): Remove emu*.elc to use newest emu by
         intall.el.
 
