@@ -159,18 +159,20 @@ Return nil if corresponding MIME-charset is not found."
     ))
 
 (static-when (and (string= (decode-coding-string "\e.A\eN!" 'ctext) "\eN!")
-		  (not (find-coding-system 'x-ctext)))
+		  (or (not (find-coding-system 'x-ctext))
+		      (coding-system-get 'x-ctext 'apel)))
   (require 'poem)
-  (or (find-coding-system 'x-ctext)
-      (make-coding-system
-       'x-ctext 2 ?x
-       "Compound text based generic encoding for decoding unknown messages."
-       '((ascii t) (latin-iso8859-1 t) t t
-	 nil ascii-eol ascii-cntl nil locking-shift single-shift nil nil nil
-	 init-bol nil nil)
-       '((safe-charsets . t)
-	 (mime-charset . x-ctext)))
-      ))
+  (unless (find-coding-system 'x-ctext)
+    (make-coding-system
+     'x-ctext 2 ?x
+     "Compound text based generic encoding for decoding unknown messages."
+     '((ascii t) (latin-iso8859-1 t) t t
+       nil ascii-eol ascii-cntl nil locking-shift single-shift nil nil nil
+       init-bol nil nil)
+     '((safe-charsets . t)
+       (mime-charset . x-ctext)))
+    (coding-system-put 'x-ctext 'apel t)
+    ))
 
 
 ;;; @ end
