@@ -28,19 +28,21 @@
 ;;;
 ;;; Code:
 
-(defvar running-xemacs (string-match "XEmacs" emacs-version))
-
-(cond ((boundp 'MULE)  (require 'emu-mule))
-      ((boundp 'NEMACS)(require 'emu-nemacs))
-      (t               (require 'emu-orig))
-      )
+(or (boundp 'emacs-major-version)
+    (defconst emacs-major-version (string-to-int emacs-version)))
 
 (defvar running-emacs-18 (<= emacs-major-version 18))
+(defvar running-xemacs (string-match "XEmacs" emacs-version))
 (defvar running-emacs-19 (and (not running-xemacs)
 			      (= emacs-major-version 19)))
 (defvar running-emacs-19_29-or-later
   (or (and running-emacs-19 (>= emacs-minor-version 29))
       (>= emacs-major-version 20)))
+
+(cond ((boundp 'MULE)  (require 'emu-mule))
+      ((boundp 'NEMACS)(require 'emu-nemacs))
+      (t               (require 'emu-orig))
+      )
 
 
 ;;; @ Emacs 19.29 emulation

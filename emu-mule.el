@@ -41,10 +41,6 @@ whose return value applied function PRED is not nil.
        ))
    ))
 
-(if (not (boundp 'emacs-major-version))
-    (defconst emacs-major-version (string-to-int emacs-version))
-  )
-
 
 ;;; @ leading-character
 ;;;
@@ -59,7 +55,7 @@ whose return value applied function PRED is not nil.
 ;;; @ version specific features
 ;;;
 
-(cond ((>= emacs-major-version 19)
+(cond (running-emacs-19
        (require 'emu-19)
        (defun fontset-pixel-size (fontset)
 	 (elt
@@ -72,7 +68,7 @@ whose return value applied function PRED is not nil.
 	    (cdr (get-fontset-info fontset))
 	    )) 5))
        )
-      (t
+      (running-emacs-18
        (require 'emu-18)
        (defun tl:make-overlay (beg end &optional buffer type))
        (defun tl:overlay-put (overlay prop value))

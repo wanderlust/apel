@@ -1,3 +1,51 @@
+Sat Apr 20 13:10:42 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.19.2 was released.
+
+Fri Apr 19 19:24:32 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/parse-addresses): use `nreverse'
+
+	* tl-822.el (rfc822/parse-group): use `nreverse'
+
+	* tl-822.el (rfc822/parse-token-or-comment): use `nreverse'
+
+	* tl-822.el (rfc822/parse-ascii-token): use `nreverse'
+
+	* tl-822.el (rfc822/parse-token): use `nreverse'
+
+	* tl-822.el (rfc822/lexical-analyze): use `nreverse'
+
+Fri Apr 19 18:48:55 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/address-string): support group
+	(rfc822/full-name-string): support group
+
+Fri Apr 19 07:44:39 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-seq.el (foldr): fixed
+
+Fri Apr 19 07:26:08 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-seq.el (foldl): use `1+'
+
+	* tl-seq.el (foldr): New function
+
+Wed Apr 17 15:18:54 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el: use `running-emacs-19' and `running-emacs-18'.
+
+	* emu-nemacs.el: delete definition of `emacs-major-version'.
+
+	* emu-orig.el: use `running-emacs-19'.
+
+	* emu.el: define `emacs-major-version' if not bound.
+
+	* emu-mule.el: delete check and define `emacs-major-version'.
+
+	* emu-orig.el: use `running-xemacs'.
+
+
 Mon Apr 15 08:57:58 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.19.1 was released.

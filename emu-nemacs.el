@@ -31,12 +31,6 @@
 (require 'emu-18)
 
 
-;;; @ constants
-;;;
-
-(defconst emacs-major-version (string-to-int emacs-version))
-
-
 ;;; @ leading-char
 ;;;
 
