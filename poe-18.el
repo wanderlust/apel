@@ -328,65 +328,6 @@ even if a buffer with that name exists."
   )
 
 
-;;; @ hook
-;;;
-
-;; These function are imported from EMACS 19.28.
-(defun add-hook (hook function &optional append)
-  "Add to the value of HOOK the function FUNCTION.
-FUNCTION is not added if already present.
-FUNCTION is added (if necessary) at the beginning of the hook list
-unless the optional argument APPEND is non-nil, in which case
-FUNCTION is added at the end.
- 
-HOOK should be a symbol, and FUNCTION may be any valid function.  If
-HOOK is void, it is first set to nil.  If HOOK's value is a single
-function, it is changed to a list of functions.
-\[poe-18.el; EMACS 19 emulating function]"
-  (or (boundp hook)
-      (set hook nil)
-      )
-  ;; If the hook value is a single function, turn it into a list.
-  (let ((old (symbol-value hook)))
-    (if (or (not (listp old))
-	    (eq (car old) 'lambda))
-	(set hook (list old))
-      ))
-  (or (if (consp function)
-	  ;; Clever way to tell whether a given lambda-expression
-	  ;; is equal to anything in the hook.
-	  (let ((tail (assoc (cdr function) (symbol-value hook))))
-	    (equal function tail)
-	    )
-	(memq function (symbol-value hook))
-	)
-      (set hook 
-	   (if append
-	       (nconc (symbol-value hook) (list function))
-	     (cons function (symbol-value hook))
-	     ))
-      ))
-
-(defun remove-hook (hook function)
-  "Remove from the value of HOOK the function FUNCTION.
-HOOK should be a symbol, and FUNCTION may be any valid function.  If
-FUNCTION isn't the value of HOOK, or, if FUNCTION doesn't appear in the
-list of hooks to run in HOOK, then nothing is done.  See `add-hook'.
-\[poe-18.el; EMACS 19 emulating function]"
-  (if (or (not (boundp hook))		;unbound symbol, or
-	  (null (symbol-value hook))	;value is nil, or
-	  (null function))		;function is nil, then
-      nil				;Do nothing.
-    (let ((hook-value (symbol-value hook)))
-      (if (consp hook-value)
-	  (setq hook-value (delete function hook-value))
-	(if (equal hook-value function)
-	    (setq hook-value nil)
-	  ))
-      (set hook hook-value)
-      )))
-
-
 ;;; @ end
 ;;;
 
