@@ -3,6 +3,7 @@
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;;         Katsumi Yamaoka  <yamaoka@jpl.org>
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -48,7 +49,7 @@
 		     0))
 	       ))))
 
-       (define-ccl-program ccl-decode-raw-text
+       (define-ccl-program poem-ccl-decode-raw-text
 	 '(1
 	   ((read r1 r0)
 	    (loop
@@ -66,13 +67,13 @@
 	   (write r1))
 	 "Convert line-break code from CRLF to LF.")
 
-       (define-ccl-program ccl-encode-raw-text
+       (define-ccl-program poem-ccl-encode-raw-text
 	 '(1
 	   ((read r0)
 	    (loop (write-read-repeat r0))))
 	 "Pass through without any conversions.")
 
-       (define-ccl-program ccl-encode-raw-text-CRLF
+       (define-ccl-program poem-ccl-encode-raw-text-CRLF
 	 '(2
 	   ((loop
 	      (read r0)
@@ -86,17 +87,36 @@
 	'raw-text 4 ?=
 	"No conversion"
 	nil
-	(cons ccl-decode-raw-text ccl-encode-raw-text))
+	(cons poem-ccl-decode-raw-text poem-ccl-encode-raw-text))
 
        (make-coding-system
 	'raw-text-dos 4 ?=
 	"No conversion"
 	nil
-	(cons ccl-decode-raw-text ccl-encode-raw-text-CRLF))
+	(cons poem-ccl-decode-raw-text poem-ccl-encode-raw-text-CRLF))
+       )
+      (t
+       (defun poem-decode-raw-text (from to)
+	 (save-restriction
+	   (narrow-to-region from to)
+	   (goto-char (point-min))
+	   (while (re-search-forward "\r$" nil t)
+	     (replace-match "")
+	     )))
+       (defun poem-encode-raw-text-CRLF (from to)
+	 (save-restriction
+	   (narrow-to-region from to)
+	   (goto-char (point-min))
+	   (while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
+	     (replace-match "\\1\r\n")
+	     )))
 
-       (make-coding-system
-	'binary nil ?=
-	"No conversion")
+       (make-coding-system 'raw-text nil ?= "No conversion")
+       (put 'raw-text 'post-read-conversion 'poem-decode-raw-text)
+       
+       (make-coding-system 'raw-text-dos nil ?= "No conversion")
+       (put 'raw-text-dos 'post-read-conversion 'poem-decode-raw-text)
+       (put 'raw-text-dos 'pre-write-conversion 'poem-encode-raw-text-CRLF)
        ))
 
 
@@ -166,13 +186,62 @@
 (defalias 'set-buffer-file-coding-system 'set-file-coding-system)
 
 
+;;; @ with code-conversion
+;;;
+
+(defun insert-file-contents-as-coding-system
+  (coding-system filename &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
+be applied to `file-coding-system-for-read'."
+  (let ((file-coding-system-for-read coding-system))
+    (insert-file-contents filename visit beg end replace)))
+
+(cond
+ ((and (>= emacs-major-version 19) (>= emacs-minor-version 29))
+  ;; for MULE 2.3 based on Emacs 19.34.
+  (defun write-region-as-coding-system
+    (coding-system start end filename &optional append visit lockname)
+    "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
+applied to `file-coding-system'."
+    (let ((file-coding-system coding-system)
+	  jka-compr-compression-info-list jam-zcat-filename-list)
+      (write-region start end filename append visit lockname)))
+
+  (defun find-file-noselect-as-coding-system
+    (coding-system filename &optional nowarn rawfile)
+    "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
+be applied to `file-coding-system-for-read'."
+    (let ((file-coding-system-for-read coding-system))
+      (find-file-noselect filename nowarn rawfile)))
+  )
+ (t
+  ;; for MULE 2.3 based on Emacs 19.28 or MULE 1.*.
+  (defun write-region-as-coding-system
+    (coding-system start end filename &optional append visit lockname)
+    "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
+applied to `file-coding-system'."
+    (let ((file-coding-system coding-system)
+	  jka-compr-compression-info-list jam-zcat-filename-list)
+      (write-region start end filename append visit)))
+
+  (defun find-file-noselect-as-coding-system
+    (coding-system filename &optional nowarn rawfile)
+    "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
+be applied to `file-coding-system-for-read'."
+    (let ((file-coding-system-for-read coding-system))
+      (find-file-noselect filename nowarn)))
+  ))
+
+
 ;;; @ without code-conversion
 ;;;
+
+(make-coding-system 'binary nil ?= "No conversion")
 
 (defmacro as-binary-process (&rest body)
   (` (let (selective-display	; Disable ^M to nl translation.
 	   ;; Mule
-	   mc-flag	
+	   mc-flag
 	   (default-process-coding-system (cons *noconv* *noconv*))
 	   program-coding-system-alist)
        (,@ body))))
@@ -190,6 +259,17 @@
        (,@ body))))
 
 (defalias 'set-process-input-coding-system 'set-process-coding-system)
+
+(defun insert-binary-file-contents-literally (filename
+					      &optional visit beg end replace)
+  "Like `insert-file-contents-literally', q.v., but don't code conversion.
+A buffer may be modified in several ways after reading into the buffer due
+to advanced Emacs features, such as file-name-handlers, format decoding,
+find-file-hooks, etc.
+  This function ensures that none of these modifications will take place."
+  (as-binary-input-file
+   ;; Returns list absolute file name and length of data inserted.
+   (insert-file-contents-literally filename visit beg end replace)))
 
 (defun insert-file-contents-as-binary (filename
 				       &optional visit beg end replace)
@@ -210,90 +290,21 @@ Like `insert-file-contents-literary', but it allows find-file-hooks,
 automatic uncompression, etc.
 Like `insert-file-contents-as-binary', but it converts line-break
 code."
-  (save-excursion
-    (save-restriction
-      (narrow-to-region (point)(point))
-      (let ((return-val
-	     ;; Returns list absolute file name and length of data inserted.
-	     (insert-file-contents-as-binary filename visit beg end replace)))
-	(goto-char (point-min))
-	(while (re-search-forward "\r$" nil t)
-	  (replace-match ""))
-	(list (car return-val) (buffer-size))))))
+  ;; Returns list absolute file name and length of data inserted.
+  (insert-file-contents-as-coding-system 'raw-text
+					 filename visit beg end replace))
 
-(defun insert-binary-file-contents-literally (filename
-					      &optional visit beg end replace)
-  "Like `insert-file-contents-literally', q.v., but don't code conversion.
-A buffer may be modified in several ways after reading into the buffer due
-to advanced Emacs features, such as file-name-handlers, format decoding,
-find-file-hooks, etc.
-  This function ensures that none of these modifications will take place."
-  (as-binary-input-file
-   ;; Returns list absolute file name and length of data inserted.
-   (insert-file-contents-literally filename visit beg end replace)))
+(defun write-region-as-binary (start end filename
+				     &optional append visit lockname)
+  "Like `write-region', q.v., but don't code conversion."
+  (write-region-as-coding-system 'binary
+				 start end filename append visit lockname))
 
-(cond
- (running-emacs-19_29-or-later
-  ;; for MULE 2.3 based on Emacs 19.34.
-  (defun write-region-as-binary (start end filename
-				       &optional append visit lockname)
-    "Like `write-region', q.v., but don't code conversion."
-    (as-binary-output-file
-     (write-region start end filename append visit lockname)))
-
-  (defun write-region-as-raw-text-CRLF (start end filename
-					      &optional append visit lockname)
-    "Like `write-region', q.v., but don't code conversion."
-    (let ((the-buf (current-buffer)))
-      (with-temp-buffer
-	(insert-buffer-substring the-buf start end)
-	(goto-char (point-min))
-	(while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
-	  (replace-match "\\1\r\n"))
-	(write-region-as-binary (point-min)(point-max)
-				filename append visit lockname))))
-
-  (defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
-    "Like `find-file-noselect', q.v., but don't code and format conversion."
-    (as-binary-input-file (find-file-noselect filename nowarn rawfile)))
-  )
- (t
-  ;; for MULE 2.3 based on Emacs 19.28.
-  (defun write-region-as-binary (start end filename
-				       &optional append visit lockname)
-    "Like `write-region', q.v., but don't code conversion."
-    (as-binary-output-file
-     (write-region start end filename append visit)))
-
-  (defun write-region-as-raw-text-CRLF (start end filename
-					      &optional append visit lockname)
-    "Like `write-region', q.v., but don't code conversion."
-    (let ((the-buf (current-buffer)))
-      (with-temp-buffer
-	(insert-buffer-substring the-buf start end)
-	(goto-char (point-min))
-	(while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
-	  (replace-match "\\1\r\n"))
-	(write-region-as-binary (point-min)(point-max)
-				filename append visit))))
-
-  (defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
-    "Like `find-file-noselect', q.v., but don't code and format conversion."
-    (as-binary-input-file (find-file-noselect filename nowarn)))
-  ))
-
-(defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but it does not code and format conversion
-except for line-break code."
-  (save-current-buffer
-    (prog1
-	(set-buffer (find-file-noselect-as-binary filename nowarn rawfile))
-      (let ((flag (buffer-modified-p)))
-	(save-excursion
-	  (goto-char (point-min))
-	  (while (re-search-forward "\r$" nil t)
-	    (replace-match "")))
-	(set-buffer-modified-p flag)))))
+(defun write-region-as-raw-text-CRLF (start end filename
+					    &optional append visit lockname)
+  "Like `write-region', q.v., but don't code conversion."
+  (write-region-as-coding-system 'raw-text-dos
+				 start end filename append visit lockname))
 
 (defun open-network-stream-as-binary (name buffer host service)
   "Like `open-network-stream', q.v., but don't code conversion."
@@ -301,52 +312,14 @@ except for line-break code."
     (set-process-coding-system process *noconv* *noconv*)
     process))
 
+(defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but don't code and format conversion."
+  (find-file-noselect-as-coding-system 'binary filename nowarn rawfile))
 
-;;; @ with code-conversion
-;;;
-
-(defun insert-file-contents-as-coding-system
-  (coding-system filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
-be applied to `file-coding-system-for-read'."
-  (let ((file-coding-system-for-read coding-system))
-    (insert-file-contents filename visit beg end replace)))
-
-(cond
- (running-emacs-19_29-or-later
-  ;; for MULE 2.3 based on Emacs 19.34.
-  (defun write-region-as-coding-system
-    (coding-system start end filename &optional append visit lockname)
-    "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
-applied to `file-coding-system'."
-    (let ((file-coding-system coding-system)
-	  jka-compr-compression-info-list jam-zcat-filename-list)
-      (write-region start end filename append visit lockname)))
-
-  (defun find-file-noselect-as-coding-system
-    (coding-system filename &optional nowarn rawfile)
-    "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
-be applied to `file-coding-system-for-read'."
-    (let ((file-coding-system-for-read coding-system))
-      (find-file-noselect filename nowarn rawfile)))
-  )
- (t
-  ;; for MULE 2.3 based on Emacs 19.28.
-  (defun write-region-as-coding-system
-    (coding-system start end filename &optional append visit lockname)
-    "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
-applied to `file-coding-system'."
-    (let ((file-coding-system coding-system)
-	  jka-compr-compression-info-list jam-zcat-filename-list)
-      (write-region start end filename append visit)))
-
-  (defun find-file-noselect-as-coding-system
-    (coding-system filename &optional nowarn rawfile)
-    "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
-be applied to `file-coding-system-for-read'."
-    (let ((file-coding-system-for-read coding-system))
-      (find-file-noselect filename nowarn)))
-  ))
+(defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but it does not code and format
+conversion except for line-break code."
+  (find-file-noselect-as-coding-system 'raw-text filename nowarn rawfile))
 
 
 ;;; @ buffer representation
@@ -426,39 +399,37 @@ If POS is out of range, the value is nil."
 
 (defalias 'string-to-int-list 'string-to-char-list)
 
-(or (fboundp 'truncate-string)
-    ;; Imported from Mule-2.3
-    (defun truncate-string (str width &optional start-column)
-      "\
+;; Imported from Mule-2.3
+(defun-maybe truncate-string (str width &optional start-column)
+  "\
 Truncate STR to fit in WIDTH columns.
 Optional non-nil arg START-COLUMN specifies the starting column.
 \[emu-mule.el; Mule 2.3 emulating function]"
-      (or start-column
-	  (setq start-column 0))
-      (let ((max-width (string-width str))
-	    (len (length str))
-	    (from 0)
-	    (column 0)
-	    to-prev to ch)
-	(if (>= width max-width)
-	    (setq width max-width))
-	(if (>= start-column width)
-	    ""
-	  (while (< column start-column)
-	    (setq ch (aref str from)
-		  column (+ column (char-width ch))
-		  from (+ from (char-bytes ch))))
-	  (if (< width max-width)
-	      (progn
-		(setq to from)
-		(while (<= column width)
-		  (setq ch (aref str to)
-			column (+ column (char-width ch))
-			to-prev to
-			to (+ to (char-bytes ch))))
-		(setq to to-prev)))
-	  (substring str from to))))
-    )
+  (or start-column
+      (setq start-column 0))
+  (let ((max-width (string-width str))
+	(len (length str))
+	(from 0)
+	(column 0)
+	to-prev to ch)
+    (if (>= width max-width)
+	(setq width max-width))
+    (if (>= start-column width)
+	""
+      (while (< column start-column)
+	(setq ch (aref str from)
+	      column (+ column (char-width ch))
+	      from (+ from (char-bytes ch))))
+      (if (< width max-width)
+	  (progn
+	    (setq to from)
+	    (while (<= column width)
+	      (setq ch (aref str to)
+		    column (+ column (char-width ch))
+		    to-prev to
+		    to (+ to (char-bytes ch))))
+	    (setq to to-prev)))
+      (substring str from to))))
 
 (defalias 'looking-at-as-unibyte 'looking-at)
 
