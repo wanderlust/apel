@@ -42,25 +42,6 @@
          'encode (symbol-value encoder))))
 
 
-;;; @ character
-;;;
-
-;;; @@ Mule emulating aliases
-;;;
-;;; You should not use them.
-
-;;(defalias 'char-leading-char 'char-charset)
-
-(defun char-category (character)
-  "Return string of category mnemonics for CHAR in TABLE.
-CHAR can be any multilingual character
-TABLE defaults to the current buffer's category table."
-  (mapconcat (lambda (chr)
-	       (char-to-string (int-char chr)))
-	     (char-category-list character)
-	     ""))
-
-
 ;;; @ end
 ;;;
 

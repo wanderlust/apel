@@ -31,20 +31,6 @@
 (require 'poem)
 
 
-;;; @ character
-;;;
-
-;;; @@ Mule emulating aliases
-;;;
-;;; You should not use them.
-
-(defun char-category (character)
-  "Return string of category mnemonics for CHAR in TABLE.
-CHAR can be any multilingual character
-TABLE defaults to the current buffer's category table."
-  (category-set-mnemonics (char-category-set character)))
-
-
 ;;; @ CCL
 ;;;
 (eval-when-compile (require 'ccl))
