@@ -3,8 +3,10 @@
 ;;; $Id$
 ;;;
 
-(setq apel-modules '(alist atype file-detect filename install
+(setq apel-modules '(alist atype
+			   path-util filename install
 			   std11 std11-parse
- 			   mule-caesar))
+ 			   mule-caesar
+			   file-detect))
 
 ;;; APEL-ELS ends here
