@@ -103,26 +103,27 @@
 	 )))
 
 (defmacro defun-maybe-cond (name args &optional doc &rest everything-else)
-  (unless (stringp doc)
-    (setq everything-else (cons doc everything-else)
-	  doc nil)
-    )
+  (or (stringp doc)
+      (setq everything-else (cons doc everything-else)
+	    doc nil)
+      )
   (or (and (fboundp name)
 	   (not (get name 'defun-maybe)))
-      (` (unless (fboundp (quote (, name)))
-	   (cond (,@ (mapcar (function
-			      (lambda (case)
-				(list (car case)
-				      (if doc
-					  (` (defun (, name) (, args)
-					       (, doc)
-					       (,@ (cdr case))))
-					(` (defun (, name) (, args)
-					     (,@ (cdr case))))
-					))))
-			     everything-else)))
-	   (put (quote (, name)) 'defun-maybe t)
-	   ))))
+      (` (or (fboundp (quote (, name)))
+	     (progn
+	       (cond (,@ (mapcar (function
+				  (lambda (case)
+				    (list (car case)
+					  (if doc
+					      (` (defun (, name) (, args)
+						   (, doc)
+						   (,@ (cdr case))))
+					    (` (defun (, name) (, args)
+						 (,@ (cdr case))))
+					    ))))
+				 everything-else)))
+	       (put (quote (, name)) 'defun-maybe t)
+	       )))))
 
 (defsubst subr-fboundp (symbol)
   "Return t if SYMBOL's function definition is a built-in function."
