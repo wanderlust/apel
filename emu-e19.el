@@ -75,8 +75,7 @@
     (if (eq (following-char) ?\n)
 	(forward-char)
       )
-    (point)
-    ))
+    (point)))
 
 
 ;;; @ mouse
@@ -94,8 +93,7 @@
   "Convert list of character CHAR-LIST to string."
   (` (mapconcat (function char-to-string)
 		(, char-list)
-		"")
-     ))
+		"")))
 
 
 ;;; @ end

@@ -48,13 +48,11 @@ but the contents viewed as characters do change.
 
 (defun charset-description (charset)
   "Return description of CHARSET."
-  (get charset 'charset-description)
-  )
+  (get charset 'charset-description))
 
 (defun charset-registry (charset)
   "Return registry name of CHARSET."
-  (get charset 'charset-registry)
-  )
+  (get charset 'charset-registry))
 
 (defun charset-width (charset)
   "Return number of columns a CHARSET occupies when displayed."
@@ -77,8 +75,7 @@ but the contents viewed as characters do change.
   "Return a list of charsets in the region between START and END."
   (if (save-excursion
 	(goto-char start)
-	(re-search-forward "[\200-\377]" end t)
-	)
+	(re-search-forward "[\200-\377]" end t))
       '(latin-iso8859-1)
     ))
 
@@ -138,25 +135,21 @@ else returns nil. [emu-latin1.el; old MULE emulating function]"
 
 (defmacro as-binary-process (&rest body)
   (` (let (selective-display)	; Disable ^M to nl translation.
-       (,@ body)
-       )))
+       (,@ body))))
 
 (defmacro as-binary-input-file (&rest body)
   (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
-       (,@ body)
-       )))
+       (,@ body))))
 
 (defmacro as-binary-output-file (&rest body)
   (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
-       (,@ body)
-       )))
+       (,@ body))))
 
 (defun write-region-as-binary (start end filename
 				     &optional append visit lockname)
   "Like `write-region', q.v., but don't code conversion."
   (let ((emx-binary-mode t))
-    (write-region start end filename append visit lockname)
-    ))
+    (write-region start end filename append visit lockname)))
 
 (defun insert-file-contents-as-binary (filename
 				       &optional visit beg end replace)
@@ -167,8 +160,8 @@ automatic uncompression, etc.
 Namely this function ensures that only format decoding and character
 code conversion will not take place."
   (let ((emx-binary-mode t))
-    (insert-file-contents filename visit beg end replace)
-    ))
+    ;; Returns list of absolute file name and length of data inserted.
+    (insert-file-contents filename visit beg end replace)))
 
 (defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
 (make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
@@ -181,8 +174,8 @@ to advanced Emacs features, such as file-name-handlers, format decoding,
 find-file-hooks, etc.
   This function ensures that none of these modifications will take place."
   (let ((emx-binary-mode t))
-    (insert-file-contents-literally filename visit beg end replace)
-    ))
+    ;; Returns list of absolute file name and length of data inserted.
+    (insert-file-contents-literally filename visit beg end replace)))
 
 (defalias 'insert-file-contents-as-raw-text 'insert-file-contents)
 
@@ -194,10 +187,8 @@ find-file-hooks, etc.
       (insert-buffer-substring the-buf start end)
       (goto-char (point-min))
       (while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
-	(replace-match "\\1\r\n")
-	)
-      (write-region (point-min)(point-max) filename append visit lockname)
-      )))
+	(replace-match "\\1\r\n"))
+      (write-region (point-min)(point-max) filename append visit lockname))))
 
 
 ;;; @ MIME charset
@@ -212,16 +203,15 @@ find-file-hooks, etc.
   (if (stringp charset)
       (setq charset (intern (downcase charset)))
     )
-  (and (memq charset (list 'us-ascii default-mime-charset))
-       charset)
-  )
+  (if (memq charset (list 'us-ascii default-mime-charset))
+      charset
+    ))
 
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END."
   (if (save-excursion
 	(goto-char start)
-	(re-search-forward "[\200-\377]" end t)
-	)
+	(re-search-forward "[\200-\377]" end t))
       default-mime-charset
     'us-ascii))
 
@@ -238,8 +228,8 @@ find-file-hooks, etc.
 	     (goto-char (point-min))
 	     (while (search-forward "\r\n" nil t)
 	       (replace-match "\n"))
-	     ))))
-  )
+	     ))
+	 )))
 
 (defun encode-mime-charset-string (string charset)
   "Encode the STRING as MIME CHARSET."
@@ -251,8 +241,7 @@ find-file-hooks, etc.
       (with-temp-buffer
 	(insert string)
 	(decode-mime-charset-region (point-min)(point-max) charset lbt)
-	(buffer-string)
-	)
+	(buffer-string))
     string))
 
 (defalias 'write-region-as-mime-charset 'write-region)
@@ -277,8 +266,7 @@ find-file-hooks, etc.
 
 (defun split-char (character)
   "Return list of charset and one or two position-codes of CHARACTER."
-  (cons (char-charset character) character)
-  )
+  (cons (char-charset character) character))
 
 (defalias 'char-length 'char-bytes)
 
@@ -293,8 +281,7 @@ find-file-hooks, etc.
 (defalias 'string-width 'length)
 
 (defun string-to-char-list (str)
-  (mapcar (function identity) str)
-  )
+  (mapcar (function identity) str))
 
 (defalias 'string-to-int-list 'string-to-char-list)
 
@@ -306,8 +293,7 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 \[emu-latin1.el; MULE 2.3 emulating function]"
   (or start-column
       (setq start-column 0))
-  (substring str start-column width)
-  )
+  (substring str start-column width))
 
 (defalias 'looking-at-as-unibyte 'looking-at)
 

@@ -54,8 +54,7 @@
 				     &optional append visit lockname)
   "Like `write-region', q.v., but don't encode."
   (let ((coding-system-for-write 'binary))
-    (write-region start end filename append visit lockname)
-    ))
+    (write-region start end filename append visit lockname)))
 
 (defun insert-file-contents-as-binary (filename
 				       &optional visit beg end replace)
@@ -67,8 +66,8 @@ Namely this function ensures that only format decoding and character
 code conversion will not take place."
   (let ((coding-system-for-read 'binary)
 	format-alist)
-    (insert-file-contents filename visit beg end replace)
-    ))
+    ;; Returns list of absolute file name and length of data inserted.
+    (insert-file-contents filename visit beg end replace)))
 
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)
@@ -79,15 +78,14 @@ Like `insert-file-contents-as-binary', but it converts line-break
 code."
   (let ((coding-system-for-read 'raw-text)
 	format-alist)
-    (insert-file-contents filename visit beg end replace)
-    ))
+    ;; Returns list of absolute file name and length of data inserted.
+    (insert-file-contents filename visit beg end replace)))
 
 (defun write-region-as-raw-text-CRLF (start end filename
 					    &optional append visit lockname)
   "Like `write-region', q.v., but write as network representation."
   (let ((coding-system-for-write 'raw-text-dos))
-    (write-region start end filename append visit lockname)
-    ))
+    (write-region start end filename append visit lockname)))
 
 
 ;;; @@ Mule emulating aliases
@@ -146,7 +144,8 @@ is specified, it is used as line break code type of coding-system."
 					  (t lbt)))))
     )
   (if (find-coding-system charset)
-      charset))
+      charset
+    ))
 
 (defsubst mime-charset-list ()
   "Return a list of all existing MIME-charset."
@@ -171,8 +170,7 @@ is specified, it is used as line break code type of coding-system."
    (completing-read (format "%s (default %s) " prompt value)
 		    (mapcar (function
 			     (lambda (sym)
-			       (list (symbol-name sym))
-			       ))
+			       (list (symbol-name sym))))
 			    (mime-charset-list)))))
 
 (defun widget-mime-charset-action (widget &optional event)
@@ -204,8 +202,7 @@ It must be symbol."
   (let ((coding-system-for-write
 	 (or (mime-charset-to-coding-system charset)
 	     'binary)))
-    (write-region start end filename append visit lockname)
-    ))
+    (write-region start end filename append visit lockname)))
 
 
 ;;; @ end

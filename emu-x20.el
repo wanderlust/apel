@@ -88,8 +88,8 @@ to advanced Emacs features, such as file-name-handlers, format decoding,
 find-file-hooks, etc.
   This function ensures that none of these modifications will take place."
   (let ((coding-system-for-read 'binary))
-    (insert-file-contents-literally filename visit beg end replace)
-    ))
+    ;; Returns list absolute file name and length of data inserted.
+    (insert-file-contents-literally filename visit beg end replace)))
 
     
 ;;; @ MIME charset
@@ -174,10 +174,8 @@ find-file-hooks, etc.
 	(narrow-to-region start end)
 	(decode-coding-region (point-min)(point-max)
 			      (mime-charset-to-coding-system 'raw-text lbt))
-	(decode-hz-region (point-min)(point-max))
-	)
-    (decode-hz-region start end)
-    ))
+	(decode-hz-region (point-min)(point-max)))
+    (decode-hz-region start end)))
 
 (defun decode-mime-charset-region (start end charset &optional lbt)
   "Decode the text between START and END as MIME CHARSET."
@@ -186,8 +184,7 @@ find-file-hooks, etc.
     )
   (let ((func (cdr (or (assq charset mime-charset-decoder-alist)
 		       (assq t mime-charset-decoder-alist)))))
-    (funcall func start end charset lbt)
-    ))
+    (funcall func start end charset lbt)))
 
 (defsubst encode-mime-charset-string (string charset)
   "Encode the STRING as MIME CHARSET."
@@ -207,8 +204,7 @@ find-file-hooks, etc.
   (with-temp-buffer
     (insert string)
     (decode-mime-charset-region (point-min)(point-max) charset lbt)
-    (buffer-string)
-    ))
+    (buffer-string)))
 
 
 (defvar charsets-mime-charset-alist
@@ -284,8 +280,7 @@ but the contents viewed as characters do change.
 	      (setq dest (cons (logand code 127) dest)
 		    code (lsh code -7)
 		    i (1+ i)))
-	    (cons charset dest)
-	    ))))
+	    (cons charset dest)))))
     )
 
 (defmacro char-next-index (char index)
@@ -303,8 +298,7 @@ but the contents viewed as characters do change.
 CHAR can be any multilingual character
 TABLE defaults to the current buffer's category table."
   (mapconcat (lambda (chr)
-	       (char-to-string (int-char chr))
-	       )
+	       (char-to-string (int-char chr)))
 	     (char-category-list character)
 	     ""))
 
@@ -313,8 +307,7 @@ TABLE defaults to the current buffer's category table."
 ;;;
 
 (defun string-to-int-list (str)
-  (mapcar #'char-int str)
-  )
+  (mapcar #'char-int str))
 
 (defalias 'looking-at-as-unibyte 'looking-at)
 

@@ -67,8 +67,7 @@
 (defun invisible-region (start end)
   (if (save-excursion
 	(goto-char start)
-	(eq (following-char) ?\n)
-	)
+	(eq (following-char) ?\n))
       (setq start (1+ start))
     )
   (put-text-property start end 'invisible t)
@@ -81,8 +80,7 @@
 (defun invisible-p (pos)
   (if (save-excursion
 	(goto-char pos)
-	(eq (following-char) ?\n)
-	)
+	(eq (following-char) ?\n))
       (setq pos (1+ pos))
     )
   (get-text-property pos 'invisible)
@@ -92,13 +90,11 @@
   (save-excursion
     (if (save-excursion
 	  (goto-char pos)
-	  (eq (following-char) ?\n)
-	  )
+	  (eq (following-char) ?\n))
 	(setq pos (1+ pos))
       )
     (or (next-single-property-change pos 'invisible)
-	(point-max))
-    ))
+	(point-max))))
 
 
 ;;; @ mouse
@@ -116,8 +112,7 @@
     (defun dired-other-frame (dirname &optional switches)
       "\"Edit\" directory DIRNAME.  Like `dired' but makes a new frame."
       (interactive (dired-read-dir-and-switches "in other frame "))
-      (switch-to-buffer-other-frame (dired-noselect dirname switches))
-      )
+      (switch-to-buffer-other-frame (dired-noselect dirname switches)))
     )
 
 
@@ -147,8 +142,7 @@
 				  filename))
 	  (setq directory (file-name-directory (substring directory 0 -1))
 		ancestor (concat "../" ancestor)))
-	(concat ancestor (substring filename (match-end 0)))
-	))
+	(concat ancestor (substring filename (match-end 0)))))
     )
 
     

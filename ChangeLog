@@ -1,3 +1,39 @@
+1998-08-29  Shuhei KOBAYASHI  <shuhei-k@jaist.ac.jp>
+
+	* emu-e20.el (ccl-execute-on-string): Too few args.
+	(test-ccl-eof-block-cs): Revert existence checking.
+	
+	* emu-e20_2.el (insert-file-contents-as-binary): Return value.
+	(insert-file-contents-as-raw-text): Ditto.
+	
+	* emu-mule.el (insert-file-contents-as-raw-text): Return value.
+	(encode-coding-string): Check `coding-system' is non-nil.
+	(decode-coding-string): Ditto.
+	(insert-file-contents-as-binary): Use `as-binary-input-file'.
+	(insert-binary-file-contents-literally): Ditto.
+	(write-region-as-binary): Use `as-binary-output-file'.
+	(write-region-as-raw-text-CRLF): Definition for Emacs 19.28.
+	(write-region-as-mime-charset): Ditto.
+	(mime-charset-to-coding-system): New implementation.
+
+	(ccl-use-symbol-as-program): New constant.
+	(ccl-encoder-eof-block-is-broken): New constant.
+	(ccl-decoder-eof-block-is-broken): New constant.
+	(ccl-eof-block-is-broken): New constant.
+	(make-ccl-coding-system): New function.
+	(ccl-execute): Emacs 20.3 emulating function.
+	(ccl-execute-on-string): Emacs 20.3 emulating function.
+
+	* emu-nemacs.el (write-region-as-binary): Use
+	`as-binary-output-file'
+	(write-region-as-raw-text-CRLF): Ditto.  
+	(insert-file-contents-as-binary): Use `as-binary-input-file'.
+	(insert-binary-file-contents-literally): Ditto.
+	(insert-file-contents-as-raw-text): Ditto.
+	
+	* emu.el (last): Emacs 20 emulation function.
+	(butlast), (nbutlast): CL emulation functions.
+	
 1998-08-27  Tanaka Akira  <akr@jaist.ac.jp>
 
         * emu-e20.el (ccl-use-symbol-as-program): Reduce
