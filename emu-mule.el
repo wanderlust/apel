@@ -69,6 +69,12 @@
 (defalias 'charset-columns	'char-width)
 (defalias 'charset-direction	'char-direction)
 
+(defun charset-chars (charset)
+  "Return the number of characters per dimension of CHARSET."
+  (if (= (logand (nth 2 (character-set charset)) 1) 1)
+      96
+    94))
+
 
 ;;; @ coding system
 ;;;
