@@ -78,7 +78,8 @@ in the region between START and END.
 (defmacro as-binary-process (&rest body)
   `(let (selective-display	; Disable ^M to nl translation.
 	 ;; for Emacs/mule
-	 (default-process-coding-system 'no-conversion)
+	 (coding-system-for-read  'no-conversion)
+	 (coding-system-for-write 'no-conversion)
 	 )
      ,@ body))
 
