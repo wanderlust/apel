@@ -1,3 +1,12 @@
+1997-09-26  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 3.4.4 was released.
+
+1997-09-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* std11-parse.el (std11-special-char-list): Fix order for regexp.
+
+
 1997-09-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 3.4.3 was released.

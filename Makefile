@@ -2,7 +2,7 @@
 # $Id$
 #
 
-VERSION = 3.4.3
+VERSION = 3.4.4
 
 TAR	= gtar
 RM	= /bin/rm -f
