@@ -1,3 +1,7 @@
+1999-09-22  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* mcs-20.el (mime-charset-coding-system-alist): Add `cp874'.
+
 1999-09-21  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* EMU-ELS (pces-modules): Add `pces-xfc' if the feature `mule' is
@@ -2076,7 +2080,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
