@@ -167,21 +167,21 @@ TABLE defaults to the current buffer's category table."
 ;;;
 (require 'ccl)
 
-(eval-and-compile
+(eval-when-compile
 (defconst ccl-use-symbol-as-program
-  (eval-when-compile
+  (progn
     (define-ccl-program ew-ccl-identity-program
       '(1 ((read r0) (loop (write-read-repeat r0)))))
     (condition-case nil
-	(progn
-	  (funcall
-            (if (fboundp 'ccl-vector-program-execute-on-string)
-                'ccl-vector-program-execute-on-string
-              'ccl-execute-on-string)
-	    'ew-ccl-identity-program
-	    (make-vector 9 nil)
-	    "")
-	  t)
+        (progn
+          (funcall
+	   (if (fboundp 'ccl-vector-program-execute-on-string)
+	       'ccl-vector-program-execute-on-string
+	     'ccl-execute-on-string)
+	   'ew-ccl-identity-program
+	   (make-vector 9 nil)
+	   "")
+          t)
       (error nil)))
   "t if CCL related builtins accept symbol as CCL
 program. (20.2 with ExCCL, 20.3 or later)
@@ -189,6 +189,11 @@ Otherwise nil (20.2 without ExCCL or former).
 
 Because emu provides functions accepting symbol as CCL program,
 user programs should not refer this variable.")
+)
+
+(eval-and-compile
+(defconst ccl-use-symbol-as-program
+  (eval-when-compile ccl-use-symbol-as-program))
 
 (defun make-ccl-coding-system
   (coding-system mnemonic doc-string decoder encoder)
@@ -198,7 +203,7 @@ DECODER (symbol) and ENCODER (symbol)."
     (setq decoder (symbol-value decoder))
     (setq encoder (symbol-value encoder)))
   (make-coding-system coding-system 4 mnemonic doc-string
-    (cons decoder encoder)))
+		      (cons decoder encoder)))
 )
 
 (eval-when-compile
@@ -207,24 +212,22 @@ DECODER (symbol) and ENCODER (symbol)."
     (read r0)
     (write "[EOF]")))
 
-(unless (coding-system-p 'test-ccl-eof-block-cs)
-  (make-ccl-coding-system 'test-ccl-eof-block-cs ?T
-			  "CCL_EOF_BLOCK tester"
-			  'test-ccl-eof-block
-			  'test-ccl-eof-block))
+(make-ccl-coding-system
+ 'test-ccl-eof-block-cs ?T "CCL_EOF_BLOCK tester"
+ 'test-ccl-eof-block 'test-ccl-eof-block)
 )
 
 (defconst ccl-encoder-eof-block-is-broken
   (eval-when-compile
     (not (equal (encode-coding-string "" 'test-ccl-eof-block-cs)
-                "[EOF]")))
+		"[EOF]")))
   "t if CCL_EOF_BLOCK is not executed when coding system encounts EOF on
 encoding.")
 
 (defconst ccl-decoder-eof-block-is-broken
   (eval-when-compile
     (not (equal (decode-coding-string "" 'test-ccl-eof-block-cs)
-                "[EOF]")))
+		"[EOF]")))
   "t if CCL_EOF_BLOCK is not executed when coding system encounts EOF on
 decoding.")
 
@@ -236,26 +239,26 @@ decoding.")
 
 (when (subrp (symbol-function 'ccl-execute))
   (fset 'ccl-vector-program-execute
-    (symbol-function 'ccl-execute))
+	(symbol-function 'ccl-execute))
   (defun ccl-execute (ccl-prog reg)
     "Execute CCL-PROG `ccl-vector-program-execute'.
 If CCL-PROG is symbol, it is dereferenced.
 \[Emacs 20.3 emulating function]"
     (ccl-vector-program-execute
-      (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
-      reg)))
+     (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
+     reg)))
 
 (when (subrp (symbol-function 'ccl-execute-on-string))
   (fset 'ccl-vector-program-execute-on-string
-    (symbol-function 'ccl-execute-on-string))
+	(symbol-function 'ccl-execute-on-string))
   (defun ccl-execute-on-string (ccl-prog status &optional contin)
     "Execute CCL-PROG `ccl-vector-program-execute-on-string'.
 If CCL-PROG is symbol, it is dereferenced.
 \[Emacs 20.3 emulating function]"
     (ccl-vector-program-execute-on-string
-      (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
-      status
-      contin)))
+     (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
+     status
+     contin)))
 
 )
 

@@ -1,5 +1,11 @@
 1998-08-27  Tanaka Akira  <akr@jaist.ac.jp>
 
+        * emu-e20.el (ccl-use-symbol-as-program): Reduce
+	`eval-and-compile' and `eval-when-compile' nesting.
+	(test-ccl-eof-block-cs): Remove existence checking.
+
+1998-08-27  Tanaka Akira  <akr@jaist.ac.jp>
+
         * emu-e20.el (ccl-use-symbol-as-program): Use
 	`ccl-vector-program-execute-on-string' if it is defined.
 
