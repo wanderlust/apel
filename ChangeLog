@@ -1,3 +1,28 @@
+1998-10-07  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 9.1 was released.
+
+1998-10-06  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mcs-e20.el, mcs-xm.el (coding-system-to-mime-charset): New
+	function.
+	(mime-charset-list): New implementation.
+
+	* Move `mime-charset-list' from mcs-20.el to mcs-e20.el and
+	mcs-xm.el.
+
+1998-10-01  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mcs-e20.el (charsets-mime-charset-alist): Use `gb2312' and
+	`big5' instead of `cn-gb-2312' and `cn-big5'.
+
+	* mcs-xm.el (charsets-mime-charset-alist): Use `gb2312' and `big5'
+	instead of `cn-gb-2312' and `cn-big5'.
+
+	* mcs-20.el (mime-charset-coding-system-alist): Add `cn-gb' to
+	default value.
+
+
 1998-09-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 9.0 was released.
@@ -768,7 +793,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>

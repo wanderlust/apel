@@ -102,6 +102,29 @@
     ))
 
 
+(defun coding-system-to-mime-charset (coding-system)
+  "Convert CODING-SYSTEM to a MIME-charset.
+Return nil if corresponding MIME-charset is not found."
+  (or (car (rassq coding-system mime-charset-coding-system-alist))
+      (coding-system-get coding-system 'mime-charset)))
+
+(defun mime-charset-list ()
+  "Return a list of all existing MIME-charset."
+  (let ((dest (mapcar (function car) mime-charset-coding-system-alist))
+	(rest coding-system-list)
+	cs)
+    (while rest
+      (setq cs (car rest))
+      (unless (rassq cs mime-charset-coding-system-alist)
+	(if (setq cs (coding-system-get cs 'mime-charset))
+	    (or (rassq cs mime-charset-coding-system-alist)
+		(memq cs dest)  
+		(setq dest (cons cs dest))
+		)))
+      (setq rest (cdr rest)))
+    dest))
+
+
 ;;; @ end
 ;;;
 
