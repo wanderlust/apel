@@ -160,12 +160,23 @@
 ;;; @ with code-conversion
 ;;;
 
-(defun insert-file-contents-as-coding-system
-  (coding-system filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
+(cond
+ ((and (>= emacs-major-version 19) (>= emacs-minor-version 23))
+  ;; Mule 2.0 or later.
+  (defun insert-file-contents-as-coding-system
+    (coding-system filename &optional visit beg end replace)
+    "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
 be applied to `file-coding-system-for-read'."
-  (let ((file-coding-system-for-read coding-system))
-    (insert-file-contents filename visit beg end replace)))
+    (let ((file-coding-system-for-read coding-system))
+      (insert-file-contents filename visit beg end replace))))
+ (t
+  ;; Mule 1.1 or earlier.
+  (defun insert-file-contents-as-coding-system
+    (coding-system filename &optional visit beg end replace)
+    "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
+be applied to `file-coding-system-for-read'."
+    (let ((file-coding-system-for-read coding-system))
+      (insert-file-contents filename visit)))))
 
 (cond
  ((and (>= emacs-major-version 19) (>= emacs-minor-version 29))
@@ -237,17 +248,33 @@ applied to `coding-system-for-write'."
 
 (defalias 'set-process-input-coding-system 'set-process-coding-system)
 
-(defun insert-file-contents-as-binary (filename
-				       &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but don't code and format conversion.
+(cond
+ ((and (>= emacs-major-version 19) (>= emacs-minor-version 23))
+  ;; Mule 2.0 or later.
+  (defun insert-file-contents-as-binary (filename
+					 &optional visit beg end replace)
+    "Like `insert-file-contents', q.v., but don't code and format conversion.
 Like `insert-file-contents-literary', but it allows find-file-hooks,
 automatic uncompression, etc.
 
 Namely this function ensures that only format decoding and character
 code conversion will not take place."
-  (as-binary-input-file
-   ;; Returns list absolute file name and length of data inserted.
-   (insert-file-contents filename visit beg end replace)))
+    (as-binary-input-file
+     ;; Returns list absolute file name and length of data inserted.
+     (insert-file-contents filename visit beg end replace))))
+ (t
+  ;; Mule 1.1 or earlier.
+  (defun insert-file-contents-as-binary (filename
+					 &optional visit beg end replace)
+    "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+
+Namely this function ensures that only format decoding and character
+code conversion will not take place."
+    (as-binary-input-file
+     ;; Returns list absolute file name and length of data inserted.
+     (insert-file-contents filename visit)))))
 
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)
