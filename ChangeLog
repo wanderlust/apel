@@ -1,3 +1,7 @@
+1998-09-07  Tanaka Akira  <akr@jaist.ac.jp>
+
+        * Makefile (elc): Ignore errors when removing emu*.elc.
+
 1998-09-01  Tanaka Akira <akr@jaist.ac.jp>
 
 	* emu-mule.el (ccl-execute-on-string): Fix arguments
