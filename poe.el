@@ -710,7 +710,7 @@ that is `eq' to KEY, there is no way to remove it by side effect;
 therefore, write `(setq foo (remassq key foo))' to be sure of changing
 the value of `foo'."
   (if (setq key (assq key list))
-      (delete key list)
+      (delq key list)
     list))
 
 ;; XEmacs 19.13 and later: (remassoc KEY LIST)
@@ -721,7 +721,18 @@ that is `equal' to KEY, there is no way to remove it by side effect;
 therefore, write `(setq foo (remassoc key foo))' to be sure of changing
 the value of `foo'."
   (if (setq key (assoc key list))
-      (delete key list)
+      (delq key list)
+    list))
+
+;; XEmacs 19.13 and later: (remrassq VALUE LIST)
+(defun-maybe remrassq (value list)
+  "Delete by side effect any elements of LIST whose cdr is `eq' to VALUE.
+The modified LIST is returned.  If the first member of LIST has a car
+that is `eq' to VALUE, there is no way to remove it by side effect;
+therefore, write `(setq foo (remrassq value foo))' to be sure of changing
+the value of `foo'."
+  (if (setq value (rassq value list))
+      (delq value list)
     list))
 
 ;; XEmacs 19.13 and later: (remrassoc VALUE LIST)
@@ -732,7 +743,7 @@ that is `equal' to VALUE, there is no way to remove it by side effect;
 therefore, write `(setq foo (remrassoc value foo))' to be sure of changing
 the value of `foo'."
   (if (setq value (rassoc value list))
-      (delete value list)
+      (delq value list)
     list))
 
 ;;; Define `functionp' here because "localhook" uses it.
