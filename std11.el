@@ -208,7 +208,7 @@ If BOUNDARY is not nil, it is used as message header separator.
 			    (concat "\\" (char-to-string chr))
 			  (char-to-string chr)
 			  )
-			)) str "")
+			)) string "")
 	  "\""))
 
 
