@@ -159,6 +159,21 @@ else returns nil. [emu-e19.el; old MULE emulating function]"
 ;;; @ binary access
 ;;;
 
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+
+Namely this function ensures that only format decoding and character
+code conversion will not take place."
+  (let ((emx-binary-mode t))
+    (insert-file-contents filename visit beg end replace)
+    ))
+
+(defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
+(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
+
 (defun insert-binary-file-contents-literally (filename
 					      &optional visit beg end replace)
   "Like `insert-file-contents-literally', q.v., but don't code conversion.
@@ -168,12 +183,6 @@ find-file-hooks, etc.
   This function ensures that none of these modifications will take place."
   (let ((emx-binary-mode t))
     (insert-file-contents-literally filename visit beg end replace)
-    ))
-
-(defun insert-binary-file-contents (filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but don't code and format conversion."
-  (let ((emx-binary-mode t))
-    (insert-file-contents filename visit beg end replace)
     ))
 
 (defun write-region-as-binary (start end filename

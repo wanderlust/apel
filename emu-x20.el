@@ -39,12 +39,21 @@
 ;;; @ binary access
 ;;;
 
-(defun insert-binary-file-contents (filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but don't code and format conversion."
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+
+Namely this function ensures that only format decoding and character
+code conversion will not take place."
   (let ((coding-system-for-read 'binary)
 	format-alist)
     (insert-file-contents filename visit beg end replace)
     ))
+
+(define-obsolete-function-alias 'insert-binary-file-contents
+  'insert-file-contents-as-binary)
 
 (defun insert-binary-file-contents-literally (filename
 					      &optional visit beg end replace)

@@ -206,6 +206,16 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
 ;;; @ binary access
 ;;;
 
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't character code conversion.
+\[emu-nemacs.el]"
+  (let (kanji-flag)
+    (insert-file-contents filename visit beg end replace)
+    ))
+
+(fset 'insert-binary-file-contents 'insert-file-contents-as-binary)
+
 (defun insert-binary-file-contents-literally (filename
 					      &optional visit beg end replace)
   "Like `insert-file-contents-literally', q.v., but don't code conversion.
@@ -216,13 +226,6 @@ find-file-hooks, etc.
 \[emu-nemacs.el]"
   (let (kanji-flag)
     (insert-file-contents-literally filename visit beg end replace)
-    ))
-
-(defun insert-binary-file-contents (filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but don't code and format conversion.
-\[emu-nemacs.el]"
-  (let (kanji-flag)
-    (insert-file-contents filename visit beg end replace)
     ))
 
 (defun write-region-as-binary (start end filename
