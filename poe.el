@@ -306,6 +306,34 @@ If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
     (nreverse (cons (substring string start) parts))))
 
 
+;;; @ Emacs 20.3 emulation
+;;;
+
+(defun-maybe line-beginning-position (&optional n)
+  "Return the character position of the first character on the current line.
+With argument N not nil or 1, move forward N - 1 lines first.
+If scan reaches end of buffer, return that position.
+This function does not move point."
+  (save-excursion
+    (if n
+	(forward-line (1- n))
+      )
+    (beginning-of-line)
+    (point)))
+
+(defun-maybe line-end-position (&optional n)
+  "Return the character position of the last character on the current line.
+With argument N not nil or 1, move forward N - 1 lines first.
+If scan reaches end of buffer, return that position.
+This function does not move point."
+  (save-excursion
+    (if n
+	(forward-line (1- n))
+      )
+    (end-of-line)
+    (point)))
+
+
 ;;; @ XEmacs emulation
 ;;;
 

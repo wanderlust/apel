@@ -134,6 +134,16 @@
     )
 
     
+;;; @ Emacs 20.3 emulation
+;;;
+
+(or (fboundp 'line-beginning-position)
+    (defalias 'line-beginning-position 'point-at-bol))
+
+(or (fboundp 'line-end-position)
+    (defalias 'line-end-position 'point-at-eol))
+
+
 ;;; @ end
 ;;;
 
