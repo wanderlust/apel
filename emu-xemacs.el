@@ -52,7 +52,7 @@
 
 (defvar mouse-button-1 'button1)
 (defvar mouse-button-2 'button2)
-
+(defvar mouse-button-3 'button3)
 
 (or (fboundp 'dired-other-frame)
     (defun dired-other-frame (dirname &optional switches)
