@@ -58,7 +58,7 @@ Associates the function with the current load file, if any."
 
 (defun byte-code-function-p (object)
   "Return t if OBJECT is a byte-compiled function object."
-  (and (consp object)
+  (and (consp object) (consp (cdr object))
        (let ((rest (cdr (cdr object)))
 	     elt)
 	 (if (stringp (car rest))
