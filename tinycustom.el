@@ -29,7 +29,7 @@
 ;; (custom.el bundled with v19 is old; does not have following macros.)
 ;;
 ;; DEFCUSTOM below has the same effect as the original DEFVAR has.
-;; DEFFACE only makes a face.
+;; DEFFACE below interprets almost all arguments.
 ;; DEFGROUP and DEFINE-WIDGET below are just nop macro.
 
 ;;; Code:
@@ -61,7 +61,46 @@ examine the brightness, so you should set this value definitely.")
 
 (defmacro-maybe-cond defface (face spec doc &rest args)
   "Declare FACE as a customizable face that defaults to SPEC.
-FACE does not need to be quoted.  [custom emulating macro]"
+FACE does not need to be quoted.
+
+Third argument DOC is the face documentation, it is ignored.
+
+It does nothing if FACE has been bound, otherwise set the face
+attributes according to SPEC.
+
+The remaining arguments should have the form
+
+   [KEYWORD VALUE]...
+
+The following KEYWORDs are defined:
+
+:group  VALUE should be a customization group, but it is ignored.
+
+SPEC should be an alist of the form ((DISPLAY ATTS)...).
+
+ATTS is of the form (KEY TYPE SET GET) where KEY is a symbol of
+`:foreground', `:background', `:bold', `:italic' or `:underline'.
+The other KEYs are ignored.
+
+The ATTS of the first entry in SPEC where the DISPLAY matches the
+frame should take effect in that frame.  DISPLAY can either be the
+symbol t, which will match all frames, or an alist of the form
+\((REQ ITEM...)...)
+
+For the DISPLAY to match a FRAME, the REQ property of the frame must
+match one of the ITEM.  The following REQ are defined:
+
+`type' (the value of `window-system')
+  Should be one of `x' or `tty'.
+
+`class' (the frame's color support)
+  Should be one of `color', `grayscale', or `mono'.
+
+`background' (the value of `frame-background-mode', what color is used
+for the background text)
+  Should be one of `light' or `dark'.
+
+\[custom emulating macro]"
   ((fboundp 'make-face)
    (` (let ((name (quote (, face))))
 	(or
@@ -82,6 +121,10 @@ FACE does not need to be quoted.  [custom emulating macro]"
 		       item (car (cdr (car display)))
 		       display (cdr display))
 		 (cond
+		  ((eq 'type req)
+		   (setq match (or (eq window-system item)
+				   (and (not window-system)
+					(eq 'tty item)))))
 		  ((eq 'class req)
 		   (setq match (or (and colorp (eq 'color item))
 				   (and (not colorp)
@@ -104,7 +147,7 @@ FACE does not need to be quoted.  [custom emulating macro]"
 		   (setq atts (cdr (cdr atts))))))
 	   face)))))
   (t
-   ;; do nothing.
+   nil ;; do nothing.
    ))
 
 (defmacro-maybe define-widget (name class doc &rest args)
