@@ -1,3 +1,12 @@
+1999-02-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* Makefile (install): Add voodoo comment `# $(MAKE)'.
+	(install-package): Likewise.
+
+	* APEL-MK (install-apel): Run installer with `just-print' mode if
+	environment variable "MAKEFLAGS" matches "^[^ =]*n" option.
+	(install-apel-package): Likewise.
+
 1999-02-21  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
 
 	* install.el (install-file): New optional argument JUST-PRINT.
