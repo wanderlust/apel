@@ -1,18 +1,5 @@
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
-	* emu.el: Modify conditions to load sub-modules.
-
-	* emu.el, emu-e20.el: Move alias
-	`insert-binary-file-contents-literally' from emu-e20.el to emu.el.
-
-1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* poem.el, emu.el: Move `string-as-unibyte',
-	`string-as-multibyte', `char-int', `int-char' and
-	`char-or-char-int-p' from emu.el to poem.el.
-
-1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
 	* mcharset.el, emu.el: Move function `charsets-to-mime-charset'
 	from emu.el to mcharset.el.
 

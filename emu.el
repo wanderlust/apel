@@ -77,28 +77,27 @@
 (require 'poem)
 (require 'mcharset)
 
-(cond ((featurep 'mule)
-       (cond ((featurep 'xemacs)
-	      ;; for XEmacs with MULE
-	      (require 'emu-x20)
-	      )
-	     ((>= emacs-major-version 20)
-	      ;; for Emacs 20
-	      (require 'emu-e20)
-	      (defalias 'insert-binary-file-contents-literally
-		'insert-file-contents-literally)
-	      )
-	     (t
-	      ;; for MULE 1.* and 2.*
-	      (require 'emu-mule)
-	      ))
+(cond (running-xemacs
+       (if (featurep 'mule)
+	   ;; for XEmacs with MULE
+	   (require 'emu-x20)
+	 ;; for XEmacs without MULE
+	 (require 'emu-latin1)
+	 ))
+      (running-mule-merged-emacs
+       ;; for Emacs 20.1 and 20.2
+       (require 'emu-e20)
+       )
+      ((boundp 'MULE)
+       ;; for MULE 1.* and 2.*
+       (require 'emu-mule)
        )
       ((boundp 'NEMACS)
        ;; for NEmacs and NEpoch
        (require 'emu-nemacs)
        )
       (t
-       ;; for Emacs 19 and XEmacs without MULE
+       ;; for Emacs 19
        (require 'emu-latin1)
        ))
 
