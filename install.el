@@ -25,8 +25,8 @@
 
 ;;; Code:
 
-(require 'emu)
-(require 'path-util)
+(require 'poe)				; make-directory (for v18)
+(require 'path-util)			; default-load-path
 
 
 ;;; @ compile Emacs Lisp files
@@ -35,19 +35,15 @@
 (defun compile-elisp-module (module &optional path every-time)
   (setq module (expand-file-name (symbol-name module) path))
   (let ((el-file (concat module ".el"))
-	(elc-file (concat module ".elc"))
-	)
+	(elc-file (concat module ".elc")))
     (if (or every-time
 	    (file-newer-than-file-p el-file elc-file))
-	(byte-compile-file el-file)
-      )
-    ))
+	(byte-compile-file el-file))))
 
 (defun compile-elisp-modules (modules &optional path every-time)
   (mapcar (function
 	   (lambda (module)
-	     (compile-elisp-module module path every-time)
-	     ))
+	     (compile-elisp-module module path every-time)))
 	  modules))
 
 
@@ -63,8 +59,7 @@
       (if (file-exists-p src-file)
 	  (let ((full-path (expand-file-name file dest)))
 	    (if (and (file-exists-p full-path) overwrite)
-		(delete-file full-path)
-	      )
+		(delete-file full-path))
 	    (copy-file src-file full-path t t)
 	    (if move
 		(catch 'tag
@@ -73,21 +68,16 @@
 		    (condition-case err
 			(progn
 			  (delete-file src-file)
-			  (throw 'tag nil)
-			  )
-		      (error (princ (format "%s\n" (nth 1 err))))
-		      ))))
-	    (princ (format "%s -> %s\n" file dest))
-	    ))
-      )))
+			  (throw 'tag nil))
+		      (error (princ (format "%s\n" (nth 1 err))))))))
+	    (princ (format "%s -> %s\n" file dest)))))))
 
 (defun install-files (files src dest &optional move overwrite just-print)
   (or (file-exists-p dest)
-      (make-directory dest t)
-      )
-  (mapcar (function (lambda (file)
-		      (install-file file src dest move overwrite just-print)
-		      ))
+      (make-directory dest t))
+  (mapcar (function
+	   (lambda (file)
+	     (install-file file src dest move overwrite just-print)))
 	  files))
 
 
@@ -98,8 +88,7 @@
   (let (el-file elc-file)
     (let ((name (symbol-name module)))
       (setq el-file (concat name ".el"))
-      (setq elc-file (concat name ".elc"))
-      )
+      (setq elc-file (concat name ".elc")))
     (let ((src-file (expand-file-name el-file src)))
       (if (not (file-exists-p src-file))
 	  nil 
@@ -107,11 +96,9 @@
 	    (princ (format "%s -> %s\n" el-file dest))
 	  (let ((full-path (expand-file-name el-file dest)))
 	    (if (file-exists-p full-path)
-		(delete-file full-path)
-	      )
+		(delete-file full-path))
 	    (copy-file src-file full-path t t)
-	    (princ (format "%s -> %s\n" el-file dest))
-	    )))
+	    (princ (format "%s -> %s\n" el-file dest)))))
       (setq src-file (expand-file-name elc-file src))
       (if (not (file-exists-p src-file))
 	  nil 
@@ -119,29 +106,23 @@
 	    (princ (format "%s -> %s\n" elc-file dest))
 	  (let ((full-path (expand-file-name elc-file dest)))
             (if (file-exists-p full-path)
-                (delete-file full-path)
-              )
+                (delete-file full-path))
 	    (copy-file src-file full-path t t)
 	    (catch 'tag
 	      (while (file-exists-p src-file)
 		(condition-case err
 		    (progn
 		      (delete-file src-file)
-		      (throw 'tag nil)
-		      )
-		  (error (princ (format "%s\n" (nth 1 err))))
-		  )))
-	    (princ (format "%s -> %s\n" elc-file dest))
-	    )))
-      )))
+		      (throw 'tag nil))
+		  (error (princ (format "%s\n" (nth 1 err)))))))
+	    (princ (format "%s -> %s\n" elc-file dest))))))))
 
 (defun install-elisp-modules (modules src dest &optional just-print)
   (or (file-exists-p dest)
-      (make-directory dest t)
-      )
-  (mapcar (function (lambda (module)
-		      (install-elisp-module module src dest just-print)
-		      ))
+      (make-directory dest t))
+  (mapcar (function
+	   (lambda (module)
+	     (install-elisp-module module src dest just-print)))
 	  modules))
 
 
@@ -150,7 +131,8 @@
 
 ;; install to shared directory (maybe "/usr/local")
 (defvar install-prefix
-  (if (or running-emacs-18 running-xemacs
+  (if (or (<= emacs-major-version 18)	; running-emacs-18
+	  (featurep 'xemacs)		; running-xemacs
 	  (and (boundp 'system-configuration-options) ; 19.29 or later
 	       (string= system-configuration-options "NT"))) ; for Meadow
       (expand-file-name "../../.." exec-directory)
@@ -164,42 +146,41 @@
 (defun install-detect-elisp-directory (&optional prefix elisp-prefix
 						 allow-version-specific)
   (or prefix
-      (setq prefix install-prefix)
-      )
+      (setq prefix install-prefix))
   (or elisp-prefix
-      (setq elisp-prefix install-elisp-prefix)
-      )
+      (setq elisp-prefix install-elisp-prefix))
   (or
    (catch 'tag
      (let ((rest default-load-path)
 	   (pat (concat "^"
 			(expand-file-name (concat ".*/" elisp-prefix) prefix)
-			"/?$"))
-	   dir)
-       (while (setq dir (car rest))
-	 (if (string-match pat dir)
+			"/?$")))
+       (while rest
+	 (if (string-match pat (car rest))
 	     (if (or allow-version-specific
 		     (not (string-match (format "/%d\\.%d"
 						emacs-major-version
-						emacs-minor-version) dir))
-		     )
-		 (throw 'tag dir)
-	       ))
-	 (setq rest (cdr rest))
-	 )))
+						emacs-minor-version)
+					(car rest))))
+		 (throw 'tag dir)))
+	 (setq rest (cdr rest)))))
    (expand-file-name (concat
-		      (if running-emacs-19_29-or-later
+		      (if (and		; running-emacs-19_29-or-later
+			   (not (featurep 'xemacs))
+			   (or (>= emacs-major-version 20)
+			       (and (= emacs-major-version 19)
+				    (>= emacs-minor-version 29))))
 			  "share/"
 			"lib/")
 		      (cond ((boundp 'NEMACS) "nemacs/")
 			    ((boundp 'MULE)   "mule/")
-			    (running-xemacs
+			    ((featurep 'xemacs)	; running-xemacs
 			     (if (featurep 'mule)
 				 "xmule/"
 			       "xemacs/"))
 			    (t "emacs/"))
-		      elisp-prefix) prefix)
-   ))
+		      elisp-prefix)
+		     prefix)))
 
 (defvar install-default-elisp-directory
   (install-detect-elisp-directory))
