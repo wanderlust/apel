@@ -69,26 +69,6 @@
 		  mnemonic "ko/EUC"
 		  eol-type nil)))
 
-;; (when (= (function-max-args 'coding-system-list) 0)
-;;   (or (fboundp 'coding-system-list-internal)
-;;       (fset 'coding-system-list-internal
-;;             (symbol-function 'coding-system-list)))
-;;   (defun coding-system-list (&optional base-only)
-;;     "Return a list of all existing coding systems.
-;; If optional arg BASE-ONLY is non-nil, only base coding systems are listed."
-;;     (if base-only
-;;         (let (dest
-;;               (rest (coding-system-list-internal))
-;;               cs)
-;;           (while rest
-;;             (setq cs (coding-system-name (coding-system-base (pop rest))))
-;;             (or (memq cs dest)
-;;                 (push cs dest))
-;;             )
-;;           dest)
-;;       (coding-system-list-internal)))
-;;   )
-
 
 ;;; @ buffer representation
 ;;;
