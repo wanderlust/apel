@@ -59,6 +59,33 @@
 	      (substring str end)
 	      ))))
 
+(defun std11-analyze-quoted-string (str)
+  (let ((len (length str)))
+    (if (and (> len 0)
+	     (eq (aref str 0) ?\"))
+	(let ((i 1) chr dest)
+	  (catch 'tag
+	    (while (< i len)
+	      (setq chr (aref str i))
+	      (cond ((eq chr ?\\)
+		     (setq i (1+ i))
+		     (if (>= i len)
+			 (throw 'tag nil)
+		       )
+		     (setq dest (concat dest (char-to-string (aref str i))))
+		     )
+		    ((eq chr ?\")
+		     (throw 'tag
+			    (cons (cons 'quoted-string dest)
+				  (substring str (1+ i)))
+			    )
+		     )
+		    (t
+		     (setq dest (concat dest (char-to-string (aref str i))))
+		     ))
+	      (setq i (1+ i))
+	      ))))))
+
 
 ;;; @ end
 ;;;
