@@ -54,4 +54,4 @@
 ;;; @ End.
 ;;;
 
-;;; apel-ver.el ends here.
+;;; apel-ver.el ends here
