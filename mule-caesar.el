@@ -62,7 +62,7 @@ case."
 		)) string "")
   )
 
-(defun mule-caesar-region (start end stride-ascii)
+(defun mule-caesar-region (start end &optional stride-ascii)
   "Caesar rotation of current region.
 Optional argument STRIDE-ASCII is rotation-size for Latin alphabet
 \(A-Z and a-z).  For non-ASCII text, ROT47 will be performed in any
