@@ -38,24 +38,24 @@
 ;;;
 
 (defcustom mime-charset-coding-system-alist
-  (let ((rest
-	 '((us-ascii      . raw-text)
-	   (gb2312	  . cn-gb-2312)
-	   (cn-gb	  . cn-gb-2312)
-	   (iso-2022-jp-2 . iso-2022-7bit-ss2)
-	   (x-ctext       . ctext)
-	   (unknown       . undecided)
-	   (x-unknown     . undecided)
-	   ))
-	dest)
-    (while rest
-      (let ((pair (car rest)))
-	(or (find-coding-system (car pair))
-	    (setq dest (cons pair dest))
-	    ))
-      (setq rest (cdr rest))
-      )
-    dest)
+  `,(let ((rest
+	   '((us-ascii      . raw-text)
+	     (gb2312	    . cn-gb-2312)
+	     (cn-gb	    . cn-gb-2312)
+	     (iso-2022-jp-2 . iso-2022-7bit-ss2)
+	     (x-ctext       . ctext)
+	     (unknown       . undecided)
+	     (x-unknown     . undecided)
+	     ))
+	  dest)
+      (while rest
+	(let ((pair (car rest)))
+	  (or (find-coding-system (car pair))
+	      (setq dest (cons pair dest))
+	      ))
+	(setq rest (cdr rest))
+	)
+      dest)
   "Alist MIME CHARSET vs CODING-SYSTEM.
 MIME CHARSET and CODING-SYSTEM must be symbol."
   :group 'i18n
@@ -83,6 +83,12 @@ is specified, it is used as line break code type of coding-system."
   (if (find-coding-system charset)
       charset
     ))
+
+(defsubst mime-charset-list ()
+  "Return a list of all existing MIME-charset."
+  (nconc (mapcar (function car) mime-charset-coding-system-alist)
+	 (coding-system-list)))
+
 
 (defvar widget-mime-charset-prompt-value-history nil
   "History of input to `widget-mime-charset-prompt-value'.")
