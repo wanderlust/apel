@@ -173,6 +173,15 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
   (set-kanji-fileio-code coding-system)
   )
 
+(defmacro as-binary-process (&rest body)
+  (` (let (selective-display	; Disable ^M to nl translation.
+	   ;; NEmacs
+	   kanji-flag
+	   (default-kanji-process-code 0)
+	   program-kanji-code-alist)
+       (,@ body)
+       )))
+
 
 ;;; @ character
 ;;;

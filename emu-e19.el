@@ -137,6 +137,11 @@ between START and END. [emu-e19.el; Mule emulating function]"
 (defun set-file-coding-system (coding-system &optional force)
   )
 
+(defmacro as-binary-process (&rest body)
+  (` (let (selective-display)	; Disable ^M to nl translation.
+       (,@ body)
+       )))
+
 
 ;;; @ character
 ;;;

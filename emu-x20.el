@@ -118,7 +118,7 @@ in the region between START and END.
 (defconst *koi8*   nil)
 
 (defvar code-converter-is-broken
-  (and xemacs-beta-version (<= xemacs-beta-version 24)))
+  (and xemacs-beta-version (<= xemacs-beta-version 26)))
 
 (if code-converter-is-broken
 (progn
@@ -157,6 +157,12 @@ in the region between START and END.
 (defalias 'character-decode-string 'decode-coding-string)
 (defalias 'character-encode-region 'encode-coding-region)
 (defalias 'character-decode-region 'decode-coding-region)
+
+(defmacro as-binary-process (&rest body)
+  `(let (selective-display	; Disable ^M to nl translation.
+	 process-input-coding-system
+	 process-output-coding-system)
+     ,@body))
 
 
 ;;; @ character

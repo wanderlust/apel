@@ -1,3 +1,48 @@
+Thu Jun 27 17:29:23 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.31 was released.
+
+	* mu-cite.el (mu-cite/make-methods): run-hooks
+ 	`mu-cite/instantiation-hook'.
+
+Wed Jun 26 15:33:39 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (character-decode-string): New implementation.
+
+Wed Jun 26 08:41:17 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (code-converter-is-broken): XEmacs 20.0 beta 26 is
+ 	broken too.
+
+	* emu-mule.el, emu-e19.el, emu-nemacs.el, emu-x20.el
+ 	(as-binary-process): New macro.
+
+Wed Jun 19 23:24:56 1996  Shuhei KOBAYASHI  <shuhei-k@jaist.ac.jp>
+
+	* mu-cite.el: NISHIJIMA Takanori
+ 	<racsho@studio-racsho.shibuya.tokyo.jp>'s patch was applied with
+ 	some modifications. (cf. [tm-ja:1935])
+
+Mon Jun 17 23:49:48 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (regulate-latin-char, regulate-latin-string): New
+ 	function.
+
+Mon Jun 17 23:47:19 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/qtext-regexp, rfc822/quoted-string-regexp):
+ 	new constant; define again.
+
+Thu Jun 13 17:13:13 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el: Variable `rfc822/qtext-regexp' and
+ 	`rfc822/quoted-string-regexp' were abolished.
+
+	* tl-822.el: Function `rfc822/analyze-quoted-pair' was abolished.
+
+	* tl-822.el (rfc822/analyze-quoted-string): New implementation.
+
+
 Wed Jun 12 05:28:42 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.30 was released.

@@ -21,7 +21,7 @@ FILES	= tl/README.en tl/Makefile tl/mk-tl tl/tl-els \
 		tl/*.el tl/*.bdf \
 		tl/doc/*.ol tl/doc/*.tex tl/doc/*.texi tl/ChangeLog
 
-TARFILE = tl-7.30.tar
+TARFILE = tl-7.31.tar
 
 
 elc:

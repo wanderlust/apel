@@ -112,8 +112,19 @@
 (defun character-decode-string (str coding-system)
   "Decode the string STR which is encoded in CODING-SYSTEM.
 \[emu-mule.el]"
-  (code-convert-string str coding-system *internal*)
-  )
+  (let ((len (length str))
+	ret)
+    (while (and
+	    (< 0 len)
+	    (null
+	     (setq ret
+		   (code-convert-string (substring str 0 len)
+					coding-system *internal*))
+	     ))
+      (setq len (1- len))
+      )
+    (concat ret (substring str len))
+    ))
 
 (defun character-encode-region (start end coding-system)
   "Encode the text between START and END which is
@@ -126,6 +137,15 @@ encoded in CODING-SYSTEM. [emu-mule.el]"
 encoded in CODING-SYSTEM. [emu-mule.el]"
   (code-convert start end coding-system *internal*)
   )
+
+(defmacro as-binary-process (&rest body)
+  (` (let (selective-display	; Disable ^M to nl translation.
+	   ;; Mule
+	   mc-flag	
+	   (default-process-coding-system (cons *noconv* *noconv*))
+	   program-coding-system-alist)
+       (,@ body)
+       )))
 
 
 ;;; @ character
@@ -178,6 +198,34 @@ Optional non-nil arg START-COLUMN specifies the starting column.
       (substring str from to))))
 ;;;
   )
+
+
+;;; @ regulation
+;;;
+
+(defun regulate-latin-char (chr)
+  (cond ((and (<= ?Ａ chr)(<= chr ?Ｚ))
+	 (+ (- chr ?Ａ) ?A)
+	 )
+	((and (<= ?ａ chr)(<= chr ?ｚ))
+	 (+ (- chr ?ａ) ?a)
+	 )
+	((eq chr ?．) ?.)
+	((eq chr ?，) ?,)
+	(t chr)
+	))
+
+(defun regulate-latin-string (str)
+  (let ((len (length str))
+	(i 0)
+	chr (dest ""))
+    (while (< i len)
+      (setq chr (sref str i))
+      (setq dest (concat dest
+			 (char-to-string (regulate-latin-char chr))))
+      (setq i (+ i (char-bytes chr)))
+      )
+    dest))
 
 
 ;;; @ end
