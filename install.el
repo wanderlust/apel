@@ -1,8 +1,9 @@
 ;;; install.el --- Emacs Lisp package install utility
 
-;; Copyright (C) 1996,1997,1998,1999 Free Software Foundation, Inc.
+;; Copyright (C) 1996,97,98,99,2001  Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;;	Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
 ;; Created: 1996/08/18
 ;; Keywords: install, byte-compile, directory detection
 
@@ -32,101 +33,91 @@
 ;;; @ compile Emacs Lisp files
 ;;;
 
-(defun compile-elisp-module (module &optional path every-time)
-  (setq module (expand-file-name (symbol-name module) path))
+(defun compile-elisp-module (module &optional dir force)
+  "Byte-compile MODULE.
+MODULE is a symbol of emacs-lisp source file name without suffix.
+Optional 2nd argument DIR is a directory where MODULE resides in.
+Unless optional 3rd argument FORCE is non-nil, MODULE is byte-compiled
+only when MODULE is newer than compiled file."
+  (setq module (expand-file-name (symbol-name module) dir))
   (let ((el-file (concat module ".el"))
 	(elc-file (concat module ".elc")))
-    (if (or every-time
-	    (file-newer-than-file-p el-file elc-file))
+    (if (or force (file-newer-than-file-p el-file elc-file))
 	(byte-compile-file el-file))))
 
-(defun compile-elisp-modules (modules &optional path every-time)
-  (mapcar
-   (function
-    (lambda (module)
-      (compile-elisp-module module path every-time)))
-   modules))
+(defun compile-elisp-modules (modules &optional dir force)
+  "Byte-compile MODULES.
+See `compile-elisp-module' for more information."
+  (while modules
+    (compile-elisp-module (car modules) dir force)
+    (setq modules (cdr modules))))
 
 
 ;;; @ install files
 ;;;
 
-(defvar install-overwritten-file-modes (+ (* 64 6)(* 8 4) 4)) ; 0644
+(defvar install-overwritten-file-modes (+ (* 64 6)(* 8 4) 4) ; 0644
+  "Default file modes for files installed by `install-file'.")
 
-(defun install-file (file src dest &optional move overwrite just-print)
-  (if just-print
-      (princ (format "%s -> %s\n" file dest))
-    (let ((src-file (expand-file-name file src)))
+(defun install-file (file src dst &optional move overwrite dry-run)
+  "Install FILE in SRC directory to DST directory.
+If optional 4th argument MOVE is non-nil, remove SRC/FILE.
+If optional 5th argument OVERWRITE is non-nil, remove DST/FILE first.
+If optional 6th argument DRY-RUN is non-nil, just show what would have
+been installed."
+  (if dry-run
+      (princ (format "%s -> %s\n" file dst))
+    (let ((src-file (expand-file-name file src))
+	  (dst-file (expand-file-name file dst)))
       (if (file-exists-p src-file)
-	  (let ((full-path (expand-file-name file dest)))
-	    (if (and (file-exists-p full-path) overwrite)
-		(delete-file full-path))
-	    (copy-file src-file full-path t t)
-	    (if move
-		(catch 'tag
-		  (while (and (file-exists-p src-file)
-			      (file-writable-p src-file))
-		    (condition-case err
-			(progn
-			  (delete-file src-file)
-			  (throw 'tag nil))
-		      (error (princ (format "%s\n" (nth 1 err))))))))
-	    (princ (format "%s -> %s\n" file dest)))))))
+	  (let ((current-file-modes (default-file-modes)))
+	    (unwind-protect
+		(condition-case err
+		    (progn
+		      (set-default-file-modes install-overwritten-file-modes)
+		      (if move
+			  (progn
+			    (rename-file src-file dst-file overwrite)
+			    (set-file-modes dst-file
+					    install-overwritten-file-modes))
+			(copy-file src-file dst-file overwrite t))
+		      (princ (format "%s -> %s\n" file dst)))
+		  (error
+		   (princ (format "%s: %s\n" file (nth 1 err)))))
+	      (set-default-file-modes current-file-modes)))
+	(princ (format "%s: No such file or directory\n" src-file))))))
 
-(defun install-files (files src dest &optional move overwrite just-print)
-  (or (file-exists-p dest)
-      (make-directory dest t))
-  (mapcar
-   (function
-    (lambda (file)
-      (install-file file src dest move overwrite just-print)))
-   files))
+(defun install-files (files src dst &optional move overwrite dry-run)
+  "Install FILES.
+See `install-file' for more information."
+  (or (file-exists-p dst)
+      (make-directory dst t))
+  (while files
+    (install-file (car files) src dst move overwrite dry-run)
+    (setq files (cdr files))))
 
 
 ;;; @@ install Emacs Lisp files
 ;;;
 
-(defun install-elisp-module (module src dest &optional just-print)
-  (let (el-file elc-file)
-    (let ((name (symbol-name module)))
-      (setq el-file (concat name ".el"))
-      (setq elc-file (concat name ".elc")))
-    (let ((src-file (expand-file-name el-file src)))
-      (if (not (file-exists-p src-file))
-	  nil 
-	(if just-print
-	    (princ (format "%s -> %s\n" el-file dest))
-	  (let ((full-path (expand-file-name el-file dest)))
-	    (if (file-exists-p full-path)
-		(delete-file full-path))
-	    (copy-file src-file full-path t t)
-	    (princ (format "%s -> %s\n" el-file dest)))))
-      (setq src-file (expand-file-name elc-file src))
-      (if (not (file-exists-p src-file))
-	  nil 
-	(if just-print
-	    (princ (format "%s -> %s\n" elc-file dest))
-	  (let ((full-path (expand-file-name elc-file dest)))
-            (if (file-exists-p full-path)
-                (delete-file full-path))
-	    (copy-file src-file full-path t t)
-	    (catch 'tag
-	      (while (file-exists-p src-file)
-		(condition-case err
-		    (progn
-		      (delete-file src-file)
-		      (throw 'tag nil))
-		  (error (princ (format "%s\n" (nth 1 err)))))))
-	    (princ (format "%s -> %s\n" elc-file dest))))))))
+(defun install-elisp-module (module src dst &optional dry-run)
+  "Install MODULE.
+MODULE is a symbol of emacs-lisp source file name without suffix.
+See `install-file' for information of the rest of arguments."
+  (let* ((name (symbol-name module))
+	 (el-file (concat name ".el"))
+	 (elc-file (concat name ".elc")))
+    (install-file el-file  src dst nil   'overwrite dry-run)
+    (install-file elc-file src dst 'move 'overwrite dry-run)))
 
-(defun install-elisp-modules (modules src dest &optional just-print)
-  (or (file-exists-p dest)
-      (make-directory dest t))
-  (mapcar
-   (function
-    (lambda (module)
-      (install-elisp-module module src dest just-print)))
-   modules))
+(defun install-elisp-modules (modules src dst &optional dry-run)
+  "Install MODULES.
+See `install-elisp-modules' for more information."
+  (or (file-exists-p dst)
+      (make-directory dst t))
+  (while modules
+    (install-elisp-module (car modules) src dst dry-run)
+    (setq modules (cdr modules))))
 
 
 ;;; @ detect install path
@@ -194,9 +185,9 @@
 ;;; @ for XEmacs package system
 ;;;
 
-(defun install-update-package-files (package dir &optional just-print)
+(defun install-update-package-files (package dir &optional dry-run)
   (cond
-   (just-print
+   (dry-run
     (princ (format "Updating autoloads in directory %s..\n\n" dir))
 
     (princ (format "Processing %s\n" dir))
