@@ -245,7 +245,7 @@ find-file-hooks, etc.
 
 (defmacro char-next-index (char index)
   "Return index of character succeeding CHAR whose index is INDEX."
-  (` (1+ index)))
+  (` (1+ (, index))))
 
 
 ;;; @ string
