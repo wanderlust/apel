@@ -125,20 +125,29 @@ See `install-elisp-modules' for more information."
 ;;; @ detect install path
 ;;;
 
-;; install to shared directory (maybe "/usr/local")
 (defvar install-prefix
-  (if (or (<= emacs-major-version 18)
-	  (featurep 'xemacs)
-	  (and (boundp 'system-configuration-options) ; 19.29 or later
-	       (string= system-configuration-options "NT"))) ; for Meadow
-      (expand-file-name "../../.." exec-directory)
+  (cond
+   ((<= emacs-major-version 18)
+    ;; The default of `exec-directory' is "/usr/local/emacs/etc".
+    ;; (See src/paths.h-dist)
+    (expand-file-name "../.." exec-directory))
+   ((featurep 'meadow)
+    ;; I have no idea, sorry.
+    (expand-file-name "../../.." data-directory))
+   ((featurep 'xemacs)
+    ;; The default of 'data-directory' is
+    ;; "/usr/local/lib/xemacs-$VERSION/etc".
+    (expand-file-name "../../.." data-directory))
+   (t
+    ;; The default of 'data-directory' is
+    ;; "/usr/local/lib/emacs/$VERSION/etc" (19.28 and earlier), or
+    ;; "/usr/local/share/emacs/$VERSION/etc" (19.29 and later).
     (expand-file-name "../../../.." data-directory)))
+  "Install prefix, normally \"/usr/local\".")
 
-(defvar install-elisp-prefix
-  (if (>= emacs-major-version 19)
-      "site-lisp"
-    ;; v18 does not have standard site directory.
-    "local.lisp"))
+;; v18 does not have the default, please set explicitly.
+(defvar install-elisp-prefix "site-lisp"
+  "Prefix for local lisp directory, normally \"site-lisp\".")
 
 (defun install-detect-elisp-directory (&optional prefix elisp-prefix
 						 allow-version-specific)
@@ -146,21 +155,24 @@ See `install-elisp-modules' for more information."
       (setq prefix install-prefix))
   (or elisp-prefix
       (setq elisp-prefix install-elisp-prefix))
-  (or (catch 'tag
-	(let ((rest default-load-path)
-	      (regexp (concat "^"
-			      (expand-file-name (concat ".*/" elisp-prefix)
-						prefix)
-			      "/?$")))
-	  (while rest
-	    (if (string-match regexp (car rest))
-		(if (or allow-version-specific
-			(not (string-match (format "/%d\\.%d"
-						   emacs-major-version
-						   emacs-minor-version)
-					   (car rest))))
-		    (throw 'tag (car rest))))
-	    (setq rest (cdr rest)))))
+  (or (let ((rest default-load-path)
+	    (regexp (concat "^"
+			    (expand-file-name (concat ".*/" elisp-prefix)
+					      prefix)
+			    "/?$"))
+	    (found nil))
+	(while (and rest (not found))
+	  (if (string-match regexp (car rest))
+	      (if (or allow-version-specific
+		      (not (string-match (format "/%d\\.%d"
+						 emacs-major-version
+						 emacs-minor-version)
+					 (car rest))))
+		  (setq found (car rest))))
+	  (setq rest (cdr rest)))
+	found)
+      ;; we couldn't find appropriate directory from `load-path'.
+      ;; use the default directory for each emacsen.
       (expand-file-name (concat (if (and (not (featurep 'xemacs))
 					 (or (>= emacs-major-version 20)
 					     (and (= emacs-major-version 19)
@@ -168,10 +180,7 @@ See `install-elisp-modules' for more information."
 				    "share/"
 				  "lib/")
 				(cond
-				 ((featurep 'xemacs)
-				  (if (featurep 'mule)
-				      "xmule/"
-				    "xemacs/"))
+				 ((featurep 'xemacs) "xemacs/")
 				 ;; unfortunately, unofficial mule based on
 				 ;; 19.29 and later use "emacs/" by default.
 				 ((boundp 'MULE) "mule/")
