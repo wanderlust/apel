@@ -132,10 +132,15 @@ even if other rules are matched for ALIST."
 	    (let ((ret-alist (calist-field-match alist type (car choice))))
 	      (if ret-alist
 		  (if (cdr choice)
-		      (setq dest
-			    (append (ctree-find-calist
-				     (cdr choice) ret-alist all)
-				    dest))
+		      (let ((ret (ctree-find-calist
+				  (cdr choice) ret-alist all)))
+			(while ret
+			  (let ((elt (car ret)))
+			    (or (member elt dest)
+				(setq dest (cons elt dest))
+				))
+			  (setq ret (cdr ret))
+			  ))
 		    (or (member ret-alist dest)
 			(setq dest (cons ret-alist dest)))
 		    )))))
@@ -145,10 +150,15 @@ even if other rules are matched for ALIST."
 	      (let ((ret-alist (calist-field-match alist type t)))
 		(if ret-alist
 		    (if (cdr default)
-			(setq dest
-			      (append (ctree-find-calist
-				       (cdr default) ret-alist all)
-				      dest))
+			(let ((ret (ctree-find-calist
+				    (cdr default) ret-alist all)))
+			  (while ret
+			    (let ((elt (car ret)))
+			      (or (member elt dest)
+				  (setq dest (cons elt dest))
+				  ))
+			    (setq ret (cdr ret))
+			    ))
 		      (or (member ret-alist dest)
 			  (setq dest (cons ret-alist dest)))
 		      ))))
