@@ -60,18 +60,29 @@
   (if (null rule-tree)
       alist
     (let ((type (car rule-tree))
-	  (choices (cdr rule-tree)))
+	  (choices (cdr rule-tree))
+	  default)
       (catch 'tag
 	(while choices
 	  (let* ((choice (car choices))
-		 (ret-alist (calist-field-match alist type (car choice))))
-	    (if ret-alist
-		(throw 'tag
-		       (if (cdr choice)
-			   (ctree-match-calist (cdr choice) ret-alist)
-			 ret-alist))))
-	  (setq choices (cdr choices))))
-      )))
+		 (choice-value (car choice)))
+	    (if (eq choice-value t)
+		(setq default choice)
+	      (let ((ret-alist (calist-field-match alist type (car choice))))
+		(if ret-alist
+		    (throw 'tag
+			   (if (cdr choice)
+			       (ctree-match-calist (cdr choice) ret-alist)
+			     ret-alist))
+		  ))))
+	  (setq choices (cdr choices)))
+	(if default
+	    (let ((ret-alist (calist-field-match alist type t)))
+	      (if ret-alist
+		  (if (cdr default)
+		      (ctree-match-calist (cdr default) ret-alist)
+		    ret-alist))))
+	))))
 
 (defun calist-to-ctree (calist)
   "Convert condition-alist CALIST to condition-tree."
