@@ -25,7 +25,7 @@ install:
 	$(EMACS) $(FLAGS) -f install-apel $(PREFIX) $(LISPDIR)
 
 
-install-package:	elc
+install-package:
 	$(XEMACS) $(FLAGS) -f install-apel-package $(PACKAGEDIR)
 
 
