@@ -80,17 +80,6 @@ If ASSERTION is not ommited and evaluated to nil and NO-NOTICE is nil, it is not
   (unless (broken-p facility)
     `(progn . ,body)))
 
-(defmacro check-broken-facility (facility)
-  "Check FACILITY is broken or not. If the status is different on
-compile(macro expansion) time and run time, warn it."
-  `(if-broken ,facility
-       (unless (broken-p ',facility)
-	 (message "COMPILE TIME ONLY BROKEN FACILITY DETECTED: %s" 
-		  (broken-facility-description ',facility)))
-     (when (broken-p ',facility)
-       (message "RUN TIME ONLY BROKEN FACILITY DETECTED: %s" 
-		(broken-facility-description ',facility)))))
-
 
 ;;; @ end
 ;;;
