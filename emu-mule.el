@@ -98,7 +98,7 @@
   (if coding-system
       (code-convert-string str *internal* coding-system)
     ;;(code-convert-string str *internal* nil) returns nil instead of str.
-    str)
+    str))
 
 ;; XXX: Should we support optional NOCOPY argument? (only in Emacs 20.x)
 (defun decode-coding-string (str coding-system)
@@ -114,7 +114,7 @@
 				 coding-system *internal*))))
 	  (setq len (1- len)))
 	(concat ret (substring str len)))
-    str)
+    str))
 
 (defalias 'detect-coding-region 'code-detect-region)
 
