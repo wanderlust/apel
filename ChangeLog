@@ -1,3 +1,8 @@
+1999-08-21  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* poe.el (rassoc): Just ignore elements of LIST that are not conse
+	cell and add doc string according to its features.
+
 1999-08-20  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* poe-18.el (delete): Return nil when argument 'list' is nil.
@@ -1953,7 +1958,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
