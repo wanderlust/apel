@@ -1,3 +1,11 @@
+Tue May 14 02:41:20 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.22.5 was released.
+
+	* emu-x20.el (code-converter-is-broken): XEmacs 20.0 beta 19 is
+ 	broken too.
+
+
 Sat May 11 08:36:35 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.22.4 was released.
