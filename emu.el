@@ -98,7 +98,12 @@
 CHAR can be any multilingual character
 TABLE defaults to the current buffer's category table."
 		(mapconcat (lambda (chr)
-			     (char-to-string (int-char chr)))
+			     (if (integerp chr)
+				 (char-to-string (int-char chr))
+			       (char-to-string chr)))
+			   ;; `char-category-list' returns a list of
+			   ;; characters in XEmacs 21.2.25 and later,
+			   ;; otherwise integers.
 			   (char-category-list character)
 			   ""))
 	      )

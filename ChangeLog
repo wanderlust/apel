@@ -1,3 +1,8 @@
+2001-02-23  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* emu.el (char-category for XEmacs): Don't use `int-char' when the
+	function `char-category-list' returns a list of characters.
+
 2001-02-01  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
 	* README.ja: Updated as to MAKEIT.BAT and MAKE1.BAT.
