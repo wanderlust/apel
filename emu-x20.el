@@ -28,12 +28,6 @@
 (require 'cyrillic)
 (require 'emu-xemacs)
 
-(defvar xemacs-beta-version
-  (if (string-match "(beta\\([0-9]+\\))" emacs-version)
-      (string-to-number
-       (substring emacs-version (match-beginning 1)(match-end 1))
-       )))
-
 
 ;;; @ coding-system
 ;;;
@@ -49,6 +43,7 @@
 
 (defmacro as-binary-process (&rest body)
   `(let (selective-display	; Disable ^M to nl translation.
+	 (file-coding-system 'no-conversion)
 	 process-input-coding-system
 	 process-output-coding-system)
      ,@body))
@@ -163,24 +158,9 @@
 ;;; @ character
 ;;;
 
-;; (defun char-bytes (chr) 1)
-
-;; (defun char-length (character)
-;;   "Return number of elements a CHARACTER occupies in a string or buffer.
-;; \[emu-x20.el]"
-;;   1)
-
-;; (defun char-columns (character)
-;;   "Return number of columns a CHARACTER occupies when displayed.
-;; \[emu-x20.el]"
-;;   (charset-columns (char-charset character))
-;;   )
-
 ;;; @@ Mule emulating aliases
 ;;;
 ;;; You should not use them.
-
-;;(defalias 'char-width 'char-columns)
 
 (defalias 'char-leading-char 'char-charset)
 
@@ -199,34 +179,9 @@ TABLE defaults to the current buffer's category table.
 ;;; @ string
 ;;;
 
-;; (defun string-columns (string)
-;;   "Return number of columns STRING occupies when displayed.
-;; \[emu-x20.el]"
-;;   (let ((col 0)
-;;         (len (length string))
-;;         (i 0))
-;;     (while (< i len)
-;;       (setq col (+ col (char-columns (aref string i))))
-;;       (setq i (1+ i))
-;;       )
-;;     col))
-
-;;(defalias 'string-width 'string-columns)
-
 (defun string-to-int-list (str)
   (mapcar #'char-int str)
   )
-
-;;(defalias 'sref 'aref)
-
-;; (defun truncate-string (str width &optional start-column)
-;;   "Truncate STR to fit in WIDTH columns.
-;; Optional non-nil arg START-COLUMN specifies the starting column.
-;; \[emu-x20.el; Mule 2.3 emulating function]"
-;;   (or start-column
-;;       (setq start-column 0))
-;;   (substring str start-column width)
-;;   )
 
 
 ;;; @ end
