@@ -43,7 +43,7 @@
        (require 'mcs-nemacs)
        )
       (t
-       (require 'mcs-ltn1)
+       (require 'mcs-latin1)
        ))
 
 
