@@ -84,6 +84,37 @@
 		    ret-alist))))
 	))))
 
+(defun ctree-match-calist-partially (rule-tree alist)
+  "Return matched condition-alist if ALIST matches RULE-TREE."
+  (if (null rule-tree)
+      alist
+    (let ((type (car rule-tree))
+	  (choices (cdr rule-tree))
+	  default)
+      (catch 'tag
+	(while choices
+	  (let* ((choice (car choices))
+		 (choice-value (car choice)))
+	    (if (eq choice-value t)
+		(setq default choice)
+	      (let ((ret-alist (calist-field-match alist type (car choice))))
+		(if ret-alist
+		    (throw 'tag
+			   (if (cdr choice)
+			       (ctree-match-calist-partially
+				(cdr choice) ret-alist)
+			     ret-alist))
+		  ))))
+	  (setq choices (cdr choices)))
+	(if default
+	    (let ((ret-alist (calist-field-match alist type t)))
+	      (if ret-alist
+		  (if (cdr default)
+		      (ctree-match-calist-partially (cdr default) ret-alist)
+		    ret-alist)))
+	  (calist-field-match alist type t))
+	))))
+
 (defun ctree-find-calist (rule-tree alist &optional all)
   "Return list of condition-alist which matches ALIST in RULE-TREE.
 If optional argument ALL is specified, default rules are not ignored
