@@ -90,7 +90,8 @@ been installed."
 (defun install-files (files src dst &optional move overwrite dry-run)
   "Install FILES.
 See `install-file' for more information."
-  (or (file-exists-p dst)
+  (or dry-run
+      (file-exists-p dst)
       (make-directory dst t))
   (while files
     (install-file (car files) src dst move overwrite dry-run)
@@ -113,7 +114,8 @@ See `install-file' for information of the rest of arguments."
 (defun install-elisp-modules (modules src dst &optional dry-run)
   "Install MODULES.
 See `install-elisp-modules' for more information."
-  (or (file-exists-p dst)
+  (or dry-run
+      (file-exists-p dst)
       (make-directory dst t))
   (while modules
     (install-elisp-module (car modules) src dst dry-run)
@@ -221,8 +223,9 @@ See `install-elisp-modules' for more information."
 (defun install-just-print-p ()
   (let ((flag (getenv "MAKEFLAGS"))
 	(case-fold-search nil))
-    (princ (format "%s\n" flag))
+    (princ (format "MAKEFLAGS=%s\n" (or flag "")))
     (if flag
+	;; Check whether MAKEFLAGS contain "n" option or not.
 	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag))))
 
 
