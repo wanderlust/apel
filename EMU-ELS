@@ -42,7 +42,7 @@
 	   )
 	 )
 	(t
-	 (setq poe-modules (cons 'poe-18 (cons 'localhook poe-modules))
+	 (setq poe-modules (cons 'env (cons 'poe-18 (cons 'localhook poe-modules)))
 	       invisible-modules (cons 'inv-18 invisible-modules))
 	 ))
   (cond ((and (featurep 'xemacs)
