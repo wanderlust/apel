@@ -69,6 +69,10 @@
 	 (setq poem-modules (cons 'poem-nemacs poem-modules)
 	       mcs-modules (cons 'mcs-nemacs mcs-modules))
 	 )
+	((featurep 'file-coding)
+	 (setq poem-modules (cons 'poem-xfc poem-modules)
+	       mcs-modules (cons 'mcs-ltn1 mcs-modules))
+	 )
 	(t
 	 (setq poem-modules (cons 'poem-ltn1 poem-modules)
 	       mcs-modules (cons 'mcs-ltn1 mcs-modules))
