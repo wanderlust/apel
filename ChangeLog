@@ -1,3 +1,13 @@
+1998-11-08  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poe-18.el (eval-and-compile): Moved from poe.el.
+
+	* poe.el: Move `eval-and-compile' to poe-18.el.
+
+	* poe-xemacs.el (overlayp): New alias.
+	(delete-overlay): New alias.
+
+
 1998-11-07  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 9.9 was released.
