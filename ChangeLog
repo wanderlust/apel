@@ -4,6 +4,13 @@
 
 1999-05-08  MORIOKA Tomohiko  <tomo@m17n.org>
 
+	* mcs-e20.el: Don't require `poem'.
+
+	* mcs-e20.el: Check coding-system `x-ctext' is not defined by
+	APEL.
+
+1999-05-08  MORIOKA Tomohiko  <tomo@m17n.org>
+
 	* mcs-e20.el: Fix checking code about coding-system `x-ctext'
 	[cf. <tm-ja:4389> by akr]
 
