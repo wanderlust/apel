@@ -356,7 +356,7 @@ find-file-hooks, etc.
 ;;; @ string
 ;;;
 
-(defalias 'string-columns 'length)
+(defalias 'string-width 'length)
 
 (defun sref (str idx)
   "Return the character in STR at index IDX.
@@ -414,10 +414,11 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 	    (setq to to-prev)))
       (substring str from to))))
 
-;;; @@ for Mule emulation
+;;; @@ obsoleted aliases
 ;;;
+;;; You should not use them.
 
-(defalias 'string-width 'length)
+(defalias 'string-columns 'length)
 
 
 ;;; @ text property emulation
