@@ -86,8 +86,8 @@
        (provide 'xemacs)
        (require 'poe-xemacs)
        )
-      ((> emacs-major-version 20))
-      ((= emacs-major-version 20)
+      ((>= emacs-major-version 20)
+       (require 'poe-19)
        (cond ((fboundp 'string)
 	      ;; Emacs 20.3 or later
 	      )
@@ -96,7 +96,9 @@
 	      (defalias 'string 'concat-chars)
 	      ))
        )
-      ((= emacs-major-version 19))
+      ((>= emacs-major-version 19)
+       (require 'poe-19)
+       )
       (t
        (require 'poe-18)
        ))
@@ -358,15 +360,6 @@ This function does not move point."
     
 ;;; @ XEmacs emulation
 ;;;
-
-(defun-maybe find-face (face-or-name)
-  "Retrieve the face of the given name.
-If FACE-OR-NAME is a face object, it is simply returned.
-Otherwise, FACE-OR-NAME should be a symbol.  If there is no such face,
-nil is returned.  Otherwise the associated face object is returned.
-\[XEmacs emulating function]"
-  (car (memq face-or-name (face-list)))
-  )
 
 (defun-maybe point-at-bol (&optional n buffer)
   "Return the character position of the first character on the current line.
