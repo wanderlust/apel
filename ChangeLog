@@ -1,3 +1,8 @@
+2001-06-01  Tanaka Akira      <akr@m17n.org>
+
+	* pccl.el (ccl-compat): Since mule 2.3 accepts `t' and `nil' as `type'
+	argument, so arguments conversion shouln't applied in such case.
+	
 2001-05-24  Tanaka Akira      <akr@m17n.org>
 
 	* pccl.el (accept-long-ccl-program): Don't advice for Emacs 21.

@@ -151,7 +151,7 @@ Value is a list of transformed arguments."
     (defadvice make-coding-system
       (before ccl-compat (name type &rest ad-subr-args) activate)
       "Emulate XEmacs style make-coding-system."
-      (when (symbolp type)
+      (when (and (symbolp type) (not (memq type '(t nil))))
         (let ((args (apply 'transform-make-coding-system-args
 	                   name type ad-subr-args)))
 	  (setq type (cadr args)
