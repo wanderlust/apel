@@ -27,6 +27,7 @@
 ;;;
 ;;; Code:
 
+(require 'cyrillic)
 (require 'emu-xemacs)
 
 (defvar xemacs-beta-version
@@ -90,7 +91,7 @@ in the region between START and END.
 (defconst *hz*     'hz)
 (defconst *big5*   'big5)
 (defconst *euc-kr* 'euc-kr)
-(defconst *koi8*   nil)
+(defconst *koi8*   'koi8)
 
 (defvar code-converter-is-broken
   (and xemacs-beta-version (<= xemacs-beta-version 26)))

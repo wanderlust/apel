@@ -72,6 +72,10 @@
 ;;; @@ visible/invisible
 ;;;
 
+(defmacro enable-invisible ())
+
+(defmacro end-of-invisible ())
+
 (defun invisible-region (start end)
   (if (save-excursion
 	(goto-char start)

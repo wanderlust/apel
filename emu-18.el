@@ -224,6 +224,20 @@ With optional non-nil ALL, force redisplay of all mode-lines.
 ;;; @@ visible/invisible
 ;;;
 
+(defmacro enable-invisible ()
+  (`
+   (progn
+     (make-local-variable 'original-selective-display)
+     (setq original-selective-display selective-display)
+     (setq selective-display t)
+     )))
+
+(defmacro end-of-invisible ()
+  (` (setq selective-display
+	   (if (boundp 'original-selective-display)
+	       original-selective-display))
+     ))
+
 (defun invisible-region (start end)
   (let ((buffer-read-only nil)		;Okay even if write protected.
 	(modp (buffer-modified-p)))

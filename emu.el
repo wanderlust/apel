@@ -33,7 +33,10 @@
 (or (boundp 'emacs-minor-version)
     (defconst emacs-minor-version
       (string-to-int
-       (substring emacs-version (string-match "18\\." emacs-version)))))
+       (substring
+	emacs-version
+	(string-match (format "%d\\." emacs-major-version) emacs-version)
+	))))
 
 (defvar running-emacs-18 (<= emacs-major-version 18))
 (defvar running-xemacs (string-match "XEmacs" emacs-version))

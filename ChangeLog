@@ -1,3 +1,18 @@
+Tue Jul 23 14:58:47 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.43.1 was released.
+
+	* emu.el (emacs-minor-version): fixed for NEpoch.
+
+Mon Jul 22 18:54:54 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-xemacs.el, emu-19.el, emu-18.el
+ 	(enable-invisible): New macro.
+	(end-of-invisible): New macro.
+
+	* emu-x20.el: add `(require 'cyrillic)'.
+
+
 Wed Jul 17 05:35:50 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.43 was released.
