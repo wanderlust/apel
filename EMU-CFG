@@ -1,0 +1,42 @@
+;;; -*-Emacs-Lisp-*-
+;;;
+;;; $Id$
+;;;
+
+(setq load-path (append
+		 (mapcar (function
+			  (lambda (path)
+			    (expand-file-name path default-directory)
+			    ))
+			 '("." "../apel" "../tl")
+			 )
+		 load-path))
+
+(require 'install)
+
+
+;;; @ Please specify prefix of install directory.
+;;;
+
+;; Please specify install path prefix.
+;; If it is omitted, shared directory (maybe /usr/local is used).
+(defvar PREFIX install-prefix)
+;;(setq PREFIX "~/")
+
+;; Please specify emu prefix [optional]
+(setq EMU_PREFIX
+      (if (string-match "XEmacs" emacs-version)
+	  "emu"
+	""))
+
+
+
+;;; @ optional settings
+;;;
+
+(setq EMU_DIR
+      (expand-file-name
+       EMU_PREFIX
+       (install-detect-elisp-directory PREFIX nil 'version-specific)))
+
+;;; EMU-CFG ends here
