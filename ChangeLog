@@ -1,3 +1,9 @@
+2002-06-26  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* mcs-e20.el (charsets-mime-charset-alist): Remove nil's from the
+	default value.
+	* mcs-xm.el (charsets-mime-charset-alist): Ditto.
+
 2002-06-21  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* mcs-e20.el (charsets-mime-charset-alist): Add Latin8 and Latin9

@@ -103,69 +103,71 @@
 
 
 (defvar charsets-mime-charset-alist
-  `(((ascii)						. us-ascii)
-    ((ascii latin-iso8859-1)				. iso-8859-1)
-    ((ascii latin-iso8859-2)				. iso-8859-2)
-    ((ascii latin-iso8859-3)				. iso-8859-3)
-    ((ascii latin-iso8859-4)				. iso-8859-4)
-    ((ascii cyrillic-iso8859-5)				. iso-8859-5)
-;;; ((ascii cyrillic-iso8859-5)				. koi8-r)
-    ((ascii arabic-iso8859-6)				. iso-8859-6)
-    ((ascii greek-iso8859-7)				. iso-8859-7)
-    ((ascii hebrew-iso8859-8)				. iso-8859-8)
-    ((ascii latin-iso8859-9)				. iso-8859-9)
-    ,(if (find-coding-system 'iso-8859-14)
-	 '((ascii latin-iso8859-14)			. iso-8859-14))
-    ,(if (find-coding-system 'iso-8859-15)
-	 '((ascii latin-iso8859-15)			. iso-8859-15))
-    ,(if (featurep 'utf-2000)
-	 '((ascii latin-jisx0201
-		  japanese-jisx0208-1978
-		  japanese-jisx0208
-		  japanese-jisx0208-1990)		. iso-2022-jp)
-       '((ascii latin-jisx0201
-		japanese-jisx0208-1978 japanese-jisx0208)
-	 . iso-2022-jp))
-    ,(if (featurep 'utf-2000)
-	 '((ascii latin-jisx0201
-		  japanese-jisx0208-1978
-		  japanese-jisx0208
-		  japanese-jisx0208-1990
-		  japanese-jisx0213-1
-		  japanese-jisx0213-2)			. iso-2022-jp-3)
-       '((ascii latin-jisx0201
-		japanese-jisx0208-1978 japanese-jisx0208
-		japanese-jisx0213-1
-		japanese-jisx0213-2)			. iso-2022-jp-3))
-    ,(if (featurep 'utf-2000)
-	 '((ascii latin-jisx0201 katakana-jisx0201
-		  japanese-jisx0208-1990)		. shift_jis)
-       '((ascii latin-jisx0201
-		katakana-jisx0201 japanese-jisx0208)	. shift_jis))
-    ((ascii korean-ksc5601)				. euc-kr)
-    ((ascii chinese-gb2312)				. gb2312)
-    ((ascii chinese-big5-1 chinese-big5-2)		. big5)
-    ((ascii thai-xtis)					. tis-620)
-    ,(if (featurep 'utf-2000)
-	 '((ascii latin-jisx0201 latin-iso8859-1
-		  greek-iso8859-7
-		  japanese-jisx0208-1978 japanese-jisx0208
-		  japanese-jisx0208-1990
-		  japanese-jisx0212
-		  chinese-gb2312
-		  korean-ksc5601)		. iso-2022-jp-2)
-       '((ascii latin-jisx0201 latin-iso8859-1
-		greek-iso8859-7
-		japanese-jisx0208-1978 japanese-jisx0208
-		japanese-jisx0212
-		chinese-gb2312
-		korean-ksc5601)			. iso-2022-jp-2))
-    ;; ((ascii latin-iso8859-1 greek-iso8859-7
-    ;;         latin-jisx0201 japanese-jisx0208-1978
-    ;;         chinese-gb2312 japanese-jisx0208
-    ;;         korean-ksc5601 japanese-jisx0212
-    ;;         chinese-cns11643-1 chinese-cns11643-2)      . iso-2022-int-1)
-    ))
+  (delq
+   nil
+   `(((ascii)						. us-ascii)
+     ((ascii latin-iso8859-1)				. iso-8859-1)
+     ((ascii latin-iso8859-2)				. iso-8859-2)
+     ((ascii latin-iso8859-3)				. iso-8859-3)
+     ((ascii latin-iso8859-4)				. iso-8859-4)
+     ((ascii cyrillic-iso8859-5)			. iso-8859-5)
+     ;;((ascii cyrillic-iso8859-5)			. koi8-r)
+     ((ascii arabic-iso8859-6)				. iso-8859-6)
+     ((ascii greek-iso8859-7)				. iso-8859-7)
+     ((ascii hebrew-iso8859-8)				. iso-8859-8)
+     ((ascii latin-iso8859-9)				. iso-8859-9)
+     ,(if (find-coding-system 'iso-8859-14)
+	  '((ascii latin-iso8859-14)			. iso-8859-14))
+     ,(if (find-coding-system 'iso-8859-15)
+	  '((ascii latin-iso8859-15)			. iso-8859-15))
+     ,(if (featurep 'utf-2000)
+	  '((ascii latin-jisx0201
+		   japanese-jisx0208-1978
+		   japanese-jisx0208
+		   japanese-jisx0208-1990)		. iso-2022-jp)
+	'((ascii latin-jisx0201
+		 japanese-jisx0208-1978 japanese-jisx0208)
+	  . iso-2022-jp))
+     ,(if (featurep 'utf-2000)
+	  '((ascii latin-jisx0201
+		   japanese-jisx0208-1978
+		   japanese-jisx0208
+		   japanese-jisx0208-1990
+		   japanese-jisx0213-1
+		   japanese-jisx0213-2)			. iso-2022-jp-3)
+	'((ascii latin-jisx0201
+		 japanese-jisx0208-1978 japanese-jisx0208
+		 japanese-jisx0213-1
+		 japanese-jisx0213-2)			. iso-2022-jp-3))
+     ,(if (featurep 'utf-2000)
+	  '((ascii latin-jisx0201 katakana-jisx0201
+		   japanese-jisx0208-1990)		. shift_jis)
+	'((ascii latin-jisx0201
+		 katakana-jisx0201 japanese-jisx0208)	. shift_jis))
+     ((ascii korean-ksc5601)				. euc-kr)
+     ((ascii chinese-gb2312)				. gb2312)
+     ((ascii chinese-big5-1 chinese-big5-2)		. big5)
+     ((ascii thai-xtis)					. tis-620)
+     ,(if (featurep 'utf-2000)
+	  '((ascii latin-jisx0201 latin-iso8859-1
+		   greek-iso8859-7
+		   japanese-jisx0208-1978 japanese-jisx0208
+		   japanese-jisx0208-1990
+		   japanese-jisx0212
+		   chinese-gb2312
+		   korean-ksc5601)		. iso-2022-jp-2)
+	'((ascii latin-jisx0201 latin-iso8859-1
+		 greek-iso8859-7
+		 japanese-jisx0208-1978 japanese-jisx0208
+		 japanese-jisx0212
+		 chinese-gb2312
+		 korean-ksc5601)			. iso-2022-jp-2))
+     ;;((ascii latin-iso8859-1 greek-iso8859-7
+     ;;        latin-jisx0201 japanese-jisx0208-1978
+     ;;        chinese-gb2312 japanese-jisx0208
+     ;;        korean-ksc5601 japanese-jisx0212
+     ;;        chinese-cns11643-1 chinese-cns11643-2)      . iso-2022-int-1)
+     )))
 
 
 (defun coding-system-to-mime-charset (coding-system)
