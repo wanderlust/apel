@@ -113,8 +113,11 @@ header separator. [std11.el]"
 (defun std11-unfold-string (string)
   "Unfold STRING as message header field. [std11.el]"
   (let ((dest ""))
-    (while (string-match "\n\\s +" string)
-      (setq dest (concat dest (substring string 0 (match-beginning 0)) " "))
+    (while (string-match "\n\\([ \t]\\)" string)
+      (setq dest (concat dest
+                         (substring string 0 (match-beginning 0))
+                         (match-string 1 string)
+                         ))
       (setq string (substring string (match-end 0)))
       )
     (concat dest string)
