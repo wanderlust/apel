@@ -74,6 +74,17 @@
 		  eol-type nil)))
 
 
+;;; @ CCL
+;;;
+
+(defun make-ccl-coding-system (name mnemonic doc-string decoder encoder)
+  (make-coding-system
+   name 'ccl doc-string
+   (list 'mnemonic (char-to-string mnemonic)
+         'decode (symbol-value decoder)
+         'encode (symbol-value encoder))))
+
+
 ;;; @ without code-conversion
 ;;;
 
