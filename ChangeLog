@@ -1,3 +1,21 @@
+Mon May 20 15:52:28 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.26 was released.
+
+	* emu-x20.el (code-converter-is-broken): XEmacs 20.0 beta 20 is
+ 	broken too.
+
+Mon May 20 15:51:11 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/parse-addr-spec): Unused local variable
+ 	`at-sign' was abolished.
+
+Mon May 20 13:08:14 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el (citation-mark-chars): New variable.
+	(compress-cited-prefix): Use variable `citation-mark-chars'.
+
+
 Fri May 17 08:12:46 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.25 was released.
