@@ -17,6 +17,7 @@ LISPDIR = NONE
 PACKAGEDIR = NONE
 VERSION_SPECIFIC_LISPDIR = NONE
 
+ARCHIVE_DIR_PREFIX = /pub/mule
 
 elc:
 	$(EMACS) $(FLAGS) -f compile-apel
@@ -57,6 +58,6 @@ tar:
 	sed "s/VERSION/$(VERSION)/" < ftp.in > ftp
 
 release:
-	-$(RM) /pub/GNU/elisp/apel/apel-$(VERSION).tar.gz
-	mv /tmp/apel-$(VERSION).tar.gz /pub/GNU/elisp/apel/
-	cd /pub/GNU/elisp/semi/ ; ln -s ../apel/apel-$(VERSION).tar.gz .
+	-$(RM) $(ARCHIVE_DIR_PREFIX)/apel/apel-$(VERSION).tar.gz
+	mv /tmp/apel-$(VERSION).tar.gz $(ARCHIVE_DIR_PREFIX)/apel
+	cd $(ARCHIVE_DIR_PREFIX)/semi/ ; ln -s ../apel/apel-$(VERSION).tar.gz .
