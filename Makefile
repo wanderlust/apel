@@ -2,7 +2,7 @@
 # Makefile for APEL.
 #
 
-VERSION = 9.11
+VERSION = 9.12
 
 TAR	= tar
 RM	= /bin/rm -f
@@ -23,11 +23,12 @@ elc:
 
 install:
 	$(EMACS) $(FLAGS) -f install-apel $(PREFIX) $(LISPDIR) \
-		$(VERSION_SPECIFIC_LISPDIR)
+		$(VERSION_SPECIFIC_LISPDIR)	# $(MAKE)
 
 
 install-package:
-	$(XEMACS) $(FLAGS) -f install-apel-package $(PACKAGEDIR)
+	$(XEMACS) $(FLAGS) -f install-apel-package $(PACKAGEDIR) \
+		# $(MAKE)
 
 
 what-where:
