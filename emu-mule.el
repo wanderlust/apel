@@ -210,6 +210,20 @@ find-file-hooks, etc.
       ))
   )
 
+(defun write-region-as-raw-text-CRLF (start end filename
+					    &optional append visit lockname)
+  "Like `write-region', q.v., but don't code conversion."
+  (let ((the-buf (current-buffer)))
+    (with-temp-buffer
+      (insert-buffer-substring the-buf start end)
+      (goto-char (point-min))
+      (while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
+	(replace-match "\\1\r\n")
+	)
+      (let ((file-coding-system *noconv*))
+	(write-region (point-min)(point-max) filename append visit)
+	))))
+
 
 ;;; @ MIME charset
 ;;;

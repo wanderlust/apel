@@ -1,3 +1,10 @@
+1998-08-11  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* emu-mule.el (write-region-as-raw-text-CRLF): New function.
+
+	* emu-18.el (generate-new-buffer-name): New function.
+	(Emacs 19 mulating function).
+
 1998-08-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-nemacs.el, emu-latin1.el (write-region-as-raw-text-CRLF):
