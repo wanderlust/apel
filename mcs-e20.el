@@ -79,8 +79,8 @@
     ((ascii latin-jisx0201
 	    katakana-jisx0201 japanese-jisx0208)	. shift_jis)
     ((ascii korean-ksc5601)				. euc-kr)
-    ((ascii chinese-gb2312)				. cn-gb-2312)
-    ((ascii chinese-big5-1 chinese-big5-2)		. cn-big5)
+    ((ascii chinese-gb2312)				. gb2312)
+    ((ascii chinese-big5-1 chinese-big5-2)		. big5)
     ((ascii latin-iso8859-1 greek-iso8859-7
 	    latin-jisx0201 japanese-jisx0208-1978
 	    chinese-gb2312 japanese-jisx0208
@@ -100,6 +100,29 @@
 	    chinese-cns11643-5 chinese-cns11643-6
 	    chinese-cns11643-7)				. iso-2022-int-1)
     ))
+
+
+(defun coding-system-to-mime-charset (coding-system)
+  "Convert CODING-SYSTEM to a MIME-charset.
+Return nil if corresponding MIME-charset is not found."
+  (or (car (rassq coding-system mime-charset-coding-system-alist))
+      (coding-system-get coding-system 'mime-charset)))
+
+(defun mime-charset-list ()
+  "Return a list of all existing MIME-charset."
+  (let ((dest (mapcar (function car) mime-charset-coding-system-alist))
+	(rest coding-system-list)
+	cs)
+    (while rest
+      (setq cs (car rest))
+      (unless (rassq cs mime-charset-coding-system-alist)
+	(if (setq cs (coding-system-get cs 'mime-charset))
+	    (or (rassq cs mime-charset-coding-system-alist)
+		(memq cs dest)  
+		(setq dest (cons cs dest))
+		)))
+      (setq rest (cdr rest)))
+    dest))
 
 
 ;;; @ end
