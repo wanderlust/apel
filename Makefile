@@ -49,7 +49,7 @@ tar:
 				| sed s/\\\\./_/ | sed s/\\\\./_/`; \
 	cd /tmp; \
 	cvs -d :ext:morioka@chamonix.jaist.ac.jp:/hare/cvs/root \
-		export -d apel-$(VERSION)
+		export -d apel-$(VERSION) \
 		-r apel-`echo $(VERSION) | tr . _` apel'
 	cd /tmp; $(RM) apel-$(VERSION)/ftp.in ; \
 		$(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
