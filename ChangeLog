@@ -1,3 +1,19 @@
+1998-09-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* README.en (run in expanded place): fixed.
+	(install as a XEmacs package): New description.
+
+	* Makefile (XEMACS): New variable.
+	(PACKAGEDIR): New variable.
+	(package): New target.
+	(install-package): New target.
+
+	* APEL-MK (config-apel-package): New function.
+	(compile-apel-package): New function.
+	(install-apel-package): New function.
+
+	* APEL-CFG (PACKAGEDIR): New variable.
+
 1998-09-07  Tanaka Akira  <akr@jaist.ac.jp>
 
         * Makefile (elc): Ignore errors when removing emu*.elc.
