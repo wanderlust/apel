@@ -33,6 +33,7 @@
 
 (defconst std11-space-chars " \t\n")
 (defconst std11-spaces-regexp (concat "^[" std11-space-chars "]+"))
+(defconst std11-special-chars "][()<>@,;:\\<>.\"")
 
 (defun std11-analyze-spaces (str)
   (if (string-match std11-spaces-regexp str)
@@ -40,6 +41,14 @@
 	(cons (cons 'spaces (substring str 0 end))
 	      (substring str end)
 	      ))))
+
+(defun std11-analyze-special (str)
+  (if (and (> (length str) 0)
+	   (find (aref str 0) std11-special-chars)
+	   )
+      (cons (cons 'specials (substring str 0 1))
+	    (substring str 1)
+	    )))
 
 
 ;;; @ end
