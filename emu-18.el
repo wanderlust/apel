@@ -1,4 +1,4 @@
-;;; emu-18.el --- Emacs 19.* emulation module for Emacs 18.*
+;;; emu-18.el --- EMACS 19.* emulation module for EMACS 18.*
 
 ;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
 
@@ -34,7 +34,7 @@
 ;;; @ hook
 ;;;
 
-;; These function are imported from Emacs 19.28.
+;; These function are imported from EMACS 19.28.
 (defun add-hook (hook function &optional append)
   "Add to the value of HOOK the function FUNCTION.
 FUNCTION is not added if already present.
@@ -45,7 +45,7 @@ FUNCTION is added at the end.
 HOOK should be a symbol, and FUNCTION may be any valid function.  If
 HOOK is void, it is first set to nil.  If HOOK's value is a single
 function, it is changed to a list of functions.
-\[emu-18.el; Emacs 19 emulating function]"
+\[emu-18.el; EMACS 19 emulating function]"
   (or (boundp hook)
       (set hook nil)
       )
@@ -75,7 +75,7 @@ function, it is changed to a list of functions.
 HOOK should be a symbol, and FUNCTION may be any valid function.  If
 FUNCTION isn't the value of HOOK, or, if FUNCTION doesn't appear in the
 list of hooks to run in HOOK, then nothing is done.  See `add-hook'.
-\[emu-18.el; Emacs 19 emulating function]"
+\[emu-18.el; EMACS 19 emulating function]"
   (if (or (not (boundp hook))		;unbound symbol, or
 	  (null (symbol-value hook))	;value is nil, or
 	  (null function))		;function is nil, then
@@ -96,7 +96,7 @@ list of hooks to run in HOOK, then nothing is done.  See `add-hook'.
 (defun member (elt list)
   "Return non-nil if ELT is an element of LIST.  Comparison done with EQUAL.
 The value is actually the tail of LIST whose car is ELT.
-\[emu-18.el; Emacs 19 emulating function]"
+\[emu-18.el; EMACS 19 emulating function]"
   (while (and list (not (equal elt (car list))))
     (setq list (cdr list)))
   list)
@@ -108,7 +108,7 @@ If the first member of LIST is ELT, deleting it is not a side effect;
 it is simply using a different list.
 Therefore, write `(setq foo (delete element foo))'
 to be sure of changing the value of `foo'.
-\[emu-18.el; Emacs 19 emulating function]"
+\[emu-18.el; EMACS 19 emulating function]"
   (if (equal elt (car list))
       (cdr list)
     (let ((rest list)
@@ -128,13 +128,13 @@ to be sure of changing the value of `foo'.
 (defun defalias (sym newdef)
   "Set SYMBOL's function definition to NEWVAL, and return NEWVAL.
 Associates the function with the current load file, if any.
-\[emu-18.el; Emacs 19 emulating function]"
+\[emu-18.el; EMACS 19 emulating function]"
   (fset sym newdef)
   )
 
 (defun byte-code-function-p (exp)
   "T if OBJECT is a byte-compiled function object.
-\[emu-18.el; Emacs 19 emulating function]"
+\[emu-18.el; EMACS 19 emulating function]"
   (and (consp exp)
        (let* ((rest (cdr (cdr exp))) elt)
 	 (if (stringp (car rest))
@@ -156,7 +156,7 @@ Associates the function with the current load file, if any.
 
 (defun make-directory-internal (dirname)
   "Create a directory. One argument, a file name string.
-\[emu-18.el; Emacs 19 emulating function]"
+\[emu-18.el; EMACS 19 emulating function]"
   (if (file-exists-p dirname)
       (error "Creating directory: %s is already exist" dirname)
     (if (not (= (call-process "mkdir" nil nil nil dirname) 0))
@@ -167,7 +167,7 @@ Associates the function with the current load file, if any.
   "Create the directory DIR and any nonexistent parent dirs.
 The second (optional) argument PARENTS says whether
 to create parent directories if they don't exist.
-\[emu-18.el; Emacs 19 emulating function]"
+\[emu-18.el; EMACS 19 emulating function]"
   (let ((len (length dir))
 	(p 0) p1 path)
     (catch 'tag
@@ -205,7 +205,20 @@ to create parent directories if they don't exist.
 	    ancestor (concat "../" ancestor)))
     (concat ancestor (substring filename (match-end 0)))))
 
+(or (fboundp 'si:directory-files)
+    (fset 'si:directory-files (symbol-function 'directory-files)))
+(defun directory-files (directory &optional full match nosort)
+  "Return a list of names of files in DIRECTORY.
+There are three optional arguments:
+If FULL is non-nil, return absolute file names.  Otherwise return names
+ that are relative to the specified directory.
+If MATCH is non-nil, mention only file names that match the regexp MATCH.
+If NOSORT is dummy for compatibility.
+\[emu-18.el; EMACS 19 emulating function]"
+  (si:directory-files directory full match)
+  )
 
+    
 ;;; @ mark
 ;;;
 

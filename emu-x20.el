@@ -1,30 +1,29 @@
-;;;
 ;;; emu-x20.el --- emu API implementation for XEmacs 20 with mule
-;;;
-;;; Copyright (C) 1995 Free Software Foundation, Inc.
-;;; Copyright (C) 1994 .. 1996 MORIOKA Tomohiko
-;;;
-;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;;; Version:
-;;;	$Id$
-;;; Keywords: emulation, compatibility, Mule, XEmacs
-;;;
-;;; This file is part of tl (Tiny Library).
-;;;
-;;; This program is free software; you can redistribute it and/or
-;;; modify it under the terms of the GNU General Public License as
-;;; published by the Free Software Foundation; either version 2, or
-;;; (at your option) any later version.
-;;;
-;;; This program is distributed in the hope that it will be useful,
-;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-;;; General Public License for more details.
-;;;
-;;; You should have received a copy of the GNU General Public License
-;;; along with This program.  If not, write to the Free Software
-;;; Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
-;;;
+
+;; Copyright (C) 1995 Free Software Foundation, Inc.
+;; Copyright (C) 1994,1995,1996 MORIOKA Tomohiko
+
+;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Version: $Id$
+;; Keywords: emulation, compatibility, Mule, XEmacs
+
+;; This file is part of tl (Tiny Library).
+
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation; either version 2, or (at
+;; your option) any later version.
+
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with This program; see the file COPYING.  If not, write to
+;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; Boston, MA 02111-1307, USA.
+
 ;;; Code:
 
 (require 'cyrillic)
@@ -92,42 +91,6 @@ in the region between START and END.
 (defconst *big5*   'big5)
 (defconst *euc-kr* 'euc-kr)
 (defconst *koi8*   'koi8)
-
-(defvar code-converter-is-broken
-  (and xemacs-beta-version (<= xemacs-beta-version 26)))
-
-(if code-converter-is-broken
-(progn
-;;;
-(defun decode-coding-region (start end coding-system &optional buffer)
-  "Decode the text between START and END which is encoded in CODING-SYSTEM.
-\[emu-x20.el; XEmacs 20 emulating function]"
-  (save-excursion
-    (if buffer
-	(set-buffer buffer)
-      )
-    (save-restriction
-      (narrow-to-region start end)
-      (let ((process-output-coding-system 'noconv)
-	    (process-input-coding-system coding-system))
-	(call-process-region start end "cat" t t nil)
-	))))
-
-(defun encode-coding-region (start end coding-system &optional buffer)
-  "Encode the text between START and END which is encoded in CODING-SYSTEM.
-\[emu-x20.el; XEmacs 20 emulating function]"
-  (save-excursion
-    (if buffer
-	(set-buffer buffer)
-      )
-    (save-restriction
-      (narrow-to-region start end)
-      (let ((process-output-coding-system coding-system)
-	    (process-input-coding-system 'noconv))
-	(call-process-region start end "cat" t t nil)
-	))))
-;;;
-))
 
 (defmacro as-binary-process (&rest body)
   `(let (selective-display	; Disable ^M to nl translation.

@@ -37,31 +37,42 @@
 
 (defvar running-emacs-18 (<= emacs-major-version 18))
 (defvar running-xemacs (string-match "XEmacs" emacs-version))
+
+(defvar running-mule-merged-emacs (and (not (boundp 'MULE))
+				       (not running-xemacs) (featurep 'mule)))
+(defvar running-xemacs-with-mule (and running-xemacs (featurep 'mule)))
+
+(defvar running-emacs-19 (and (not running-xemacs) (= emacs-major-version 19)))
+(defvar running-emacs-19_29-or-later
+  (or (and running-emacs-19 (>= emacs-minor-version 29))
+      (and (not running-xemacs)(>= emacs-major-version 20))))
+
 (defvar running-xemacs-19 (and running-xemacs
 			       (= emacs-major-version 19)))
-(defvar running-xemacs-20 (and running-xemacs
-			       (= emacs-major-version 20)))
 (defvar running-xemacs-20-or-later (and running-xemacs
 					(>= emacs-major-version 20)))
 (defvar running-xemacs-19_14-or-later
   (or (and running-xemacs-19 (>= emacs-minor-version 14))
       running-xemacs-20-or-later))
-(defvar running-emacs-19 (and (not running-xemacs)
-			      (= emacs-major-version 19)))
-(defvar running-emacs-19_29-or-later
-  (or (and running-emacs-19 (>= emacs-minor-version 29))
-      (and (not running-xemacs)(>= emacs-major-version 20))))
 
-(cond ((boundp 'MULE)
-       (require 'emu-mule)
+(cond (running-mule-merged-emacs
+       ;; for mule merged EMACS
+       (require 'emu-e20)
        )
-      ((and running-xemacs-20 (featurep 'mule))
+      (running-xemacs-with-mule
+       ;; for XEmacs/mule
        (require 'emu-x20)
        )
+      ((boundp 'MULE)
+       ;; for MULE 1.* and 2.*
+       (require 'emu-mule)
+       )
       ((boundp 'NEMACS)
+       ;; for NEmacs and NEpoch
        (require 'emu-nemacs)
        )
       (t
+       ;; for EMACS 19 and XEmacs 19 (without mule)
        (require 'emu-e19)
        ))
 
