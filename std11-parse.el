@@ -434,6 +434,24 @@
 	  (nreverse dest)
 	  ))))
 
+(defun std11-parse-msg-id (lal)
+  (let ((ret (std11-parse-ascii-token lal))
+	< addr-spec >)
+    (if (and ret
+	     (setq < (car ret))
+	     (string-equal (cdr (assq 'specials <)) "<")
+	     (setq lal (cdr ret))
+	     (setq ret (std11-parse-addr-spec lal))
+	     (setq addr-spec (car ret))
+	     (setq lal (cdr ret))
+	     (setq ret (std11-parse-ascii-token lal))
+	     (setq > (car ret))
+	     (string-equal (cdr (assq 'specials >)) ">")
+	     )
+	(cons (cons 'msg-id (cdr addr-spec))
+	      (cdr ret))
+      )))
+
 
 ;;; @ end
 ;;;
