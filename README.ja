@@ -1,0 +1,438 @@
+[APEL の README (日本語版)]
+
+APEL とは？
+============
+
+  APEL は "A Portable Emacs Library." の略です。これは以下のモジュール
+  で構成されています:
+
+    poe.el --- 主に最新の emacs 環境のための基礎的な関数と特殊形式/マ
+               クロの emulation のモジュール
+      poe-xemacs.el  --- XEmacs用
+      poe-18.el	     --- Emacs 18/Nemacs 用
+         env.el      --- Emacs 18 用の env.el
+      localhook.el   --- Emacs 18 と Emacs 19.28 以前用の hook 関数群
+
+    poem.el --- 移植性の高い MULE プログラムを書くための基礎的な関数を
+		提供する
+      poem-nemacs.el --- Nemacs 用
+      poem-ltn1.el   --- MULE なし Emacs 19/XEmacs 用
+      poem-om.el     --- MULE 1.*, 2.* 用
+      poem-20.el     --- Emacs 20 と XEmacs-MULE の共有モジュール
+      poem-e20_2.el  --- Emacs 20.1/20.2 用
+      poem-e20_3.el  --- Emacs 20.3 用
+      poem-xm.el     --- XEmacs-MULE 用
+
+    invisible.el --- 不可視 region に関する機能を提供する
+      inv-18.el     --- for Emacs 18
+      inv-19.el     --- for Emacs 19
+      inv-xemacs.el --- for XEmacs
+
+    mcharset.el --- MIME charset 関連の機能を提供する
+      mcs-nemacs.el --- Nemacs 用
+      mcs-ltn1.el   --- MULE Emacs 19/XEmacs 用
+      mcs-om.el     --- MULE 1.*, 2.* 用
+      mcs-20.el     --- Emacs 20 と XEmacs-MULE 用の共有モジュール
+      mcs-e20.el    --- Emacs 20 用
+      mcs-xm.el     --- XEmacs-MULE 用
+      mcs-xmu.el    --- XEmacs-MULE 用 (ISO646 文字の単一化)
+
+    static.el --- 静的評価のためのユーティリティー
+
+    broken.el --- Emacs の壊れている機能の情報を提供する
+
+    pccl.el --- 移植可能な CCL プログラムを書くためのユーティリティー
+      pccl-om.el --- MULE 2.* 用
+      pccl-20.el --- Emacs 20/XEmacs-21-MULE 用
+
+    alist.el: 連想リストのためのユーティリティー
+
+    calist.el: 状態木と状態/状況連想リスト用のユーティリティー
+
+    path-util.el: パス管理とファイル探索のためのユーティリティー
+
+    filename.el:ファイル名を作るためのユーティリティ
+
+    install.el: emacs-lisp パッケージインストールするためのユーティリ
+                ティー
+
+    mule-caesar.el: ROT 13-47-48 Caesar 変換のユーティリティー
+
+    emu.el --- (tm-7.106 に入っていた emu との互換性を保つためのモジュー
+               ル。poe, poem, mcharset を require する)
+
+      emu-mule:	MULE 1.*, 2.* 用
+
+      richtext.el   --- Emacs 19.29 かそれ以降
+			    XEmacs 19.14 かそれ以降
+			のための text/richtext モジュール
+      tinyrich.el   --- 古い emacs 環境のための text/richtext モジュー
+      		        ル
+
+    pcustom.el --- 移植性の高い custom 環境を提供する
+
+      tinycustom.el --- custom.el のエミュレーションを行なう
+
+
+インストール
+============
+
+(a) 展開した場所で実行
+
+  他のディレクトリーにインストールしたくないなら、以下のことだけをやっ
+  てください:
+
+	% make
+
+  emacs のコマンド名を指定することができます。例えば、
+
+	% make EMACS=xemacs
+
+  `EMACS=...' が省略されると、Emacs=emacs が使われます。
+
+(b) make install
+
+  他のディレクトリーにインストールしたいなら、以下のことをしてください:
+
+	% make install
+
+  emacs のコマンド名を指定することができます。例えば、
+
+	% make install EMACS=xemacs
+
+  `EMACS=...' が省略されると、Emacs=emacs が使われます。
+
+  Emacs Lisp プログラムとシェルスクリプトのためのディレクトリー木の接
+  頭辞 (prefix) を指定することができます。例えば、
+
+	% make install PREFIX=~/
+
+  `PREFIX=...' が省略されると、指定された emacs コマンドのディレクトリー
+  木の接頭辞が使用されます (おそらく /usr/local です)。
+
+  例えば、PREFIX=/usr/local と Emacs 20.2 が指定されれば、以下のディレ
+  クトリー木が作成されます。
+
+	/usr/local/share/emacs/20.2/site-lisp/	--- emu
+	/usr/local/share/emacs/site-lisp/apel/	--- APEL
+
+  Emacs Lisp プログラムのための lisp ディレクトリーを指定することがで
+  きます。例えば、:
+
+    % make install LISPDIR=~/elisp
+
+  emu モジュールがインストールされる、バージョン特有の lisp ディレクト
+  リーを指定することもできます。例えば、:
+
+    % make install VERSION_SPECIFIC_LISPDIR=~/elisp
+
+  どのファイルが emu モジュールか apel モジュールの一部なのか、それら
+  がどこにインストールされるかを知りたいときは、次のようなコマンドを入
+  力することができます。
+
+    % make what-where LISPDIR=~/elisp VERSION_SPECIFIC_LISPDIR=~/elisp
+
+  ファイル APEL-CFG を編集することで他の選択自由な設定を指定することが
+  できます。その中のコメントを読んでください。
+
+(c) XEmacs のパッケージとしてインストールする
+
+  XEmacs のパッケージディレクトリーにインストールする場合は、以下のこ
+  とをしてください:
+
+	% make install-package
+
+  emacs のコマンド名を指定することができます。例えば、
+
+	% make install-package XEMACS=xemacs-21
+
+  `XEMACS=...' が省略されると、XEMACS=xemacs が使用されます。
+
+  パッケージのディレクトリーを指定することができます。例えば:
+
+	% make install PACKAGEDIR=~/.xemacs
+
+  `PACKAGEDIR=...' が省略されると、存在するパッケージディレクトリーの
+  最初のものが使われます。
+
+  XEmacs のパッケージシステムは XEmacs 21.0 かそれ以降を要求することに
+  注意してください。
+
+
+load-path（Emacs と MULE の場合）
+================================
+
+  もし Emacs もしくは Mule をお使いなら、APEL を install した場所を
+  load-path に追加してください。もし Emacs 19.29 以降または Emacs 20.1,
+  20.2 を使って初期設定でインストールしたのなら、次のように subdirs.el
+  を書くことができます。
+
+  --------------------------------------------------------------------
+  (normal-top-level-add-to-load-path '("apel"))
+  --------------------------------------------------------------------
+
+  もし Emacs 20.3 以降もしくは XEmacs を使って普通にインストールするの
+  ならば、load-path を設定する必要はありません。
+
+
+Version specific information
+============================
+
+「古い byte-compiler」と「新しい byte-compiler」
+Emacs 18 のユーザのみなさんへ:
+
+  このパッケージではコンパイル時における条件判断をたくさん行なっていま
+  す。残念ながら Emacs 18 に付属している byte-compiler には、例えば
+  `eval-when-compile' や `eval-and-compile' の機能が無いので、代用品の
+  マクロを用意してありますが、これらはコンパイル時だけでなく load 時ま
+  たは実行時にも働いてしまいます!   加えて「古い byte-compiler」はトッ
+  プレベルのマクロをコンパイルしてくれないので、APEL の多くのコードが
+  コンパイルされないままになってしまいます。
+
+  そのため、最適化を行なう「新しい byte-compiler」を使うことをお勧めし
+  ます。それは Emacs 19 以降に付属している byte-compiler の元になって
+  いるものです。
+
+  最適化を行なう byte-compiler は Emacs Lisp Archive およびそれらのミ
+  ラーから入手することができます。
+
+  Mule 1.* の時代には Mule 用の「新しい byte-compiler」を含む Mule 1.*
+  用の "contrib" パッケージが配布されていました。しかし現在ではこのパッ
+  ケージを手に入れることは難しいでしょう。
+
+  我々の知る限りでは Emacs 18 用の「新しい byte-compiler」は SKK 9.6
+  に付属しています。これは Mule 1.* 用のパッチも含んでいます。
+
+
+「古い custom」と「新しい custom」
+Emacs 19.34 と XEmacs 19.14 のユーザのみなさんへ:
+
+  Emacs 19.32〜19.34、XEmacs 19.14 および Gnus 5.2/5.3 に含まれている
+  custom ライブラリは「古い」もので、これの API(*) は Emacs 20.1 また
+  は XEmacs 19.15 より新しい Emacsen と Gnus 5.4/5.5 に含まれている
+  「新しい custom」とは違っています。
+
+  Emacs 19.34 と XEmacs 19.15〜20.2 用の「新しい custom」は、以下の
+  URL から手に入れることができます。
+
+  ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz
+
+  (注: XEmacs 19.15〜20.2 と Gnus 5.4/5.5 に含まれている「新しい
+       custom」はこの版より古いものです。)
+
+  「新しい custom」をインストールする前に、次の各項目をチェックして下
+  さい。
+
+    1) もしあなたが Gnus 5.2/5.3 (または他の「古い custom」を使うアプ
+       リケーション) を使うことに固執しているのならば「新しい custom」
+       をインストールしてはいけません。
+
+    2) Emacs 19 を元にした Mule を使うのならば、このパッチを「新しい
+       custom」に当てる必要があります。
+
+----8<------8<------8<------8<------8<------8<------8<------8<----
+--- custom-1.9962/cus-face.el~	Wed Mar  4 19:52:39 1998
++++ custom-1.9962/cus-face.el	Mon Mar  9 08:05:33 1998
+@@ -96,7 +96,7 @@
+       "Define a new FACE on all frames, ignoring X resources."
+       (interactive "SMake face: ")
+       (or (internal-find-face name)
+-	  (let ((face (make-vector 8 nil)))
++	  (let ((face (make-vector face-vector-length nil)))
+ 	    (aset face 0 'face)
+ 	    (aset face 1 name)
+ 	    (let* ((frames (frame-list))
+----8<------8<------8<------8<------8<------8<------8<------8<----
+
+    3) custom を使うコンパイルされたアプリケーションは、それを load す
+       るときや実行するときに同じバージョンの custom を必要とします。
+       したがって、いつも load-path に「新しい custom」を含めておかな
+       ければなりません。
+       これを行なうためのもっとも簡単な方法は subdirs.el を使うことで
+       す。
+       「新しい custom」が /usr/local/share/emacs/19.34/site-lisp/custom/
+       にインストールされているのならば、
+       /usr/local/share/emacs/19.34/site-lisp/subdirs.el というファイ
+       ルに以下の行を書き込んで下さい。
+
+       (normal-top-level-add-to-load-path '("custom"))
+
+
+使い方
+======
+
+alist
+-----
+
+関数 put-alist (ITEM VALUE ALIST)
+
+  ALIST を ITEM の値が VALUE になるように修正します。car が ITEM であ
+  る対が存在すれば、その cdr を VALUE で置き換えます。そのような対がな
+  ければ、新しい対 (ITEM . VALUE) を作り、car が新しい対で、cdr が
+  ALIST である新しい連想リストを返します。
+
+関数 del-alist (ITEM ALIST)
+
+ 連想リスト ALIST に key が ITEM である対があれば、それを ALIST から取
+  り除きます。
+
+関数 set-alist (SYMBOL ITEM VALUE)
+
+  SYMBOL で指定されている連想リストを、ITEM の値が VALUE であるように
+  修正します。
+
+  例. (set-alist 'auto-mode-alist "\\.pln$" 'text-mode)
+
+関数 modify-alist (MODIFIER DEFAULT)
+
+  連想リスト DEFAULT を連想リスト MODIFIER に修正します。
+
+関数 set-modified-alist (SYMBOL MODIFIER)
+
+  SYMBOL の値を連想リスト MODIFIER に修正します。SYMBOL は連想リストで
+  ある必要があります。それが束縛されていなければ、その値を nil とみな
+  します。
+
+path-util
+---------
+
+関数 add-path (PATH &rest OPTIONS)
+
+  PATH が `default-load-path' のディレクトリーの下に存在して、
+  `load-path'に存在しないときに、それを `load-path' に追加します。
+
+  次のような PATH の様式を使うことができます:
+
+    load-path からの相対: "PATH" (それは `default-load-path から探
+			         されます。)
+
+    ホームディレクトリーからの相対: "~/PATH" "~USER/PATH"
+
+    絶対パス: "/FOO/BAR/BAZ"
+
+  次のような OPTIONS を指定することができます:
+
+    'all-paths --- `default-load-path の代わり `load-path' から探しま
+	           す。
+
+    'append --- PATH を `load-path' の最後に追加します。
+
+関数 add-latest-path (PATTERN &optional ALL-PATHS)
+
+  正規表現 PATTERN に合致した最新のパスが `default-load-path' の下に存
+  在していて、`load-path' の下に存在していないときにそれを `load-path'
+  に追加します。
+
+  例えば、bbdb-1.50 と bbdb-1.51 が site-lisp の下にあって、bbdb-1.51
+  が bbdb-1.50 よりも新しく、site-lisp が
+  /usr/local/share/emacs/site-lisp であるときは、
+
+	(add-latest-path "bbdb")
+
+  は "/usr/local/share/emacs/site-lisp/bbdb-1.51" を `load-path' の先
+  頭に追加します。
+
+  省略可能な引数 ALL-PATHS が指定されると、`default-load-path' のかわ
+  りに `load-path' から探します。
+
+関数 get-latest-path (PATTERN &optional ALL-PATHS)
+
+  正規表現 PATTERN に合致する default-load-path にある最新のディレクト
+  リーを返します。省略可能な引数 ALL-PATHS が指定されると、
+  default-load-path の代わりに load-path の全てから探します。
+
+  例. (let ((gnus-path (get-latest-path "gnus")))
+        (add-path (expand-file-name "lisp" gnus-path))
+        (add-to-list 'Info-default-directory-list
+		     (expand-file-name "texi" gnus-path))
+        )
+
+関数 file-installed-p (FILE &optional PATHS)
+
+  FILE が PATHS に存在した場合、FILE の絶対パスを返します。PATHS が省
+  略されると、`load-path' が使われます。
+
+関数 exec-installed-p (FILE &optional PATHS SUFFIXES)
+
+  FILE が PATHS に存在した場合に FILE の絶対パスを返します。PATHS が省
+  略されると、`exec-path' が使われます。SUFFIXES が省略されると、
+  `exec-suffix-list' が使われます。
+
+関数 module-installed-p (MODULE &optional PATHS)
+
+  MODULE が提供されている (provided) か、PATHS に存在する場合に nil で
+  ない値を返します。PATHS が省略されると、`load-path' が使われます。
+
+filename
+--------
+
+関数 replace-as-filename (string)
+
+  STRING から安全なファイル名を返します。
+
+  それは変数 'filename-fileters' を参照します。その変数はファイル名の
+  選別器のための関数のリストです。初期設定の選別器は以下の変数を参照し
+  ています。
+
+	変数 filename-limit-length
+
+	  ファイル名の長さの制限。
+
+	変数 filename-replacement-alist
+
+	  文字と文字列が対になったリストの連想リストです。文字のリスト
+	  はファイル名として許されない文字を現わします。
+
+
+バグ報告
+===========
+
+  バグ報告や改善の提案を書いたときは、是非 APEL メーリングリストに送っ
+  てください:
+
+	apel-en@m17n.org	(英語)
+	apel-ja@m17n.org	(日本語)
+
+  APEL ML を通して、APEL のバグを報告したり、APEL の最新のリリースを取
+  得したり、APEL の将来の拡張の議論をしたりすることができます。APEL ML
+  に参加するには、空の電子メールを
+
+	apel-en-ctl@m17n.org	(英語)
+	apel-ja-ctl@m17n.org	(日本語)
+
+  に送ってください。
+
+
+Anonymous FTP
+=============
+
+  最新の APEL のリリースは以下の場所から取得できます:
+
+    ftp://ftp.m17n.org/pub/mule/apel/
+
+
+CVS
+===
+
+  APEL の開発は CVS を使っています。最新の開発バージョンを CVS で
+  取得できます。
+
+(0) cvs login (一回目だけ)
+
+    % cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
+	login
+
+    CVS password: [CR] # 空文字列
+
+(1) checkout
+
+    % cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
+	checkout apel
+
+
+  CVS に基づいた開発に参加したいときは、
+
+	cvs@chamonix.jaist.ac.jp
+
+  にアカウント名と、UNIX の /etc/passwd 様式で暗号化されたパスワードを
+  送ってください。開かれた開発に参加してくださることを期待します。
