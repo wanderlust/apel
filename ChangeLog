@@ -1,3 +1,8 @@
+1999-02-14  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poe.el (file-name-sans-extension): New function <copied from
+	Emacs 20.3.5> <cf. [tm-ja:4135]>.
+
 1999-02-04  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poem-20.el, poem-ltn1.el, poem-nemacs.el, poem-om.el
@@ -1277,7 +1282,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
