@@ -433,15 +433,6 @@
 	  ))))
 
 
-;;; @ utilities
-;;;
-
-(defun std11-parse-address-string (string)
-  "Parse STRING as mail address. [std11-parse.el]"
-  (std11-parse-address (std11-lexical-analyze string))
-  )
-
-
 ;;; @ end
 ;;;
 
