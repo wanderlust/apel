@@ -68,9 +68,12 @@ but the contents viewed as characters do change.
   "Return index of character succeeding CHAR whose index is INDEX."
   `(1+ ,index))
 
-(defun-maybe char-length (char)
-  "Return indexing length of multi-byte form of CHAR."
-  1)
+(if (not (fboundp 'char-length))
+    (defalias 'char-length
+      (lambda (char)
+	"Return number of bytes a CHARACTER occupies in a string or buffer.
+It always returns 1 in XEmacs.  It is for compatibility with MULE 2.3."
+	1)))
 
 
 ;;; @ string
