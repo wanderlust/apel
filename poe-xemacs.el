@@ -96,19 +96,64 @@ When called interactively, prompt for the name of the color to use."
    (defmacro-maybe with-timeout (list &rest body)
      (let ((seconds (car list))
 	   (timeout-forms (cdr list)))
-     `(let ((with-timeout-tag (cons nil nil))
-	    with-timeout-value with-timeout-timer)
-	(if (catch with-timeout-tag
-	      (progn
-		(setq with-timeout-timer
-		      (run-at-time ,seconds nil
-				   'with-timeout-handler
-				   with-timeout-tag))
-		(setq with-timeout-value (progn . ,body))
-		nil))
-	    (progn . ,timeout-forms)
-	  (cancel-timer with-timeout-timer)
-	  with-timeout-value))))))
+       `(let ((with-timeout-tag (cons nil nil))
+	      with-timeout-value with-timeout-timer)
+	  (if (catch with-timeout-tag
+		(progn
+		  (setq with-timeout-timer
+			(run-at-time ,seconds nil
+				     'with-timeout-handler
+				     with-timeout-tag))
+		  (setq with-timeout-value (progn . ,body))
+		  nil))
+	      (progn . ,timeout-forms)
+	    (cancel-timer with-timeout-timer)
+	    with-timeout-value))))))
+
+(require 'broken)
+
+(broken-facility run-at-time-tick-tock
+  "`run-at-time' is not punctual."
+  ;; It should be fixed when someone improves itimer in the future.
+  ;; Note that it doesn't support XEmacsen of versions prior to 19.15
+  ;; since `start-itimer' doesn't pass arguments to a timer function.
+  (and (= emacs-major-version 19) (<= emacs-minor-version 14)))
+
+(when-broken run-at-time-tick-tock
+  (defadvice run-at-time (around make-it-punctual
+				 (time repeat function &rest args)
+				 activate)
+    "This function was redefined to be made punctual by APEL.
+Note that it allows neither a string nor a time in the Emacs style
+\(a list of integers) as the first argument TIME."
+    (let ((itimers (list nil)))
+      (setcar
+       itimers
+       (apply #'start-itimer "run-at-time"
+	      (lambda (itimers repeat function &rest args)
+		(let ((itimer (car itimers)))
+		  (if repeat
+		      (progn
+			(set-itimer-function
+			 itimer
+			 (lambda (itimer repeat function &rest args)
+			   (set-itimer-restart itimer repeat)
+			   (set-itimer-function itimer function)
+			   (set-itimer-function-arguments itimer args)
+			   (apply function args)))
+			(set-itimer-function-arguments
+			 itimer
+			 (append (list itimer repeat function) args)))
+		    (set-itimer-function
+		     itimer
+		     (lambda (itimer function &rest args)
+		       (delete-itimer itimer)
+		       (apply function args)))
+		    (set-itimer-function-arguments
+		     itimer
+		     (append (list itimer function) args)))))
+	      1e-9 (if time (max time 1e-9) 1e-9)
+	      nil t itimers repeat function args)))))
 
 
 ;;; @ to avoid bug of XEmacs 19.14
