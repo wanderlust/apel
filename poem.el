@@ -1,4 +1,4 @@
-;;; poem.el --- Portable Outfit for Emacsen: about MULE API
+;;; poem.el --- Emulate latest MULE features; -*-byte-compile-dynamic: t;-*-
 
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 
@@ -50,30 +50,27 @@
 ;;; @ Emacs 20.3 emulation
 ;;;
 
-(defmacro-maybe string-as-unibyte (string)
+(defsubst-maybe string-as-unibyte (string)
   "Return a unibyte string with the same individual bytes as STRING.
 If STRING is unibyte, the result is STRING itself.
 \[Emacs 20.3 emulating macro]"
   string)
 
-(defmacro-maybe string-as-multibyte (string)
+(defsubst-maybe string-as-multibyte (string)
   "Return a multibyte string with the same individual bytes as STRING.
 If STRING is multibyte, the result is STRING itself.
 \[Emacs 20.3 emulating macro]"
   string)
 
 
-;;; @ XEmacs 20 emulation
+;;; @ XEmacs-mule emulation
 ;;;
 
-(or (fboundp 'char-int)
-    (fset 'char-int (symbol-function 'identity)))
+(defalias-maybe 'char-int 'identity)
 
-(or (fboundp 'int-char)
-    (fset 'int-char (symbol-function 'identity)))
+(defalias-maybe 'int-char 'identity)
 
-(or (fboundp 'char-or-char-int-p)
-    (fset 'char-or-char-int-p (symbol-function 'integerp)))
+(defalias-maybe 'char-or-char-int-p 'integerp)
 
 
 ;;; @ end
