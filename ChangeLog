@@ -1,3 +1,7 @@
+1999-04-13  Tanaka Akira  <akr@jaist.ac.jp>
+
+	* mcs-e20.el (x-ctext): Use the definition in Emacs 20.4.
+
 1999-04-11  Tanaka Akira  <akr@jaist.ac.jp>
 
 	* mcs-e20.el (x-ctext): Define coding system `x-ctext' if `ctext'
