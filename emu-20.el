@@ -1,9 +1,8 @@
 ;;; emu-20.el --- emu API implementation for Emacs 20 and XEmacs/mule
 
-;; Copyright (C) 1997 Free Software Foundation, Inc.
+;; Copyright (C) 1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of emu.
@@ -31,6 +30,7 @@
 ;;; Code:
 
 (require 'custom)
+(eval-when-compile (require 'widget))
 
 
 ;;; @ binary access
@@ -50,16 +50,13 @@
   `(let ((coding-system-for-write 'binary))
      ,@body))
 
-(defun insert-binary-file-contents-literally
-  (filename &optional visit beg end replace)
-  "Like `insert-file-contents-literally', q.v., but don't code conversion.
-A buffer may be modified in several ways after reading into the buffer due
-to advanced Emacs features, such as file-name-handlers, format decoding,
-find-file-hooks, etc.
-  This function ensures that none of these modifications will take place."
+(defun write-region-as-binary (start end filename
+				     &optional append visit lockname)
+  "Like `write-region', q.v., but don't code conversion."
   (let ((coding-system-for-read 'binary))
-    (insert-file-contents-literally filename visit beg end replace)
+    (write-region start end filename append visit lockname)
     ))
+
 
 ;;; @@ Mule emulating aliases
 ;;;
