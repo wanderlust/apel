@@ -1,0 +1,240 @@
+[README for APEL (English Version)]
+by MORIOKA Tomohiko <morioka@jaist.ac.jp>
+$Id$
+
+What's APEL
+===========
+
+  APEL stands for "A Portable Emacs Library".  It consists of
+  following modules:
+
+	emu:	A package to fill incompatibilities of emacsen
+		emu.el --- main module
+	    About mule API:
+		emu-nemacs.el --- for NEmacs
+		emu-e19.el    --- for Emacs 19 or XEmacs without mule
+		emu-mule.el   --- for MULE 2.3
+		emu-e20.el    --- for Emacs/mule (Emacs 20, MULE 3)
+		emu-x20.el    --- for XEmacs/mule
+	    About other API
+		emu-18.el     --- for Emacs 18
+		emu-19.el     --- for Emacs 19 or later
+		emu-xemacs.el --- for XEmacs
+		env.el        --- env.el for Emacs 18
+		richtext.el   --- text/richtext module
+				    for Emacs 19.29 or later,
+		                        XEmacs 19.14 or later
+		tinyrich.el   --- text/richtext module for old emacsen
+
+	alist.el: utility for Association-list
+
+	atype.el: utility for atype
+
+	file-detect.el: load-path or file-detection
+
+	filename.el: utility to make file-name
+
+	install.el: utility to install emacs-lisp package
+
+
+Installation
+============
+
+(a) run in expanded place
+
+  If you don't want to install other directories, please do only
+  following:
+
+	% make
+
+  You can specify the emacs command name, for example
+
+	% make install EMACS=xemacs
+
+  If `EMACS=...' is omitted, EMACS=emacs is used.
+
+(b) make install
+
+  If you want to install other directories, please do following:
+
+	% make install
+
+  You can specify the emacs command name, for example
+
+	% make install EMACS=xemacs
+
+  If `EMACS=...' is omitted, EMACS=emacs is used.
+
+  You can specify the prefix of the directory tree for Emacs Lisp
+  programs and shell scripts, for example:
+
+	% make install PREFIX=~/
+
+  If `PREFIX=...' is omitted, the prefix of the directory tree of the
+  specified emacs command is used (perhaps /usr/local).
+
+  For example, if PREFIX=/usr/local and EMACS 19.34 is specified, it
+  will create the following directory tree:
+
+	/usr/local/share/emacs/19.34/site-lisp/  --- emu
+	/usr/local/share/emacs/site-lisp/apel/   --- APEL
+
+  You can specify other optional settings by editing the file
+  APEL-CFG.  Please read comments in it.
+
+
+load-path (for Emacs or MULE)
+=============================
+
+  If you are using Emacs or Mule, please add directory of apel to
+  load-path.  If you install by default setting, you can write
+  subdirs.el for example:
+
+  --------------------------------------------------------------------
+  (normal-top-level-add-to-load-path '("apel"))
+  --------------------------------------------------------------------
+
+  If you are using XEmacs, there are no need of setting about
+  load-path.
+
+
+How to use
+==========
+
+alist
+-----
+
+Function put-alist (ITEM VALUE ALIST)
+
+  Modify ALIST to set VALUE to ITEM.  If there is a pair whose car is
+  ITEM, replace its cdr by VALUE.  If there is not such pair, create
+  new pair (ITEM . VALUE) and return new alist whose car is the new
+  pair and cdr is ALIST.
+
+Function del-alist (ITEM ALIST)
+
+  If there is a pair whose key is ITEM, delete it from ALIST.
+
+Function set-alist (SYMBOL ITEM VALUE)
+
+  Modify a alist indicated by SYMBOL to set VALUE to ITEM.
+
+  Ex. (set-alist 'auto-mode-alist "\\.pln$" 'text-mode)
+
+Function modify-alist (MODIFIER DEFAULT)
+
+  Modify alist DEFAULT into alist MODIFIER.
+
+Function set-modified-alist (SYMBOL MODIFIER)
+
+  Modify a value of a SYMBOL into alist MODIFIER.  The SYMBOL should
+  be alist. If it is not bound, its value regard as nil.
+
+file-detect
+-----------
+
+Function add-path (PATH &rest OPTIONS)
+
+  Add PATH to `load-path' if it exists under `default-load-path'
+  directories and it does not exist in `load-path'.
+
+  You can use following PATH styles:
+
+    load-path relative: "PATH" (it is searched from
+				`defaul-load-path')
+
+    home directory relative: "~/PATH" "~USER/PATH"
+
+    absolute path: "/FOO/BAR/BAZ"
+
+  You can specify following OPTIONS:
+
+    'all-paths --- search from `load-path' instead of
+	           `default-load-path'
+
+    'append --- add PATH to the last of `load-path'
+
+Function add-latest-path (PATTERN &optional ALL-PATHS)
+
+  Add latest path matched by regexp PATTERN to `load-path' if it
+  exists under `default-load-path' directories and it does not exist
+  in `load-path'.
+
+  For example, if there is bbdb-1.50 and bbdb-1.51 under site-lisp,
+  and if bbdb-1.51 is newer than bbdb-1.50, and site-lisp is
+  /usr/local/share/emacs/site-lisp,
+
+	(add-path "bbdb")
+
+  it adds "/usr/local/share/emacs/site-lisp/bbdb-1.51" to top of
+  `load-path'.
+
+  If optional argument ALL-PATHS is specified, it is searched from all
+  of `load-path' instead of `default-load-path'.
+
+Function get-latest-path (PATTERN &optional ALL-PATHS)
+
+  Return latest directory in default-load-path which is matched to
+  regexp PATTERN.  If optional argument ALL-PATHS is specified, it is
+  searched from all of load-path instead of default-load-path.
+
+  Ex. (let ((gnus-path (get-latest-path "gnus")))
+        (add-path (expand-file-name "lisp" gnus-path))
+        (add-to-list 'Info-default-directory-list
+		     (expand-file-name "texi" gnus-path))
+        )
+
+Function file-installed-p (FILE &optional PATHS)
+
+  Return absolute-path of FILE if FILE exists in PATHS.  If PATHS is
+  omitted, `load-path' is used.
+
+Function exec-installed-p (FILE &optional PATHS SUFFIXES)
+
+  Return absolute-path of FILE if FILE exists in PATHS.  If PATHS is
+  omitted, `exec-path' is used.  If suffixes is omitted,
+  `exec-suffix-list' is used.
+
+Function module-installed-p (MODULE &optional PATHS)
+
+  Return non-nil if module is provided or exists in PATHS.  If PATHS
+  is omitted, `load-path' is used.
+
+filename
+--------
+
+Function replace-as-filename (string)
+
+  Return safety file-name from STRING.
+
+  It refers variable `filename-filters'.  It is list of functions for
+  file-name filter.  Default filter refers following variables:
+
+	Variable filename-limit-length
+
+	  Limit size of file-name.
+
+	Variable filename-replacement-alist
+
+	  Alist list of characters vs. string as replacement.  List of
+          characters represents characters not allowed as file-name.
+
+
+Bug reports
+-----------
+
+  If you write bug-reports and/or suggestions for improvement, please
+  send them to the tm Mailing List:
+
+	bug-tm-en@chamonix.jaist.ac.jp	(English)
+	bug-tm-ja@chamonix.jaist.ac.jp	(Japanese)
+
+  Via the tm ML, you can report tm bugs, obtain the latest release of
+  tm, and discuss future enhancements to tm. To join the tm ML, send
+  e-mail to
+
+	tm-ja-admin@chamonix.jaist.ac.jp	(Japanese)
+	tm-en-admin@chamonix.jaist.ac.jp	(English)
+
+  Since the user registration is done manually, please write the mail
+  body in human-recognizable language (^_^).
