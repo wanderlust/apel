@@ -24,10 +24,10 @@
 ;;		make subdirectory.
 ;;
 ;; APEL_DIR:	The directory where APEL modules will be installed.
-;;		Generated from LISPDIR and APEL_DIR if it is not set.
+;;		Generated from LISPDIR and APEL_PREFIX if it is not set.
 ;; EMU_DIR:	The directory where EMU modules will be installed.
-;;		Generated from VERSION_SPECIFIC_LISPDIR and EMU_DIR if
-;;		it is not set.
+;;		Generated from VERSION_SPECIFIC_LISPDIR and EMU_PREFIX
+;;		if it is not set.
 ;;
 ;; For XEmacs with package system:
 ;;
