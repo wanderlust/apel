@@ -18,8 +18,11 @@
 (defalias 'tl:overlay-put 'overlay-put)
 (defalias 'tl:overlay-buffer 'overlay-buffer)
 
-(defvar mouse-button-2
-  (if window-system [mouse-2])
-  )
+(defvar mouse-button-1 [mouse-1])
+(defvar mouse-button-2 [mouse-2])
+
+
+;;; @ end
+;;;
 
 (provide 'emu-19)

@@ -135,6 +135,7 @@ to create parent directories if they don't exist.
 ;;; @ mouse
 ;;;
 
+(defvar mouse-button-1 nil)
 (defvar mouse-button-2 nil)
 
 

@@ -50,6 +50,11 @@
   (set-extent-endpoints extent start end)
   )
 
+(defvar mouse-button-1 'button1)
 (defvar mouse-button-2 'button2)
+
+
+;;; @ end
+;;;
 
 (provide 'emu-xemacs)
