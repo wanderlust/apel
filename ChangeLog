@@ -1,3 +1,7 @@
+1999-05-25  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe.el: Do not try to require 'edebug; it will be autoloaded.
+
 1999-05-24  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* poem-om.el (char-before, char-after): Moved to poe.el.
