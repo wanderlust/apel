@@ -99,6 +99,20 @@ code conversion will not take place."
 (defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
 (make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
 
+(defun insert-file-contents-as-raw-text (filename
+					 &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+Like `insert-file-contents-as-binary', but it converts line-break
+code."
+  (let ((flag enable-multibyte-characters)
+	(coding-system-for-read 'raw-text)
+	format-alist)
+    (insert-file-contents filename visit beg end replace)
+    (set-buffer-multibyte flag)
+    ))
+
 (defalias 'insert-binary-file-contents-literally
   'insert-file-contents-literally)
 
