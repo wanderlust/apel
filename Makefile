@@ -21,6 +21,8 @@ GOMI	= *.elc
 
 ARCHIVE_DIR_PREFIX = /pub/mule
 
+default: elc
+
 what-where:
 	$(EMACS) $(FLAGS) -f what-where-apel \
 		$(PREFIX) $(LISPDIR) $(VERSION_SPECIFIC_LISPDIR)

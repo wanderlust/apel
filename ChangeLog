@@ -1,3 +1,7 @@
+2004-01-26  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* Makefile: Make `elc' into the default entry.
+
 2004-01-07  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* poe-xemacs.el (run-at-time): Don't use `defadvice' in order to
