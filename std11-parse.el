@@ -34,9 +34,10 @@
 
 (defconst std11-space-chars " \t\n")
 (defconst std11-spaces-regexp (` (, (concat "[" std11-space-chars "]+"))))
-(defconst std11-special-char-list '(?\( ?\) ?< ?> ?@
+(defconst std11-special-char-list '(?\] ?\[
+					?\( ?\) ?< ?> ?@
 					?, ?\; ?: ?\\ ?\"
-					?. ?\[ ?\]))
+					?.))
 (defconst std11-atom-regexp
   (` (, (concat "^[^" std11-special-char-list std11-space-chars "]+"))))
 
