@@ -1,6 +1,12 @@
 1999-02-25  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poem-20.el, poem-e20_2.el, poem-om.el
+	(find-file-noselect-as-raw-text): Undo the last change.
+	(insert-file-contents-as-raw-text): Likewise.
+
+1999-02-25  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poem-20.el, poem-e20_2.el, poem-om.el
 	(find-file-noselect-as-raw-text): Use `raw-text-dos' instead of
 	`raw-text'.
 	(insert-file-contents-as-raw-text): Likewise.

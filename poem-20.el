@@ -65,7 +65,7 @@ Like `insert-file-contents-literary', but it allows find-file-hooks,
 automatic uncompression, etc.
 Like `insert-file-contents-as-binary', but it converts line-break
 code."
-  (let ((coding-system-for-read 'raw-text-dos)
+  (let ((coding-system-for-read 'raw-text)
 	format-alist)
     ;; Returns list of absolute file name and length of data inserted.
     (insert-file-contents filename visit beg end replace)))
@@ -85,7 +85,7 @@ code."
 (defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but it does not code and format conversion
 except for line-break code."
-  (let ((coding-system-for-read 'raw-text-dos)
+  (let ((coding-system-for-read 'raw-text)
 	format-alist)
     (find-file-noselect filename nowarn rawfile)))
 
