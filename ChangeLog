@@ -1,3 +1,7 @@
+1999-08-24  Taiji Can         <Taiji.Can@atesoft.advantest.co.jp>
+
+	* poem-nemacs.el: Use `char-width' instead of `char-columns'.
+
 1999-08-24  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* poe-18.el (inline): Use `defalias' instead of `defalias-maybe'.
