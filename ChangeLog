@@ -1,3 +1,8 @@
+1999-05-31  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* calist.el (calist-field-match-method): Fix problem when
+	`field-type' is a string.
+
 1999-05-27  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* calist.el (use-calist-package): New function.
