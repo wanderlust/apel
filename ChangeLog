@@ -1,3 +1,8 @@
+2000-02-25  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* emu.el (enriched-encode): Allow the 3rd argument ORIG-BUF for old
+	Emacsen.
+
 2000-02-21  Makoto Nakagawa  <Makoto.Nakagawa@jp.compaq.com>
 
 	* poe.el (format-time-string): New function for Emacs 19.28 and
