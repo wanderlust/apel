@@ -1,3 +1,57 @@
+1999-02-04  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poem-om.el (poem-ccl-decode-raw-text): Rewrite for fixing a bug
+	that the last datum will be missed if the input data is not ended
+	with `CRLF'.
+	(poem-ccl-encode-raw-text-CRLF): Use `read-if'.
+
+1999-01-26  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mcs-20.el (mime-charset-to-coding-system-default-method): New
+	user option.
+	(mime-charset-to-coding-system): Call
+	`mime-charset-to-coding-system-default-method' if suitable
+	coding-system is not found.
+
+1999-01-21  Keiichi Suzuki  <kei-suzu@mail.wbs.ne.jp>
+
+	* mcs-xm.el (encode-mime-charset-region): Add new optional
+	argument `lbt'.
+	(encode-mime-charset-string): Ditto.
+
+	* mcs-nemacs.el (lbt-to-string): New inline function.
+	(encode-mime-charset-region): Add new optional argument `lbt'.
+	(encode-mime-charset-string): Ditto.
+
+	* mcs-ltn1.el (lbt-to-string): New inline function.
+	(encode-mime-charset-region): Add new optional argument `lbt'.
+	(encode-mime-charset-string): Ditto.
+	(decode-mime-charset-region): Use `lbt-to-string'.
+
+	* mcs-e20.el (encode-mime-charset-region): Add new optional
+	argument `lbt'.
+	(encode-mime-charset-string): Ditto.
+
+	* mcs-om.el (lbt-to-string): New inline function.
+	(encode-mime-charset-region): Add new optional argument `lbt'.
+	(encode-mime-charset-string): Ditto.
+	(decode-mime-charset-region): Use `lbt-to-string'.
+	(decode-mime-charset-string): Ditto.
+
+1998-12-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mcs-om.el (default-mime-charset-for-write): New variable.
+	(detect-mime-charset-region): Return
+	`default-mime-charset-for-write' if suitable mime-charset is not
+	found.
+
+	* mcs-20.el (detect-mime-charset-region): Don't call
+	`default-mime-charset-detect-method-for-write' if suitable
+	mime-charset is found.
+
+	* mcharset.el (charsets-to-mime-charset): Return nil if suitable
+	mime-charset is not found; abolish optional argument `default'.
+
 1998-12-23  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* mcs-xm.el (charsets-mime-charset-alist): Don't set up
@@ -1229,7 +1283,7 @@
 1998-04-27  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* calist.el (ctree-find-calist): Renamed from
- 	'ctree-match-calist-all.
+	'ctree-match-calist-all.
 
 
 1998-04-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
