@@ -21,8 +21,7 @@
 	       invisible-modules (cons 'inv-xemacs invisible-modules))
 	 )
 	((>= emacs-major-version 19)
-	 (setq poe-modules (cons 'poe-19 poe-modules)
-	       invisible-modules (cons 'inv-19 invisible-modules))
+	 (setq invisible-modules (cons 'inv-19 invisible-modules))
 	 )
 	(t
 	 (setq poe-modules (cons 'poe-18 poe-modules)

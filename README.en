@@ -9,7 +9,6 @@ What's APEL?
     poe.el --- emulation module mainly for basic functions and special
 	       forms/macros of latest emacsen
       poe-xemacs.el  --- for XEmacs
-      poe-19.el	     --- for Emacs 19
       poe-18.el	     --- for Emacs 18/Nemacs
          env.el      --- env.el for Emacs 18
 
@@ -22,6 +21,11 @@ What's APEL?
       poem-e20_2.el  --- for Emacs 20.1/20.2
       poem-e20_3.el  --- for Emacs 20.3
       poem-xm.el     --- for XEmacs-MULE
+
+    invisible.el --- provide features about invisible region
+      inv-18.el     --- for Emacs 18
+      inv-19.el     --- for Emacs 19
+      inv-xemacs.el --- for XEmacs
 
     mcharset.el --- provide MIME charset related features
       mcs-nemacs.el --- for Nemacs
@@ -201,7 +205,7 @@ Function add-path (PATH &rest OPTIONS)
   You can use following PATH styles:
 
     load-path relative: "PATH" (it is searched from
-				`defaul-load-path')
+				`default-load-path')
 
     home directory relative: "~/PATH" "~USER/PATH"
 
@@ -252,12 +256,12 @@ Function file-installed-p (FILE &optional PATHS)
 Function exec-installed-p (FILE &optional PATHS SUFFIXES)
 
   Return absolute-path of FILE if FILE exists in PATHS.  If PATHS is
-  omitted, `exec-path' is used.  If suffixes is omitted,
+  omitted, `exec-path' is used.  If SUFFIXES is omitted,
   `exec-suffix-list' is used.
 
 Function module-installed-p (MODULE &optional PATHS)
 
-  Return non-nil if module is provided or exists in PATHS.  If PATHS
+  Return non-nil if MODULE is provided or exists in PATHS.  If PATHS
   is omitted, `load-path' is used.
 
 filename
