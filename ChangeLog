@@ -1,17 +1,21 @@
-1999-04-13  Tanaka Akira  <akr@jaist.ac.jp>
+1999-04-22  MORIOKA Tomohiko  <tomo@etl.go.jp>
+
+	* poe.el (caar): New function.
+
+1999-04-13  Tanaka Akira      <akr@jaist.ac.jp>
 
 	* mcs-e20.el (x-ctext): Use the definition in Emacs 20.4.
 
-1999-04-11  Tanaka Akira  <akr@jaist.ac.jp>
+1999-04-11  Tanaka Akira      <akr@jaist.ac.jp>
 
 	* mcs-e20.el (x-ctext): Define coding system `x-ctext' if `ctext'
 	is not proper for decoding `iso-2022-jp-2'.
 
-1999-04-09  Tanaka Akira  <akr@jaist.ac.jp>
+1999-04-09  Tanaka Akira      <akr@jaist.ac.jp>
 
 	* static.el: Add doc-strings.
 
-1999-04-09  Tanaka Akira  <akr@jaist.ac.jp>
+1999-04-09  Tanaka Akira      <akr@jaist.ac.jp>
 
 	* EMU-ELS (emu-modules): Add `static'.
 
@@ -1607,7 +1611,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
