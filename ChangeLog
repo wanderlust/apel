@@ -1,3 +1,7 @@
+2003-05-15  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe.el (make-temp-file): New function.
+
 2002-11-05  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* mcs-20.el (mcs-region-repertoire-p): New function for UTF-2000
@@ -227,7 +231,7 @@
 	(minor-mode-map-alist): Ditto.
 
 	* README.en ((d) make.bat (for MS-DOS family)): New section.
-	* README.ja ((d) make.bat を利用する (MS-DOS 系 OS の場合)):
+	* README.ja ((d) make.bat を利用する (MS-DOS 系 OS の場合)):
 	Ditto.
 
 2000-12-22  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
@@ -3013,7 +3017,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
