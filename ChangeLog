@@ -1,7 +1,12 @@
-1998-03-09  Shuhei KOBAYASHI  <shuhei-k@jaist.ac.jp>
+1998-03-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-20.el (insert-binary-file-contents): New function.
+
+1998-03-08  Shuhei KOBAYASHI  <shuhei-k@jaist.ac.jp>
 
 	* README.en (Bug reports): Modify description of tm mailing list.
 
+
 1998-02-12  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 7.1.1 was released.
