@@ -4,7 +4,7 @@
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version: $Id$
-;; Keywords: emulation, compatibility, NEmacs, Mule, XEmacs
+;; Keywords: emulation, compatibility, NEmacs, MULE, XEmacs
 
 ;; This file is part of tl (Tiny Library).
 
@@ -138,18 +138,30 @@ into a hook function that will be run only after loading the package.
     )
 
 
-;;; @ EMACS 19.32 emulation
+;;; @ EMACS 19.31 emulation
 ;;;
 
 (or (fboundp 'buffer-live-p)
     (defun buffer-live-p (object)
       "Return non-nil if OBJECT is a buffer which has not been killed.
 Value is nil if OBJECT is not a buffer or if it has been killed.
-\[emu.el; EMACS 19.32 emulating function]"
+\[emu.el; EMACS 19.31 emulating function]"
       (and object
 	   (get-buffer object)
 	   (buffer-name (get-buffer object))
 	   ))
+    )
+
+(or (fboundp 'save-selected-window)
+    ;; This function was imported Emacs 19.33.
+    (defmacro save-selected-window (&rest body)
+      "Execute BODY, then select the window that was selected before BODY.
+\[emu.el; EMACS 19.31 emulating function]"
+      (list 'let
+	    '((save-selected-window-window (selected-window)))
+	    (list 'unwind-protect
+		  (cons 'progn body)
+		  (list 'select-window 'save-selected-window-window)))) 
     )
 
 

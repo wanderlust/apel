@@ -1,3 +1,17 @@
+Sat Sep  7 17:22:15 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.3 was released.
+
+Thu Sep  5 16:31:02 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (buffer-live-p): DOC fix.
+	(save-selected-window): DOC fix.
+
+Thu Sep  5 15:30:26 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (save-selected-window): New macro.
+
+
 Thu Sep  5 13:28:51 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.2 was released.
