@@ -1,6 +1,6 @@
 ;;; -*-Emacs-Lisp-*-
 ;;;
-;;; $Id $
+;;; $Id$
 ;;;
 
 (setq emu-modules
@@ -31,14 +31,18 @@
 	      ))
        emu-modules))
 
-(cond (running-emacs-18
-       (setq emu-modules (cons 'emu-18 (cons 'env emu-modules)))
-       )
-      (running-xemacs
-       (setq emu-modules (cons 'emu-xemacs emu-modules))
-       )
-      (t
-       (setq emu-modules (cons 'emu-19 emu-modules))
-       ))
+(setq emu-modules
+      (nconc
+       (cond (running-emacs-18
+	      '(emu-18 env)
+	      )
+	     (running-xemacs
+	      '(emu-xemacs)
+	      )
+	     (t
+	      '(emu-19)
+	      )
+	     )
+       emu-modules))
 
 ;;; EMU-ELS ends here
