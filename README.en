@@ -228,7 +228,7 @@ Function replace-as-filename (string)
 
 
 Bug reports
------------
+===========
 
   If you write bug-reports and/or suggestions for improvement, please
   send them to the tm Mailing List:
