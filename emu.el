@@ -103,16 +103,12 @@
 (cond (running-xemacs
        ;; for XEmacs
        (require 'emu-xemacs)
-       (cond ((featurep 'mule)
-	      ;; for XEmacs with MULE
-	      (require 'emu-20)
-	      (require 'emu-x20)
-	      )
-	     (t
-	      ;; for XEmacs without MULE
-	      (require 'emu-latin1)
-	      ))
-       )
+       (if (featurep 'mule)
+	   ;; for XEmacs with MULE
+	   (require 'emu-x20)
+	 ;; for XEmacs without MULE
+	 (require 'emu-latin1)
+	 ))
       (running-mule-merged-emacs
        ;; for Emacs 20.1 and 20.2
        (require 'emu-e20)
