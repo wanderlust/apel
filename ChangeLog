@@ -1,3 +1,8 @@
+2001-01-18  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* inv-19.el (next-visible-point): Return the value of `point-max'
+	when the position of next `invisible' property change is not found.
+
 2001-01-15  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* poe-18.el (floor): Removed.

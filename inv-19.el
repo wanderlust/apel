@@ -45,11 +45,11 @@
   (get-text-property pos 'invisible))
 
 (defun next-visible-point (pos)
-  (save-excursion
-    (goto-char (next-single-property-change pos 'invisible))
-    (if (eq (following-char) ?\n)
-	(forward-char))
-    (point)))
+  (if (setq pos (next-single-property-change pos 'invisible))
+      (if (eq ?\n (char-after pos))
+	  (1+ pos)
+	pos)
+    (point-max)))
 
 
 ;;; @ end
