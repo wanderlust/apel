@@ -1,3 +1,7 @@
+1998-12-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mcs-om.el: Avoid error when cyrillic.el is not found.
+
 1998-12-19  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* poem-xm.el: Define coding-system `gb2312-dos', `gb2312-mac' and
