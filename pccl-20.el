@@ -25,6 +25,8 @@
 
 ;;; Code:
 
+(require 'poem)
+
 (eval-when-compile (require 'ccl))
 (require 'broken)
 

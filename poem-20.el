@@ -99,29 +99,32 @@ except for line-break code."
 ;;; @ with code-conversion
 ;;;
 
-(defun insert-file-contents-as-coding-system
-  (coding-system filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
-be applied to `coding-system-for-read'."
-  (let ((coding-system-for-read coding-system)
+(defun insert-file-contents-as-specified-coding-system (filename &rest args)
+  "Like `insert-file-contents', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to
+`insert-file-contents' except for the last element. The last element of
+ARGS must be a coding-system."
+  (let ((coding-system-for-read (car (reverse args)))
 	format-alist)
-    (insert-file-contents filename visit beg end replace)))
+    (apply 'insert-file-contents filename (nreverse (cdr (nreverse args))))))
 
-(defun write-region-as-coding-system
-  (coding-system start end filename &optional append visit lockname)
-  "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
-applied to `coding-system-for-write'."
-  (let ((coding-system-for-write coding-system)
+(defun write-region-as-specified-coding-system (start end filename &rest args)
+  "Like `write-region', q.v., but code convert by the specified coding-system.
+ARGS the optional arguments are passed to `write-region' except for the last
+element. The last element of ARGS must be a coding-system."
+  (let ((coding-system-for-write (car (reverse args)))
 	jka-compr-compression-info-list jam-zcat-filename-list)
-    (write-region start end filename append visit lockname)))
+    (apply 'write-region start end filename
+	   (nreverse (cdr (nreverse args))))))
 
-(defun find-file-noselect-as-coding-system
-  (coding-system filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
-be applied to `coding-system-for-read'."
-  (let ((coding-system-for-read coding-system)
+(defun find-file-noselect-as-specified-coding-system (filename &optional args)
+  "Like `find-file-noselect', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to `find-file-noselect'
+except for the last element. The last element of ARGS must be a
+coding-system."
+  (let ((coding-system-for-read (car (reverse args)))
 	format-alist)
-    (find-file-noselect filename nowarn rawfile)))
+    (apply' find-file-noselect filename (nreverse (cdr (nreverse args))))))
 
 
 ;;; @ end
