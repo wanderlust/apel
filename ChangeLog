@@ -1,3 +1,10 @@
+1999-12-27  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* pym.el (static-if, static-when, static-unless,
+	static-condition-case, static-defconst, static-cond): Define
+	edebug-specs.
+
+
 1999-12-24  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* APEL: Version 10.0 released.

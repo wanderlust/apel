@@ -30,7 +30,7 @@
 ;; Many APEL modules use these macros to provide emulation version of
 ;; Emacs builtins (both C primitives and lisp subroutines) for backward
 ;; compatibility.  While compilation time, if `def*-maybe' find that
-;; functions/variables being defined is already provided by Emacs used
+;; functions/variables being defined are already provided by Emacs used
 ;; for compilation, it does not leave the definitions in compiled code
 ;; and resulting .elc will be highly specialized for your environment.
 
@@ -268,13 +268,12 @@ Both SYMBOL and SPEC are unevaluated. The SPEC can be 0, t, a symbol
 	   &rest (&rest sexp)))
 
 ;; edebug-spec for `static-*' macros are also defined here.
-;; XXX: not defined yet.  FIXME!
-;; (def-edebug-spec static-if ...)
-;; (def-edebug-spec static-when ...)
-;; (def-edebug-spec static-unless ...)
-;; (def-edebug-spec static-condition-case ...)
-;; (def-edebug-spec static-defconst ...)
-;; (def-edebug-spec static-cond ...)
+(def-edebug-spec static-if if)
+(def-edebug-spec static-when when)
+(def-edebug-spec static-unless unless)
+(def-edebug-spec static-condition-case condition-case)
+(def-edebug-spec static-defconst defconst)
+(def-edebug-spec static-cond cond)
 
 
 ;;; for backward compatibility.
