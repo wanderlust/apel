@@ -113,6 +113,26 @@ This constant is defined to emulate old MULE anything older than MULE 2.3.
 It is obsolete, so don't use it."))
 
 
+;;; @ without code-conversion
+;;;
+
+(defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
+(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
+
+(defun-maybe insert-binary-file-contents-literally (filename
+						    &optional visit
+						    beg end replace)
+  "Like `insert-file-contents-literally', q.v., but don't code conversion.
+A buffer may be modified in several ways after reading into the buffer due
+to advanced Emacs features, such as file-name-handlers, format decoding,
+find-file-hooks, etc.
+  This function ensures that none of these modifications will take place.
+\[emu-nemacs.el]"
+  (as-binary-input-file
+   ;; Returns list absolute file name and length of data inserted.
+   (insert-file-contents-literally filename visit beg end replace)))
+
+
 ;;; @ MIME charset
 ;;;
 

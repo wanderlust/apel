@@ -152,9 +152,6 @@ If CCL-PROG is symbol, it is dereferenced.
 ;;; @ end
 ;;;
 
-(defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
-(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
-
 (defalias 'insert-binary-file-contents-literally
   'insert-file-contents-literally)
 
