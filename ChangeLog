@@ -1,3 +1,8 @@
+2000-03-04   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* poe.el (remassq,remassoc,remrassoc): Rewrite.
+	(remrassq): New function.
+
 2000-03-01  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* APEL: Version 10.2 released.
