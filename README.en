@@ -30,7 +30,8 @@ What's APEL?
 
 	alist.el: utility for Association-list
 
-	atype.el: utility for atype
+	calist.el: utility for condition tree and
+		   condition/situation-alist
 
 	path-util.el: utility for path management or file detection
 
