@@ -142,7 +142,7 @@ If suffixes is omitted, `exec-suffix-list' is used."
   (let (files)
     (catch 'tag
       (while suffixes
-	(let (suf (car suffixes))
+	(let ((suf (car suffixes)))
 	  (if (and (not (string= suf ""))
 		   (string-match (concat (regexp-quote suf) "$") file))
 	      (progn

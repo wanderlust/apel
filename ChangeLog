@@ -1,3 +1,7 @@
+1999-10-04  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* path-util.el (exec-installed-p): Add parens.
+
 1999-10-04  Keiichi Suzuki  <keiichi@nanap.org>
 
 	* path-util.el (exec-installed-p): Use `file-executable-p' instead
