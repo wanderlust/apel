@@ -1,5 +1,10 @@
 1998-04-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* emu-x20.el (decode-mime-charset-string): Use
+ 	'decode-mime-charset-region.
+
+1998-04-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu-x20.el (mime-charset-decoder-alist): Add
  	'decode-mime-charset-region-for-hz for 'hz-gb-2312.
 	(decode-mime-charset-region-for-hz): New function.
