@@ -1,5 +1,5 @@
 #
-# $Id$
+# Makefile for APEL.
 #
 
 VERSION = 7.2
