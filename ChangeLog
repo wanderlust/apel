@@ -1,3 +1,18 @@
+2000-02-04  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe-18.el (current-time): Fixed leap year count bug.
+	(set-time-zone-rule): New function.
+	(current-time-zone): Use `set-time-zone-rule'.
+	(floor): New function.
+	(window-live-p): New function.
+	(read-from-minibuffer): Redefined to add `HIST' optional argument.
+	(accept-process-output): Redefined to add `TIMEOUT' and
+	`TIMEOUT-MSECS' optional arguments.
+	(get-buffer-window): Redefined to add `FRAME' optional argument.
+
+	* poe.el (completing-read): Redifined to adjust optional arguments
+	for some emacsen.
+
 2000-01-31  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
 
 	* poe-18.el (defalias): Remove its definition as a function and

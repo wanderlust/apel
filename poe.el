@@ -178,6 +178,99 @@ The third arg HISTORY, is dummy for compatibility.
 See `read-from-minibuffer' for details of HISTORY argument."
 	  (si:read-string prompt initial-input)))))
 
+;; (completing-read prompt table &optional
+;; FSF Emacs
+;;      --19.7  : predicate require-match init
+;; 19.7 --19.34 : predicate require-match init hist
+;; 20.1 --      : predicate require-match init hist def inherit-input-method
+;; XEmacs
+;;      --19.(?): predicate require-match init
+;;      --21.2  : predicate require-match init hist
+;; 21.2 --      : predicate require-match init hist def
+;; )
+
+;; We support following API.
+;; (completing-read prompt table
+;;                  &optional predicate require-match init hist def)
+(static-cond
+ ;; add 'hist' and 'def' argument.
+ ((< emacs-major-version 19)
+  (or (fboundp 'si:completing-read)
+      (progn
+	(fset 'si:completing-read (symbol-function 'completing-read))
+	(defun completing-read
+	  (prompt table &optional predicate require-match init
+		                  hist def)
+	"Read a string in the minibuffer, with completion.
+PROMPT is a string to prompt with; normally it ends in a colon and a space.
+TABLE is an alist whose elements' cars are strings, or an obarray.
+PREDICATE limits completion to a subset of TABLE.
+See `try-completion' and `all-completions' for more details
+ on completion, TABLE, and PREDICATE.
+
+If REQUIRE-MATCH is non-nil, the user is not allowed to exit unless
+ the input is (or completes to) an element of TABLE or is null.
+ If it is also not t, Return does not exit if it does non-null completion.
+If the input is null, `completing-read' returns an empty string,
+ regardless of the value of REQUIRE-MATCH.
+
+If INIT is non-nil, insert it in the minibuffer initially.
+  If it is (STRING . POSITION), the initial input
+  is STRING, but point is placed POSITION characters into the string.
+HIST is ignored in this implementation.
+DEF, if non-nil, is the default value.
+
+Completion ignores case if the ambient value of
+  `completion-ignore-case' is non-nil."
+	(let ((string (si:completing-read prompt table predicate
+					  require-match init)))
+	  (if (and (string= string "") def)
+	      def string))))))
+ ;; add 'def' argument.
+ ((or (and (featurep 'xemacs)
+	   (or (and (eq emacs-major-version 21)
+		    (< emacs-minor-version 2))
+	       (< emacs-major-version 21)))
+      (< emacs-major-version 20))
+  (or (fboundp 'si:completing-read)
+      (progn
+	(fset 'si:completing-read (symbol-function 'completing-read))
+	(defun completing-read
+	  (prompt table &optional predicate require-match init
+		                  hist def)
+	"Read a string in the minibuffer, with completion.
+PROMPT is a string to prompt with; normally it ends in a colon and a space.
+TABLE is an alist whose elements' cars are strings, or an obarray.
+PREDICATE limits completion to a subset of TABLE.
+See `try-completion' and `all-completions' for more details
+ on completion, TABLE, and PREDICATE.
+
+If REQUIRE-MATCH is non-nil, the user is not allowed to exit unless
+ the input is (or completes to) an element of TABLE or is null.
+ If it is also not t, Return does not exit if it does non-null completion.
+If the input is null, `completing-read' returns an empty string,
+ regardless of the value of REQUIRE-MATCH.
+
+If INIT is non-nil, insert it in the minibuffer initially.
+  If it is (STRING . POSITION), the initial input
+  is STRING, but point is placed POSITION characters into the string.
+HIST, if non-nil, specifies a history list
+  and optionally the initial position in the list.
+  It can be a symbol, which is the history list variable to use,
+  or it can be a cons cell (HISTVAR . HISTPOS).
+  In that case, HISTVAR is the history list variable to use,
+  and HISTPOS is the initial position (the position in the list
+  which INIT corresponds to).
+  Positions are counted starting from 1 at the beginning of the list.
+DEF, if non-nil, is the default value.
+
+Completion ignores case if the ambient value of
+  `completion-ignore-case' is non-nil."  
+	(let ((string (si:completing-read prompt table predicate
+					  require-match init hist)))
+	  (if (and (string= string "") def)
+	      def string)))))))
+
 ;; v18:	(string-to-int STRING)
 ;; v19:	(string-to-number STRING)
 ;; v20:	(string-to-number STRING &optional BASE)

@@ -230,6 +230,26 @@ Used in `current-time-zone' (Emacs 19 emulating function in poe-18.el).")
   "*Local timezone name.
 Used in `current-time-zone' (Emacs 19 emulating function in poe-18.el).")
 
+(defun set-time-zone-rule (tz)
+  "Set the local time zone using TZ, a string specifying a time zone rule.
+If TZ is nil, use implementation-defined default time zone information.
+If TZ is t, use Universal Time."
+  (cond
+   ((stringp tz)
+    (setq current-time-local-timezone tz))
+   (tz
+    (setq current-time-local-timezone "GMT"))
+   (t
+    (setq current-time-local-timezone
+	  (with-temp-buffer
+	    ;; We use `date' command to get timezone information.
+	    (call-process "date" nil (current-buffer) t)
+	    (goto-char (point-min))
+	    (if (looking-at 
+		 "^.*\\([A-Z][A-Z][A-Z]\\([^ \n\t]*\\)\\).*$")
+		(buffer-substring (match-beginning 1)
+				  (match-end 1))))))))
+
 (defun current-time-zone (&optional specified-time)
   "Return the offset and name for the local time zone.
 This returns a list of the form (OFFSET NAME).
@@ -240,16 +260,10 @@ Optional argument SPECIFIED-TIME is ignored in this implementation.
 Some operating systems cannot provide all this information to Emacs;
 in this case, `current-time-zone' returns a list containing nil for
 the data it can't find."
-  (let ((local-timezone 
-	 (or current-time-local-timezone
-	     (setq current-time-local-timezone
-		   (with-temp-buffer
-		     (call-process "date" nil (current-buffer) t)
-		     (goto-char (point-min))
-		     (if (looking-at 
-			  "^.*\\([A-Z][A-Z][A-Z]\\([^ \n\t]*\\)\\).*$")
-			 (buffer-substring (match-beginning 1)
-					   (match-end 1)))))))
+  (let ((local-timezone (or current-time-local-timezone
+			    (progn
+			      (set-time-zone-rule nil)
+			      current-time-local-timezone)))
 	timezone abszone seconds)
     (setq timezone
 	  (or (cdr (assoc (upcase local-timezone) 
@@ -388,8 +402,9 @@ resolution finer than a second."
       (while (> ct2 65535)
 	(setq ct1 (1+ ct1)
 	      ct2 (- ct2 65536))))
-    (setq uru (- (+ (- (/ yyyy 4) (/ yyyy 100)) 
-		    (/ yyyy 400)) 477))
+    (setq year (- yyyy 1))
+    (setq uru (- (+ (- (/ year 4) (/ year 100)) 
+		    (/ year 400)) 477))
     (while (> uru 0)
       (setq uru (1- uru)
 	    i1 (1+ i1)
@@ -443,6 +458,14 @@ resolution finer than a second."
   "Return the absolute value of ARG."
   (if (< arg 0) (- arg) arg))
 
+(defun floor (arg &optional divisor)
+  "Return the largest integer no grater than ARG.
+With optional DIVISOR, return the largest integer no greater than ARG/DIVISOR."
+  (if (null divisor)
+      (setq divisor 1))
+  (if (< arg 0)
+      (- (/ (- divisor 1 arg) divisor))
+    (/ arg divisor)))
 
 ;;; @ Basic lisp subroutines.
 ;;;
@@ -522,6 +545,41 @@ even if a buffer with that name exists."
 (defun-maybe window-minibuffer-p (&optional window)
 "Return non-nil if WINDOW is a minibuffer window."
   (eq (or window (selected-window)) (minibuffer-window)))
+
+(defun-maybe window-live-p (obj)
+  "Returns t if OBJECT is a window which is currently visible."
+  (and (windowp obj)
+       (or (eq obj (minibuffer-window))
+	   (eq obj (get-buffer-window (window-buffer obj))))))
+
+;; Add optinal argument `hist'
+(or (fboundp 'si:read-from-minibuffer)
+    (progn
+      (fset 'si:read-from-minibuffer (symbol-function 'read-from-minibuffer))
+      (defun read-from-minibuffer (prompt &optional
+					  initial-contents keymap read hist)
+	
+	"Read a string from the minibuffer, prompting with string PROMPT.
+If optional second arg INITIAL-CONTENTS is non-nil, it is a string
+  to be inserted into the minibuffer before reading input.
+  If INITIAL-CONTENTS is (STRING . POSITION), the initial input
+  is STRING, but point is placed at position POSITION in the minibuffer.
+Third arg KEYMAP is a keymap to use whilst reading;
+  if omitted or nil, the default is `minibuffer-local-map'.
+If fourth arg READ is non-nil, then interpret the result as a lisp object
+  and return that object:
+  in other words, do `(car (read-from-string INPUT-STRING))'
+Fifth arg HIST is ignored in this implementatin."
+	(si:read-from-minibuffer prompt initial-contents keymap read))))
+
+;; Add optional argument `frame'.
+(or (fboundp 'si:get-buffer-window)
+    (progn
+      (fset 'si:get-buffer-window (symbol-function 'get-buffer-window))
+      (defun get-buffer-window (buffer &optional frame)
+	"Return a window currently displaying BUFFER, or nil if none.
+Optional argunemt FRAME is ignored in this implementation."
+	(si:get-buffer-window buffer))))
 
 ;;; @@ Environment variables.
 ;;;
@@ -615,6 +673,19 @@ If MATCH is non-nil, mention only file names that match the regexp MATCH.
 If NOSORT is dummy for compatibility."
   (si:directory-files directory full match))
 
+;;; @ Process.
+;;; 
+(or (fboundp 'si:accept-process-output)
+    (progn
+      (fset 'si:accept-process-output (symbol-function 'accept-process-output))
+      (defun accept-process-output (&optional process timeout timeout-msecs)
+	"Allow any pending output from subprocesses to be read by Emacs.
+It is read into the process' buffers or given to their filter functions.
+Non-nil arg PROCESS means do not return until some output has been received
+ from PROCESS. Nil arg PROCESS means do not return until some output has
+ been received from any process.
+TIMEOUT and TIMEOUT-MSECS are ignored in this implementation."
+	(si:accept-process-output process))))
 
 ;;; @ Text property.
 ;;;
