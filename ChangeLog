@@ -1,3 +1,13 @@
+Fri Feb 23 20:43:33 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (last): changed to macro.
+
+Fri Feb 23 20:36:19 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (caar): New macro.
+	(cdar): New macro.
+
+
 Sat Feb 23 17:52:54 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.11.2 was released.
