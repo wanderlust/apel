@@ -60,13 +60,6 @@ find-file-hooks, etc.
     (insert-file-contents-literally filename visit beg end replace)
     ))
 
-(defun insert-binary-file-contents (filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but don't code and format conversion."
-  (let ((coding-system-for-read 'binary)
-	format-alist)
-    (insert-file-contents filename visit beg end replace)
-    ))
-
 (defun write-region-as-binary (start end filename
 				     &optional append visit lockname)
   "Like `write-region', q.v., but don't code conversion."
