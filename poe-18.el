@@ -418,6 +418,15 @@ With optional non-nil ALL, force redisplay of all mode-lines.
     ))
 
 
+;;; @ string
+;;;
+
+(defun char-list-to-string (char-list)
+  "Convert list of character CHAR-LIST to string. [poe-18.el]"
+  (mapconcat (function char-to-string) char-list "")
+  )
+
+
 ;;; @ buffer
 ;;;
 
