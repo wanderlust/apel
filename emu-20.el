@@ -52,7 +52,7 @@
 
 (defun write-region-as-binary (start end filename
 				     &optional append visit lockname)
-  "Like `write-region', q.v., but don't code conversion."
+  "Like `write-region', q.v., but don't encode."
   (let ((coding-system-for-write 'binary))
     (write-region start end filename append visit lockname)
     ))
@@ -162,7 +162,7 @@ It must be symbol."
 
 (defun write-region-as-mime-charset (charset start end filename
 					     &optional append visit lockname)
-  "Like `write-region', q.v., but don't code-convert by MIME CHARSET."
+  "Like `write-region', q.v., but encode by MIME CHARSET."
   (let ((coding-system-for-write
 	 (or (mime-charset-to-coding-system charset)
 	     'binary)))
