@@ -1,3 +1,12 @@
+2000-12-19  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* poe-18.el (set-frame-heigth): Bug fixed.
+
+2000-12-17  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* APEL-MK (install-just-print-p): Move to install.el.
+	(install-update-package-files): Ditto.
+
 2000-12-16  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
 	* poe-18.el (frame-width): New function.
