@@ -1,3 +1,7 @@
+1999-08-26  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* tinycustom.el (defface): Quote the argument of `make-face'.
+
 1999-08-25  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* APEL-CFG: Don't provide `emu'; add the latest path of "custom"
