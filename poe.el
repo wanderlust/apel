@@ -148,6 +148,164 @@ See `read-from-minibuffer' for details of HISTORY argument."
       ))
 
 
+;;; @ Emacs 19.30 emulation
+;;;
+
+;; This function was imported Emacs 19.30.
+(defun-maybe add-to-list (list-var element)
+  "Add to the value of LIST-VAR the element ELEMENT if it isn't there yet.
+If you want to use `add-to-list' on a variable that is not defined
+until a certain package is loaded, you should put the call to `add-to-list'
+into a hook function that will be run only after loading the package.
+\[Emacs 19.30 emulating function]"
+  (or (member element (symbol-value list-var))
+      (set list-var (cons element (symbol-value list-var)))))
+
+(cond ((fboundp 'insert-file-contents-literally))
+      ((boundp 'file-name-handler-alist)
+       (defun insert-file-contents-literally
+	 (filename &optional visit beg end replace)
+	 "Like `insert-file-contents', q.v., but only reads in the file.
+A buffer may be modified in several ways after reading into the buffer due
+to advanced Emacs features, such as file-name-handlers, format decoding,
+find-file-hooks, etc.
+  This function ensures that none of these modifications will take place.
+\[Emacs 19.30 emulating function]"
+	 (let (file-name-handler-alist)
+	   (insert-file-contents filename visit beg end replace)))
+       )
+      (t
+       (defalias 'insert-file-contents-literally 'insert-file-contents)
+       ))
+
+
+;;; @ Emacs 19.31 emulation
+;;;
+
+(defun-maybe buffer-live-p (object)
+  "Return non-nil if OBJECT is a buffer which has not been killed.
+Value is nil if OBJECT is not a buffer or if it has been killed.
+\[Emacs 19.31 emulating function]"
+  (and object
+       (get-buffer object)
+       (buffer-name (get-buffer object))))
+
+;; This macro was imported Emacs 19.33.
+(defmacro-maybe save-selected-window (&rest body)
+  "Execute BODY, then select the window that was selected before BODY.
+\[Emacs 19.31 emulating function]"
+  (list 'let
+	'((save-selected-window-window (selected-window)))
+	(list 'unwind-protect
+	      (cons 'progn body)
+	      (list 'select-window 'save-selected-window-window))))
+
+
+;;; @ Emacs 20.1 emulation
+;;;
+
+;; This macro was imported Emacs 20.2.
+(defmacro-maybe when (cond &rest body)
+  "(when COND BODY...): if COND yields non-nil, do BODY, else return nil."
+  (list 'if cond (cons 'progn body)))
+
+(defmacro-maybe save-current-buffer (&rest body)
+  "Save the current buffer; execute BODY; restore the current buffer.
+Executes BODY just like `progn'."
+  (` (let ((orig-buffer (current-buffer)))
+       (unwind-protect
+	   (progn (,@ body))
+	 (set-buffer orig-buffer)))))
+
+;; This macro was imported Emacs 20.2.
+(defmacro-maybe with-current-buffer (buffer &rest body)
+  "Execute the forms in BODY with BUFFER as the current buffer.
+The value returned is the value of the last form in BODY.
+See also `with-temp-buffer'."
+  (` (save-current-buffer
+       (set-buffer (, buffer))
+       (,@ body))))
+
+;; This macro was imported Emacs 20.2.
+(defmacro-maybe with-temp-file (file &rest forms)
+  "Create a new buffer, evaluate FORMS there, and write the buffer to FILE.
+The value of the last form in FORMS is returned, like `progn'.
+See also `with-temp-buffer'."
+  (let ((temp-file (make-symbol "temp-file"))
+	(temp-buffer (make-symbol "temp-buffer")))
+    (` (let (((, temp-file) (, file))
+	     ((, temp-buffer)
+	      (get-buffer-create (generate-new-buffer-name " *temp file*"))))
+	 (unwind-protect
+	     (prog1
+		 (with-current-buffer (, temp-buffer)
+		   (,@ forms))
+	       (with-current-buffer (, temp-buffer)
+		 (widen)
+		 (write-region (point-min) (point-max) (, temp-file) nil 0)))
+	   (and (buffer-name (, temp-buffer))
+		(kill-buffer (, temp-buffer))))))))
+
+;; This macro was imported Emacs 20.2.
+(defmacro-maybe with-temp-buffer (&rest forms)
+  "Create a temporary buffer, and evaluate FORMS there like `progn'.
+See also `with-temp-file' and `with-output-to-string'."
+  (let ((temp-buffer (make-symbol "temp-buffer")))
+    (` (let (((, temp-buffer)
+	      (get-buffer-create (generate-new-buffer-name " *temp*"))))
+	 (unwind-protect
+	     (with-current-buffer (, temp-buffer)
+	       (,@ forms))
+	   (and (buffer-name (, temp-buffer))
+		(kill-buffer (, temp-buffer))))))))
+
+;; This function was imported Emacs 20.3.
+(defun-maybe last (x &optional n)
+  "Return the last link of the list X.  Its car is the last element.
+If X is nil, return nil.
+If N is non-nil, return the Nth-to-last link of X.
+If N is bigger than the length of X, return X."
+  (if n
+      (let ((m 0) (p x))
+	(while (consp p)
+	  (setq m (1+ m) p (cdr p)))
+	(if (<= n 0) p
+	  (if (< n m) (nthcdr (- m n) x) x)))
+    (while (cdr x)
+      (setq x (cdr x)))
+    x))
+
+;; This function was imported Emacs 20.3. (cl function)
+(defun-maybe butlast (x &optional n)
+  "Returns a copy of LIST with the last N elements removed."
+  (if (and n (<= n 0)) x
+    (nbutlast (copy-sequence x) n)))
+
+;; This function was imported Emacs 20.3. (cl function)
+(defun-maybe nbutlast (x &optional n)
+  "Modifies LIST to remove the last N elements."
+  (let ((m (length x)))
+    (or n (setq n 1))
+    (and (< n m)
+	 (progn
+	   (if (> n 0) (setcdr (nthcdr (- (1- m) n) x) nil))
+	   x))))
+
+;; This function was imported from XEmacs 21.
+(defun-maybe split-string (string &optional pattern)
+  "Return a list of substrings of STRING which are separated by PATTERN.
+If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
+  (or pattern
+      (setq pattern "[ \f\t\n\r\v]+"))
+  ;; The FSF version of this function takes care not to cons in case
+  ;; of infloop.  Maybe we should synch?
+  (let (parts (start 0))
+    (while (string-match pattern string start)
+      (setq parts (cons (substring string start (match-beginning 0)) parts)
+	    start (match-end 0)))
+    (nreverse (cons (substring string start) parts))))
+
+
 ;;; @ end
 ;;;
 
