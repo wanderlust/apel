@@ -51,6 +51,7 @@
 	   )
 	 (if (featurep 'mule)
 	     (setq pces-modules (cons 'pces-xm pces-modules))
+	   (setq pces-modules (cons 'pces-raw pces-modules))
 	   ))
 	((featurep 'mule)
 	 (cond ((>= emacs-major-version 20)
