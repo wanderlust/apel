@@ -1,5 +1,10 @@
 1998-06-08  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* mule-caesar.el (mule-caesar-region): Don't compare charset with
+ 	'us-ascii.
+
+1998-06-08  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu-mule.el (split-char): fixed.
 
 1998-06-08  Katsumi Yamaoka   <yamaoka@jpl.org>
