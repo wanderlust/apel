@@ -223,6 +223,30 @@ find-file-hooks, etc.
        (autoload 'enriched-decode "tinyrich")
        ))
 
+(if (or (and (eq emacs-major-version 19)
+	     (>= emacs-minor-version (if (featurep 'xemacs) 14 29)))
+	(and (eq emacs-major-version 20)
+	     (< emacs-minor-version (if (featurep 'xemacs) 3 1))))
+    (eval-after-load "enriched"
+      '(if (fboundp 'si:enriched-encode)
+	   nil
+	 (fset 'si:enriched-encode (symbol-function 'enriched-encode))
+	 (defun enriched-encode (from to &optional orig-buf)
+	   (let* ((si:enriched-initial-annotation enriched-initial-annotation)
+		  (enriched-initial-annotation
+		   (if (stringp si:enriched-initial-annotation)
+		       si:enriched-initial-annotation
+		     (function
+		      (lambda ()
+			(save-excursion
+			  ;; Eval this in the buffer we are annotating.  This
+			  ;; fixes a bug which was saving incorrect File-Width
+			  ;; information, since we were looking at local
+			  ;; variables in the wrong buffer.
+			  (if orig-buf (set-buffer orig-buf))
+			  (funcall si:enriched-initial-annotation)))))))
+	     (si::enriched-encode from to))))))
+
 
 ;;; @ end
 ;;;

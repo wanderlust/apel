@@ -409,7 +409,7 @@ If TIMEZONE is nil, use the local time zone."
 	 (diff   (- (timezone-zone-to-minute timezone)
 		    (timezone-zone-to-minute local)))
 	 (minute (+ minute diff))
-	 (hour-fix (timezone-floor minute 60)))
+	 (hour-fix (floor minute 60)))
     (setq hour (+ hour hour-fix))
     (setq minute (- minute (* 60 hour-fix)))
     ;; HOUR may be larger than 24 or smaller than 0.
@@ -486,17 +486,6 @@ The Gregorian date Sunday, December 31, 1 BC is imaginary."
      (/ (1- year) 4);;		+ Julian leap years
      (- (/ (1- year) 100));;	- century years
      (/ (1- year) 400)));;	+ Gregorian leap years
-
-(defun timezone-floor (n &optional divisor)
-  "Return the largest integer no grater than N.
-With optional DIVISOR, return the largest integer no greater than ARG/DIVISOR."
-  (if (fboundp 'floor)
-      (floor n divisor)
-    (if (null divisor)
-	(setq divisor 1))
-    (if (< n 0)
-	(- (/ (- divisor 1 n) divisor))
-      (/ n divisor))))
 
 ;;; @ End.
 ;;;

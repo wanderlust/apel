@@ -1,3 +1,126 @@
+2000-03-01  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* APEL: Version 10.2 released.
+
+2000-02-29  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe-18.el (current-time-string): Fixed leap year's day counting bug.
+
+2000-02-28  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* emu.el (enriched-encode): Do nothing for it if FSF Emacs 19.28
+	and earlier or XEmacs 19.13 and earlier is used.
+
+2000-02-25  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* emu.el (enriched-encode): Allow the 3rd argument ORIG-BUF for old
+	Emacsen.
+
+2000-02-21  Makoto Nakagawa  <Makoto.Nakagawa@jp.compaq.com>
+
+	* poe.el (format-time-string): New function for Emacs 19.28 and
+	earlier.
+	(format-time-month-list): New constant for `format-time-string'.
+	(format-time-week-list): New constant for `format-time-string'.
+
+2000-02-21   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* poe-18.el (walk-windows): New function.
+
+	* poe-xemacs.el
+	(set-extent-properties): New function.
+	(run-at-time): New function.
+	(cancel-timer): New function.
+	(with-timeout-handler): New function.
+	(with-timeout): New function.
+
+	* poe.el (remassq): New function.
+	(remassoc): New function.
+	(remrassoc): New function.
+	(get-buffer-window-list): New function.
+	(save-selected-frame): New macro.
+
+2000-02-10  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe.el (replace-match): Redefined to add `STRING' optional
+	argument.
+
+2000-02-07  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe-18.el (mod): Define as an alias for `%'.
+	(overlayp, move-overlay, delete-overlay, overlay-start,
+	overlay-end, overlay-buffer, overlay-properties, overlays-at,
+	overlays-in, next-overlay-change, previous-overlay-change,
+	overlay-lists, overlay-recenter, overlay-get):
+	Define as null function.
+
+2000-02-05  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* mcs-20.el (mime-charset-coding-system-alist): Add
+	`iso-2022-jp-3'.
+
+2000-02-04  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poe.el (read-file-name): Replacement for Emacs 19.28 and earlier
+	(except for Emacs 18) or XEmacs 19.13 and earlier, for
+	compatibility.
+
+2000-02-04  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* timezone.el (timezone-floor): Eliminated.
+	(timezone-fix-time-2): Use `floor' instead of `timezone-floor'.
+
+	* poe-18.el (current-time): Fixed leap year count bug.
+	(set-time-zone-rule): New function.
+	(current-time-zone): Use `set-time-zone-rule'.
+	(floor): New function.
+	(window-live-p): New function.
+	(read-from-minibuffer): Redefined to add `HIST' optional argument.
+	(accept-process-output): Redefined to add `TIMEOUT' and
+	`TIMEOUT-MSECS' optional arguments.
+	(get-buffer-window): Redefined to add `FRAME' optional argument.
+
+	* poe.el (completing-read): Redefined to adjust optional arguments
+	for some emacsen.
+
+2000-01-31  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* poe-18.el (auto-fill-function): Declare with defvar-maybe.
+	(unread-command-event): Ditto.
+	(unread-command-events): Ditto.
+	(insert-and-inherit): Define with defalias.
+	(insert-before-markers-and-inherit): Ditto.
+	(number-to-string): Ditto.
+
+2000-01-30  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* poe-18.el (window-minibuffer-p): New function.
+
+2000-01-30  Tsukamoto Tetsuo  <czkmt@remus.dti.ne.jp>
+
+	* pces-om.el (insert-file-contents-as-coding-system): Ignore BEG,
+	END and REPLACE under Emacs 18, or Mule 1.1 or earlier.
+	(insert-file-contents-as-binary): Ditto.
+
+2000-01-27  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* APEL-CFG: Typo.
+
+2000-01-26  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe-18.el (set-match-data): New alias for `store-match-data'.
+	(save-match-data-internal): New variable.
+	(save-match-data): New macro; use above.
+
+	(defalias): Docstring sync.
+	(put-text-property): Typo.
+
+2000-01-23  Tsukamoto Tetsuo  <czkmt@remus.dti.ne.jp>
+
+	* poe-18.el (byte-code-function-p): Check if the CDR of OBJECT is
+	a cons cell.
+
+
 2000-01-21  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* APEL: Version 10.1 released.
@@ -2473,7 +2596,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>

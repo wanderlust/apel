@@ -178,6 +178,99 @@ The third arg HISTORY, is dummy for compatibility.
 See `read-from-minibuffer' for details of HISTORY argument."
 	  (si:read-string prompt initial-input)))))
 
+;; (completing-read prompt table &optional
+;; FSF Emacs
+;;      --19.7  : predicate require-match init
+;; 19.7 --19.34 : predicate require-match init hist
+;; 20.1 --      : predicate require-match init hist def inherit-input-method
+;; XEmacs
+;;      --19.(?): predicate require-match init
+;;      --21.2  : predicate require-match init hist
+;; 21.2 --      : predicate require-match init hist def
+;; )
+
+;; We support following API.
+;; (completing-read prompt table
+;;                  &optional predicate require-match init hist def)
+(static-cond
+ ;; add 'hist' and 'def' argument.
+ ((< emacs-major-version 19)
+  (or (fboundp 'si:completing-read)
+      (progn
+	(fset 'si:completing-read (symbol-function 'completing-read))
+	(defun completing-read
+	  (prompt table &optional predicate require-match init
+		                  hist def)
+	"Read a string in the minibuffer, with completion.
+PROMPT is a string to prompt with; normally it ends in a colon and a space.
+TABLE is an alist whose elements' cars are strings, or an obarray.
+PREDICATE limits completion to a subset of TABLE.
+See `try-completion' and `all-completions' for more details
+ on completion, TABLE, and PREDICATE.
+
+If REQUIRE-MATCH is non-nil, the user is not allowed to exit unless
+ the input is (or completes to) an element of TABLE or is null.
+ If it is also not t, Return does not exit if it does non-null completion.
+If the input is null, `completing-read' returns an empty string,
+ regardless of the value of REQUIRE-MATCH.
+
+If INIT is non-nil, insert it in the minibuffer initially.
+  If it is (STRING . POSITION), the initial input
+  is STRING, but point is placed POSITION characters into the string.
+HIST is ignored in this implementation.
+DEF, if non-nil, is the default value.
+
+Completion ignores case if the ambient value of
+  `completion-ignore-case' is non-nil."
+	(let ((string (si:completing-read prompt table predicate
+					  require-match init)))
+	  (if (and (string= string "") def)
+	      def string))))))
+ ;; add 'def' argument.
+ ((or (and (featurep 'xemacs)
+	   (or (and (eq emacs-major-version 21)
+		    (< emacs-minor-version 2))
+	       (< emacs-major-version 21)))
+      (< emacs-major-version 20))
+  (or (fboundp 'si:completing-read)
+      (progn
+	(fset 'si:completing-read (symbol-function 'completing-read))
+	(defun completing-read
+	  (prompt table &optional predicate require-match init
+		                  hist def)
+	"Read a string in the minibuffer, with completion.
+PROMPT is a string to prompt with; normally it ends in a colon and a space.
+TABLE is an alist whose elements' cars are strings, or an obarray.
+PREDICATE limits completion to a subset of TABLE.
+See `try-completion' and `all-completions' for more details
+ on completion, TABLE, and PREDICATE.
+
+If REQUIRE-MATCH is non-nil, the user is not allowed to exit unless
+ the input is (or completes to) an element of TABLE or is null.
+ If it is also not t, Return does not exit if it does non-null completion.
+If the input is null, `completing-read' returns an empty string,
+ regardless of the value of REQUIRE-MATCH.
+
+If INIT is non-nil, insert it in the minibuffer initially.
+  If it is (STRING . POSITION), the initial input
+  is STRING, but point is placed POSITION characters into the string.
+HIST, if non-nil, specifies a history list
+  and optionally the initial position in the list.
+  It can be a symbol, which is the history list variable to use,
+  or it can be a cons cell (HISTVAR . HISTPOS).
+  In that case, HISTVAR is the history list variable to use,
+  and HISTPOS is the initial position (the position in the list
+  which INIT corresponds to).
+  Positions are counted starting from 1 at the beginning of the list.
+DEF, if non-nil, is the default value.
+
+Completion ignores case if the ambient value of
+  `completion-ignore-case' is non-nil."  
+	(let ((string (si:completing-read prompt table predicate
+					  require-match init hist)))
+	  (if (and (string= string "") def)
+	      def string)))))))
+
 ;; v18:	(string-to-int STRING)
 ;; v19:	(string-to-number STRING)
 ;; v20:	(string-to-number STRING &optional BASE)
@@ -428,6 +521,72 @@ This function does not move point."
   (save-excursion
     (end-of-line (or n 1))
     (point)))
+
+;; FSF Emacs 19.29 and later
+;; (read-file-name PROMPT &optional DIR DEFAULT-FILENAME MUSTMATCH INITIAL)
+;; XEmacs 19.14 and later:
+;; (read-file-name (PROMPT &optional DIR DEFAULT MUST-MATCH INITIAL-CONTENTS
+;;                         HISTORY)
+
+;; In FSF Emacs 19.28 and earlier (except for v18) or XEmacs 19.13 and
+;; earlier, this function is incompatible with the other Emacsen.
+;; For instance, if DEFAULT-FILENAME is nil, INITIAL is not and user
+;; enters a null string, it returns the visited file name of the current
+;; buffer if it is non-nil.
+
+;; It does not assimilate the different numbers of the optional arguments
+;; on various Emacsen (yet).
+(static-cond
+ ((and (not (featurep 'xemacs))
+       (eq emacs-major-version 19)
+       (< emacs-minor-version 29))
+  (if (fboundp 'si:read-file-name)
+      nil
+    (fset 'si:read-file-name (symbol-function 'read-file-name))
+    (defun read-file-name (prompt &optional dir default-filename mustmatch
+				  initial)
+      "Read file name, prompting with PROMPT and completing in directory DIR.
+Value is not expanded---you must call `expand-file-name' yourself.
+Default name to DEFAULT-FILENAME if user enters a null string.
+ (If DEFAULT-FILENAME is omitted, the visited file name is used,
+  except that if INITIAL is specified, that combined with DIR is used.)
+Fourth arg MUSTMATCH non-nil means require existing file's name.
+ Non-nil and non-t means also require confirmation after completion.
+Fifth arg INITIAL specifies text to start with.
+DIR defaults to current buffer's directory default."
+      (si:read-file-name prompt dir
+			 (or default-filename
+			     (if initial
+				 (expand-file-name initial dir)))
+			 mustmatch initial))))
+ ((and (featurep 'xemacs)
+       (eq emacs-major-version 19)
+       (< emacs-minor-version 14))
+  (if (fboundp 'si:read-file-name)
+      nil
+    (fset 'si:read-file-name (symbol-function 'read-file-name))
+    (defun read-file-name (prompt &optional dir default must-match
+				  initial-contents history)
+      "Read file name, prompting with PROMPT and completing in directory DIR.
+This will prompt with a dialog box if appropriate, according to
+ `should-use-dialog-box-p'.
+Value is not expanded---you must call `expand-file-name' yourself.
+Value is subject to interpreted by substitute-in-file-name however.
+Default name to DEFAULT if user enters a null string.
+ (If DEFAULT is omitted, the visited file name is used,
+  except that if INITIAL-CONTENTS is specified, that combined with DIR is
+  used.)
+Fourth arg MUST-MATCH non-nil means require existing file's name.
+ Non-nil and non-t means also require confirmation after completion.
+Fifth arg INITIAL-CONTENTS specifies text to start with.
+Sixth arg HISTORY specifies the history list to use.  Default is
+ `file-name-history'.
+DIR defaults to current buffer's directory default."
+      (si:read-file-name prompt dir
+			 (or default
+			     (if initial-contents
+				 (expand-file-name initial-contents dir)))
+			 must-match initial-contents history)))))
 
 
 ;;; @ Basic lisp subroutines emulation. (lisp/subr.el)
@@ -530,7 +689,7 @@ If TEST is omitted or nil, `equal' is used."
 ;; (defun assoc-ignore-case (key alist))
 ;; (defun assoc-ignore-representation (key alist))
 
-;; Emacs 19.29/XEmacs 19.14(?) and later: (rassoc KEY LIST)
+;; Emacs 19.29/XEmacs 19.13 and later: (rassoc KEY LIST)
 ;; Actually, `rassoc' is defined in src/fns.c.
 (defun-maybe rassoc (key list)
   "Return non-nil if KEY is `equal' to the cdr of an element of LIST.
@@ -542,6 +701,39 @@ Elements of LIST that are not conses are ignored."
 	    ((equal (cdr (car list)) key)
 	     (throw 'found (car list))))
       (setq list (cdr list)))))
+
+;; XEmacs 19.13 and later: (remassq KEY LIST)
+(defun-maybe remassq (key list)
+  "Delete by side effect any elements of LIST whose car is `eq' to KEY.
+The modified LIST is returned.  If the first member of LIST has a car
+that is `eq' to KEY, there is no way to remove it by side effect;
+therefore, write `(setq foo (remassq key foo))' to be sure of changing
+the value of `foo'."
+  (if (setq key (assq key list))
+      (delete key list)
+    list))
+
+;; XEmacs 19.13 and later: (remassoc KEY LIST)
+(defun-maybe remassoc (key list)
+  "Delete by side effect any elements of LIST whose car is `equal' to KEY.
+The modified LIST is returned.  If the first member of LIST has a car
+that is `equal' to KEY, there is no way to remove it by side effect;
+therefore, write `(setq foo (remassoc key foo))' to be sure of changing
+the value of `foo'."
+  (if (setq key (assoc key list))
+      (delete key list)
+    list))
+
+;; XEmacs 19.13 and later: (remrassoc VALUE LIST)
+(defun-maybe remrassoc (value list)
+  "Delete by side effect any elements of LIST whose cdr is `equal' to VALUE.
+The modified LIST is returned.  If the first member of LIST has a car
+that is `equal' to VALUE, there is no way to remove it by side effect;
+therefore, write `(setq foo (remrassoc value foo))' to be sure of changing
+the value of `foo'."
+  (if (setq value (rassoc value list))
+      (delete value list)
+    list))
 
 ;;; Define `functionp' here because "localhook" uses it.
 
@@ -788,6 +980,419 @@ STRING should be given if the last search was by `string-match' on STRING."
 	(buffer-substring-no-properties (match-beginning num)
 					(match-end num)))))
 
+;; Emacs 19.28 and earlier
+;;  (replace-match NEWTEXT &optional FIXEDCASE LITERAL)
+;; Emacs 20.x (?) and later
+;;  (replace-match NEWTEXT &optional FIXEDCASE LITERAL STRING SUBEXP)
+;; XEmacs 21:
+;;  (replace-match NEWTEXT &optional FIXEDCASE LITERAL STRING STRBUFFER)
+;; We support following API.
+;;  (replace-match NEWTEXT &optional FIXEDCASE LITERAL STRING)
+(static-condition-case nil
+    ;; compile-time check
+    (progn
+      (string-match "" "")
+      (replace-match "" nil nil "")
+      (if (get 'replace-match 'defun-maybe)
+	  (error "`replace-match' is already defined")))
+  (wrong-number-of-arguments ; Emacs 19.28 and earlier
+   ;; load-time check.
+   (or (fboundp 'si:replace-match)
+       (progn
+	 (fset 'si:replace-match (symbol-function 'replace-match))
+	 (put 'replace-match 'defun-maybe t)
+	 (defun replace-match (newtext &optional fixedcase literal string)
+	   "Replace text matched by last search with NEWTEXT.
+If second arg FIXEDCASE is non-nil, do not alter case of replacement text.
+Otherwise maybe capitalize the whole text, or maybe just word initials,
+based on the replaced text.
+If the replaced text has only capital letters
+and has at least one multiletter word, convert NEWTEXT to all caps.
+If the replaced text has at least one word starting with a capital letter,
+then capitalize each word in NEWTEXT.
+
+If third arg LITERAL is non-nil, insert NEWTEXT literally.
+Otherwise treat `\' as special:
+  `\&' in NEWTEXT means substitute original matched text.
+  `\N' means substitute what matched the Nth `\(...\)'.
+       If Nth parens didn't match, substitute nothing.
+  `\\' means insert one `\'.
+FIXEDCASE and LITERAL are optional arguments.
+Leaves point at end of replacement text.
+
+The optional fourth argument STRING can be a string to modify.
+In that case, this function creates and returns a new string
+which is made by replacing the part of STRING that was matched."
+	   (if string
+	       (with-temp-buffer
+		(save-match-data
+		  (insert string)
+		  (let* ((matched (match-data))
+			 (beg (nth 0 matched))
+			 (end (nth 1 matched)))
+		    (store-match-data
+		     (list
+		      (if (markerp beg)
+			  (move-marker beg (1+ (match-beginning 0)))
+			(1+ (match-beginning 0)))
+		      (if (markerp end)
+			  (move-marker end (1+ (match-end 0)))
+			(1+ (match-end 0))))))
+		  (si:replace-match newtext fixedcase literal)
+		  (buffer-string)))
+	     (si:replace-match newtext fixedcase literal))))))
+  (error ; found our definition at compile-time.
+   ;; load-time check.
+   (condition-case nil
+    (progn
+      (string-match "" "")
+      (replace-match "" nil nil ""))
+    (wrong-number-of-arguments ; Emacs 19.28 and earlier
+     ;; load-time check.
+     (or (fboundp 'si:replace-match)
+	 (progn
+	   (fset 'si:replace-match (symbol-function 'replace-match))
+	   (put 'replace-match 'defun-maybe t)
+	   (defun replace-match (newtext &optional fixedcase literal string)
+	     "Replace text matched by last search with NEWTEXT.
+If second arg FIXEDCASE is non-nil, do not alter case of replacement text.
+Otherwise maybe capitalize the whole text, or maybe just word initials,
+based on the replaced text.
+If the replaced text has only capital letters
+and has at least one multiletter word, convert NEWTEXT to all caps.
+If the replaced text has at least one word starting with a capital letter,
+then capitalize each word in NEWTEXT.
+
+If third arg LITERAL is non-nil, insert NEWTEXT literally.
+Otherwise treat `\' as special:
+  `\&' in NEWTEXT means substitute original matched text.
+  `\N' means substitute what matched the Nth `\(...\)'.
+       If Nth parens didn't match, substitute nothing.
+  `\\' means insert one `\'.
+FIXEDCASE and LITERAL are optional arguments.
+Leaves point at end of replacement text.
+
+The optional fourth argument STRING can be a string to modify.
+In that case, this function creates and returns a new string
+which is made by replacing the part of STRING that was matched."
+	     (if string
+		 (with-temp-buffer
+		  (save-match-data
+		    (insert string)
+		    (let* ((matched (match-data))
+			   (beg (nth 0 matched))
+			   (end (nth 1 matched)))
+		      (store-match-data
+		       (list
+			(if (markerp beg)
+			    (move-marker beg (1+ (match-beginning 0)))
+			  (1+ (match-beginning 0)))
+			(if (markerp end)
+			    (move-marker end (1+ (match-end 0)))
+			  (1+ (match-end 0))))))
+		    (si:replace-match newtext fixedcase literal)
+		    (buffer-string)))
+	       (si:replace-match newtext fixedcase literal)))))))))
+
+;; Emacs 20: (format-time-string)
+;; The the third optional argument universal is yet to be implemented.
+;; Those format constructs are yet to be implemented.
+;;   %c, %C, %j, %U, %W, %x, %X
+;; Not fully compatible especially when invalid format is specified.
+(static-unless (and (fboundp 'format-time-string)
+		    (not (get 'format-time-string 'defun-maybe)))
+  (or (fboundp 'format-time-string)
+  (progn
+  (defconst format-time-month-list
+    '(( "Zero" . ("Zero" . 0))
+      ("Jan" . ("January" . 1)) ("Feb" . ("February" . 2))
+      ("Mar" . ("March" . 3)) ("Apr" . ("April" . 4)) ("May" . ("May" . 5))
+      ("Jun" . ("June" . 6))("Jul" . ("July" . 7)) ("Aug" . ("August" . 8))
+      ("Sep" . ("September" . 9)) ("Oct" . ("October" . 10))
+      ("Nov" . ("November" . 11)) ("Dec" . ("December" . 12)))
+    "Alist of months and their number.")
+
+  (defconst format-time-week-list
+    '(("Sun" . ("Sunday" . 0)) ("Mon" . ("Monday" . 1))
+      ("Tue" . ("Tuesday" . 2)) ("Wed" . ("Wednesday" . 3))
+      ("Thu" . ("Thursday" . 4)) ("Fri" . ("Friday" . 5))
+      ("Sat" . ("Saturday" . 6)))
+    "Alist of weeks and their number.")
+
+  (defun format-time-string (format &optional time universal)
+    "Use FORMAT-STRING to format the time TIME, or now if omitted.
+TIME is specified as (HIGH LOW . IGNORED) or (HIGH . LOW), as returned by
+`current-time' or `file-attributes'.
+The third, optional, argument UNIVERSAL, if non-nil, means describe TIME
+as Universal Time; nil means describe TIME in the local time zone.
+The value is a copy of FORMAT-STRING, but with certain constructs replaced
+by text that describes the specified date and time in TIME:
+
+%Y is the year, %y within the century, %C the century.
+%G is the year corresponding to the ISO week, %g within the century.
+%m is the numeric month.
+%b and %h are the locale's abbreviated month name, %B the full name.
+%d is the day of the month, zero-padded, %e is blank-padded.
+%u is the numeric day of week from 1 (Monday) to 7, %w from 0 (Sunday) to 6.
+%a is the locale's abbreviated name of the day of week, %A the full name.
+%U is the week number starting on Sunday, %W starting on Monday,
+ %V according to ISO 8601.
+%j is the day of the year.
+
+%H is the hour on a 24-hour clock, %I is on a 12-hour clock, %k is like %H
+ only blank-padded, %l is like %I blank-padded.
+%p is the locale's equivalent of either AM or PM.
+%M is the minute.
+%S is the second.
+%Z is the time zone name, %z is the numeric form.
+%s is the number of seconds since 1970-01-01 00:00:00 +0000.
+
+%c is the locale's date and time format.
+%x is the locale's \"preferred\" date format.
+%D is like \"%m/%d/%y\".
+
+%R is like \"%H:%M\", %T is like \"%H:%M:%S\", %r is like \"%I:%M:%S %p\".
+%X is the locale's \"preferred\" time format.
+
+Finally, %n is a newline, %t is a tab, %% is a literal %.
+
+Certain flags and modifiers are available with some format controls.
+The flags are `_' and `-'.  For certain characters X, %_X is like %X,
+but padded with blanks; %-X is like %X, but without padding.
+%NX (where N stands for an integer) is like %X,
+but takes up at least N (a number) positions.
+The modifiers are `E' and `O'.  For certain characters X,
+%EX is a locale's alternative version of %X;
+%OX is like %X, but uses the locale's number symbols.
+
+For example, to produce full ISO 8601 format, use \"%Y-%m-%dT%T%z\".
+
+Compatibility Note.
+
+The the third optional argument universal is yet to be implemented.
+Those format constructs are yet to be implemented.
+  %c, %C, %j, %U, %W, %x, %X
+Not fully compatible especially when invalid format is specified."
+    (let ((fmt-len (length format))
+	  (ind 0)
+	  prev-ind
+	  cur-char
+	  (prev-char nil)
+	  strings-so-far
+	  (result "")
+	  field-width
+	  field-result
+	  pad-left change-case
+	  (paren-level 0)
+	  hour
+	  (time-string (current-time-string time)))
+      (setq hour (string-to-int (substring time-string 11 13)))
+      (while (< ind fmt-len)
+	(setq cur-char (aref format ind))
+	(setq
+	 result
+	 (concat result
+	(cond
+	 ((eq cur-char ?%)
+	  ;; eat any additional args to allow for future expansion, not!!
+	  (setq pad-left nil change-case nil field-width "" prev-ind ind
+		strings-so-far "")
+;	  (catch 'invalid
+	  (while (progn
+		   (setq ind (1+ ind))
+		   (setq cur-char (if (< ind fmt-len)
+				      (aref format ind)
+				    ?\0))
+		   (or (eq ?- cur-char) ; pad on left
+		       (eq ?# cur-char) ; case change
+		       (if (and (string-equal field-width "")
+				(<= ?0 cur-char) (>= ?9 cur-char))
+			   ;; get format width
+			   (let ((field-index ind))
+			     (while (progn
+				      (setq ind (1+ ind))
+				      (setq cur-char (if (< ind fmt-len)
+							 (aref format ind)
+						       ?\0))
+				      (and (<= ?0 cur-char) (>= ?9 cur-char))))
+			     (setq field-width
+				   (substring format field-index ind))
+			     (setq ind (1- ind)
+				   cur-char nil)
+			     t))))
+	    (setq prev-char cur-char
+		  strings-so-far (concat strings-so-far
+					 (if cur-char
+					     (char-to-string cur-char)
+					   field-width)))
+	    ;; characters we actually use
+	    (cond ((eq cur-char ?-)
+		   ;; padding to left must be specified before field-width
+		   (setq pad-left (string-equal field-width "")))
+		  ((eq cur-char ?#)
+		   (setq change-case t))))
+	  (setq field-result
+		(cond
+		 ((eq cur-char ?%)
+		  "%")
+		 ;; the abbreviated name of the day of week.		 
+		 ((eq cur-char ?a)
+		  (substring time-string 0 3))
+		 ;; the full name of the day of week
+		 ((eq cur-char ?A)
+		  (cadr (assoc (substring time-string 0 3)
+			       format-time-week-list)))
+		 ;; the abbreviated name of the month
+		 ((eq cur-char ?b)
+		  (substring time-string 4 7))
+		 ;; the full name of the month
+		 ((eq cur-char ?B)
+		  (cadr (assoc (substring time-string 4 7)
+			       format-time-month-list)))
+		 ;; a synonym for `%x %X' (yet to come)
+		 ((eq cur-char ?c)
+		  "")
+		 ;; locale specific (yet to come)
+		 ((eq cur-char ?C)
+		  "")
+		 ;; the day of month, zero-padded
+		 ((eq cur-char ?d)	
+		  (substring time-string 8 10))
+		 ;; a synonym for `%m/%d/%y'
+		 ((eq cur-char ?D)
+		  (format "%02d/%s/%s"
+			  (cddr (assoc (substring time-string 4 7)
+				       format-time-month-list))
+			  (substring time-string 8 10)
+			  (substring time-string -2)))
+		 ;; the day of month, blank-padded
+		 ((eq cur-char ?e)
+		  (format "%2d" (string-to-int (substring time-string 8 10))))
+		 ;; a synonym for `%b'
+		 ((eq cur-char ?h)
+		  (substring time-string 4 7))
+		 ;; the hour (00-23)
+		 ((eq cur-char ?H)
+		  (substring time-string 11 13))
+		 ;; the hour (00-12)
+		 ((eq cur-char ?I)
+		  (format "%02d" (if (> hour 12) (- hour 12) hour)))
+		 ;; the day of the year (001-366) (yet to come)
+		 ((eq cur-char ?j)
+		  "")
+		 ;; the hour (0-23), blank padded
+		 ((eq cur-char ?k)
+		  (format "%2d" hour))
+		 ;; the hour (1-12), blank padded
+		 ((eq cur-char ?l)
+		  (format "%2d" (if (> hour 12) (- hour 12) hour)))
+		 ;; the month (01-12)
+		 ((eq cur-char ?m)
+		  (format "%02d" (cddr (assoc (substring time-string 4 7)
+					      format-time-month-list))))
+		 ;; the minute (00-59)
+		 ((eq cur-char ?M)
+		  (substring time-string 14 16))
+		 ;; a newline
+		 ((eq cur-char ?n)
+		  "\n")
+		 ;; `AM' or `PM', as appropriate
+		 ((eq cur-char ?p)
+		  (setq change-case (not change-case))
+		  (if (> hour 12) "pm" "am"))
+		 ;; a synonym for `%I:%M:%S %p'
+		 ((eq cur-char ?r)
+		  (format "%02d:%s:%s %s"
+			  (if (> hour 12) (- hour 12) hour)
+			  (substring time-string 14 16)
+			  (substring time-string 17 19)
+			  (if (> hour 12) "PM" "AM")))
+		 ;; a synonym for `%H:%M'
+		 ((eq cur-char ?R)
+		  (format "%s:%s"
+			  (substring time-string 11 13)
+			  (substring time-string 14 16)))
+		 ;; the seconds (00-60)
+		 ((eq cur-char ?S)
+		  (substring time-string 17 19))
+		 ;; a tab character
+		 ((eq cur-char ?t)
+		  "\t")
+		 ;; a synonym for `%H:%M:%S'
+		 ((eq cur-char ?T)
+		  (format "%s:%s:%s"
+			  (substring time-string 11 13)
+			  (substring time-string 14 16)
+			  (substring time-string 17 19)))
+		 ;; the week of the year (01-52), assuming that weeks 
+		 ;; start on Sunday (yet to come)
+		 ((eq cur-char ?U)
+		  "")
+		 ;; the numeric day of week (0-6).  Sunday is day 0
+		 ((eq cur-char ?w)
+		  (format "%d" (cddr (assoc (substring time-string 0 3)
+					    format-time-week-list))))
+		 ;; the week of the year (01-52), assuming that weeks
+		 ;; start on Monday (yet to come)
+		 ((eq cur-char ?W)
+		  "")
+		 ;; locale specific (yet to come)
+		 ((eq cur-char ?x)
+		  "")
+		 ;; locale specific (yet to come)
+		 ((eq cur-char ?X)
+		  "")
+		 ;; the year without century (00-99)
+		 ((eq cur-char ?y)
+		  (substring time-string -2))
+		 ;; the year with century
+		 ((eq cur-char ?Y)
+		  (substring time-string -4))
+		 ;; the time zone abbreviation
+		 ((eq cur-char ?Z)
+		  (setq change-case (not change-case))
+		  (downcase (cadr (current-time-zone))))
+		 (t
+		  (concat
+		   "%"
+		   strings-so-far
+		   (char-to-string cur-char)))))
+;		  (setq ind prev-ind)
+;		  (throw 'invalid "%"))))
+	  (if (string-equal field-width "")
+	      (if change-case (upcase field-result) field-result)
+	    (let ((padded-result
+		   (format (format "%%%s%s%c"
+				   ""	; pad on left is ignored
+;				   (if pad-left "-" "")
+				   field-width
+				   ?s)
+			   (or field-result ""))))
+	      (let ((initial-length (length padded-result))
+		    (desired-length (string-to-int field-width)))
+		(when (and (string-match "^0" field-width)
+			   (string-match "^ +" padded-result))
+		  (setq padded-result
+			(replace-match
+			 (make-string
+			  (length (match-string 0 padded-result)) ?0)
+			 nil nil padded-result)))
+		(if (> initial-length desired-length)
+		    ;; truncate strings on right, years on left
+		    (if (stringp field-result)
+			(substring padded-result 0 desired-length)
+		      (if (eq cur-char ?y)
+			  (substring padded-result (- desired-length))
+			padded-result))) ;non-year numbers don't truncate
+		(if change-case (upcase padded-result) padded-result))))) ;)
+	 (t
+	  (char-to-string cur-char)))))
+	(setq ind (1+ ind)))
+      result))
+  ;; for `load-history'.
+  (setq current-load-list (cons 'format-time-string current-load-list))
+  (put 'format-time-string 'defun-maybe t))))
+
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (split-string STRING &optional PATTERN)
 ;; Here is a XEmacs version.
 (defun-maybe split-string (string &optional pattern)
@@ -814,6 +1419,33 @@ If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
 	(list 'unwind-protect
 	      (cons 'progn body)
 	      (list 'select-window 'save-selected-window-window))))
+
+;; Emacs 19.31 and later:
+;;  (get-buffer-window-list &optional BUFFER MINIBUF FRAME)
+(defun-maybe get-buffer-window-list (buffer &optional minibuf frame)
+  "Return windows currently displaying BUFFER, or nil if none.
+See `walk-windows' for the meaning of MINIBUF and FRAME."
+  (let ((buffer (if (bufferp buffer) buffer (get-buffer buffer))) windows)
+    (walk-windows
+     (function (lambda (window)
+		 (if (eq (window-buffer window) buffer)
+		     (setq windows (cons window windows)))))
+     minibuf frame)
+    windows))
+
+
+;;; @ Frame commands emulation. (lisp/frame.el)
+;;;
+
+;; XEmacs 21.0 and later:
+;;  (save-selected-frame &rest BODY)
+(defmacro-maybe save-selected-frame (&rest body)
+  "Execute forms in BODY, then restore the selected frame."
+  (list 'let
+	'((save-selected-frame-frame (selected-frame)))
+	(list 'unwind-protect
+	      (cons 'progn body)
+	      (list 'select-frame 'save-selected-frame-frame))))
 
 
 ;;; @ Basic editing commands emulation. (lisp/simple.el)

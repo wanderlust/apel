@@ -52,13 +52,12 @@
 ;;;
 
 (defun defalias (sym newdef)
-  "Set SYMBOL's function definition to NEWVAL, and return NEWVAL.
-Associates the function with the current load file, if any."
+  "Set SYMBOL's function definition to NEWVAL, and return NEWVAL."
   (fset sym newdef))
 
 (defun byte-code-function-p (object)
   "Return t if OBJECT is a byte-compiled function object."
-  (and (consp object)
+  (and (consp object) (consp (cdr object))
        (let ((rest (cdr (cdr object)))
 	     elt)
 	 (if (stringp (car rest))
@@ -228,11 +227,31 @@ for this variable."
     ("GMT-8"  .  -800)("GMT-9"  .  -900)("GMT-10" . -1000)
     ("GMT-11" . -1100) ("GMT-12" . -1200))
   "Time differentials of timezone from GMT in +-HHMM form.
-Used in `current-time-zone' (Emacs 19 emulating function in poe-18.el).")
+Used in `current-time-zone'.")
 
 (defvar current-time-local-timezone nil 
   "*Local timezone name.
-Used in `current-time-zone' (Emacs 19 emulating function in poe-18.el).")
+Used in `current-time-zone'.")
+
+(defun set-time-zone-rule (tz)
+  "Set the local time zone using TZ, a string specifying a time zone rule.
+If TZ is nil, use implementation-defined default time zone information.
+If TZ is t, use Universal Time."
+  (cond
+   ((stringp tz)
+    (setq current-time-local-timezone tz))
+   (tz
+    (setq current-time-local-timezone "GMT"))
+   (t
+    (setq current-time-local-timezone
+	  (with-temp-buffer
+	    ;; We use `date' command to get timezone information.
+	    (call-process "date" nil (current-buffer) t)
+	    (goto-char (point-min))
+	    (if (looking-at 
+		 "^.*\\([A-Z][A-Z][A-Z]\\([^ \n\t]*\\)\\).*$")
+		(buffer-substring (match-beginning 1)
+				  (match-end 1))))))))
 
 (defun current-time-zone (&optional specified-time)
   "Return the offset and name for the local time zone.
@@ -244,16 +263,10 @@ Optional argument SPECIFIED-TIME is ignored in this implementation.
 Some operating systems cannot provide all this information to Emacs;
 in this case, `current-time-zone' returns a list containing nil for
 the data it can't find."
-  (let ((local-timezone 
-	 (or current-time-local-timezone
-	     (setq current-time-local-timezone
-		   (with-temp-buffer
-		     (call-process "date" nil (current-buffer) t)
-		     (goto-char (point-min))
-		     (if (looking-at 
-			  "^.*\\([A-Z][A-Z][A-Z]\\([^ \n\t]*\\)\\).*$")
-			 (buffer-substring (match-beginning 1)
-					   (match-end 1)))))))
+  (let ((local-timezone (or current-time-local-timezone
+			    (progn
+			      (set-time-zone-rule nil)
+			      current-time-local-timezone)))
 	timezone abszone seconds)
     (setq timezone
 	  (or (cdr (assoc (upcase local-timezone) 
@@ -345,10 +358,8 @@ and from `file-attributes'."
       (setq lyear (and (zerop (% yyyy 4))
 		       (or (not (zerop (% yyyy 100)))
 			   (zerop (% yyyy 400)))))
-      (while (> (- dd (nth mm mdays)) 0)
-	(if (and (= mm 1) lyear)
-	    (setq dd (- dd 29))
-	  (setq dd (- dd (nth mm mdays))))
+      (while (> (- dd  (if (and lyear (= mm 1)) 29 (nth mm mdays))) 0)
+	(setq dd (- dd (if (and lyear (= mm 1)) 29 (nth mm mdays))))
 	(setq mm (1+ mm)))
       (setq HH (/ low 3600)
 	    low (% low 3600)
@@ -392,8 +403,9 @@ resolution finer than a second."
       (while (> ct2 65535)
 	(setq ct1 (1+ ct1)
 	      ct2 (- ct2 65536))))
-    (setq uru (- (+ (- (/ yyyy 4) (/ yyyy 100)) 
-		    (/ yyyy 400)) 477))
+    (setq year (- yyyy 1))
+    (setq uru (- (+ (- (/ year 4) (/ year 100)) 
+		    (/ year 400)) 477))
     (while (> uru 0)
       (setq uru (1- uru)
 	    i1 (1+ i1)
@@ -447,6 +459,16 @@ resolution finer than a second."
   "Return the absolute value of ARG."
   (if (< arg 0) (- arg) arg))
 
+(defun floor (arg &optional divisor)
+  "Return the largest integer no grater than ARG.
+With optional DIVISOR, return the largest integer no greater than ARG/DIVISOR."
+  (if (null divisor)
+      (setq divisor 1))
+  (if (< arg 0)
+      (- (/ (- divisor 1 arg) divisor))
+    (/ arg divisor)))
+
+(defalias 'mod '%)
 
 ;;; @ Basic lisp subroutines.
 ;;;
@@ -476,16 +498,32 @@ With optional non-nil ALL, force redisplay of all mode-lines."
   (if all (save-excursion (set-buffer (other-buffer))))
   (set-buffer-modified-p (buffer-modified-p)))
 
-;; (defalias 'save-match-data 'store-match-data)
+(defalias 'set-match-data 'store-match-data)
+
+(defvar save-match-data-internal)
+
+;; We use save-match-data-internal as the local variable because
+;; that works ok in practice (people should not use that variable elsewhere).
+(defmacro save-match-data (&rest body)
+  "Execute the BODY forms, restoring the global value of the match data."
+  (` (let ((save-match-data-internal (match-data)))
+       (unwind-protect (progn (,@ body))
+         (set-match-data save-match-data-internal)))))
 
 
 ;;; @ Basic editing commands.
 ;;;
 
-;; 18.55 does not have this variable.
+;; 18.55 does not have these variables.
 (defvar buffer-undo-list nil)
+(defvar auto-fill-function nil)
+(defvar unread-command-event nil)
+(defvar unread-command-events nil)
 
 (defalias 'buffer-disable-undo 'buffer-flush-undo)
+(defalias 'insert-and-inherit 'insert)
+(defalias 'insert-before-markers-and-inherit 'insert-before-markers)
+(defalias 'number-to-string 'int-to-string)
 
 (defun generate-new-buffer-name (name &optional ignore)
   "Return a string that is the name of no existing buffer based on NAME.
@@ -507,6 +545,65 @@ even if a buffer with that name exists."
 (defun mark (&optional force)
   (si:mark))
 
+(defun window-minibuffer-p (&optional window)
+"Return non-nil if WINDOW is a minibuffer window."
+  (eq (or window (selected-window)) (minibuffer-window)))
+
+(defun window-live-p (object)
+  "Returns t if OBJECT is a window which is currently visible."
+  (and (windowp object)
+       (or (eq object (minibuffer-window))
+	   (eq object (get-buffer-window (window-buffer object))))))
+
+;; Add optinal argument `hist'
+(or (fboundp 'si:read-from-minibuffer)
+    (progn
+      (fset 'si:read-from-minibuffer (symbol-function 'read-from-minibuffer))
+      (defun read-from-minibuffer (prompt &optional
+					  initial-contents keymap read hist)
+	
+	"Read a string from the minibuffer, prompting with string PROMPT.
+If optional second arg INITIAL-CONTENTS is non-nil, it is a string
+to be inserted into the minibuffer before reading input.
+If INITIAL-CONTENTS is (STRING . POSITION), the initial input
+is STRING, but point is placed at position POSITION in the minibuffer.
+Third arg KEYMAP is a keymap to use whilst reading;
+if omitted or nil, the default is `minibuffer-local-map'.
+If fourth arg READ is non-nil, then interpret the result as a lisp object
+and return that object:
+in other words, do `(car (read-from-string INPUT-STRING))'
+Fifth arg HIST is ignored in this implementatin."
+	(si:read-from-minibuffer prompt initial-contents keymap read))))
+
+;; Add optional argument `frame'.
+(or (fboundp 'si:get-buffer-window)
+    (progn
+      (fset 'si:get-buffer-window (symbol-function 'get-buffer-window))
+      (defun get-buffer-window (buffer &optional frame)
+	"Return a window currently displaying BUFFER, or nil if none.
+Optional argunemt FRAME is ignored in this implementation."
+	(si:get-buffer-window buffer))))
+
+(defun-maybe walk-windows (proc &optional minibuf all-frames)
+  "Cycle through all visible windows, calling PROC for each one.
+PROC is called with a window as argument.
+
+Optional second arg MINIBUF t means count the minibuffer window even
+if not active.  MINIBUF nil or omitted means count the minibuffer iff
+it is active.  MINIBUF neither t nor nil means not to count the
+minibuffer even if it is active.
+Optional third argunemt ALL-FRAMES is ignored in this implementation."
+  (if (window-minibuffer-p (selected-window))
+      (setq minibuf t))
+  (let* ((walk-windows-start (selected-window))
+	 (walk-windows-current walk-windows-start))
+    (unwind-protect
+	(while (progn
+		 (setq walk-windows-current
+		       (next-window walk-windows-current minibuf))
+		 (funcall proc walk-windows-current)
+		 (not (eq walk-windows-current walk-windows-start))))
+      (select-window walk-windows-start))))
 
 ;;; @@ Environment variables.
 ;;;
@@ -600,6 +697,19 @@ If MATCH is non-nil, mention only file names that match the regexp MATCH.
 If NOSORT is dummy for compatibility."
   (si:directory-files directory full match))
 
+;;; @ Process.
+;;; 
+(or (fboundp 'si:accept-process-output)
+    (progn
+      (fset 'si:accept-process-output (symbol-function 'accept-process-output))
+      (defun accept-process-output (&optional process timeout timeout-msecs)
+	"Allow any pending output from subprocesses to be read by Emacs.
+It is read into the process' buffers or given to their filter functions.
+Non-nil arg PROCESS means do not return until some output has been received
+ from PROCESS. Nil arg PROCESS means do not return until some output has
+ been received from any process.
+TIMEOUT and TIMEOUT-MSECS are ignored in this implementation."
+	(si:accept-process-output process))))
 
 ;;; @ Text property.
 ;;;
@@ -613,7 +723,7 @@ If NOSORT is dummy for compatibility."
 (defun previous-property-change (position &optional object limit))
 (defun previous-single-property-change (position prop &optional object limit))
 (defun add-text-properties (start end properties &optional object))
-(defun put-text-properties (start end property &optional object))
+(defun put-text-property (start end property value &optional object))
 (defun set-text-properties (start end properties &optional object))
 (defun remove-text-properties (start end properties &optional object))
 (defun text-property-any (start end property value &optional object))
@@ -629,68 +739,22 @@ If NOSORT is dummy for compatibility."
 ;;; @ Overlay.
 ;;;
 
-(cond
- ((boundp 'NEMACS)
-  (defvar emu:available-face-attribute-alist
-    '(
-      ;;(bold      . inversed-region)
-      (italic    . underlined-region)
-      (underline . underlined-region)))
-
-  ;; by YAMATE Keiichirou 1994/10/28
-  (defun attribute-add-narrow-attribute (attr from to)
-    (or (consp (symbol-value attr))
-	(set attr (list 1)))
-    (let* ((attr-value (symbol-value attr))
-	   (len (car attr-value))
-	   (posfrom 1)
-	   posto)
-      (while (and (< posfrom len)
-		  (> from (nth posfrom attr-value)))
-	(setq posfrom (1+ posfrom)))
-      (setq posto posfrom)
-      (while (and (< posto len)
-		  (> to (nth posto attr-value)))
-	(setq posto (1+ posto)))
-      (if  (= posto posfrom)
-	  (if (= (% posto 2) 1)
-	      (if (and (< to len)
-		       (= to (nth posto attr-value)))
-		  (set-marker (nth posto attr-value) from)
-		(setcdr (nthcdr (1- posfrom) attr-value)
-			(cons (set-marker-type (set-marker (make-marker)
-							   from)
-					       'point-type)
-			      (cons (set-marker-type
-				     (set-marker (make-marker)
-						 to)
-				     nil)
-				    (nthcdr posto attr-value))))
-		(setcar attr-value (+ len 2))))
-	(if (= (% posfrom 2) 0)
-	    (setq posfrom (1- posfrom))
-	  (set-marker (nth posfrom attr-value) from))
-	(if (= (% posto 2) 0)
-	    nil
-	  (setq posto (1- posto))
-	  (set-marker (nth posto attr-value) to))
-	(setcdr (nthcdr posfrom attr-value)
-		(nthcdr posto attr-value)))))
-
-  (defalias 'make-overlay 'cons)
-
-  (defun overlay-put (overlay prop value)
-    (let ((ret (and (eq prop 'face)
-		    (assq value emu:available-face-attribute-alist))))
-      (if ret
-	  (attribute-add-narrow-attribute (cdr ret)
-					  (car overlay)(cdr overlay))))))
- (t
-  (defun make-overlay (beg end &optional buffer type))
-  (defun overlay-put (overlay prop value))))
-
+(defun overlayp (object))
+(defun make-overlay (beg end &optional buffer front-advance rear-advance))
+(defun move-overlay (overlay beg end &optional buffer))
+(defun delete-overlay (overlay))
+(defun overlay-start (overlay))
+(defun overlay-end (overlay))
 (defun overlay-buffer (overlay))
-
+(defun overlay-properties (overlay))
+(defun overlays-at (pos))
+(defun overlays-in (beg end))
+(defun next-overlay-change (pos))
+(defun previous-overlay-change (pos))
+(defun overlay-lists ())
+(defun overlay-recenter (pos))
+(defun overlay-get (overlay prop))
+(defun overlay-put (overlay prop value))
 
 ;;; @ End.
 ;;;
