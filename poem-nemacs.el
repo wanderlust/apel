@@ -242,25 +242,25 @@ except for line-break code."
 ;;;
 
 (defun insert-file-contents-as-coding-system
-  (coding-system filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
-be applied to `kanji-fileio-code'."
+  (filename coding-system &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but CODING-SYSTEM the second arg will
+be applied to `coding-system-for-read'."
   (let ((kanji-fileio-code coding-system)
 	kanji-expected-code)
     (insert-file-contents filename visit)))
 
-(defun write-region-as-coding-system
-  (coding-system start end filename &optional append visit lockname)
-  "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
-applied to `kanji-fileio-code'."
+(defun write-region-as-coding-system (start end filename coding-system
+					    &optional append visit lockname)
+  "Like `write-region', q.v., but CODING-SYSTEM the fourth arg will be
+applied to `coding-system-for-write'."
   (let ((kanji-fileio-code coding-system)
 	jka-compr-compression-info-list jam-zcat-filename-list)
     (write-region start end filename append visit)))
 
-(defun find-file-noselect-as-coding-system
-  (coding-system filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
-be applied to `kanji-fileio-code'."
+(defun find-file-noselect-as-coding-system (filename coding-system
+						     &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but CODING-SYSTEM the second arg will
+be applied to `coding-system-for-read'."
   (let ((kanji-fileio-code coding-system)
 	kanji-expected-code)
     (find-file-noselect filename nowarn)))

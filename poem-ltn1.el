@@ -173,21 +173,22 @@ code conversion will not take place."
 ;;;
 
 (defun insert-file-contents-as-coding-system
-  (coding-system filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., CODING-SYSTEM the first arg will be
-ignored."
+  (filename coding-system &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but CODING-SYSTEM the second arg will
+be applied to `coding-system-for-read'."
   (insert-file-contents filename visit beg end replace))
 
-(defun write-region-as-coding-system
-  (coding-system start end filename &optional append visit lockname)
-  "Like `write-region', q.v., CODING-SYSTEM the first arg will be ignored."
+(defun write-region-as-coding-system (start end filename coding-system
+					    &optional append visit lockname)
+  "Like `write-region', q.v., but CODING-SYSTEM the fourth arg will be
+applied to `coding-system-for-write'."
   (let (jka-compr-compression-info-list jam-zcat-filename-list)
     (write-region start end filename append visit lockname)))
 
-(defun find-file-noselect-as-coding-system
-  (coding-system filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., CODING-SYSTEM the first arg will be
-ignored."
+(defun find-file-noselect-as-coding-system (filename coding-system
+						     &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but CODING-SYSTEM the second arg will
+be applied to `coding-system-for-read'."
   (find-file-noselect filename nowarn rawfile))
 
 

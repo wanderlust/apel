@@ -100,24 +100,24 @@ except for line-break code."
 ;;;
 
 (defun insert-file-contents-as-coding-system
-  (coding-system filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
+  (filename coding-system &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but CODING-SYSTEM the second arg will
 be applied to `coding-system-for-read'."
   (let ((coding-system-for-read coding-system)
 	format-alist)
     (insert-file-contents filename visit beg end replace)))
 
-(defun write-region-as-coding-system
-  (coding-system start end filename &optional append visit lockname)
-  "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
+(defun write-region-as-coding-system (start end filename coding-system
+					    &optional append visit lockname)
+  "Like `write-region', q.v., but CODING-SYSTEM the fourth arg will be
 applied to `coding-system-for-write'."
   (let ((coding-system-for-write coding-system)
 	jka-compr-compression-info-list jam-zcat-filename-list)
     (write-region start end filename append visit lockname)))
 
-(defun find-file-noselect-as-coding-system
-  (coding-system filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
+(defun find-file-noselect-as-coding-system (filename coding-system
+						     &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but CODING-SYSTEM the second arg will
 be applied to `coding-system-for-read'."
   (let ((coding-system-for-read coding-system)
 	format-alist)
