@@ -1,29 +1,3 @@
-1998-11-10  Katsumi Yamaoka   <yamaoka@jpl.org>
-
-	* inv-19.el (next-visible-point): Copied from inv-xemacs.el.
-
-1998-11-08  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* poe-18.el (eval-and-compile): Moved from poe.el.
-
-	* poe.el: Move `eval-and-compile' to poe-18.el.
-
-	* poe-xemacs.el (overlayp): New alias.
-	(delete-overlay): New alias.
-
-
-1998-11-07  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* APEL: Version 9.9 was released.
-
-1998-11-06  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* poe.el (combine-after-change-calls): fixed.
-
-1998-10-31  Mikio Nakajima    <minakaji@osaka.email.ne.jp>
-
-	* poe.el (combine-after-change-calls): New macro.
-
 1998-10-28  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* poe.el (defun-maybe-cond): New macro.
