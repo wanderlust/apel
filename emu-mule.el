@@ -220,6 +220,14 @@ find-file-hooks, etc.
 	(decode-coding-string string cs)
       string)))
 
+(defun write-region-as-mime-charset (charset start end filename)
+  "Like `write-region', q.v., but code-convert by MIME CHARSET."
+  (let ((file-coding-system
+	 (or (mime-charset-to-coding-system charset)
+	     *noconv*)))
+    (write-region start end filename append visit)
+    ))
+
 
 ;;; @@ to coding-system
 ;;;
