@@ -155,6 +155,55 @@ Installation
   Notice that XEmacs package system requires XEmacs 21.0 or later.
 
 
+(d) make.bat (for MS-DOS family)
+
+  make.bat is available for MS-DOS family.  You have to edit
+  make.bat if you want to use it.  If you use cygwin environment,
+  you can use make.exe and Makefile instead of make.bat.
+
+  In make.bat, a line which contain `rem' in its beginning is a
+  comment.  You have to insert or delete `rem', if necessary.
+
+  Default setups of make.bat is;
+
+    set MEADOWVER=1.10
+    set PREFIX=c:\usr\meadow
+    set EMACS=%PREFIX%\%MEADOWVER%\bin\meadow95.exe
+    set LISPDIR=%PREFIX%\site-lisp
+    set VLISPDIR=%PREFIX%\%MEADOWVER%\site-lisp
+
+  It assumes that meadow executable binary exists in
+  c:\usr\meadow\1.10\bin\meadow95.exe.  On such basis make.bat will
+  try to install meadow version independent modules of APEL to;
+
+    c:\usr\meadow\site-lisp
+
+  and meadow version dependent modules to;
+
+    c:\usr\meadow\1.10\site-lisp
+
+  Please edit make.bat for your own environment and run make.bat
+
+  Emacs 19.3x or earlier does not have (e.x. Mule for Windows based on
+  19.28) an Emacs version dependent site-lisp directory
+  (e.x. c:\usr\meadow\1.10\site-lisp), and its load-path does not refer
+  to such directory by default.  If you want install APEL to such an Emacs
+  you may install all APEL modules to an Emacs version independent
+  site-lisp directory such as c:\usr\mule\site-lisp.
+
+  We cannot provide you with a Demacs example for make.bat.  If you install
+  APEL to Demacs, please send us such an example to apel-en@m17n.org (you
+  can post a message to the ML, even if you are not a member).
+
+  If you checkout APEL by using Windows native cvs.exe (not cygwin), 
+  cvs.exe will regularize end of line codes, LF to CRLF.  And it also will
+  try to convert CRLF to CRCRLF.  make.bat of which eol code is CRCRLF does
+  not work, so if you get such a make.bat, edit it to really regularize eol
+  codes to CRLF.  If you need further information, see the following URL
+  (n.b. Japanese only)
+
+    http://openlab.ring.gr.jp/skk/cvswin-ja.html 
+
 load-path (for Emacs or MULE)
 =============================
 

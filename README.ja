@@ -80,7 +80,8 @@ APEL とは？
 (a) 展開した場所で実行
 
   他のディレクトリーにインストールしたくないなら、以下のことだけをやっ
-  てください:
+  てください (MS-DOS 系の OS のために make.bat が用意されています。
+  make.bat の利用については下記 (d) を参照して下さい)。:
 
 	% make
 
@@ -158,6 +159,55 @@ APEL とは？
   XEmacs のパッケージシステムは XEmacs 21.0 かそれ以降を要求することに
   注意してください。
 
+(d) make.bat を利用する (MS-DOS 系 OS の場合)
+
+  MS-DOS 系の OS のために make.bat が用意されています。make.bat を利用
+  するには添付の make.bat を編集することが必要です (cygwin 環境を利用
+  している方は make.exe と Makefile を利用することができます)。
+
+  make.bat の中では `rem' が行頭にある行はコメントとして扱われます。必
+  要に応じ、`rem' を挿入したり、または削除したりして下さい。
+
+  make.bat でディフォルトで有効になっている設定は、
+
+    set MEADOWVER=1.10
+    set PREFIX=c:\usr\meadow
+    set EMACS=%PREFIX%\%MEADOWVER%\bin\meadow95.exe
+    set LISPDIR=%PREFIX%\site-lisp
+    set VLISPDIR=%PREFIX%\%MEADOWVER%\site-lisp
+
+  で、meadow のバイナリが c:\usr\meadow\1.10\bin\meadow95.exe にインス
+  トールされていることを前提にしています。その前提に基づき、APEL のモ
+  ジュールのうち、meadow のバージョンに依存しないモジュールを 
+
+    c:\usr\meadow\site-lisp
+
+  に、バージョンに依存するモジュールを
+
+    c:\usr\meadow\1.10\site-lisp
+
+  にインストールしようとします。上記の例を参考に、自分の環境用の設定を書
+  き込んで make.bat を動かして下さい。
+
+  19.3x 以前の Emacs (例えば 19.28 ベースの Mule for Windows) にはバージョ
+  ン依存の site-lisp ディレクトリ (上記の例で言えば
+  c:\usr\meadow\1.10\site-lisp) が存在せず、ディフォルトでは load-path も
+  通っていません。この場合は c:\usr\mule\site-lisp などのバージョン非依存
+  の site-lisp ディレクトリに APEL の全てのモジュールを入れれば良いでしょ
+  う。
+
+  Demacs の設定例を準備することができませんでした。Demacs に APEL をイン
+  ストールした方は、設定例を apel-ja@m17n.org に送って下さい (非購読者で
+  も送信はできます)。
+
+  なお、Windows ネイティブの cvs.exe (not cygwin) を利用して APEL を
+  checkout した場合は、cvs.exe により行末コードが正規化されて CRCRLF に
+  なっている可能性があります。このような場合、make.bat は動きませんので
+  行末コードを CRLF に修正してお使い下さい。この問題について詳しくは、
+
+    http://openlab.ring.gr.jp/skk/cvswin-ja.html 
+
+  をご参照下さい。
 
 load-path（Emacs と MULE の場合）
 ================================
