@@ -25,46 +25,12 @@
 
 ;;; Commentary:
 
-;; This module requires XEmacs 20.3-b5 or later with mule.
+;;    This module requires XEmacs 20.3-b5 or later with mule.
 
 ;;; Code:
 
 (require 'emu-xemacs)
-
-
-;;; @ coding-system
-;;;
-
-(defconst *noconv* 'binary)
-
-(defmacro as-binary-process (&rest body)
-  `(let (selective-display	; Disable ^M to nl translation.
-	 (coding-system-for-read  'binary)
-	 (coding-system-for-write 'binary))
-     ,@body))
-
-(defmacro as-binary-input-file (&rest body)
-  `(let ((coding-system-for-read 'binary))
-     ,@body))
-
-(defmacro as-binary-output-file (&rest body)
-  `(let ((coding-system-for-write 'binary))
-     ,@body))
-
-
-;;; @ binary access
-;;;
-
-(defun insert-binary-file-contents-literally
-  (filename &optional visit beg end replace)
-  "Like `insert-file-contents-literally', q.v., but don't code conversion.
-A buffer may be modified in several ways after reading into the buffer due
-to advanced Emacs features, such as file-name-handlers, format decoding,
-find-file-hooks, etc.
-  This function ensures that none of these modifications will take place."
-  (let ((coding-system-for-read 'binary))
-    (insert-file-contents-literally filename visit beg end replace)
-    ))
+(require 'emu-20)
 
 
 ;;; @ MIME charset
@@ -107,53 +73,9 @@ find-file-hooks, etc.
 	    chinese-cns11643-7)				. iso-2022-int-1)
     ))
 
-(defvar default-mime-charset 'x-ctext)
-
-(defvar mime-charset-coding-system-alist
-  '((x-ctext		. ctext)
-    (iso-2022-jp-2	. iso-2022-ss2-7)
-    ))
-
-(defun mime-charset-to-coding-system (charset)
-  "Return coding-system by MIME charset."
-  (if (stringp charset)
-      (setq charset (intern (downcase charset)))
-    )
-  (or (cdr (assq charset mime-charset-coding-system-alist))
-      (and (memq charset (coding-system-list)) charset)
-      ))
-
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END."
   (charsets-to-mime-charset (charsets-in-region start end)))
-
-(defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(encode-coding-region start end cs)
-      )))
-
-(defun decode-mime-charset-region (start end charset)
-  "Decode the text between START and END as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(decode-coding-region start end cs)
-      )))
-
-(defun encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(encode-coding-string string cs)
-      string)))
-
-(defun decode-mime-charset-string (string charset)
-  "Decode the STRING as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(decode-coding-string string cs)
-      string)))
 
 
 ;;; @ character

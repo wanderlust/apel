@@ -1,7 +1,100 @@
+1997-09-02  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 3.4.1 was released.
+
+1997-08-30  MAEDA Shugo       <shugo@po.aianet.ne.jp>
+
+	* emu-mule.el (decode-coding-region, encode-coding-string): New
+	function.
+	(decode-coding-string): Modify DOC-string. (cf. [cmail:3366])
+
+1997-08-30  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (defconst-maybe): New macro.
+
+	(emacs-major-version, emacs-minor-version): Use `defconst-maybe'.
+
+	* emu.el (charsets-to-mime-charset): Abolish unused local variable
+	`csl'.
+
+	* emu-e20.el, emu-20.el: Move function
+	`detect-mime-charset-region' from emu-e20.el to emu-20.el.
+
+	* emu-20.el: Use `defsubst' for
+	`{encode|decode}-mime-charset-{region|string}'.
+
+	* emu-e20.el (detect-mime-charset-region): Use
+	`find-charset-region'.
+
+1997-08-30  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el, emu-e20.el, emu-20.el: Move function
+	`{encode|decode}-mime-charset-{region|string}' from emu-e20.el and
+	emu-x20.el to emu-20.el.
+
+	* emu-x20.el, emu-e20.el, emu-20.el: Move `default-mime-charset'
+	from emu-e20.el and emu-x20.el to emu-20.el.
+
+1997-08-30  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-20.el (mime-charset-coding-system-alist): Don't use
+	`coding-system-p' for symbol.
+	(mime-charset-to-coding-system): Ditto; modify DOC-string.
+
+1997-08-30  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-20.el (mime-charset-coding-system-alist): Check MIME charset
+	is defined as coding-system.
+
+	* emu-x20.el, emu-e20.el, emu-20.el: Move
+	`mime-charset-coding-system-alist' from emu-e20.el and emu-x20.el
+	to emu-20.el.
+
+	* emu-20.el (*noconv*): Add DOC-string.
+
+1997-08-30  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-20.el (mime-charset-to-coding-system): Check coding-system-p
+	even if CHARSET is found in `mime-charset-coding-system-alist'.
+
+	* emu-x20.el: Use function `mime-charset-to-coding-system' in
+	emu-20.el.
+
+	* emu-20.el (mime-charset-to-coding-system): Use `defsubst'.
+
+	* emu-e20.el, emu-20.el: Move function
+	`mime-charset-to-coding-system' from emu-e20.el to emu-20.el.
+
+1997-08-30  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el, emu-e20.el, emu-20.el: Move features about Binary
+	accessing from emu-e20.el and emu-x20.el to emu-20.el.
+
+	* EMU-ELS (emu-modules): Add emu-20 for Emacs 20 and XEmacs/mule.
+
+1997-08-30  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (mime-charset-to-coding-system): Use `defsubst'.
+
+	* emu-x20.el (default-mime-charset): Add DOC-string.
+
+	(mime-charset-coding-system-alist): Add `us-ascii'.
+
+1997-08-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (mime-charset-coding-system-alist): iso-2022-jp-2 is
+	defined as coding-system.
+
+
 1997-07-14  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu: Version 7.44 was released.
 	* APEL: Version 3.4 was released.
+
+1997-07-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (mime-charset-coding-system-alist): `iso-2022-ss2-7'
+	-> `iso-2022-7bit-ss2'. (for Emacs 20.0.90)
 
 1997-07-13  MORIOKA Tomohiko  <morioka@mousai>
 
@@ -10,10 +103,31 @@
 
 1997-06-28  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* richtext.el: Add autoload comments for `richtext-encode' and
+	`richtext-decode'.
+
+	* emu.el: Check richtext.el is bundled.
+
+1997-06-28  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* file-detect.el: Add autoload comments for function `add-path',
 	`add-latest-path', `get-latest-path', `file-installed-p',
 	`exec-installed-p', `module-installed-p' and variable
 	`exec-suffix-list'.
+
+1997-06-08  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (mime-charset-coding-system-alist): iso-8859-1,
+	hz-gb-2312, cn-gb-2312, gb2312, cn-big5 and koi8-r were defined as
+	coding-system.
+
+	* emu-x20.el: Don't require cyrillic.
+
+Thu May 22 04:46:57 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (make-char): New alias.
+
+	* emu-e20.el: Alias `make-character' was abolished.
 
 Sat May 10 19:39:12 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
@@ -31,11 +145,17 @@ Fri May  9 01:23:44 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* mule-caesar.el: New file.
 
+Thu May  8 22:21:36 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el: Use `binary' instead of `no-conversion' temporary.
+
 
 1997-04-30  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu: Version 7.43 was released.
 	* APEL: Version 3.3.1 was released.
+
+	* emu-x20.el: several changes for XEmacs 20.1-b12.
 
 Wed Apr 30 12:40:32 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
@@ -44,6 +164,36 @@ Wed Apr 30 12:40:32 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 Mon Apr 28 16:47:30 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* Makefile: `TARFILE' was abolished.
+
+Tue Apr  8 09:47:40 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (point-at-eol): New function.
+
+Sat Apr  5 16:23:23 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el: `tl:available-face-attribute-alist' ->
+	`emu:available-face-attribute-alist'.
+
+	* emu-nemacs.el, emu-mule.el: `tl:make-overlay' -> `make-overlay';
+ 	`tl:overlay-put' -> `overlay-put'.
+
+Sat Apr  5 06:50:48 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-xemacs.el: Alias `tl:make-overlay', `tl:overlay-put' and
+ 	`tl:overlay-buffer' were abolished; Function `tl:move-overlay'
+ 	were abolished.
+
+	* emu-19.el: Alias `tl:make-overlay', `tl:overlay-put' and
+ 	`tl:overlay-buffer' were abolished.
+
+	* emu-18.el: `tl:overlay-buffer' -> `overlay-buffer'.
+
+	* emu-xemacs.el: Require overlay.
+
+	* emu.el (char-or-char-int-p): New XEmacs 20 emulating alias.
+
+	* emu.el (minibuffer-prompt-width): New function for Emacs 18 and
+ 	XEmacs.
 
 Thu Apr  3 17:14:39 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 

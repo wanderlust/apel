@@ -50,16 +50,24 @@
 (put 'defun-maybe 'lisp-indent-function 'defun)
 (put 'defmacro-maybe 'lisp-indent-function 'defun)
 
+(defmacro defconst-maybe (name &rest everything-else)
+  (or (and (boundp name)
+	   (not (get name 'defconst-maybe))
+	   )
+      (` (or (boundp (quote (, name)))
+	     (progn
+	       (defconst (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defconst-maybe t)
+	       ))
+	 )))
 
-(or (boundp 'emacs-major-version)
-    (defconst emacs-major-version (string-to-int emacs-version)))
-(or (boundp 'emacs-minor-version)
-    (defconst emacs-minor-version
-      (string-to-int
-       (substring
-	emacs-version
-	(string-match (format "%d\\." emacs-major-version) emacs-version)
-	))))
+
+(defconst-maybe emacs-major-version (string-to-int emacs-version))
+(defconst-maybe emacs-minor-version
+  (string-to-int
+   (substring emacs-version
+	      (string-match (format "%d\\." emacs-major-version)
+			    emacs-version))))
 
 (defvar running-emacs-18 (<= emacs-major-version 18))
 (defvar running-xemacs (string-match "XEmacs" emacs-version))
@@ -109,11 +117,11 @@
 (defun charsets-to-mime-charset (charsets)
   "Return MIME charset from list of charset CHARSETS.
 This function refers variable `charsets-mime-charset-alist'
-and `default-mime-charset'. [emu.el]"
+and `default-mime-charset'."
   (if charsets
       (or (catch 'tag
 	    (let ((rest charsets-mime-charset-alist)
-		  cell csl)
+		  cell)
 	      (while (setq cell (car rest))
 		(if (catch 'not-subset
 		      (let ((set1 charsets)

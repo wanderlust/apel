@@ -79,9 +79,21 @@
   (code-convert-region start end *internal* coding-system)
   )
 
+(defun decode-coding-region (start end coding-system)
+  "Decode the text between START and END which is encoded in CODING-SYSTEM.
+\[emu-mule.el; EMACS 20 emulating function]"
+  (code-convert-region start end coding-system *internal*)
+  )
+
+(defun encode-coding-string (str coding-system)
+  "Encode the STRING to CODING-SYSTEM.
+\[emu-mule.el; EMACS 20 emulating function]"
+  (code-convert-string str *internal* coding-system)
+  )
+
 (defun decode-coding-string (str coding-system)
   "Decode the string STR which is encoded in CODING-SYSTEM.
-\[emu-mule.el]"
+\[emu-mule.el; EMACS 20 emulating function]"
   (let ((len (length str))
 	ret)
     (while (and

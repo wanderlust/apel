@@ -2,7 +2,7 @@
 # $Id$
 #
 
-VERSION = 3.4
+VERSION = 3.4.1
 
 TAR	= gtar
 RM	= /bin/rm -f
@@ -30,15 +30,25 @@ clean:
 
 
 tar:
-	-cd ..; mkdir apel-$(VERSION)
-	-cd ../emu; $(CP) $(EMU_FILES) ../apel-$(VERSION)
-	-cd ../emu; $(CP) ChangeLog ../apel-$(VERSION)/ChangeLog.emu
-	-$(CP) $(APEL_FILES) ../apel-$(VERSION)
-	cd ..; $(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
-	cd ..; $(RM) -r apel-$(VERSION)
+	cvs commit
+	sh -c 'cvs tag -RF apel-`echo $(VERSION) \
+				| sed s/\\\\./_/ | sed s/\\\\./_/`; \
+	cd /tmp; cvs export -d apel-$(VERSION) \
+		-r apel-`echo $(VERSION) \
+			| sed s/\\\\./_/ | sed s/\\\\./_/` APEL'
+	cd /tmp; $(RM) apel-$(VERSION)/ftp.in ; \
+		$(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
+	cd /tmp; $(RM) -r apel-$(VERSION)
+	sed "s/VERSION/$(VERSION)/" < ftp.in > ftp
+#	-cd ..; mkdir apel-$(VERSION)
+#	-cd ../emu; $(CP) $(EMU_FILES) ../apel-$(VERSION)
+#	-cd ../emu; $(CP) ChangeLog ../apel-$(VERSION)/ChangeLog.emu
+#	-$(CP) $(APEL_FILES) ../apel-$(VERSION)
+#	cd ..; $(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
+#	cd ..; $(RM) -r apel-$(VERSION)
 
 release:
 	-$(RM) /pub/GNU/elisp/apel/apel-$(VERSION).tar.gz
-	cd ..; mv apel-$(VERSION).tar.gz /pub/GNU/elisp/apel/
+	mv /tmp/apel-$(VERSION).tar.gz /pub/GNU/elisp/apel/
 	cd /pub/GNU/elisp/mime/alpha/ ; \
 		ln -s ../../apel/apel-$(VERSION).tar.gz .

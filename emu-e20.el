@@ -29,9 +29,6 @@
 
 ;;; Code:
 
-;;; @ version specific features
-;;;
-
 (require 'emu-19)
 
 (defun fontset-pixel-size (fontset)
@@ -46,6 +43,8 @@
 	   )
 	  (t 0)
 	  )))
+
+(require 'emu-20)
 
 
 ;;; @ character set
@@ -68,40 +67,7 @@ in the region between START and END."
 ;;; @ coding system
 ;;;
 
-(defconst *noconv* 'no-conversion)
-
-(defmacro as-binary-process (&rest body)
-  `(let (selective-display	; Disable ^M to nl translation.
-	 ;; for Emacs/mule
-	 (coding-system-for-read  'no-conversion)
-	 (coding-system-for-write 'no-conversion)
-	 )
-     ,@ body))
-
-(defmacro as-binary-input-file (&rest body)
-  `(let ((coding-system-for-read 'no-conversion))
-     ,@body))
-
-(defmacro as-binary-output-file (&rest body)
-  `(let ((coding-system-for-write 'no-conversion))
-     ,@body))
-
 (defalias 'set-process-input-coding-system 'set-process-coding-system)
-
-
-;;; @ binary access
-;;;
-
-(defun insert-binary-file-contents-literally
-  (filename &optional visit beg end replace)
-  "Like `insert-file-contents-literally', q.v., but don't code conversion.
-A buffer may be modified in several ways after reading into the buffer due
-to advanced Emacs features, such as file-name-handlers, format decoding,
-find-file-hooks, etc.
-  This function ensures that none of these modifications will take place."
-  (let ((coding-system-for-read 'no-conversion))
-    (insert-file-contents-literally filename visit beg end replace)
-    ))
 
 
 ;;; @ MIME charset
@@ -143,63 +109,6 @@ find-file-hooks, etc.
 	    chinese-cns11643-5 chinese-cns11643-6
 	    chinese-cns11643-7)				. iso-2022-int-1)
     ))
-
-(defvar default-mime-charset 'x-ctext)
-
-(defvar mime-charset-coding-system-alist
-  '((x-ctext		. ctext)
-    (gb2312		. cn-gb-2312)
-    (iso-2022-jp-2	. iso-2022-7bit-ss2)
-    ))
-
-(defun mime-charset-to-coding-system (charset &optional lbt)
-  "Return coding-system corresponding with charset.
-If optional argument LBT (`unix', `dos' or `mac') is specified, it is
-used as line break code type of coding-system."
-  (if (stringp charset)
-      (setq charset (intern (downcase charset)))
-    )
-  (let ((cs
-	 (or (cdr (assq charset mime-charset-coding-system-alist))
-	     (and (coding-system-p charset) charset)
-	     )))
-    (if lbt
-	(intern (concat (symbol-name cs) "-" (symbol-name lbt)))
-      cs)))
-
-(defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END."
-  (charsets-to-mime-charset
-   (find-charset-string (buffer-substring start end))
-   ))
-
-(defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(encode-coding-region start end cs)
-      )))
-
-(defun decode-mime-charset-region (start end charset)
-  "Decode the text between START and END as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(decode-coding-region start end cs)
-      )))
-
-(defun encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(encode-coding-string string cs)
-      string)))
-
-(defun decode-mime-charset-string (string charset)
-  "Decode the STRING as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(decode-coding-string string cs)
-      string)))
 
 
 ;;; @ character
