@@ -1,3 +1,7 @@
+1999-08-27  MORIOKA Tomohiko  <morioka@m17n.org>
+
+	* path-util.el: Require `poe'.
+
 1999-08-27  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* install.el: Require `poe'. <cf. [tm-ja:5051]>
