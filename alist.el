@@ -1,8 +1,8 @@
 ;;; alist.el --- utility functions about association-list
 
-;; Copyright (C) 1993,1994,1995,1996,1998 Free Software Foundation, Inc.
+;; Copyright (C) 1993,1994,1995,1996,1998,2000 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: alist
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -95,6 +95,20 @@ its value regard as nil."
     )
   (set sym (modify-alist modifier (eval sym)))
   )
+
+
+;;; @ association-vector-list
+;;;
+
+;;;###autoload
+(defun vassoc (key avlist)
+  "Search AVLIST for a vector whose first element is equal to KEY.
+See also `assoc'."
+  (let (v)
+    (while (and (setq v (car avlist))
+		(not (equal key (aref v 0))))
+      (setq avlist (cdr avlist)))
+    v))
 
 
 ;;; @ end
