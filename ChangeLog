@@ -1,3 +1,11 @@
+1999-09-23  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* mcs-20.el (mime-charset-coding-system-alist): Use coding-system
+	`tis-620' instead of `tis620'.
+
+	* mcs-xm.el (charsets-mime-charset-alist): Add setting for
+	`tis-620'.
+
 1999-09-22  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* mcs-20.el (mime-charset-coding-system-alist): Add `cp874'.
@@ -2080,7 +2088,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
