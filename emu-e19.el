@@ -153,6 +153,8 @@ between START and END. [emu-e19.el; Mule emulating function]"
 \[emu-e19.el; Mule emulating function]"
   1)
 
+(defalias 'char-length 'char-bytes)
+
 (defun char-columns (character)
   "Return number of columns a CHARACTER occupies when displayed.
 \[emu-nemacs.el]"

@@ -118,7 +118,7 @@ in the region between START and END.
 (defconst *koi8*   nil)
 
 (defvar code-converter-is-broken
-  (and xemacs-beta-version (<= xemacs-beta-version 22)))
+  (and xemacs-beta-version (<= xemacs-beta-version 24)))
 
 (if code-converter-is-broken
 (progn
@@ -163,6 +163,11 @@ in the region between START and END.
 ;;;
 
 (defun char-bytes (chr) 1)
+
+(defun char-length (character)
+  "Return number of elements a CHARACTER occupies in a string or buffer.
+\[emu-x20.el]"
+  1)
 
 (defun char-columns (character)
   "Return number of columns a CHARACTER occupies when displayed.

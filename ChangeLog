@@ -1,3 +1,26 @@
+Wed Jun 12 05:28:42 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.30 was released.
+
+Wed Jun 12 03:55:10 1996  Shuhei KOBAYASHI  <shuhei-k@jaist.ac.jp>
+
+	* mu-cite.el (mu-cite/cite-original): Run `mu-cite/pre-cite-hook'
+ 	after narrowing to the message.
+
+Mon Jun 10 07:59:23 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (code-converter-is-broken): XEmacs 20.0 beta 24 is
+ 	broken too.
+
+Mon Jun 10 07:37:33 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (char-length): New function.
+
+Mon Jun 10 07:34:46 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e19.el, emu-mule.el, emu-nemacs.el (char-length): New alias.
+
+
 Mon Jun  3 14:36:59 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.29.1 was released.

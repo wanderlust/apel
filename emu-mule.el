@@ -133,6 +133,8 @@ encoded in CODING-SYSTEM. [emu-mule.el]"
 
 (defalias 'char-charset 'char-leading-char)
 
+(defalias 'char-length 'char-bytes)
+
 (defalias 'char-columns 'char-width)
 
 

@@ -189,6 +189,8 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
 \[emu-nemacs.el; Mule emulating function]"
   (if (< chr 128) 1 2))
 
+(defalias 'char-length 'char-bytes)
+
 (defun char-columns (character)
   "Return number of columns a CHARACTER occupies when displayed.
 \[emu-nemacs.el]"
