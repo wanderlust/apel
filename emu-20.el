@@ -160,6 +160,15 @@ It must be symbol."
   "Return MIME charset for region between START and END."
   (charsets-to-mime-charset (find-charset-region start end)))
 
+(defun write-region-as-mime-charset (charset start end filename
+					     &optional append visit lockname)
+  "Like `write-region', q.v., but don't code-convert by MIME CHARSET."
+  (let ((coding-system-for-write
+	 (or (mime-charset-to-coding-system charset)
+	     'binary)))
+    (write-region start end filename append visit lockname)
+    ))
+
 
 ;;; @ end
 ;;;
