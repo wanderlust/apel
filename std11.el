@@ -192,6 +192,11 @@ If BOUNDARY is not nil, it is used as message header separator.
   (std11-parse-address (std11-lexical-analyze string))
   )
 
+(defun std11-parse-addresses-string (string)
+  "Parse STRING as mail address list. [std11.el]"
+  (std11-parse-addresses (std11-lexical-analyze string))
+  )
+
 (defun std11-addr-to-string (seq)
   (mapconcat (function
 	      (lambda (token)
