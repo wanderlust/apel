@@ -29,7 +29,7 @@
 ;;;
 
 (cond (running-emacs-19
-       (require 'emu-19)
+       (require 'emu-e19)
        
        ;; Suggested by SASAKI Osamu <osamu@shuugr.bekkoame.or.jp>
        ;; (cf. [os2-emacs-ja:78])
@@ -319,7 +319,7 @@ It must be symbol.")
 
 (defmacro char-next-index (char index)
   "Return index of character succeeding CHAR whose index is INDEX."
-  (` (+ index (char-bytes char))))
+  (` (+ (, index) (char-bytes (, char)))))
 
 ;;; @@ obsoleted aliases
 ;;;

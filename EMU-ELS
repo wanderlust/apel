@@ -14,35 +14,37 @@
 
 (setq emu-modules
       (nconc
-       (cond (running-mule-merged-emacs
-	      '(emu-e20 emu-20)
+       (cond (running-xemacs
+	      ;; for XEmacs
+	      (cons 'emu-xemacs
+		    (if (featurep 'mule)
+			'(emu-20 emu-x20) ; for XEmacs with MULE
+		      '(emu-latin1) ; for XEmacs without MULE
+		      ))
 	      )
-	     (running-xemacs-with-mule
-	      '(emu-x20 emu-20)
+	     ((featurep 'mule)
+	      ;; for Emacs 20.1 or later
+	      (cons (if (= (length "あ") 1)
+			'emu-e20_3 ; for Emacs 20.3
+		      'emu-e20_2 ; for Emacs 20.1 and 20.2
+		      )
+		    '(emu-20 emu-e19 emu-e20))
 	      )
 	     ((boundp 'MULE)
-	      '(emu-mule)
+	      ;; for MULE 1.* and MULE 2.*
+	      (cons 'emu-mule
+		    (if running-emacs-18
+			'(emu-18 env)
+		      '(emu-e19)))
 	      )
 	     ((boundp 'NEMACS)
-	      '(emu-nemacs)
+	      ;; for NEmacs
+	      '(emu-18 emu-nemacs)
 	      )
 	     (t
-	      '(emu-e19)
+	      ;; for Emacs 19.34
+	      '(emu-e19 emu-latin1)
 	      ))
-       emu-modules))
-
-(setq emu-modules
-      (nconc
-       (cond (running-emacs-18
-	      '(emu-18 env)
-	      )
-	     (running-xemacs
-	      '(emu-xemacs)
-	      )
-	     (t
-	      '(emu-19)
-	      )
-	     )
        emu-modules))
 
 ;;; EMU-ELS ends here

@@ -1,9 +1,8 @@
 ;;; emu.el --- Emulation module for each Emacs variants
 
-;; Copyright (C) 1995,1996,1997 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: emulation, compatibility, NEmacs, MULE, Emacs/mule, XEmacs
 
 ;; This file is part of emu.
@@ -101,13 +100,22 @@
   (or (and running-xemacs-19 (>= emacs-minor-version 14))
       running-xemacs-20-or-later))
 
-(cond (running-mule-merged-emacs
-       ;; for mule merged EMACS
-       (require 'emu-e20)
+(cond (running-xemacs
+       ;; for XEmacs
+       (require 'emu-xemacs)
+       (cond ((featurep 'mule)
+	      ;; for XEmacs with MULE
+	      (require 'emu-20)
+	      (require 'emu-x20)
+	      )
+	     (t
+	      ;; for XEmacs without MULE
+	      (require 'emu-latin1)
+	      ))
        )
-      (running-xemacs-with-mule
-       ;; for XEmacs/mule
-       (require 'emu-x20)
+      (running-mule-merged-emacs
+       ;; for Emacs 20.1 and 20.2
+       (require 'emu-e20)
        )
       ((boundp 'MULE)
        ;; for MULE 1.* and 2.*
@@ -118,8 +126,9 @@
        (require 'emu-nemacs)
        )
       (t
-       ;; for EMACS 19 and XEmacs 19 (without mule)
+       ;; for Emacs 19
        (require 'emu-e19)
+       (require 'emu-latin1)
        ))
 
 

@@ -1,6 +1,5 @@
 [README for APEL (English Version)]
 by MORIOKA Tomohiko <morioka@jaist.ac.jp>
-$Id$
 
 What's APEL?
 ============
@@ -8,24 +7,26 @@ What's APEL?
   APEL stands for "A Portable Emacs Library".  It consists of
   following modules:
 
-	emu:	A package to fill incompatibilities of emacsen
-		emu.el --- main module
-	    About mule API:
-		emu-nemacs.el --- for NEmacs
-		emu-e19.el    --- for Emacs 19 or XEmacs without mule
-		emu-mule.el   --- for MULE 2.3
-		emu-20.el     --- for Emacs 20 and XEmacs/mule
-		emu-e20.el    --- for Emacs 20 and MULE 3
-		emu-x20.el    --- for XEmacs/mule
-	    About other API
-		emu-18.el     --- for Emacs 18
-		emu-19.el     --- for Emacs 19 or later
-		emu-xemacs.el --- for XEmacs
-		env.el        --- env.el for Emacs 18
-		richtext.el   --- text/richtext module
-				    for Emacs 19.29 or later,
-		                        XEmacs 19.14 or later
-		tinyrich.el   --- text/richtext module for old emacsen
+    emu: A package to fill incompatibilities of emacsen
+	emu.el --- main module
+	About mule API:
+	    emu-nemacs.el --- for NEmacs
+	    emu-latin1.el --- for Emacs 19 or XEmacs without mule
+	    emu-mule.el   --- for MULE 2.3
+	    emu-20.el     --- for Emacs 20 and XEmacs with mule
+	        emu-e20.el  --- for Emacs 20.1 or later
+		    emu-e20_2.el  --- for Emacs 20.1, 20.2
+		    emu-e20_3.el  --- for Emacs 20.3 or later
+		emu-x20.el  --- for XEmacs with mule
+	About other API
+	    emu-18.el     --- for Emacs 18
+	    emu-e19.el    --- for Emacs 19 or later
+	    emu-xemacs.el --- for XEmacs
+	    env.el        --- env.el for Emacs 18
+	    richtext.el   --- text/richtext module
+				  for Emacs 19.29 or later,
+				      XEmacs 19.14 or later
+	    tinyrich.el   --- text/richtext module for old emacsen
 
 	alist.el: utility for Association-list
 

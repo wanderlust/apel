@@ -28,8 +28,8 @@
 
 ;;; Code:
 
-(require 'emu-xemacs)
-(require 'emu-20)
+;; (require 'emu-xemacs)
+;; (require 'emu-20)
 
 
 (and (coding-system-property 'iso-2022-jp 'input-charset-conversion)
@@ -206,7 +206,7 @@ find-file-hooks, etc.
 
 (defmacro char-next-index (char index)
   "Return index of character succeeding CHAR whose index is INDEX."
-  `(1+ index))
+  `(1+ ,index))
 
 ;;; @@ Mule emulating aliases
 ;;;
