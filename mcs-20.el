@@ -71,7 +71,7 @@ If it is a function, interface must be (CHARSET LBT CODING-SYSTEM)."
   :group 'i18n
   :type '(choice function (const nil)))
 
-(defsubst mime-charset-to-coding-system (charset &optional lbt)
+(defun mime-charset-to-coding-system (charset &optional lbt)
   "Return coding-system corresponding with CHARSET.
 CHARSET is a symbol whose name is MIME charset.
 If optional argument LBT (`CRLF', `LF', `CR', `unix', `dos' or `mac')
