@@ -1,5 +1,7 @@
 1998-06-09  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* APEL: Version 8.15 was released.
+
 	* emu-xemacs.el: Use nil as variable of `condition-case' to avoid
 	byte-compiler warning.
 
