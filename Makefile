@@ -2,53 +2,45 @@
 # $Id$
 #
 
-# Please specify emacs executables:
-#	NEMACS	= for NEMACS (or NEpoch)
-#	MULE1	= for Mule 1.* (based on Emacs 18.*)
-#	ORIG19	= for Emacs 19.* (FSF original or XEmacs)
-#	MULE2	= for MULE 2.* (based on Emacs 19.*)
+VERSION = 7.2
 
-	NEMACS	= nemacs
-	MULE1	= mule
-	ORIG19	= emacs19
-	MULE2	= mule2
+TAR	= tar
+RM	= /bin/rm -f
+CP	= /bin/cp -p
 
+EMACS	= emacs
+FLAGS   = -batch -q -no-site-file -l APEL-MK
 
-# Please specfy Emacs Lisp install directory:
-#	TLDIR18 = for Emacs 18.* (NEMACS, NEpoch or MULE 1)
-#	TLDIR19 = for Emacs 19.* (FSF original, XEmacs or MULE 2)
-
-	TLDIR18	= /usr/local/lib/emacs/local.lisp
-	TLDIR19	= /usr/local/lib/mule/site-lisp
+PREFIX = NONE
+LISPDIR = NONE
 
 
-nemacs:
-	make -f Makefile.bc nemacs EMACS=$(NEMACS)
+elc:
+	$(EMACS) $(FLAGS) -f compile-apel
 
-install-nemacs:
-	make -f Makefile.bc install-nemacs EMACS=$(NEMACS) TLDIR=$(TLDIR18)
-
-
-mule1:
-	make -f Makefile.bc mule1 EMACS=$(MULE1)
-
-install-mule1:
-	make -f Makefile.bc install-mule1 EMACS=$(MULE1) TLDIR=$(TLDIR18)
-
-
-orig19:
-	make -f Makefile.bc orig EMACS=$(ORIG19)
-
-install-orig19:
-	make -f Makefile.bc install-orig EMACS=$(ORIG19) TLDIR=$(TLDIR19)
-
-
-mule2:
-	make -f Makefile.bc mule EMACS=$(MULE2)
-
-install-mule2:
-	make -f Makefile.bc install-mule EMACS=$(MULE2) TLDIR=$(TLDIR19)
+install:
+	$(EMACS) $(FLAGS) -f install-apel $(PREFIX) $(LISPDIR)
 
 
 clean:
 	-rm *.elc
+
+
+tar:
+	cvs commit
+	sh -c 'cvs tag -RF apel-`echo $(VERSION) \
+				| sed s/\\\\./_/ | sed s/\\\\./_/`; \
+	cd /tmp; \
+	cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
+		export -d apel-$(VERSION) \
+		-r apel-`echo $(VERSION) | sed s/\\\\./_/ | sed s/\\\\./_/` \
+		apel'
+	cd /tmp; $(RM) apel-$(VERSION)/ftp.in ; \
+		$(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
+	cd /tmp; $(RM) -r apel-$(VERSION)
+	sed "s/VERSION/$(VERSION)/" < ftp.in > ftp
+
+release:
+	-$(RM) /pub/GNU/elisp/apel/apel-$(VERSION).tar.gz
+	mv /tmp/apel-$(VERSION).tar.gz /pub/GNU/elisp/apel/
+	cd /pub/GNU/elisp/semi/ ; ln -s ../apel/apel-$(VERSION).tar.gz .
