@@ -116,21 +116,6 @@ but the contents viewed as characters do change.
   "Set buffer-file-coding-system of the current buffer to CODING-SYSTEM."
   )
 
-(defmacro as-binary-process (&rest body)
-  (` (let (selective-display)	; Disable ^M to nl translation.
-       (,@ body)
-       )))
-
-(defmacro as-binary-input-file (&rest body)
-  (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
-       (,@ body)
-       )))
-
-(defmacro as-binary-output-file (&rest body)
-  (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
-       (,@ body)
-       )))
-
 
 ;;; @@ for old MULE emulation
 ;;;
@@ -148,8 +133,30 @@ else returns nil. [emu-latin1.el; old MULE emulating function]"
   t)
 
 
-;;; @ binary access
+;;; @ without code-conversion
 ;;;
+
+(defmacro as-binary-process (&rest body)
+  (` (let (selective-display)	; Disable ^M to nl translation.
+       (,@ body)
+       )))
+
+(defmacro as-binary-input-file (&rest body)
+  (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
+       (,@ body)
+       )))
+
+(defmacro as-binary-output-file (&rest body)
+  (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
+       (,@ body)
+       )))
+
+(defun write-region-as-binary (start end filename
+				     &optional append visit lockname)
+  "Like `write-region', q.v., but don't code conversion."
+  (let ((emx-binary-mode t))
+    (write-region start end filename append visit lockname)
+    ))
 
 (defun insert-file-contents-as-binary (filename
 				       &optional visit beg end replace)
@@ -166,8 +173,6 @@ code conversion will not take place."
 (defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
 (make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
 
-(defalias 'insert-file-contents-as-raw-text 'insert-file-contents)
-
 (defun insert-binary-file-contents-literally (filename
 					      &optional visit beg end replace)
   "Like `insert-file-contents-literally', q.v., but don't code conversion.
@@ -179,12 +184,20 @@ find-file-hooks, etc.
     (insert-file-contents-literally filename visit beg end replace)
     ))
 
-(defun write-region-as-binary (start end filename
-				     &optional append visit lockname)
-  "Like `write-region', q.v., but don't code conversion."
-  (let ((emx-binary-mode t))
-    (write-region start end filename append visit lockname)
-    ))
+(defalias 'insert-file-contents-as-raw-text 'insert-file-contents)
+
+(defun write-region-as-raw-text-CRLF (start end filename
+					    &optional append visit lockname)
+  "Like `write-region', q.v., but write as network representation."
+  (let ((the-buf (current-buffer)))
+    (with-temp-buffer
+      (insert-buffer-substring the-buf start end)
+      (goto-char (point-min))
+      (while (re-search-forward "\\([^\r]\\)\n" nil t)
+	(replace-match "\\1\r\n")
+	)
+      (write-region (point-min)(point-max) filename append visit lockname)
+      )))
 
 
 ;;; @ MIME charset
