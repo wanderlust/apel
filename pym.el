@@ -260,6 +260,15 @@ Both SYMBOL and SPEC are unevaluated. The SPEC can be 0, t, a symbol
 ;; (def-edebug-spec static-cond ...)
 
 
+;;; for backward compatibility.
+
+(defun subr-fboundp (symbol)
+  "Return t if SYMBOL's function definition is a built-in function."
+  (and (fboundp symbol)
+       (subrp (symbol-function symbol))))
+;; (make-obsolete 'subr-fboundp "don't use it.")
+
+
 ;;; End.
 
 (provide 'pym)
