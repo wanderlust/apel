@@ -34,8 +34,8 @@
   "Apply initial ARGUMENT to sequence of FUNCTIONS.
 FUNCTIONS is list of functions.
 
-(poly-funcall '(f1 f2 .. fn) arg) is as same as
-(fn .. (f2 (f1 arg)) ..).
+\(poly-funcall '(f1 f2 .. fn) arg) is as same as
+\(fn .. (f2 (f1 arg)) ..).
 
 For example, (poly-funcall '(car number-to-string) '(100)) returns
 \"100\"."
