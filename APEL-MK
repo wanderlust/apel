@@ -12,6 +12,35 @@
 	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag)
       )))
 
+(defun install-update-package-files (package dir &optional just-print)
+  (cond (just-print
+	 (princ (format "Updating autoloads in directory %s..\n\n" dir))
+	   
+	 (princ (format "Processing %s\n" dir))
+	 (princ "Generating custom-load.el...\n\n")
+	    
+	 (princ (format "Compiling %s...\n"
+			(expand-file-name "auto-autoloads.el" dir)))
+	 (princ (format "Wrote %s\n"
+			(expand-file-name "auto-autoloads.elc" dir)))
+	   
+	 (princ (format "Compiling %s...\n"
+			(expand-file-name "custom-load.el" dir)))
+	 (princ (format "Wrote %s\n"
+			(expand-file-name "custom-load.elc" dir)))
+	 )
+	(t
+	 (setq autoload-package-name package)
+	 (add-to-list 'command-line-args-left dir)
+	 (batch-update-directory)
+	
+	 (add-to-list 'command-line-args-left dir)
+	 (Custom-make-dependencies)
+	   
+	 (byte-compile-file (expand-file-name "auto-autoloads.el" dir))
+	 (byte-compile-file (expand-file-name "custom-load.el" dir))
+	 )))
+
 (defun config-apel ()
   (let (prefix lisp-dir version-specific-lisp-dir)
     (and (setq prefix (car command-line-args-left))
@@ -63,52 +92,26 @@
     (setq command-line-args-left (cdr command-line-args-left))
     (load-file "APEL-CFG")
     (load-file "APEL-ELS")
-					  
+    (load-file "EMU-ELS")
+  
     (princ (format "PACKAGEDIR=%s\n" PACKAGEDIR))
     ))
 
+(defun compile-apel-package ()
+  (config-apel-package)
+  (compile-elisp-modules emu-modules	".")
+  (compile-elisp-modules apel-modules	".")
+  )
+
 (defun install-apel-package ()
   (config-apel-package)
-  (load "EMU-ELS")
-  
-  (let ((just-print (install-just-print-p)))
-    (compile-elisp-modules emu-modules	".")
-    (compile-elisp-modules apel-modules	".")
-    
-    (let ((dir (expand-file-name APEL_PREFIX
-				 (expand-file-name "lisp"
-						   PACKAGEDIR))))
-      (install-elisp-modules emu-modules	"." dir just-print)
-      (install-elisp-modules apel-modules	"." dir just-print)
-    
-      (if just-print
-	  (progn
-	    (princ (format "Updating autoloads in directory %s..\n\n" dir))
-	    
-	    (princ (format "Processing %s\n" dir))
-	    (princ "Generating custom-load.el...\n\n")
-	    
-	    (princ (format "Compiling %s...\n"
-			   (expand-file-name "auto-autoloads.el" dir)))
-	    (princ (format "Wrote %s\n"
-			   (expand-file-name "auto-autoloads.elc" dir)))
-	    
-	    (princ (format "Compiling %s...\n"
-			   (expand-file-name "custom-load.el" dir)))
-	    (princ (format "Wrote %s\n"
-			   (expand-file-name "custom-load.elc" dir)))
-	    )
-	(setq autoload-package-name "apel")
-	(add-to-list 'command-line-args-left dir)
-	(batch-update-directory)
-	
-	(add-to-list 'command-line-args-left dir)
-	(Custom-make-dependencies)
-	
-	(byte-compile-file (expand-file-name "auto-autoloads.el" dir))
-	(byte-compile-file (expand-file-name "custom-load.el" dir))
-	)
-      )))
+  (let ((just-print (install-just-print-p))
+	(dir (expand-file-name APEL_PREFIX
+			       (expand-file-name "lisp" PACKAGEDIR))))
+    (install-elisp-modules emu-modules	"." dir just-print)
+    (install-elisp-modules apel-modules	"." dir just-print)
+    (install-update-package-files "apel" dir just-print)
+    ))
 
 (defun what-where-apel ()
   (config-apel)
