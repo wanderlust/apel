@@ -415,6 +415,11 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
   (cons 'if (cons cond (cons nil body))))
 
 ;; imported from Emacs 20.3.
+(defsubst-maybe caar (x)
+  "Return the car of the car of X."
+  (car (car x)))
+
+;; imported from Emacs 20.3.
 (defun-maybe last (x &optional n)
   "Return the last link of the list X.  Its car is the last element.
 If X is nil, return nil.
