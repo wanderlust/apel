@@ -534,6 +534,12 @@ poe-18.el provides this as dummy for a compatibility.")
 (defvar-maybe minor-mode-map-alist nil
   "Alist of keymaps to use for minor modes.
 poe-18.el provides this as dummy for a compatibility.")
+(defvar-maybe minor-mode-alist nil
+  "Alist saying how to show minor modes in the mode line.
+poe-18.el provides this as dummy for a compatibility.")
+(defvar-maybe minor-mode-overriding-map-alist nil
+  "Alist of keymaps to use for minor modes, in current major mode.
+poe-18.el provides this as dummy for a compatibility.")
 
 (defalias 'insert-and-inherit 'insert)
 (defalias 'insert-before-markers-and-inherit 'insert-before-markers)
