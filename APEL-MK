@@ -70,7 +70,7 @@
 
 (defun compile-apel ()
   (config-apel)
-  (load "EMU-ELS")
+  (load-file "EMU-ELS")
   (load-file "APEL-ELS")
   (compile-elisp-modules emu-modules	".")
   (compile-elisp-modules apel-modules	".")
@@ -115,7 +115,7 @@
 
 (defun what-where-apel ()
   (config-apel)
-  (load "EMU-ELS")
+  (load-file "EMU-ELS")
   (princ (format "
 The files that belong to the EMU modules:
   %s
