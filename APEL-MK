@@ -4,14 +4,17 @@
 ;;;
 
 (defun config-apel ()
-  (let (prefix)
-    (setq prefix (car command-line-args-left))
-    (and prefix
-	 (not (string-equal "NONE" prefix))
-	 (progn
-	   (defvar PREFIX prefix)
-	   (setq command-line-args-left (cdr command-line-args-left))
-	   ))
+  (let (prefix lisp-dir)
+    (and (setq prefix (car command-line-args-left))
+	 (or (string-equal "NONE" prefix)
+	     (defvar PREFIX prefix)
+	     ))
+    (setq command-line-args-left (cdr command-line-args-left))
+    (and (setq lisp-dir (car command-line-args-left))
+	 (or (string-equal "NONE" lisp-dir)
+	     (defvar LISPDIR lisp-dir)
+	     ))
+    (setq command-line-args-left (cdr command-line-args-left))
     (load-file "APEL-CFG")
     (or (boundp 'apel-modules)
 	(load-file "APEL-ELS")
