@@ -526,10 +526,10 @@ poe-18.el provides this as dummy for a compatibility.")
   "List of events to be read as the command input.
 poe-18.el provides this as dummy for a compatibility.")
 
-(defvar-maybe minibuffer-setup-hook nil
-  "Normal hook run just after entry to minibuffer.")
-(defvar-maybe minibuffer-exit-hook nil
-  "Normal hook run just after exit from minibuffer.")
+;; (defvar-maybe minibuffer-setup-hook nil
+;;   "Normal hook run just after entry to minibuffer.")
+;; (defvar-maybe minibuffer-exit-hook nil
+;;   "Normal hook run just after exit from minibuffer.")
 
 (defvar-maybe minor-mode-map-alist nil
   "Alist of keymaps to use for minor modes.
@@ -593,17 +593,7 @@ If fourth arg READ is non-nil, then interpret the result as a lisp object
   and return that object:
   in other words, do `(car (read-from-string INPUT-STRING))'
 Fifth arg HIST is ignored in this implementatin."
-	(with-current-buffer
-	    (get-buffer-create
-	     (format " *Minibuf-%d*" (minibuffer-depth)))
-	  (run-hooks 'minibuffer-setup-hook))
-	(si:read-from-minibuffer prompt initial-contents keymap read)
-	(with-current-buffer
-	    (get-buffer-create
-	     (format " *Minibuf-%d*" (minibuffer-depth)))
-	  (condition-case nil
-	      (run-hooks 'minibuffer-exit-hook)
-	    (error))))))
+	(si:read-from-minibuffer prompt initial-contents keymap read))))
 
 ;; Add optional argument `frame'.
 (or (fboundp 'si:get-buffer-window)
@@ -645,7 +635,7 @@ No argument or nil as argument means do this for the current buffer."
 ;;;
 ;; The following four are frequently used for manupulating the current frame.
 ;; frame.el has `screen-width', `screen-height', `set-screen-width' and
-;; `set-screen-heigth' for backward compatibility and declare them as obsolete.
+;; `set-screen-height' for backward compatibility and declare them as obsolete.
 (defun frame-width (&optional frame)
   "Return number of columns available for display on FRAME.
 If FRAME is omitted, describe the currently selected frame."
@@ -662,11 +652,11 @@ Optional third arg non-nil means that redisplay should use COLS columns
 but that the idea of the actual width of the frame should not be changed."
   (set-screen-width cols pretend))
 
-(defun set-frame-heigth (frame cols &optional pretend)
+(defun set-frame-height (frame lines &optional pretend)
   "Specify that the frame FRAME has LINES lines.
 Optional third arg non-nil means that redisplay should use LINES lines
 but that the idea of the actual height of the frame should not be changed."
-  (set-screen-heigth cols pretend))
+  (set-screen-height lines pretend))
 
 ;;; @@ Environment variables.
 ;;;
