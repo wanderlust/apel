@@ -25,7 +25,7 @@
 ;;; Commentary:
 
 ;; Note to developers:
-;; 
+;;
 ;; If old (v18) compiler is used, top-level macros are expanded at
 ;; *load-time*, not compile-time.  So, you cannot use macros defined
 ;; in this file using `defmacro-maybe'.  In addition, due to this
@@ -104,7 +104,7 @@ for this variable.
 (autoload 'setenv "env"
   "Set the value of the environment variable named VARIABLE to VALUE.
 VARIABLE should be a string.  VALUE is optional; if not provided or is
-`nil', the environment variable VARIABLE will be removed.  
+`nil', the environment variable VARIABLE will be removed.
 This function works by modifying `process-environment'."
   t)
 
@@ -291,7 +291,15 @@ If NOSORT is dummy for compatibility.
 \[poe-18.el; EMACS 19 emulating function]"
   (si:directory-files directory full match))
 
-    
+(defun file-executable-p (filename)
+  "Return t if FILENAME can be executed by you.
+For a directory, this means you can access files in that directory.
+\[poe-18.el; EMACS 19 emulating function]"
+  (let ((process (start-process "test" nil "test" "-x" filename)))
+    (while (eq 'run (process-status process)))
+    (zerop (process-exit-status process))))
+
+
 ;;; @ Display Features
 ;;;
 
@@ -354,7 +362,7 @@ With optional non-nil ALL, force redisplay of all mode-lines.
 	       (set-marker (nth posto attr-value) to))
 	     (setcdr (nthcdr posfrom attr-value)
 		     (nthcdr posto attr-value)))))
-       
+
        (defalias 'make-overlay 'cons)
 
        (defun overlay-put (overlay prop value)
