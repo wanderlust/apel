@@ -70,13 +70,6 @@ code conversion will not take place."
     (insert-file-contents filename visit beg end replace)
     ))
 
-(defun write-region-as-CRLF (start end filename
-				   &optional append visit lockname)
-  "Like `write-region', q.v., but write as network representation."
-  (let ((coding-system-for-write 'raw-text-dos))
-    (write-region start end filename append visit lockname)
-    ))
-
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)
   "Like `insert-file-contents', q.v., but don't code and format conversion.
@@ -87,6 +80,13 @@ code."
   (let ((coding-system-for-read 'raw-text)
 	format-alist)
     (insert-file-contents filename visit beg end replace)
+    ))
+
+(defun write-region-as-raw-text-CRLF (start end filename
+					    &optional append visit lockname)
+  "Like `write-region', q.v., but write as network representation."
+  (let ((coding-system-for-write 'raw-text-dos))
+    (write-region start end filename append visit lockname)
     ))
 
 
