@@ -130,7 +130,7 @@ TABLE defaults to the current buffer's category table."
        
        (defun code-convert-string (str ic oc)
 	 "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
+On successful conversion, returns the result string,
 else returns nil."
 	 (if (not (eq ic oc))
 	     (convert-string-kanji-code str ic oc)
@@ -157,7 +157,7 @@ else returns nil."
        
        (defun code-convert-string (str ic oc)
 	 "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
+On successful conversion, returns the result string,
 else returns nil. [emu-latin1.el; old MULE emulating function]"
 	 str)
 
