@@ -234,12 +234,6 @@ the hook's buffer-local value rather than its default value
 	   (if (equal hook-value function)
 	       (setq hook-value nil)))
 	 (set hook hook-value))))
-
-   (defun-maybe make-local-hook (hook)
-     "Make the hook HOOK local to the current buffer.
-This function is only for emulation.
-\[Emacs 19.29 emulating function]"
-     )
    )
   (wrong-number-of-arguments
    ;; emulate `local' arg for version 19.28 and earlier.
@@ -279,13 +273,13 @@ the hook's buffer-local value rather than its default value
 \[Emacs 19.29 emulating function]"
 	   ;; the third argument LOCAL is simply ignored.
 	   (si:remove-hook hook function))))
+   ))
 
-   (defun-maybe make-local-hook (hook)
-     "Make the hook HOOK local to the current buffer.
+(defun-maybe make-local-hook (hook)
+  "Make the hook HOOK local to the current buffer.
 This function is only for emulation.
 \[Emacs 19.29 emulating function]"
-     )
-   ))
+  )
 
 (defvar-maybe path-separator ":"
   "Character used to separate concatenated paths.")
