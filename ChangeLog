@@ -1,0 +1,102 @@
+Wed Jan 17 08:23:41 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: version 7.08 was released.
+
+	* mu-cite.el (mu-cite/get-prefix-register-verbose-method):
+	new implementation
+
+	* mu-cite.el (mu-cite/get-prefix-register-method):
+	new implementation
+
+Wed Jan 17 06:57:16 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el:
+	Function `mu-cite/get-ml-count' was renamed to
+	`mu-cite/get-ml-count-method'.
+	Function `mu-cite/citation-name' was renamed to
+ 	`mu-cite/get-prefix-register-verbose-method'.
+	Function `mu-cite/citation-name-quietly' was renamed to
+ 	`mu-cite/get-prefix-register-method'.
+
+Wed Jan 17 06:49:53 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el (mu-cite/get-prefix-method): new function: it is
+ 	implementation of new method `prefix'.
+
+Wed Jan 17 06:30:08 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el (mu-cite/save-to-file): modified to change comment of
+ 	output file
+
+	* mu-cite.el (mu-cite/RCS-ID, mu-cite/version): new variable
+
+Wed Jan 17 06:22:35 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el: Default name of user environment file was changed to
+ 	~/.mu-cite.el.
+
+Wed Jan 17 06:08:19 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el: `mu-register/*' were renamed to `mu-cite/*'.
+
+	* mu-cite.el: mu-register.el was merged into mu-cite.el.
+
+Wed Jan 17 05:35:06 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-register.el (mu-register/citation-name):
+	use function `y-or-n-p'
+	
+	* mu-register.el (mu-register/citation-name-quietly):
+ 	use function `y-or-n-p'
+
+Tue Jan 16 21:54:27 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-register.el (mu-register/citation-name):
+	use function `tl:read-string' instead of `read-string'.
+
+	* mu-register.el (mu-register/citation-name-quietly):
+	use function `tl:read-string' instead of `read-string'.
+
+	* emu.el (tl:read-string): New function
+
+	* mu-register.el: `(require 'pp)' was deleted.
+
+Tue Jan 16 14:04:24 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-register.el:
+	Method `prefix-registered-quietly' was renamed to
+ 	`prefix-register'.
+	Method `prefix-registered' was renamed to
+ 	`prefix-register-verbose'.
+
+Mon Jan 15 21:19:11 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-register.el (mu-register/get-citation-name): new
+ 	implementation by macro
+
+Mon Jan 15 21:07:05 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-register.el (mu-register/citation-name-quietly): new
+ 	function: implementation of `prefix-registered-quietly'
+
+	Method name of function `mu-register/citation-name' was renamed to 
+	`prefix-registered'.
+
+Mon Jan 15 20:28:32 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-register.el (mu-register/save-to-file): new implementation
+
+	* mu-register.el (mu-register/registration-symbol): new variable:
+ 	to specify symbol name of citation-name database.
+
+	* mu-register.el (mu-register/save-to-file): modified to use
+ 	variable `mu-register/registration-symbol'.
+
+	* mu-register.el: use function `set-alist'.
+
+	* mu-register.el: Comments were translated from Japanese to
+ 	English.
+	
+Wed Dec 27 14:28:17 1995  MINOURA Makoto <minoura@leo.bekkoame.or.jp>
+
+	* mu-register.el: new module
