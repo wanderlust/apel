@@ -1,3 +1,8 @@
+1999-08-25  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* poe-18.el (inline): New implementation using `defmacro'.
+
+
 1999-08-24  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* APEL: Version 9.21 released.
