@@ -330,6 +330,48 @@ represents addr-spec of RFC 822. [std11.el]"
 		 )
 	   ))))
 
+(defun std11-msg-id-string (msg-id)
+  "Return string from parsed MSG-ID of RFC 822."
+  (concat "<" (std11-addr-to-string (cdr msg-id)) ">")
+  )
+
+(defun std11-fill-msg-id-list-string (string &optional column)
+  "Fill list of msg-id in STRING, and return the result."
+  (or column
+      (setq column 12))
+  (let ((lal (std11-lexical-analyze string))
+	dest)
+    (let ((ret (std11-parse-msg-id lal)))
+      (if ret
+	  (let* ((str (std11-msg-id-string (car ret)))
+		 (len (length str)))
+	    (setq lal (cdr ret))
+	    (if (> (+ len column) 76)
+		(setq dest (concat dest "\n " str)
+		      column (1+ len))
+	      (setq dest str
+		    column (+ column len))
+	      ))
+	(setq dest (concat dest (cdr (car lal)))
+	      lal (cdr lal))
+	))
+    (while lal
+      (let ((ret (std11-parse-msg-id lal)))
+	(if ret
+	    (let* ((str (std11-msg-id-string (car ret)))
+		   (len (1+ (length str))))
+	      (setq lal (cdr ret))
+	      (if (> (+ len column) 76)
+		  (setq dest (concat dest "\n " str)
+			column len)
+		(setq dest (concat dest " " str)
+		      column (+ column len))
+		))
+	  (setq dest (concat dest (cdr (car lal)))
+		lal (cdr lal))
+	  )))
+    dest))
+
 
 ;;; @ parser
 ;;;
