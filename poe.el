@@ -473,6 +473,140 @@ If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
 	    start (match-end 0)))
     (nreverse (cons (substring string start) parts))))
 
+;; emulating char-before of Emacs 20.
+(static-condition-case nil
+    ;; compile-time check.
+    (progn
+      ;; XXX: current make process requires this file at compile-time,
+      ;; so this test will be always success at compile-time.
+      (char-before)
+      ;; If our definition is found at compile-time, signal an error.
+      ;; XXX: should signal more specific error. 
+      (if (get 'char-before 'defun-maybe)
+          (error "")))
+  (wrong-number-of-arguments            ; Mule 1.*, 2.*.
+   ;; load-time check.
+   (or (fboundp 'si:char-before)
+       (progn
+         (fset 'si:char-before (symbol-function 'char-before))
+         (put 'char-before 'defun-maybe t)
+         ;; takes IGNORED for backward compatibility.
+         (defun char-before (&optional pos ignored)
+           "\
+Return character in current buffer preceding position POS.
+POS is an integer or a buffer pointer.
+If POS is out of range, the value is nil."
+           (si:char-before (or pos (point)))))))
+  (void-function                        ; non-Mule.
+   ;; load-time check.
+   (defun-maybe char-before (&optional pos)
+     "\
+Return character in current buffer preceding position POS.
+POS is an integer or a buffer pointer.
+If POS is out of range, the value is nil."
+     (if pos
+         (save-excursion
+           (and (= (goto-char pos) (point))
+                (not (bobp))
+                (preceding-char)))
+       (and (not (bobp))
+            (preceding-char)))))
+  (error                                ; found our definition at compile-time.
+   ;; load-time check.
+   (condition-case nil
+       (char-before)
+     (wrong-number-of-arguments         ; Mule 1.*, 2.*.
+      (or (fboundp 'si:char-before)
+          (progn
+            (fset 'si:char-before (symbol-function 'char-before))
+            (put 'char-before 'defun-maybe t)
+            ;; takes IGNORED for backward compatibility.
+            (defun char-before (&optional pos ignored)
+              "\
+Return character in current buffer preceding position POS.
+POS is an integer or a buffer pointer.
+If POS is out of range, the value is nil."
+              (si:char-before (or pos (point)))))))
+     (void-function                     ; non-Mule.
+      (defun-maybe char-before (&optional pos)
+        "\
+Return character in current buffer preceding position POS.
+POS is an integer or a buffer pointer.
+If POS is out of range, the value is nil."
+        (if pos
+            (save-excursion
+              (and (= (goto-char pos) (point))
+                   (not (bobp))
+                   (preceding-char)))
+          (and (not (bobp))
+               (preceding-char))))))))
+
+;; emulating char-after of Emacs 20.
+(static-condition-case nil
+    ;; compile-time check.
+    (progn
+      ;; XXX: current make process requires this file at compile-time,
+      ;; so this test will be always success at compile-time.
+      (char-after)
+      ;; If our definition is found at compile-time, signal an error.
+      ;; XXX: should signal more specific error. 
+      (if (get 'char-after 'defun-maybe)
+          (error "")))
+  (wrong-number-of-arguments		; v18, v19
+   ;; load-time check.
+   (or (fboundp 'si:char-after)
+       (progn
+         (fset 'si:char-after (symbol-function 'char-after))
+         (put 'char-after 'defun-maybe t)
+         (defun char-after (&optional pos)
+           "\
+Return character in current buffer at position POS.
+POS is an integer or a buffer pointer.
+If POS is out of range, the value is nil."
+           (si:char-after (or pos (point)))))))
+  (void-function			; NEVER happen?
+   ;; load-time check.
+   (defun-maybe char-after (&optional pos)
+     "\
+Return character in current buffer at position POS.
+POS is an integer or a buffer pointer.
+If POS is out of range, the value is nil."
+     (if pos
+         (save-excursion
+           (and (= (goto-char pos) (point))
+                (not (eobp))
+                (following-char)))
+       (and (not (eobp))
+            (following-char)))))
+  (error                                ; found our definition at compile-time.
+   ;; load-time check.
+   (condition-case nil
+       (char-after)
+     (wrong-number-of-arguments         ; v18, v19
+      (or (fboundp 'si:char-after)
+          (progn
+            (fset 'si:char-after (symbol-function 'char-after))
+            (put 'char-after 'defun-maybe t)
+	    (defun char-after (&optional pos)
+	      "\
+Return character in current buffer at position POS.
+POS is an integer or a buffer pointer.
+If POS is out of range, the value is nil."
+	      (si:char-after (or pos (point)))))))
+     (void-function                     ; NEVER happen?
+      (defun-maybe char-after (&optional pos)
+	"\
+Return character in current buffer at position POS.
+POS is an integer or a buffer pointer.
+If POS is out of range, the value is nil."
+	(if pos
+	    (save-excursion
+	      (and (= (goto-char pos) (point))
+		   (not (eobp))
+		   (following-char)))
+	  (and (not (eobp))
+	       (following-char))))))))
+
 
 ;;; @ Emacs 20.3 emulation
 ;;;
