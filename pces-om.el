@@ -110,6 +110,11 @@
 ;;; @ coding system
 ;;;
 
+(defun-maybe find-coding-system (obj)
+  "Return OBJ if it is a coding-system."
+  (if (coding-system-p obj)
+      obj))
+
 (defun encode-coding-region (start end coding-system)
   "Encode the text between START and END to CODING-SYSTEM.
 \[EMACS 20 emulating function]"

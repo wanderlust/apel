@@ -1,3 +1,8 @@
+1999-09-24  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* pces-om.el (find-coding-system): New inline function.
+	<cf. [tm-ja:5238]>
+
 1999-09-23  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* mcs-20.el (mime-charset-coding-system-alist): Use coding-system
