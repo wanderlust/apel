@@ -1,3 +1,25 @@
+Sat Feb 23 17:52:54 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.11.2 was released.
+
+Thu Feb 22 15:14:30 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-str.el (eliminate-last-spaces): New function.
+
+Thu Feb 22 14:33:08 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-str.el (filename-special-char-range): New variable.
+	(filename-space-char-range): New variable.
+	(replace-as-filename): New implementation.
+
+Thu Feb 22 14:24:39 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (compress-sorted-numbers): New function imported from
+	Gnus.
+	(uncompress-range): New function imported from Gnus.
+	(member-of-range): New function imported from Gnus.
+
+
 Wed Feb 14 13:00:02 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.11.1 was released.
