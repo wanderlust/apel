@@ -1,3 +1,7 @@
+1998-10-12  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* README.en (load-path): Modify for Emacs 20.3.
+
 1998-10-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL-CFG (EMU_PREFIX): Use "emu" for Emacs 20.3 or later.
