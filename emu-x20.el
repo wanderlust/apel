@@ -36,7 +36,7 @@
        )))
 
 
-;;; @ character set
+;;; @ graphic character set
 ;;;
 
 (defalias 'charset-description 'charset-doc-string)
@@ -57,38 +57,11 @@ in the region between START and END.
   (delq 'ascii (charsets-in-region start end))
   )
 
-;;; @@ for Mule emulation
-;;;
-
-(defconst lc-ascii  'ascii)
-(defconst lc-ltn1   'latin-1)
-(defconst lc-ltn2   'latin-2)
-(defconst lc-ltn3   'latin-3)
-(defconst lc-ltn4   'latin-4)
-(defconst lc-crl    'cyrillic)
-(defconst lc-arb    'arabic)
-(defconst lc-grk    'greek)
-(defconst lc-hbw    'hebrew)
-(defconst lc-ltn5   'latin-5)
-(defconst lc-jp     'japanese)
-(defconst lc-jp2    'japanese-2)
-(defconst lc-kr     'korean)
-(defconst lc-big5-1 'chinese-big5-1)
-(defconst lc-big5-2 'chinese-big5-2)
-(defconst lc-cn     'chinese-gb)
-(defconst lc-cns1   'chinese-cns-1)
-(defconst lc-cns2   'chinese-cns-2)
-(defconst lc-cns3   'chinese-cns-3)
-(defconst lc-cns4   'chinese-cns-4)
-(defconst lc-cns5   'chinese-cns-5)
-(defconst lc-cns6   'chinese-cns-6)
-(defconst lc-cns7   'chinese-cns-7)
-
 
 ;;; @ coding-system
 ;;;
 
-(defconst *noconv* 'noconv)
+(defconst *noconv* 'no-conversion)
 (defconst *ctext*  'ctext)
 (defconst *hz*     'hz)
 (defconst *big5*   'big5)
@@ -104,7 +77,7 @@ in the region between START and END.
      ,@body))
 
 (defmacro as-binary-input-file (&rest body)
-  `(let ((file-coding-system-for-read 'noconv))
+  `(let ((file-coding-system-for-read 'no-conversion))
      ,@body))
 
 
@@ -113,24 +86,28 @@ in the region between START and END.
 
 (defvar charsets-mime-charset-alist
   '(((ascii)						. us-ascii)
-    ((ascii latin-1)					. iso-8859-1)
-    ((ascii latin-2)					. iso-8859-2)
-    ((ascii latin-3)					. iso-8859-3)
-    ((ascii latin-4)					. iso-8859-4)
-;;; ((ascii cyrillic)					. iso-8859-5)
-    ((ascii cyrillic)					. koi8-r)
-    ((ascii arabic)					. iso-8859-6)
-    ((ascii greek)					. iso-8859-7)
-    ((ascii hebrew)					. iso-8859-8)
-    ((ascii latin-5)					. iso-8859-9)
-    ((ascii japanese-old japanese)			. iso-2022-jp)
-    ((ascii korean)					. euc-kr)
+    ((ascii latin-iso8859-1)				. iso-8859-1)
+    ((ascii latin-iso8859-2)				. iso-8859-2)
+    ((ascii latin-iso8859-3)				. iso-8859-3)
+    ((ascii latin-iso8859-4)				. iso-8859-4)
+;;; ((ascii cyrillic-iso8859-5)				. iso-8859-5)
+    ((ascii cyrillic-iso8859-5)				. koi8-r)
+    ((ascii arabic-iso8859-6)				. iso-8859-6)
+    ((ascii greek-iso8859-7)				. iso-8859-7)
+    ((ascii hebrew-iso8859-8)				. iso-8859-8)
+    ((ascii latin-iso8859-9)				. iso-8859-9)
+    ((ascii japanese-jisx0208-1978 japanese-jisx0208)	. iso-2022-jp)
+    ((ascii korean-ksc5601)				. euc-kr)
     ((ascii chinese-big5-1 chinese-big5-2)		. big5)
-    ((ascii japanese-old chinese-gb japanese korean
-	    japanese-2 latin-1 greek)			. iso-2022-jp-2)
-    ((ascii japanese-old chinese-gb japanese korean
-	    japanese-2 chinese-cns-1 chinese-cns-2
-	    latin-1 greek)				. iso-2022-int-1)
+    ((ascii japanese-jisx0208-1978 chinese-gb
+	    japanese-jisx0208 korean-ksc5601
+	    japanese-jisx0212 latin-iso8859-1
+	    greek-iso8859-7)				. iso-2022-jp-2)
+    ((ascii japanese-jisx0208-1978 chinese-gb2312
+	    japanese-jisx0208 korean-ksc5601
+	    japanese-jisx0212
+	    chinese-cns11643-1 chinese-cns11643-2
+	    latin-iso8859-1 greek-iso8859-7)		. iso-2022-int-1)
     ))
 
 (defvar default-mime-charset 'iso-2022-int-1)
