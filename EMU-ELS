@@ -4,7 +4,7 @@
 
 ;;; Code:
 
-(setq emu-modules '(poe poem emu))
+(setq emu-modules '(poe poem mcharset emu))
 
 (setq emu-modules
       (nconc
@@ -13,9 +13,9 @@
 	      (cons 'poe-xemacs
 		    (if (featurep 'mule)
 			;; for XEmacs with MULE
-			'(poem-20 poem-xm emu-20 emu-x20)
+			'(poem-20 poem-xm mcs-20 mcs-xm emu-20 emu-x20)
 		      ;; for XEmacs without MULE
-		      '(poem-ltn1 emu-latin1)
+		      '(poem-ltn1 mcs-ltn1 emu-latin1)
 		      ))
 	      )
 	     (running-mule-merged-emacs
@@ -25,22 +25,22 @@
 			'poem-e20_3 ; for Emacs 20.3
 		      'poem-e20_2 ; for Emacs 20.1 and 20.2
 		      )
-		    '(poe-19 poem-20 poem-e20 emu-20 emu-e20))
+		    '(poe-19 poem-20 poem-e20 mcs-20 mcs-e20 emu-20 emu-e20))
 	      )
 	     ((boundp 'MULE)
 	      ;; for MULE 1.* and MULE 2.*
-	      (append '(poem-om emu-mule)
+	      (append '(poem-om mcs-om emu-mule)
 		      (if running-emacs-18
 			  '(poe-18 env)
 			'(poe-19)))
 	      )
 	     ((boundp 'NEMACS)
 	      ;; for NEmacs
-	      '(poe-18 poem-nemacs emu-nemacs)
+	      '(poe-18 poem-nemacs mcs-nemacs emu-nemacs)
 	      )
 	     (t
 	      ;; for Emacs 19.34
-	      '(poe-19 poem-ltn1 emu-latin1)
+	      '(poe-19 poem-ltn1 mcs-ltn1 emu-latin1)
 	      ))
        emu-modules))
 

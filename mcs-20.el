@@ -1,11 +1,11 @@
-;;; emu-20.el --- emu API implementation for Emacs 20 and XEmacs/mule
+;;; mcs-20.el --- MIME charset implementation for Emacs 20 and XEmacs/mule
 
 ;; Copyright (C) 1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: emulation, compatibility, Mule
 
-;; This file is part of emu.
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -144,6 +144,6 @@ It must be symbol."
 ;;; @ end
 ;;;
 
-(provide 'emu-20)
+(provide 'mcs-20)
 
-;;; emu-20.el ends here
+;;; mcs-20.el ends here

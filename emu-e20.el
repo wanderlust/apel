@@ -31,82 +31,6 @@
 (require 'poem)
 
 
-;;; @ MIME charset
-;;;
-
-(defsubst encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET."
-  (let (cs)
-    (if (and enable-multibyte-characters
-	     (setq cs (mime-charset-to-coding-system charset)))
-	(encode-coding-region start end cs)
-      )))
-
-(defsubst decode-mime-charset-region (start end charset &optional lbt)
-  "Decode the text between START and END as MIME CHARSET."
-  (let (cs)
-    (if (and enable-multibyte-characters
-	     (setq cs (mime-charset-to-coding-system charset lbt)))
-	(decode-coding-region start end cs)
-      )))
-
-(defsubst encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET."
-  (let (cs)
-    (if (and enable-multibyte-characters
-	     (setq cs (mime-charset-to-coding-system charset)))
-	(encode-coding-string string cs)
-      string)))
-
-(defsubst decode-mime-charset-string (string charset &optional lbt)
-  "Decode the STRING as MIME CHARSET."
-  (let (cs)
-    (if (and enable-multibyte-characters
-	     (setq cs (mime-charset-to-coding-system charset lbt)))
-	(decode-coding-string string cs)
-      string)))
-
-
-(defvar charsets-mime-charset-alist
-  '(((ascii)						. us-ascii)
-    ((ascii latin-iso8859-1)				. iso-8859-1)
-    ((ascii latin-iso8859-2)				. iso-8859-2)
-    ((ascii latin-iso8859-3)				. iso-8859-3)
-    ((ascii latin-iso8859-4)				. iso-8859-4)
-;;; ((ascii cyrillic-iso8859-5)				. iso-8859-5)
-    ((ascii cyrillic-iso8859-5)				. koi8-r)
-    ((ascii arabic-iso8859-6)				. iso-8859-6)
-    ((ascii greek-iso8859-7)				. iso-8859-7)
-    ((ascii hebrew-iso8859-8)				. iso-8859-8)
-    ((ascii latin-iso8859-9)				. iso-8859-9)
-    ((ascii latin-jisx0201
-	    japanese-jisx0208-1978 japanese-jisx0208)	. iso-2022-jp)
-    ((ascii latin-jisx0201
-	    katakana-jisx0201 japanese-jisx0208)	. shift_jis)
-    ((ascii korean-ksc5601)				. euc-kr)
-    ((ascii chinese-gb2312)				. cn-gb-2312)
-    ((ascii chinese-big5-1 chinese-big5-2)		. cn-big5)
-    ((ascii latin-iso8859-1 greek-iso8859-7
-	    latin-jisx0201 japanese-jisx0208-1978
-	    chinese-gb2312 japanese-jisx0208
-	    korean-ksc5601 japanese-jisx0212)		. iso-2022-jp-2)
-    ((ascii latin-iso8859-1 greek-iso8859-7
-	    latin-jisx0201 japanese-jisx0208-1978
-	    chinese-gb2312 japanese-jisx0208
-	    korean-ksc5601 japanese-jisx0212
-	    chinese-cns11643-1 chinese-cns11643-2)	. iso-2022-int-1)
-    ((ascii latin-iso8859-1 latin-iso8859-2
-	    cyrillic-iso8859-5 greek-iso8859-7
-	    latin-jisx0201 japanese-jisx0208-1978
-	    chinese-gb2312 japanese-jisx0208
-	    korean-ksc5601 japanese-jisx0212
-	    chinese-cns11643-1 chinese-cns11643-2
-	    chinese-cns11643-3 chinese-cns11643-4
-	    chinese-cns11643-5 chinese-cns11643-6
-	    chinese-cns11643-7)				. iso-2022-int-1)
-    ))
-
-
 ;;; @ character
 ;;;
 
@@ -227,8 +151,6 @@ If CCL-PROG is symbol, it is dereferenced.
 
 ;;; @ end
 ;;;
-
-(require 'emu-20)
 
 (defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
 (make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)

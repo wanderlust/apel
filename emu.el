@@ -75,6 +75,7 @@
        ))
 
 (require 'poem)
+(require 'mcharset)
 
 (cond (running-xemacs
        (if (featurep 'mule)

@@ -68,62 +68,6 @@ find-file-hooks, etc.
     (insert-file-contents-literally filename visit beg end replace)))
 
 
-;;; @ MIME charset
-;;;
-
-(defvar charsets-mime-charset-alist
-  '(((ascii) . us-ascii)))
-
-(defvar default-mime-charset 'iso-8859-1)
-
-(defun mime-charset-to-coding-system (charset)
-  (if (stringp charset)
-      (setq charset (intern (downcase charset)))
-    )
-  (if (memq charset (list 'us-ascii default-mime-charset))
-      charset
-    ))
-
-(defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END."
-  (if (save-excursion
-	(goto-char start)
-	(re-search-forward "[\200-\377]" end t))
-      default-mime-charset
-    'us-ascii))
-
-(defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET."
-  )
-
-(defun decode-mime-charset-region (start end charset &optional lbt)
-  "Decode the text between START and END as MIME CHARSET."
-  (cond ((eq lbt 'CRLF)
-	 (save-excursion
-	   (save-restriction
-	     (narrow-to-region start end)
-	     (goto-char (point-min))
-	     (while (search-forward "\r\n" nil t)
-	       (replace-match "\n"))
-	     ))
-	 )))
-
-(defun encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET."
-  string)
-
-(defun decode-mime-charset-string (string charset &optional lbt)
-  "Decode the STRING as MIME CHARSET."
-  (if lbt
-      (with-temp-buffer
-	(insert string)
-	(decode-mime-charset-region (point-min)(point-max) charset lbt)
-	(buffer-string))
-    string))
-
-(defalias 'write-region-as-mime-charset 'write-region)
-
-
 ;;; @ end
 ;;;
 
