@@ -142,6 +142,34 @@ If STRING is multibyte, the result is STRING itself.
   string)
 
 
+;;; @ XEmacs emulation
+;;;
+
+(defun-maybe point-at-bol (&optional n buffer)
+  "Return the character position of the first character on the current line.
+With argument N not nil or 1, move forward N - 1 lines first.
+If scan reaches end of buffer, return that position.
+This function does not move point. [XEmacs emulating function]"
+  (save-excursion
+    (if buffer
+	(set-buffer buffer)
+      )
+    (line-beginning-position n)
+    ))
+
+(defun-maybe point-at-eol (&optional n buffer)
+  "Return the character position of the last character on the current line.
+With argument N not nil or 1, move forward N - 1 lines first.
+If scan reaches end of buffer, return that position.
+This function does not move point. [XEmacs emulating function]"
+  (save-excursion
+    (if buffer
+	(set-buffer buffer)
+      )
+    (line-end-position n)
+    ))
+
+
 ;;; @ for XEmacs 20
 ;;;
 
