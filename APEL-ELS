@@ -1,11 +1,17 @@
 ;;; -*-Emacs-Lisp-*-
-;;;
-;;; $Id$
-;;;
 
-(setq apel-modules '(alist calist atype
+;; APEL-ELS: list of APEL modules to install
+
+;;; Code:
+
+(setq apel-modules '(alist calist
 			   path-util filename install
  			   mule-caesar
-			   file-detect))
+
+			   ;; [obsoleted modules] If you would like to
+			   ;; install following, please activate them.
+
+			   ;; atype file-detect
+			   ))
 
 ;;; APEL-ELS ends here
