@@ -1,3 +1,11 @@
+2000-12-15  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* make.bat (listing): Bug fixed.
+
+	* README.en: Add URL that can be used to getting SKK 10.62a with
+	the new byte compiler for Emacs 18.
+	* README.ja: Ditto.
+
 2000-12-15  TAKAHASHI Kaoru  <kaoru@kaisei.org>
 
 	* Makefile (tar): Remove .cvsignore.  Use `cvs tag -R' instead of

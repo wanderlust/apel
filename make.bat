@@ -37,7 +37,7 @@ if "%arg1%"=="clean" goto clean
 goto end
 
 :listing
-%EMACS% -batch -q -no-site-file -l APEL-MK -f what-where
+%EMACS% -batch -q -no-site-file -l APEL-MK -f what-where-apel
 goto end
 
 :clean

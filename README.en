@@ -194,7 +194,9 @@ For Emacs 18 users: "old byte-compiler" vs "new byte-compiler"
   difficult to obtain this package now.
 
   AFAIK, the "new byte-compiler" for Emacs 18 is also bundled with SKK
-  9.6.  It includes patch for Mule 1.*.
+  9.6 or SKK 10.62a.  You can get SKK 10.62a from the following URL;
+    http://openlab.ring.gr.jp/skk/maintrunk
+  They include patch for Mule 1.*.
 
 
 For Emacs 19.34 and XEmacs 19.14 users: "old custom" vs "new custom"

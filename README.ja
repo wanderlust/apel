@@ -200,8 +200,10 @@ Emacs 18 のユーザのみなさんへ:
   用の "contrib" パッケージが配布されていました。しかし現在ではこのパッ
   ケージを手に入れることは難しいでしょう。
 
-  我々の知る限りでは Emacs 18 用の「新しい byte-compiler」は SKK 9.6
-  に付属しています。これは Mule 1.* 用のパッチも含んでいます。
+  我々の知る限りでは Emacs 18 用の「新しい byte-compiler」は SKK 9.6,
+  または SKK 10.62a に付属しています。SKK 10.62a は
+    http://openlab.ring.gr.jp/skk/maintrunk
+  から入手することができます。これらは Mule 1.* 用のパッチも含んでいます。
 
 
 「古い custom」と「新しい custom」
