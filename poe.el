@@ -1780,10 +1780,10 @@ the echo area while this function is waiting for an event."
   ((and (fboundp 'read-event)
 	(subrp (symbol-function 'read-event)))
    ;; Emacs 19, 20.1 and 20.2.
-   (if prompt (message prompt))
+   (if prompt (message "%s" prompt))
    (read-event))
   (t
-   (if prompt (message prompt))
+   (if prompt (message "%s" prompt))
    (read-char)))
 
 
