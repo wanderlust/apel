@@ -118,7 +118,7 @@ in the region between START and END.
 (defconst *koi8*   nil)
 
 (defvar code-converter-is-broken
-  (and xemacs-beta-version (<= xemacs-beta-version 20)))
+  (and xemacs-beta-version (<= xemacs-beta-version 22)))
 
 (if code-converter-is-broken
 (progn
