@@ -24,13 +24,25 @@
 
 ;;; Code:
 
+(require 'broken)
+
 (if (featurep 'mule)
-    (if (>= emacs-major-version 20)
-	;; for Emacs 20 and XEmacs-mule
-	(require 'pccl-20)
-      ;; for MULE 1.* and 2.*
-      (require 'pccl-om)
-      ))
+    (if (featurep 'xemacs)
+        (if (>= emacs-major-version 21)
+            ;; for XEmacs-21-mule
+            (require 'pccl-20))
+      (if (>= emacs-major-version 20)
+          ;; for Emacs 20
+          (require 'pccl-20)
+        ;; for MULE 1.* and 2.*
+        (require 'pccl-om))))
+
+(broken-facility ccl-usable
+  "Emacs has CCL."
+  (and (featurep 'mule)
+       (if (featurep 'xemacs)
+           (>= emacs-major-version 21)
+         t)))
 
 
 ;;; @ end
