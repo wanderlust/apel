@@ -245,10 +245,21 @@ find-file-hooks, etc.
 
 (defun decode-mime-charset-region (start end charset &optional lbt)
   "Decode the text between START and END as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset lbt)))
+  (let ((cs (mime-charset-to-coding-system charset lbt))
+	newline)
     (if cs
 	(code-convert start end cs *internal*)
-      )))
+      (if (and lbt (setq cs (mime-charset-to-coding-system charset)))
+	  (progn
+	    (if (setq newline (cdr (assq lbt '((CRLF . "\r\n") (CR . "\r")))))
+		(save-excursion
+		  (save-restriction
+		    (narrow-to-region start end)
+		    (goto-char (point-min))
+		    (while (search-forward newline nil t)
+		      (replace-match "\n")))
+		  (code-convert (point-min) (point-max) cs *internal*))
+	      (code-convert start end cs *internal*)))))))
 
 (defun encode-mime-charset-string (string charset)
   "Encode the STRING as MIME CHARSET."
@@ -259,10 +270,22 @@ find-file-hooks, etc.
 
 (defun decode-mime-charset-string (string charset &optional lbt)
   "Decode the STRING which is encoded in MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset lbt)))
+  (let ((cs (mime-charset-to-coding-system charset lbt))
+	newline)
     (if cs
 	(decode-coding-string string cs)
-      string)))
+      (if (and lbt (setq cs (mime-charset-to-coding-system charset)))
+	  (progn
+	    (if (setq newline (cdr (assq lbt '((CRLF . "\r\n") (CR . "\r")))))
+		(with-temp-buffer
+		 (insert string)
+		 (goto-char (point-min))
+		 (while (search-forward newline nil t)
+		   (replace-match "\n"))
+		 (code-convert (point-min) (point-max) cs *internal*)
+		 (buffer-string))
+	      (decode-coding-string string cs)))
+	string))))
 
 (cond
  (running-emacs-19_29-or-later
@@ -289,6 +312,8 @@ find-file-hooks, etc.
 
 ;;; @@ to coding-system
 ;;;
+
+(require 'cyrillic)
 
 (defvar mime-charset-coding-system-alist
   '((iso-8859-1      . *ctext*)

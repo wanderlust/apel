@@ -1,3 +1,11 @@
+1998-09-17  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* emu-mule.el: Require `cyrillic'. Suggested by MORIOKA-san.
+
+	* emu-mule.el (decode-mime-charset-region)
+	(decode-mime-charset-string): Cope with non existent coding
+	systems if the third arg `lbt' has specified.
+
 1998-09-14  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 8.18 was released.
