@@ -1,23 +1,3 @@
-2000-12-21  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
-
-	* poe-18.el (minor-mode-alist): Removed.
-	(minor-mode-overriding-map-alist): Move to poe.el.
-
-2000-12-20  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
-
-	* APEL-MK (install-apel): Add new optional argument `just-print'.
-	(what-where-apel): New implementation [use `install-apel' with
-	`just-print' mode].
-
-2000-12-20  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
-
-	* APEL-MK (install-just-print-p): Moved to install.el.
-	(install-update-package-files): Moved to install.el.
-
-	* install.el (install-update-package-files): New function [moved
-	from APEL-MK].
-	(install-just-print-p): Likewise.
-
 2000-12-15  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* mcs-xm.el: Don't require `poem' instead of `mcs-20'.
@@ -2763,7 +2743,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
