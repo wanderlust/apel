@@ -19,11 +19,12 @@
 	      (cons 'emu-xemacs
 		    (if (featurep 'mule)
 			'(emu-20 emu-x20) ; for XEmacs with MULE
-		      '(emu-latin1))) ; for XEmacs without MULE
+		      '(emu-latin1) ; for XEmacs without MULE
+		      ))
 	      )
 	     ((featurep 'mule)
 	      ;; for Emacs 20.1 or later
-	      '(emu-20 emu-e19 emu-e20)
+	      '(emu-20 emu-e19 emu-e20 emu-e20_2)
 	      )
 	     ((boundp 'MULE)
 	      ;; for MULE 1.* and MULE 2.*
