@@ -1,3 +1,7 @@
+1999-09-02  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poe.el (convert-standard-filename): Rearrange.
+
 1999-09-01  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poe.el (convert-standard-filename): New function.
