@@ -33,6 +33,7 @@
 (cond ((featurep 'xemacs)
        (if (or (featurep 'mule) (featurep 'file-coding))
 	   (require 'pces-xfc)
+	 (require 'pces-raw)
 	 ))
       ((featurep 'mule)
        (if (>= emacs-major-version 20)
