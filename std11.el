@@ -39,6 +39,9 @@
   (concat "\n" std11-field-name-regexp ":"))
 
 (defun std11-field-body (name &optional boundary)
+  "Return body of field NAME.
+If BOUNDARY is not nil, it is used as message header separator.
+\[std11.el]"
   (save-excursion
     (save-restriction
       (std11-narrow-to-header boundary)
@@ -49,6 +52,7 @@
 	  )))))
 
 (defun std11-field-end ()
+  "Move to end of field and return this point. [std11.el]"
   (if (re-search-forward std11-next-field-head-regexp nil t)
       (goto-char (match-beginning 0))
     (if (re-search-forward "^$" nil t)
@@ -59,6 +63,9 @@
   )
 
 (defun std11-field-names (&optional boundary)
+  "Return list of all field-names of the message header in current buffer.
+If BOUNDARY is not nil, it is used as message header separator.
+\[std11.el]"
   (save-excursion
     (save-restriction
       (std11-narrow-to-header boundary)
@@ -74,6 +81,9 @@
 	dest))))
 
 (defun std11-field-bodies (field-names &optional default-value boundary)
+  "Return list of each field-bodies of FIELD-NAMES of the message header
+in current buffer. If BOUNDARY is not nil, it is used as message
+header separator. [std11.el]"
   (save-excursion
     (save-restriction
       (std11-narrow-to-header boundary)
@@ -95,10 +105,27 @@
 	dest))))
 
 
+;;; @ unfolding
+;;;
+
+(defun std11-unfold-string (string)
+  "Unfold STRING as message header field. [std11.el]"
+  (let ((dest ""))
+    (while (string-match "\n\\s +" string)
+      (setq dest (concat dest (substring string 0 (match-beginning 0)) " "))
+      (setq string (substring string (match-end 0)))
+      )
+    (concat dest string)
+    ))
+
+
 ;;; @ header
 ;;;
 
 (defun std11-narrow-to-header (&optional boundary)
+  "Narrow to the message header.
+If BOUNDARY is not nil, it is used as message header separator.
+\[std11.el]"
   (narrow-to-region
    (goto-char (point-min))
    (if (re-search-forward
@@ -108,7 +135,10 @@
      (point-max)
      )))
 
-(defun std11-header-string (pat &optional boundary)
+(defun std11-header-string (regexp &optional boundary)
+  "Return string of message header fields matched by REGEXP.
+If BOUNDARY is not nil, it is used as message header separator.
+\[std11.el]"
   (let ((case-fold-search t))
     (save-excursion
       (save-restriction
@@ -118,13 +148,16 @@
 	  (while (re-search-forward std11-field-head-regexp nil t)
 	    (setq field
 		  (buffer-substring (match-beginning 0) (std11-field-end)))
-	    (if (string-match pat field)
+	    (if (string-match regexp field)
 		(setq header (concat header field "\n"))
 	      ))
 	  header)
 	))))
 
-(defun std11-header-string-except (pat &optional boundary)
+(defun std11-header-string-except (regexp &optional boundary)
+  "Return string of message header fields not matched by REGEXP.
+If BOUNDARY is not nil, it is used as message header separator.
+\[std11.el]"
   (let ((case-fold-search t))
     (save-excursion
       (save-restriction
@@ -134,7 +167,7 @@
 	  (while (re-search-forward std11-field-head-regexp nil t)
 	    (setq field
 		  (buffer-substring (match-beginning 0) (std11-field-end)))
-	    (if (not (string-match pat field))
+	    (if (not (string-match regexp field))
 		(setq header (concat header field "\n"))
 	      ))
 	  header)
