@@ -1,9 +1,8 @@
 ;;; emu.el --- Emulation module for each Emacs variants
 
-;; Copyright (C) 1995,1996,1997 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: emulation, compatibility, NEmacs, MULE, Emacs/mule, XEmacs
 
 ;; This file is part of emu.
