@@ -2,7 +2,7 @@
 
 	* poem-om.el (poem-ccl-decode-raw-text): Renamed from
 	`ccl-decode-raw-text'.
-	(poem-ccl-encode-raw-text): Reanamed from `ccl-encode-raw-text'.
+	(poem-ccl-encode-raw-text): Renamed from `ccl-encode-raw-text'.
 	(poem-ccl-encode-raw-text-CRLF): Renamed from
 	`ccl-encode-raw-text-CRLF`.
 
