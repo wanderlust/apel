@@ -84,6 +84,9 @@ in the region between START and END."
     (setq enable-multibyte-characters flag)
     ))
 
+(defalias 'insert-binary-file-contents-literally
+  'insert-file-contents-literally)
+
 
 ;;; @ MIME charset
 ;;;
