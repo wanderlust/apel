@@ -392,6 +392,7 @@ Under `windows-nt' or `ms-dos', it refers `filename-replacement-alist' and
 	     (mapconcat filter (cdr names) "/"))))
   (t filename))
 
+
 ;;; @ Emacs 20.1 emulation
 ;;;
 
