@@ -454,15 +454,6 @@ resolution finer than a second."
   "Return the absolute value of ARG."
   (if (< arg 0) (- arg) arg))
 
-(defun floor (arg &optional divisor)
-  "Return the largest integer no grater than ARG.
-With optional DIVISOR, return the largest integer no greater than ARG/DIVISOR."
-  (if (null divisor)
-      (setq divisor 1))
-  (if (< arg 0)
-      (- (/ (- divisor 1 arg) divisor))
-    (/ arg divisor)))
-
 ;;; @ Basic lisp subroutines.
 ;;;
 
