@@ -1,3 +1,7 @@
+1998-12-09  Yuuichi Teranishi <teranisi@gohome.org>
+
+	* poe-18.el (make-directory-internal): Rewrite.
+
 1998-12-08  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poem-20.el (write-region-as-binary): Bind
