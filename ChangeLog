@@ -1,3 +1,8 @@
+1999-02-13  Tanaka Akira  <akr@jaist.ac.jp>
+
+	* mcs-e20.el (charsets-mime-charset-alist): Don't set up
+	`iso-2022-int-1' in default.
+
 1999-02-11  Tanaka Akira  <akr@jaist.ac.jp>
 
 	* README.en, README.ja, pccl.el: pccl does not support Mule 1.x.
