@@ -1,3 +1,7 @@
+1999-02-07  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* install.el (install-prefix): Modify for Meadow.
+
 1999-02-04  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poem-20.el, poem-ltn1.el, poem-nemacs.el, poem-om.el
