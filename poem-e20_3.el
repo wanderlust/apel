@@ -1,5 +1,4 @@
-;;; -*-byte-compile-dynamic: t;-*-
-;;; poem-e20_3.el --- poem submodule for Emacs 20.3
+;;; poem-e20_3.el --- poem implementation for Emacs 20.3.
 
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 
@@ -39,8 +38,6 @@
 (defmacro char-next-index (char index)
   "Return index of character succeeding CHAR whose index is INDEX."
   `(1+ ,index))
-
-(defalias-maybe 'characterp 'char-valid-p)
 
 
 ;;; @ string
