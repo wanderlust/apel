@@ -1,5 +1,8 @@
 1998-08-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* emu-e20.el (decode-mime-charset-region): Add new argument `lbt'.
+	(decode-mime-charset-string): Likewise.
+
 	* emu-x20.el: Define coding-system `raw-text-unix' and
 	`raw-text-mac' if they are not found.
 	Redefine coding-system `euc-kr' if `euc-kr-dos' is not found.
