@@ -212,7 +212,7 @@ find-file-hooks, etc.
 ;;;
 ;;; You should not use them.
 
-(defalias 'char-leading-char 'char-charset)
+;;(defalias 'char-leading-char 'char-charset)
 
 (defun char-category (character)
   "Return string of category mnemonics for CHAR in TABLE.
