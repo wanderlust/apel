@@ -1,7 +1,7 @@
 1999-04-11  Tanaka Akira  <akr@jaist.ac.jp>
 
-	* mcs-e20.el (x-ctext): Define coding system `x-ctext' if `ctext' is
-	not proper for decoding `iso-2022-jp-2'.
+	* mcs-e20.el (x-ctext): Define coding system `x-ctext' if `ctext'
+	is not proper for decoding `iso-2022-jp-2'.
 
 1999-04-09  Tanaka Akira  <akr@jaist.ac.jp>
 
