@@ -1,10 +1,9 @@
 ;;; apel-ver.el --- Declare APEL version.
 
 ;; Copyright (C) 1999 Free Software Foundation, Inc.
-;; Copyright (C) 1999 Keiichi Suzuki
 
 ;; Author: Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
-;;	Keiichi Suzuki <keiichi@nanap.org>
+;;         Keiichi Suzuki <keiichi@nanap.org>
 ;; Keywords: compatibility
 
 ;; This file is part of APEL (A Portable Emacs Library).
