@@ -1,4 +1,4 @@
-@echo off
+rem echo off
 rem MAKE.BAT for APEL.
 rem ********************************************************************
 rem * Edit following lines to set PREFIX, EMACS, LISPDIR and VLISPDIR  *

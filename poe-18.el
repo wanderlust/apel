@@ -645,7 +645,7 @@ No argument or nil as argument means do this for the current buffer."
 ;;;
 ;; The following four are frequently used for manupulating the current frame.
 ;; frame.el has `screen-width', `screen-height', `set-screen-width' and
-;; `set-screen-height' for backward compatibility and declare them as obsolete.
+;; `set-screen-heigth' for backward compatibility and declare them as obsolete.
 (defun frame-width (&optional frame)
   "Return number of columns available for display on FRAME.
 If FRAME is omitted, describe the currently selected frame."
@@ -662,11 +662,11 @@ Optional third arg non-nil means that redisplay should use COLS columns
 but that the idea of the actual width of the frame should not be changed."
   (set-screen-width cols pretend))
 
-(defun set-frame-height (frame lines &optional pretend)
+(defun set-frame-heigth (frame cols &optional pretend)
   "Specify that the frame FRAME has LINES lines.
 Optional third arg non-nil means that redisplay should use LINES lines
 but that the idea of the actual height of the frame should not be changed."
-  (set-screen-height lines pretend))
+  (set-screen-heigth cols pretend))
 
 ;;; @@ Environment variables.
 ;;;
