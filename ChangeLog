@@ -1,3 +1,10 @@
+2000-02-21  Makoto Nakagawa  <Makoto.Nakagawa@jp.compaq.com>
+
+	* poe.el (format-time-string): New function for Emacs 19.28 and
+	earlier.
+	(format-time-month-list): New constant for `format-time-string'.
+	(format-time-week-list): New constant for `format-time-string'.
+
 2000-02-21   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
 
 	* poe-18.el (walk-windows): New function.

@@ -1094,6 +1094,305 @@ which is made by replacing the part of STRING that was matched."
 		    (buffer-string)))
 	       (si:replace-match newtext fixedcase literal)))))))))
 
+;; Emacs 20: (format-time-string)
+;; The the third optional argument universal is yet to be implemented.
+;; Those format constructs are yet to be implemented.
+;;   %c, %C, %j, %U, %W, %x, %X
+;; Not fully compatible especially when invalid format is specified.
+(static-unless (and (fboundp 'format-time-string)
+		    (not (get 'format-time-string 'defun-maybe)))
+  (or (fboundp 'format-time-string)
+  (progn
+  (defconst format-time-month-list
+    '(( "Zero" . ("Zero" . 0))
+      ("Jan" . ("January" . 1)) ("Feb" . ("February" . 2))
+      ("Mar" . ("March" . 3)) ("Apr" . ("April" . 4)) ("May" . ("May" . 5))
+      ("Jun" . ("June" . 6))("Jul" . ("July" . 7)) ("Aug" . ("August" . 8))
+      ("Sep" . ("September" . 9)) ("Oct" . ("October" . 10))
+      ("Nov" . ("November" . 11)) ("Dec" . ("December" . 12)))
+    "Alist of months and their number.")
+
+  (defconst format-time-week-list
+    '(("Sun" . ("Sunday" . 0)) ("Mon" . ("Monday" . 1))
+      ("Tue" . ("Tuesday" . 2)) ("Wed" . ("Wednesday" . 3))
+      ("Thu" . ("Thursday" . 4)) ("Fri" . ("Friday" . 5))
+      ("Sat" . ("Saturday" . 6)))
+    "Alist of weeks and their number.")
+
+  (defun format-time-string (format &optional time universal)
+    "Use FORMAT-STRING to format the time TIME, or now if omitted.
+TIME is specified as (HIGH LOW . IGNORED) or (HIGH . LOW), as returned by
+`current-time' or `file-attributes'.
+The third, optional, argument UNIVERSAL, if non-nil, means describe TIME
+as Universal Time; nil means describe TIME in the local time zone.
+The value is a copy of FORMAT-STRING, but with certain constructs replaced
+by text that describes the specified date and time in TIME:
+
+%Y is the year, %y within the century, %C the century.
+%G is the year corresponding to the ISO week, %g within the century.
+%m is the numeric month.
+%b and %h are the locale's abbreviated month name, %B the full name.
+%d is the day of the month, zero-padded, %e is blank-padded.
+%u is the numeric day of week from 1 (Monday) to 7, %w from 0 (Sunday) to 6.
+%a is the locale's abbreviated name of the day of week, %A the full name.
+%U is the week number starting on Sunday, %W starting on Monday,
+ %V according to ISO 8601.
+%j is the day of the year.
+
+%H is the hour on a 24-hour clock, %I is on a 12-hour clock, %k is like %H
+ only blank-padded, %l is like %I blank-padded.
+%p is the locale's equivalent of either AM or PM.
+%M is the minute.
+%S is the second.
+%Z is the time zone name, %z is the numeric form.
+%s is the number of seconds since 1970-01-01 00:00:00 +0000.
+
+%c is the locale's date and time format.
+%x is the locale's \"preferred\" date format.
+%D is like \"%m/%d/%y\".
+
+%R is like \"%H:%M\", %T is like \"%H:%M:%S\", %r is like \"%I:%M:%S %p\".
+%X is the locale's \"preferred\" time format.
+
+Finally, %n is a newline, %t is a tab, %% is a literal %.
+
+Certain flags and modifiers are available with some format controls.
+The flags are `_' and `-'.  For certain characters X, %_X is like %X,
+but padded with blanks; %-X is like %X, but without padding.
+%NX (where N stands for an integer) is like %X,
+but takes up at least N (a number) positions.
+The modifiers are `E' and `O'.  For certain characters X,
+%EX is a locale's alternative version of %X;
+%OX is like %X, but uses the locale's number symbols.
+
+For example, to produce full ISO 8601 format, use \"%Y-%m-%dT%T%z\".
+
+Compatibility Note.
+
+The the third optional argument universal is yet to be implemented.
+Those format constructs are yet to be implemented.
+  %c, %C, %j, %U, %W, %x, %X
+Not fully compatible especially when invalid format is specified."
+    (let ((fmt-len (length format))
+	  (ind 0)
+	  prev-ind
+	  cur-char
+	  (prev-char nil)
+	  strings-so-far
+	  (result "")
+	  field-width
+	  field-result
+	  pad-left change-case
+	  (paren-level 0)
+	  hour
+	  (time-string (current-time-string time)))
+      (setq hour (string-to-int (substring time-string 11 13)))
+      (while (< ind fmt-len)
+	(setq cur-char (aref format ind))
+	(setq
+	 result
+	 (concat result
+	(cond
+	 ((eq cur-char ?%)
+	  ;; eat any additional args to allow for future expansion, not!!
+	  (setq pad-left nil change-case nil field-width "" prev-ind ind
+		strings-so-far "")
+;	  (catch 'invalid
+	  (while (progn
+		   (setq ind (1+ ind))
+		   (setq cur-char (if (< ind fmt-len)
+				      (aref format ind)
+				    ?\0))
+		   (or (eq ?- cur-char) ; pad on left
+		       (eq ?# cur-char) ; case change
+		       (if (and (string-equal field-width "")
+				(<= ?0 cur-char) (>= ?9 cur-char))
+			   ;; get format width
+			   (let ((field-index ind))
+			     (while (progn
+				      (setq ind (1+ ind))
+				      (setq cur-char (if (< ind fmt-len)
+							 (aref format ind)
+						       ?\0))
+				      (and (<= ?0 cur-char) (>= ?9 cur-char))))
+			     (setq field-width
+				   (substring format field-index ind))
+			     (setq ind (1- ind)
+				   cur-char nil)
+			     t))))
+	    (setq prev-char cur-char
+		  strings-so-far (concat strings-so-far
+					 (if cur-char
+					     (char-to-string cur-char)
+					   field-width)))
+	    ;; characters we actually use
+	    (cond ((eq cur-char ?-)
+		   ;; padding to left must be specified before field-width
+		   (setq pad-left (string-equal field-width "")))
+		  ((eq cur-char ?#)
+		   (setq change-case t))))
+	  (setq field-result
+		(cond
+		 ((eq cur-char ?%)
+		  "%")
+		 ;; the abbreviated name of the day of week.		 
+		 ((eq cur-char ?a)
+		  (substring time-string 0 3))
+		 ;; the full name of the day of week
+		 ((eq cur-char ?A)
+		  (cadr (assoc (substring time-string 0 3)
+			       format-time-week-list)))
+		 ;; the abbreviated name of the month
+		 ((eq cur-char ?b)
+		  (substring time-string 4 7))
+		 ;; the full name of the month
+		 ((eq cur-char ?B)
+		  (cadr (assoc (substring time-string 4 7)
+			       format-time-month-list)))
+		 ;; a synonym for `%x %X' (yet to come)
+		 ((eq cur-char ?c)
+		  "")
+		 ;; locale specific (yet to come)
+		 ((eq cur-char ?C)
+		  "")
+		 ;; the day of month, zero-padded
+		 ((eq cur-char ?d)	
+		  (substring time-string 8 10))
+		 ;; a synonym for `%m/%d/%y'
+		 ((eq cur-char ?D)
+		  (format "%02d/%s/%s"
+			  (cddr (assoc (substring time-string 4 7)
+				       format-time-month-list))
+			  (substring time-string 8 10)
+			  (substring time-string -2)))
+		 ;; the day of month, blank-padded
+		 ((eq cur-char ?e)
+		  (format "%2d" (string-to-int (substring time-string 8 10))))
+		 ;; a synonym for `%b'
+		 ((eq cur-char ?h)
+		  (substring time-string 4 7))
+		 ;; the hour (00-23)
+		 ((eq cur-char ?H)
+		  (substring time-string 11 13))
+		 ;; the hour (00-12)
+		 ((eq cur-char ?I)
+		  (format "%02d" (if (> hour 12) (- hour 12) hour)))
+		 ;; the day of the year (001-366) (yet to come)
+		 ((eq cur-char ?j)
+		  "")
+		 ;; the hour (0-23), blank padded
+		 ((eq cur-char ?k)
+		  (format "%2d" hour))
+		 ;; the hour (1-12), blank padded
+		 ((eq cur-char ?l)
+		  (format "%2d" (if (> hour 12) (- hour 12) hour)))
+		 ;; the month (01-12)
+		 ((eq cur-char ?m)
+		  (format "%02d" (cddr (assoc (substring time-string 4 7)
+					      format-time-month-list))))
+		 ;; the minute (00-59)
+		 ((eq cur-char ?M)
+		  (substring time-string 14 16))
+		 ;; a newline
+		 ((eq cur-char ?n)
+		  "\n")
+		 ;; `AM' or `PM', as appropriate
+		 ((eq cur-char ?p)
+		  (setq change-case (not change-case))
+		  (if (> hour 12) "pm" "am"))
+		 ;; a synonym for `%I:%M:%S %p'
+		 ((eq cur-char ?r)
+		  (format "%02d:%s:%s %s"
+			  (if (> hour 12) (- hour 12) hour)
+			  (substring time-string 14 16)
+			  (substring time-string 17 19)
+			  (if (> hour 12) "PM" "AM")))
+		 ;; a synonym for `%H:%M'
+		 ((eq cur-char ?R)
+		  (format "%s:%s"
+			  (substring time-string 11 13)
+			  (substring time-string 14 16)))
+		 ;; the seconds (00-60)
+		 ((eq cur-char ?S)
+		  (substring time-string 17 19))
+		 ;; a tab character
+		 ((eq cur-char ?t)
+		  "\t")
+		 ;; a synonym for `%H:%M:%S'
+		 ((eq cur-char ?T)
+		  (format "%s:%s:%s"
+			  (substring time-string 11 13)
+			  (substring time-string 14 16)
+			  (substring time-string 17 19)))
+		 ;; the week of the year (01-52), assuming that weeks 
+		 ;; start on Sunday (yet to come)
+		 ((eq cur-char ?U)
+		  "")
+		 ;; the numeric day of week (0-6).  Sunday is day 0
+		 ((eq cur-char ?w)
+		  (format "%d" (cddr (assoc (substring time-string 0 3)
+					    format-time-week-list))))
+		 ;; the week of the year (01-52), assuming that weeks
+		 ;; start on Monday (yet to come)
+		 ((eq cur-char ?W)
+		  "")
+		 ;; locale specific (yet to come)
+		 ((eq cur-char ?x)
+		  "")
+		 ;; locale specific (yet to come)
+		 ((eq cur-char ?X)
+		  "")
+		 ;; the year without century (00-99)
+		 ((eq cur-char ?y)
+		  (substring time-string -2))
+		 ;; the year with century
+		 ((eq cur-char ?Y)
+		  (substring time-string -4))
+		 ;; the time zone abbreviation
+		 ((eq cur-char ?Z)
+		  (setq change-case (not change-case))
+		  (downcase (cadr (current-time-zone))))
+		 (t
+		  (concat
+		   "%"
+		   strings-so-far
+		   (char-to-string cur-char)))))
+;		  (setq ind prev-ind)
+;		  (throw 'invalid "%"))))
+	  (if (string-equal field-width "")
+	      (if change-case (upcase field-result) field-result)
+	    (let ((padded-result
+		   (format (format "%%%s%s%c"
+				   ""	; pad on left is ignored
+;				   (if pad-left "-" "")
+				   field-width
+				   ?s)
+			   (or field-result ""))))
+	      (let ((initial-length (length padded-result))
+		    (desired-length (string-to-int field-width)))
+		(when (and (string-match "^0" field-width)
+			   (string-match "^ +" padded-result))
+		  (setq padded-result
+			(replace-match
+			 (make-string
+			  (length (match-string 0 padded-result)) ?0)
+			 nil nil padded-result)))
+		(if (> initial-length desired-length)
+		    ;; truncate strings on right, years on left
+		    (if (stringp field-result)
+			(substring padded-result 0 desired-length)
+		      (if (eq cur-char ?y)
+			  (substring padded-result (- desired-length))
+			padded-result))) ;non-year numbers don't truncate
+		(if change-case (upcase padded-result) padded-result))))) ;)
+	 (t
+	  (char-to-string cur-char)))))
+	(setq ind (1+ ind)))
+      result))
+  ;; for `load-history'.
+  (setq current-load-list (cons 'format-time-string current-load-list))
+  (put 'format-time-string 'defun-maybe t))))
+
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (split-string STRING &optional PATTERN)
 ;; Here is a XEmacs version.
 (defun-maybe split-string (string &optional pattern)
