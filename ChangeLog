@@ -1,3 +1,9 @@
+1998-07-21  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* install.el (install-detect-elisp-directory): Modify for anything
+ 	older than Emacs 19.28.
+
+
 1998-06-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 8.16 was released.
@@ -255,7 +261,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
