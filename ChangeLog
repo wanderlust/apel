@@ -25,7 +25,7 @@
 2003-09-05  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* poem-xm.el (char-length): Don't use `defun-maybe' to define it
-	since this module may be installed as the XEmacs pachage which
+	since this module may be installed as the XEmacs package which
 	should be usable by all the XEmacs 21.x series.
 
 
