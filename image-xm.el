@@ -66,6 +66,7 @@ means display it in the right marginal area.
 \[Emacs 21 emulating function]"
   (let ((extent (make-extent (point) (progn (insert string)(point)))))
     (set-extent-property extent 'pimage-extent t)
+    (set-extent-property extent 'invisible t)
     (set-extent-begin-glyph extent image)))
 
 (defun-maybe remove-images (start end &optional buffer)
