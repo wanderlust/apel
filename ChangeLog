@@ -1,3 +1,13 @@
+1998-10-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poem-xm.el (insert-file-contents-as-binary): New function.
+
+	* poem-20.el (write-region-as-binary): bind
+	`jka-compr-compression-info-list' with nil.
+	(insert-file-contents-as-binary): Change to alias of
+	`insert-file-contents-literally' for Emacs 20.
+
+
 1998-10-07  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 9.1 was released.
