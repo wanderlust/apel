@@ -1,5 +1,7 @@
 1998-10-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* APEL: Version 9.2 was released.
+
 	* poem-xm.el (insert-file-contents-as-binary): New function.
 
 	* poem-20.el (write-region-as-binary): bind
