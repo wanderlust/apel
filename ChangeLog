@@ -1,5 +1,10 @@
 1999-05-27  MORIOKA Tomohiko  <tomo@m17n.org>
 
+	* calist.el (use-calist-package): New function.
+	(make-calist-package): Add new optional argument `use'.
+
+1999-05-27  MORIOKA Tomohiko  <tomo@m17n.org>
+
 	* calist.el (calist-package-alist): New variable.
 	(make-calist-package): New function.
 	(find-calist-package): New function.
