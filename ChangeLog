@@ -1,5 +1,17 @@
 2000-12-24  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
+	* poe.el (minor-mode-overriding-map-alist): Remove the filename
+	poe.el from doc string.
+
+	* poe-18.el (current-time-world-timezones): Remove the filename
+	poe-18.el from doc string.
+	(current-time-local-timezone): Ditto.
+	(buffer-undo-list): Ditto.
+	(auto-fill-function): Ditto.
+	(unread-command-event): Ditto.
+	(unread-command-events): Ditto.
+	(minor-mode-map-alist): Ditto.
+
 	* README.en ((d) make.bat (for MS-DOS family)): New section.
 	* README.ja ((d) make.bat を利用する (MS-DOS 系 OS の場合)):
 	Ditto.

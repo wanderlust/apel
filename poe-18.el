@@ -224,11 +224,11 @@ for this variable."
     ("GMT-8"  .  -800)("GMT-9"  .  -900)("GMT-10" . -1000)
     ("GMT-11" . -1100) ("GMT-12" . -1200))
   "Time differentials of timezone from GMT in +-HHMM form.
-Used in `current-time-zone' (Emacs 19 emulating function in poe-18.el).")
+Used in `current-time-zone' (Emacs 19 emulating function by APEL).")
 
 (defvar current-time-local-timezone nil 
   "*Local timezone name.
-Used in `current-time-zone' (Emacs 19 emulating function in poe-18.el).")
+Used in `current-time-zone' (Emacs 19 emulating function by APEL).")
 
 (defun set-time-zone-rule (tz)
   "Set the local time zone using TZ, a string specifying a time zone rule.
@@ -510,17 +510,17 @@ With optional non-nil ALL, force redisplay of all mode-lines."
 ;; 18.55 does not have these variables.
 (defvar-maybe buffer-undo-list nil
   "List of undo entries in current buffer.
-poe-18.el provides this as dummy for a compatibility.")
+APEL provides this as dummy for a compatibility.")
 
 (defvar-maybe auto-fill-function nil
   "Function called (if non-nil) to perform auto-fill.
-poe-18.el provides this as dummy for a compatibility.")
+APEL provides this as dummy for a compatibility.")
 
 (defvar-maybe unread-command-event nil
-  "poe-18.el provides this as dummy for a compatibility.")
+  "APEL provides this as dummy for a compatibility.")
 (defvar-maybe unread-command-events nil
   "List of events to be read as the command input.
-poe-18.el provides this as dummy for a compatibility.")
+APEL provides this as dummy for a compatibility.")
 
 ;; (defvar-maybe minibuffer-setup-hook nil
 ;;   "Normal hook run just after entry to minibuffer.")
@@ -529,7 +529,7 @@ poe-18.el provides this as dummy for a compatibility.")
 
 (defvar-maybe minor-mode-map-alist nil
   "Alist of keymaps to use for minor modes.
-poe-18.el provides this as dummy for a compatibility.")
+APEL provides this as dummy for a compatibility.")
 
 (defalias 'insert-and-inherit 'insert)
 (defalias 'insert-before-markers-and-inherit 'insert-before-markers)
