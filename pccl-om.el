@@ -29,55 +29,24 @@
 (require 'poem)
 
 (eval-when-compile (require 'ccl))
+(require 'broken)
 
-(defconst ccl-use-symbol-as-program nil
-  "t if CCL related builtins accept symbol as CCL program.
-(20.2 with ExCCL, 20.3 or later)
-Otherwise nil (20.2 without ExCCL or former).
-
-Because emu provides functions accepting symbol as CCL program,
-user programs should not refer this variable.")
+(broken-facility ccl-accept-symbol-as-program
+  "Emacs does not accept symbol as CCL program.")
 
 (eval-and-compile
   (defun make-ccl-coding-system
     (coding-system mnemonic doc-string decoder encoder)
-    "Define a new CODING-SYSTEM (symbol) by CCL programs
-DECODER (symbol) and ENCODER (symbol)."
+    "\
+Define a new CODING-SYSTEM by CCL programs DECODER and ENCODER.
+
+CODING-SYSTEM, DECODER and ENCODER must be symbol."
     (setq decoder (symbol-value decoder)
 	  encoder (symbol-value encoder))
     (make-coding-system coding-system 4 mnemonic doc-string
-			nil ; Mule takes one more optional argument: EOL-TYPE.
+			nil		; Mule takes one more optional argument: EOL-TYPE.
 			(cons decoder encoder)))
   )
-
-(eval-when-compile
-  (define-ccl-program test-ccl-eof-block
-    '(1
-      (read r0)
-      (write "[EOF]")))
-
-  (make-ccl-coding-system
-   'test-ccl-eof-block-cs ?T "CCL_EOF_BLOCK tester"
-   'test-ccl-eof-block 'test-ccl-eof-block)
-  )
-
-(defconst ccl-encoder-eof-block-is-broken
-  (eval-when-compile
-    (not (equal (encode-coding-string "" 'test-ccl-eof-block-cs)
-		"[EOF]")))
-  "t if CCL_EOF_BLOCK is not executed when coding system encounts EOF on
-encoding.")
-
-(defconst ccl-decoder-eof-block-is-broken
-  (eval-when-compile
-    (not (equal (decode-coding-string "" 'test-ccl-eof-block-cs)
-		"[EOF]")))
-  "t if CCL_EOF_BLOCK is not executed when coding system encounts EOF on
-decoding.")
-
-(defconst ccl-eof-block-is-broken
-  (or ccl-encoder-eof-block-is-broken
-      ccl-decoder-eof-block-is-broken))
 
 (defun ccl-execute (ccl-prog reg)
   "Execute CCL-PROG with registers initialized by REGISTERS.
@@ -94,6 +63,56 @@ If CCL-PROG is symbol, it is dereferenced.
   (exec-ccl-string
    (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
    status string))
+
+(broken-facility ccl-execute-on-string-ignore-contin
+  "CONTIN argument for ccl-execute-on-string is ignored.")
+
+(eval-when-compile
+  (define-ccl-program test-ccl-eof-block
+    '(1
+      ((read r0)
+       (write r0)
+       (read r0))
+      (write "[EOF]")))
+
+  (make-ccl-coding-system
+   'test-ccl-eof-block-cs ?T "CCL_EOF_BLOCK tester"
+   'test-ccl-eof-block 'test-ccl-eof-block)
+  )
+
+(broken-facility ccl-execute-eof-block-on-encoding-null
+  "Emacs forgets executing CCL_EOF_BLOCK with encoding on empty input."
+  (equal (encode-coding-string "" 'test-ccl-eof-block-cs) "[EOF]"))
+
+(broken-facility ccl-execute-eof-block-on-encoding-some
+  "Emacs forgets executing CCL_EOF_BLOCK with encoding on non-empty input."
+  (equal (encode-coding-string "a" 'test-ccl-eof-block-cs) "a[EOF]"))
+
+(broken-facility ccl-execute-eof-block-on-decoding-null
+  "Emacs forgets executing CCL_EOF_BLOCK with decoding on empty input."
+  (equal (decode-coding-string "" 'test-ccl-eof-block-cs) "[EOF]"))
+
+(broken-facility ccl-execute-eof-block-on-decoding-some
+  "Emacs forgets executing CCL_EOF_BLOCK with decoding on non-empty input."
+  (equal (decode-coding-string "a" 'test-ccl-eof-block-cs) "a[EOF]"))
+
+(broken-facility ccl-execute-eof-block-on-encoding
+  "Emacs may forget executing CCL_EOF_BLOCK with encoding."
+  (not (or (broken-p 'ccl-execute-eof-block-on-encoding-null)
+	   (broken-p 'ccl-execute-eof-block-on-encoding-some)))
+  t)
+
+(broken-facility ccl-execute-eof-block-on-decoding
+  "Emacs may forget executing CCL_EOF_BLOCK with decoding."
+  (not (or (broken-p 'ccl-execute-eof-block-on-decoding-null)
+	   (broken-p 'ccl-execute-eof-block-on-decoding-some)))
+  t)
+
+(broken-facility ccl-execute-eof-block
+  "Emacs may forget executing CCL_EOF_BLOCK."
+  (not (or (broken-p 'ccl-execute-eof-block-on-encoding)
+	   (broken-p 'ccl-execute-eof-block-on-decoding)))
+  t)
 
 
 ;;; @ end
