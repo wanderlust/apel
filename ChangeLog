@@ -1,7 +1,18 @@
+1999-03-24  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* poe.el (make-local-hook): Move to after defining `add-local-hook'
+	and `remove-local-hook'.
+
+1999-03-20  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* tinycustom.el (define-widget): New nop macro.
+	(defface): Makes face FACE.
+
 1999-03-25  Keiichi Suzuki  <kei-suzu@mail.wbs.ne.jp>
 
 	* poem.el (charset-after): New function.
 
+
 1999-03-16  Tomohiko Morioka  <morioka@jaist.ac.jp>
 
 	* APEL: Version 9.15 released.

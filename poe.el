@@ -235,8 +235,6 @@ The extension, in a file name, is the part that follows the last `.'."
 	    (substring file 0 (match-beginning 0)))
 	filename))))
 
-(defmacro-maybe make-local-hook (hook))
-
 ;; They are not Emacs features
 
 (defmacro-maybe add-local-hook (hook function &optional append)
@@ -250,6 +248,8 @@ The extension, in a file name, is the part that follows the last `.'."
       (list 'remove-hook hook function t)
     (list 'remove-hook hook function)
     ))
+
+(defmacro-maybe make-local-hook (hook))
 
 
 ;;; @ Emacs 19.30 emulation

@@ -4,6 +4,8 @@
 
 ;; Author: Mikio Nakajima <minakaji@osaka.email.ne.jp>
 ;; Maintainer: Mikio Nakajima <minakaji@osaka.email.ne.jp>
+;; Version: $Id$
+;; Last Modified: $Date$
 ;; Keywords: emulating, custom
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -27,8 +29,10 @@
 
 ;; Purpose of this program is emulating for who does not have
 ;; `custom.el'.
+;;
 ;; DEFCUSTOM below has the same effect as the original DEFVAR has.
-;; DEFGROUP and DEFFACE below are just nop macro.
+;; DEFFACE only makes a face.
+;; DEFGROUP and DEFINE-WIDGET below are just nop macro.
 
 ;;; Code:
 
@@ -39,7 +43,7 @@
 SYMBOL does not need to be quoted.
 Third arg DOC is the group documentation.
 
-This is a nop defgroup only for emulating purpose.."
+This is a nop defgroup only for emulating purpose."
   nil )
     
 (defmacro-maybe defcustom (symbol value doc &rest args) 
@@ -50,11 +54,18 @@ This is a defcustom only for emulating purpose.
 Its effect is just as same as that of defvar."
   (` (defvar (, symbol) (, value) (, doc))) )
     
-(defmacro-maybe defface (symbol value doc &rest args) 
+(defmacro-maybe defface (face value doc &rest args) 
   "Declare FACE as a customizable face that defaults to SPEC.
 FACE does not need to be quoted.
 
-This is a nop defface only for emulating purpose."
+This is a defface which only makes face FACE for emulating purpose."
+  (` (make-face (, face))) )
+
+(defmacro-maybe define-widget (name class doc)
+  "Define a new widget type named NAME from CLASS.
+The third argument DOC is a documentation string for the widget.
+
+This is a nop define-widget only for emulating purpose."
   nil )
 
 (provide 'tinycustom)
