@@ -163,27 +163,99 @@ load-path（Emacs と MULE の場合）
 ================================
 
   もし Emacs もしくは Mule をお使いなら、APEL を install した場所を
-  load-path に追加してください。もし初期設定でインストールしたのなら、
-  次のように subdirs.el を書くことができます。
-
-  例:
+  load-path に追加してください。もし Emacs 19.29 以降または Emacs 20.1,
+  20.2 を使って初期設定でインストールしたのなら、次のように subdirs.el
+  を書くことができます。
 
   --------------------------------------------------------------------
   (normal-top-level-add-to-load-path '("apel"))
   --------------------------------------------------------------------
 
-  もし新しい CUSTOM, 例えば v1.9962 をお使いなら、make する前にそれが
-  インストールされている場所を同様の方法で指定しておくことをお勧めしま
-  す。
+  もし Emacs 20.3 以降もしくは XEmacs を使って普通にインストールするの
+  ならば、load-path を設定する必要はありません。
 
-  例:
 
-  --------------------------------------------------------------------
-  (normal-top-level-add-to-load-path '("custom" "apel"))
-  --------------------------------------------------------------------
+Emacs のバージョンに関連した情報
+================================
 
-  もし Emacs 20.3 以降もしくは XEmacs をお使いなら、load-path を設定す
-  る必要はありません。
+「古い byte-compiler」と「新しい byte-compiler」
+Emacs 18 のユーザのみなさんへ:
+
+  このパッケージではコンパイル時における条件判断をたくさん行なっていま
+  す。残念ながら Emacs 18 に付属している byte-compiler には、例えば
+  `eval-when-compile' や `eval-and-compile' の機能が無いので代用品のマ
+  クロを用意してありますが、これらはコンパイル時だけでなく load 時また
+  は実行時にも働いてしまいます!   加えて「古い byte-compiler」はトップ
+  レベルのマクロをコンパイルしてくれないので、APEL の多くのコードがコ
+  ンパイルされないままになってしまいます。
+
+  そこで、最適化を行なう「新しい byte-compiler」を使うことをお勧めしま
+  す。それは Emacs 19 以降に付属している byte-compiler の元になってい
+  るものです。
+
+  最適化を行なう byte-compiler は Emacs Lisp Archive およびそれらのミ
+  ラーから入手することができます。
+
+  Mule 1.* の時代には Mule 用の「新しい byte-compiler」を含む Mule 1.*
+  用の "contrib" パッケージが配布されていました。しかし現在ではこのパッ
+  ケージを手に入れることは難しいでしょう。
+
+  我々の知る限りでは Emacs 18 用の「新しい byte-compiler」は SKK 9.6
+  に付属しています。これは Mule 1.* 用のパッチも含んでいます。
+
+
+「古い custom」と「新しい custom」
+Emacs 19.34 と XEmacs 19.14 のユーザのみなさんへ:
+
+  Emacs 19.32〜19.34、XEmacs 19.14 および Gnus 5.2/5.3 に含まれている
+  custom ライブラリは「古い」もので、これの API は Emacs 20.1 または
+  XEmacs 19.15 より新しい Emacsen と Gnus 5.4/5.5 に含まれている
+  「新しい custom」とは違っています。
+
+  Emacs 19.34 と XEmacs 19.15〜20.2 用の「新しい custom」は、以下の
+  URL から手に入れることができます。
+
+  ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz
+
+  (注: XEmacs 19.15〜20.2 と Gnus 5.4/5.5 に含まれている「新しい
+       custom」はこの版より古いものです。)
+
+  「新しい custom」をインストールする前に、次の各項目をチェックして下
+  さい。
+
+    1) もしあなたが Gnus 5.2/5.3 (または他の「古い custom」を使うアプ
+       リケーション) を使うことに固執しているのならば「新しい custom」
+       をインストールしてはいけません。
+
+    2) Emacs 19 を元にした Mule を使うのならば、このパッチを「新しい
+       custom」に当てる必要があります。
+
+----8<------8<------8<------8<------8<------8<------8<------8<----
+--- custom-1.9962/cus-face.el~	Wed Mar  4 19:52:39 1998
++++ custom-1.9962/cus-face.el	Mon Mar  9 08:05:33 1998
+@@ -96,7 +96,7 @@
+       "Define a new FACE on all frames, ignoring X resources."
+       (interactive "SMake face: ")
+       (or (internal-find-face name)
+-	  (let ((face (make-vector 8 nil)))
++	  (let ((face (make-vector face-vector-length nil)))
+ 	    (aset face 0 'face)
+ 	    (aset face 1 name)
+ 	    (let* ((frames (frame-list))
+----8<------8<------8<------8<------8<------8<------8<------8<----
+
+    3) custom を使うコンパイルされたアプリケーションは、それを load す
+       るときや実行するときに同じバージョンの custom を必要とします。
+       したがって、いつも load-path に「新しい custom」を含めておかな
+       ければなりません。
+       これを行なうためのもっとも簡単な方法は subdirs.el を使うことで
+       す。
+       「新しい custom」が /usr/local/share/emacs/19.34/site-lisp/custom/
+       にインストールされているのならば、
+       /usr/local/share/emacs/19.34/site-lisp/subdirs.el というファイ
+       ルに以下の行を書き込んで下さい。
+
+       (normal-top-level-add-to-load-path '("custom"))
 
 
 使い方
@@ -315,18 +387,18 @@ filename
 バグ報告
 ===========
 
-  バグ報告や改善の提案を書いたときは、是非 tm メーリングリストに送って
-  ください:
+  バグ報告や改善の提案を書いたときは、是非 APEL メーリングリストに送っ
+  てください:
 
-	bug-tm-en@chamonix.jaist.ac.jp	(英語)
-	bug-tm-ja@chamonix.jaist.ac.jp	(日本語)
+	apel-en@m17n.org	(英語)
+	apel-ja@m17n.org	(日本語)
 
-  tm ML を通して、APEL のバグを報告したり、APEL の最新のリリースを取得
-  したり、APEL の将来の拡張の議論をしたりすることができます。tm ML に
-  参加するには、空の電子メールを
+  APEL ML を通して、APEL のバグを報告したり、APEL の最新のリリースを取
+  得したり、APEL の将来の拡張の議論をしたりすることができます。APEL ML
+  に参加するには、空の電子メールを
 
-	tm-en-help@chamonix.jaist.ac.jp	(英語)
-	tm-ja-help@chamonix.jaist.ac.jp	(日本語)
+	apel-en-ctl@m17n.org	(英語)
+	apel-ja-ctl@m17n.org	(日本語)
 
   に送ってください。
 
