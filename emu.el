@@ -27,7 +27,7 @@
 (require 'poe)
 
 (defvar running-emacs-18 (<= emacs-major-version 18))
-(defvar running-xemacs (string-match "XEmacs" emacs-version))
+(defvar running-xemacs (featurep 'xemacs))
 
 (defvar running-mule-merged-emacs (and (not (boundp 'MULE))
 				       (not running-xemacs) (featurep 'mule)))
@@ -73,6 +73,8 @@
        (defvar mouse-button-2 nil)
        (defvar mouse-button-3 nil)
        ))
+
+(require 'poem)
 
 (cond (running-xemacs
        (if (featurep 'mule)

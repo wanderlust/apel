@@ -275,6 +275,70 @@ With optional non-nil ALL, force redisplay of all mode-lines.
 ;;; @ overlay
 ;;;
 
+(cond ((boundp 'NEMACS)
+       (defvar emu:available-face-attribute-alist
+	 '(
+	   ;;(bold      . inversed-region)
+	   (italic    . underlined-region)
+	   (underline . underlined-region)
+	   ))
+
+       ;; by YAMATE Keiichirou 1994/10/28
+       (defun attribute-add-narrow-attribute (attr from to)
+	 (or (consp (symbol-value attr))
+	     (set attr (list 1)))
+	 (let* ((attr-value (symbol-value attr))
+		(len (car attr-value))
+		(posfrom 1)
+		posto)
+	   (while (and (< posfrom len)
+		       (> from (nth posfrom attr-value)))
+	     (setq posfrom (1+ posfrom)))
+	   (setq posto posfrom)
+	   (while (and (< posto len)
+		       (> to (nth posto attr-value)))
+	     (setq posto (1+ posto)))
+	   (if  (= posto posfrom)
+	       (if (= (% posto 2) 1)
+		   (if (and (< to len)
+			    (= to (nth posto attr-value)))
+		       (set-marker (nth posto attr-value) from)
+		     (setcdr (nthcdr (1- posfrom) attr-value)
+			     (cons (set-marker-type (set-marker (make-marker)
+								from)
+						    'point-type)
+				   (cons (set-marker-type
+					  (set-marker (make-marker)
+						      to)
+					  nil)
+					 (nthcdr posto attr-value))))
+		     (setcar attr-value (+ len 2))))
+	     (if (= (% posfrom 2) 0)
+		 (setq posfrom (1- posfrom))
+	       (set-marker (nth posfrom attr-value) from))
+	     (if (= (% posto 2) 0)
+		 nil
+	       (setq posto (1- posto))
+	       (set-marker (nth posto attr-value) to))
+	     (setcdr (nthcdr posfrom attr-value)
+		     (nthcdr posto attr-value)))))
+       
+       (defalias 'make-overlay 'cons)
+
+       (defun overlay-put (overlay prop value)
+	 (let ((ret (and (eq prop 'face)
+			 (assq value emu:available-face-attribute-alist)
+			 )))
+	   (if ret
+	       (attribute-add-narrow-attribute (cdr ret)
+					       (car overlay)(cdr overlay))
+	     )))
+       )
+      (t
+       (defun make-overlay (beg end &optional buffer type))
+       (defun overlay-put (overlay prop value))
+       ))
+
 (defun overlay-buffer (overlay))
 
 

@@ -28,43 +28,7 @@
 
 ;;; Code:
 
-(require 'poe)
-
-(defun fontset-pixel-size (fontset)
-  (let* ((info (fontset-info fontset))
-	 (height (aref info 1))
-	 )
-    (cond ((> height 0) height)
-	  ((string-match "-\\([0-9]+\\)-" fontset)
-	   (string-to-number
-	    (substring fontset (match-beginning 1)(match-end 1))))
-	  (t 0))))
-
-
-;;; @ character set
-;;;
-
-;; (defalias 'charset-columns 'charset-width)
-
-(defun find-non-ascii-charset-string (string)
-  "Return a list of charsets in the STRING except ascii."
-  (delq 'ascii (find-charset-string string)))
-
-(defun find-non-ascii-charset-region (start end)
-  "Return a list of charsets except ascii
-in the region between START and END."
-  (delq 'ascii (find-charset-string (buffer-substring start end))))
-
-
-;;; @ coding system
-;;;
-
-(defsubst-maybe find-coding-system (obj)
-  "Return OBJ if it is a coding-system."
-  (if (coding-system-p obj)
-      obj))
-
-(defalias 'set-process-input-coding-system 'set-process-coding-system)
+(require 'poem)
 
 
 ;;; @ MIME charset
@@ -271,12 +235,6 @@ If CCL-PROG is symbol, it is dereferenced.
 
 (defalias 'insert-binary-file-contents-literally
   'insert-file-contents-literally)
-
-(if (and (fboundp 'set-buffer-multibyte)
-	 (subrp (symbol-function 'set-buffer-multibyte)))
-    (require 'emu-e20_3) ; for Emacs 20.3
-  (require 'emu-e20_2) ; for Emacs 20.1 and 20.2
-  )
 
 
 (provide 'emu-e20)

@@ -29,63 +29,9 @@
 
 ;;; Code:
 
+(require 'poem)
 (require 'custom)
 (eval-when-compile (require 'wid-edit))
-
-
-;;; @ without code-conversion
-;;;
-
-(defmacro as-binary-process (&rest body)
-  `(let (selective-display	; Disable ^M to nl translation.
-	 (coding-system-for-read  'binary)
-	 (coding-system-for-write 'binary))
-     ,@body))
-
-(defmacro as-binary-input-file (&rest body)
-  `(let ((coding-system-for-read 'binary))
-     ,@body))
-
-(defmacro as-binary-output-file (&rest body)
-  `(let ((coding-system-for-write 'binary))
-     ,@body))
-
-(defun write-region-as-binary (start end filename
-				     &optional append visit lockname)
-  "Like `write-region', q.v., but don't encode."
-  (let ((coding-system-for-write 'binary))
-    (write-region start end filename append visit lockname)))
-
-(defun insert-file-contents-as-binary (filename
-				       &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but don't code and format conversion.
-Like `insert-file-contents-literary', but it allows find-file-hooks,
-automatic uncompression, etc.
-
-Namely this function ensures that only format decoding and character
-code conversion will not take place."
-  (let ((coding-system-for-read 'binary)
-	format-alist)
-    ;; Returns list of absolute file name and length of data inserted.
-    (insert-file-contents filename visit beg end replace)))
-
-(defun insert-file-contents-as-raw-text (filename
-					 &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but don't code and format conversion.
-Like `insert-file-contents-literary', but it allows find-file-hooks,
-automatic uncompression, etc.
-Like `insert-file-contents-as-binary', but it converts line-break
-code."
-  (let ((coding-system-for-read 'raw-text)
-	format-alist)
-    ;; Returns list of absolute file name and length of data inserted.
-    (insert-file-contents filename visit beg end replace)))
-
-(defun write-region-as-raw-text-CRLF (start end filename
-					    &optional append visit lockname)
-  "Like `write-region', q.v., but write as network representation."
-  (let ((coding-system-for-write 'raw-text-dos))
-    (write-region start end filename append visit lockname)))
 
 
 ;;; @@ Mule emulating aliases

@@ -1,11 +1,11 @@
-;;; emu-e20_3.el --- emu API implementation for Emacs 20.3.
+;;; poem.el --- Portable Outfit for Emacsen: about MULE API
 
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: emulation, compatibility, Mule
 
-;; This file is part of emu.
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -22,41 +22,34 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
-;;; Commentary:
-
-;;    This module requires Emacs 20.2.91 or later.
-
 ;;; Code:
 
-;;; @ character
-;;;
+(require 'poe)
 
-(defsubst char-length (char)
-  "Return indexing length of multi-byte form of CHAR."
-  1)
-
-(defmacro char-next-index (char index)
-  "Return index of character succeeding CHAR whose index is INDEX."
-  `(1+ ,index))
-
-
-;;; @ string
-;;;
-
-(defalias 'sset 'store-substring)
-
-(defun string-to-char-list (string)
-  "Return a list of which elements are characters in the STRING."
-  (mapcar #'identity string))
-
-(defalias 'string-to-int-list 'string-to-char-list)
-
-(defalias 'looking-at-as-unibyte 'looking-at)
+(cond ((featurep 'mule)
+       (cond ((featurep 'xemacs)
+	      (require 'poem-xm)
+	      )
+	     ((>= emacs-major-version 20)
+	      (require 'poem-e20)
+	      )
+	     (t
+	      ;; for MULE 1.* and 2.*
+	      (require 'poem-om)
+	      ))
+       )
+      ((boundp 'NEMACS)
+       ;; for Nemacs and Nepoch
+       (require 'poem-nemacs)
+       )
+      (t
+       (require 'poem-latin1)
+       ))
 
 
 ;;; @ end
 ;;;
 
-(provide 'emu-e20_3)
+(provide 'poem)
 
-;;; emu-e20_3.el ends here
+;;; poem.el ends here

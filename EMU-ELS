@@ -4,48 +4,52 @@
 
 ;;; Code:
 
-(setq emu-modules
-      (append '(poe emu)
-	      (if (or running-emacs-19_29-or-later
-		      running-xemacs-19_14-or-later)
-		  '(richtext)
-		'(tinyrich)
-		)))
+(setq emu-modules '(poe poem emu))
 
 (setq emu-modules
       (nconc
-       (cond (running-xemacs
+       (cond ((featurep 'xemacs)
 	      ;; for XEmacs
 	      (cons 'poe-xemacs
 		    (if (featurep 'mule)
-			'(emu-20 emu-x20) ; for XEmacs with MULE
-		      '(emu-latin1) ; for XEmacs without MULE
+			;; for XEmacs with MULE
+			'(poem-20 poem-xm emu-20 emu-x20)
+		      ;; for XEmacs without MULE
+		      '(poem-ltn1 emu-latin1)
 		      ))
 	      )
 	     (running-mule-merged-emacs
 	      ;; for Emacs 20.1 or later
 	      (cons (if (and (fboundp 'set-buffer-multibyte)
 			     (subrp (symbol-function 'set-buffer-multibyte)))
-			'emu-e20_3 ; for Emacs 20.3
-		      'emu-e20_2 ; for Emacs 20.1 and 20.2
+			'poem-e20_3 ; for Emacs 20.3
+		      'poem-e20_2 ; for Emacs 20.1 and 20.2
 		      )
-		    '(emu-20 poe-19 emu-e20))
+		    '(poe-19 poem-20 poem-e20 emu-20 emu-e20))
 	      )
 	     ((boundp 'MULE)
 	      ;; for MULE 1.* and MULE 2.*
-	      (cons 'emu-mule
-		    (if running-emacs-18
-			'(poe-18 env)
-		      '(poe-19)))
+	      (append '(poem-om emu-mule)
+		      (if running-emacs-18
+			  '(poe-18 env)
+			'(poe-19)))
 	      )
 	     ((boundp 'NEMACS)
 	      ;; for NEmacs
-	      '(poe-18 emu-nemacs)
+	      '(poe-18 poem-nemacs emu-nemacs)
 	      )
 	     (t
 	      ;; for Emacs 19.34
-	      '(poe-19 emu-latin1)
+	      '(poe-19 poem-ltn1 emu-latin1)
 	      ))
        emu-modules))
+
+(setq emu-modules
+      (append emu-modules
+	      (if (or running-emacs-19_29-or-later
+		      running-xemacs-19_14-or-later)
+		  '(richtext)
+		'(tinyrich)
+		)))
 
 ;;; EMU-ELS ends here
