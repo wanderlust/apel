@@ -304,6 +304,9 @@ code."
   (insert-file-contents-as-coding-system 'raw-text
 					 filename visit beg end replace))
 
+(defalias 'insert-file-contents-as-raw-text-CRLF
+  'insert-file-contents-as-raw-text)
+
 (defun write-region-as-binary (start end filename
 				     &optional append visit lockname)
   "Like `write-region', q.v., but don't code conversion."
@@ -324,6 +327,9 @@ code."
   "Like `find-file-noselect', q.v., but it does not code and format
 conversion except for line-break code."
   (find-file-noselect-as-coding-system 'raw-text filename nowarn rawfile))
+
+(defalias 'find-file-noselect-as-raw-text-CRLF
+  'find-file-noselect-as-raw-text)
 
 (defun save-buffer-as-binary (&optional args)
   "Like `save-buffer', q.v., but don't encode."

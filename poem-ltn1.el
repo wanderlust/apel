@@ -156,12 +156,16 @@ code conversion will not take place."
 
 (defalias 'insert-file-contents-as-raw-text 'insert-file-contents)
 
+(defalias 'insert-file-contents-as-raw-text-CRLF 'insert-file-contents)
+
 (defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but don't code and format conversion."
   (let ((emx-binary-mode t))
     (find-file-noselect filename nowarn rawfile)))
 
 (defalias find-file-noselect-as-raw-text 'find-file-noselect)
+
+(defalias find-file-noselect-as-raw-text-CRLF 'find-file-noselect)
 
 (defun save-buffer-as-binary (&optional args)
   "Like `save-buffer', q.v., but don't encode."

@@ -70,6 +70,18 @@ code."
     ;; Returns list of absolute file name and length of data inserted.
     (insert-file-contents filename visit beg end replace)))
 
+(defun insert-file-contents-as-raw-text-CRLF (filename
+					      &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+Like `insert-file-contents-as-binary', but it converts line-break code
+from CRLF to LF."
+  (let ((coding-system-for-read 'raw-text-dos)
+	format-alist)
+    ;; Returns list of absolute file name and length of data inserted.
+    (insert-file-contents filename visit beg end replace)))
+
 (defun write-region-as-raw-text-CRLF (start end filename
 					    &optional append visit lockname)
   "Like `write-region', q.v., but write as network representation."
@@ -86,6 +98,13 @@ code."
   "Like `find-file-noselect', q.v., but it does not code and format conversion
 except for line-break code."
   (let ((coding-system-for-read 'raw-text)
+	format-alist)
+    (find-file-noselect filename nowarn rawfile)))
+
+(defun find-file-noselect-as-raw-text-CRLF (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but it does not code and format conversion
+except for line-break code."
+  (let ((coding-system-for-read 'raw-text-dos)
 	format-alist)
     (find-file-noselect filename nowarn rawfile)))
 
