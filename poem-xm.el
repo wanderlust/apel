@@ -90,35 +90,6 @@
 ;;   )
 
 
-;;; @ without code-conversion
-;;;
-
-(defun insert-file-contents-as-binary (filename
-				       &optional visit beg end replace)
-  "Like `insert-file-contents', but only reads in the file literally.
-A buffer may be modified in several ways after reading into the buffer,
-to Emacs features such as format decoding, character code
-conversion, find-file-hooks, automatic uncompression, etc.
-
-This function ensures that none of these modifications will take place."
-  (let ((format-alist nil)
-	(after-insert-file-functions nil)
-	(coding-system-for-read 'binary)
-	(coding-system-for-write 'binary)
-	(jka-compr-compression-info-list nil)
-	(find-buffer-file-type-function
-	 (if (fboundp 'find-buffer-file-type)
-	     (symbol-function 'find-buffer-file-type)
-	   nil)))
-    (unwind-protect
-	(progn
-	  (fset 'find-buffer-file-type (lambda (filename) t))
-	  (insert-file-contents filename visit beg end replace))
-      (if find-buffer-file-type-function
-	  (fset 'find-buffer-file-type find-buffer-file-type-function)
-	(fmakunbound 'find-buffer-file-type)))))
-
-
 ;;; @ buffer representation
 ;;;
 

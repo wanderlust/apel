@@ -1,28 +1,3 @@
-1998-10-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* APEL: Version 9.2 was released.
-
-	* poem-xm.el (insert-file-contents-as-binary): New function.
-
-	* poem-20.el (write-region-as-binary): bind
-	`jka-compr-compression-info-list' with nil.
-	(insert-file-contents-as-binary): Change to alias of
-	`insert-file-contents-literally' for Emacs 20.
-
-
-1998-10-07  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* APEL: Version 9.1 was released.
-
-1998-10-06  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* mcs-e20.el, mcs-xm.el (coding-system-to-mime-charset): New
-	function.
-	(mime-charset-list): New implementation.
-
-	* Move `mime-charset-list' from mcs-20.el to mcs-e20.el and
-	mcs-xm.el.
-
 1998-10-01  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* mcs-e20.el (charsets-mime-charset-alist): Use `gb2312' and
@@ -34,7 +9,6 @@
 	* mcs-20.el (mime-charset-coding-system-alist): Add `cn-gb' to
 	default value.
 
-
 1998-09-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 9.0 was released.
