@@ -9,7 +9,7 @@
 	case-fold-search)
     (princ (format "%s\n" flag))
     (if flag
-	(string-match "^[^ =]*n" flag)
+	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag)
       )))
 
 (defun config-apel ()
