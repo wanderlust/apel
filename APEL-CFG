@@ -1,6 +1,6 @@
 ;;; -*-Emacs-Lisp-*-
 ;;;
-;;; $Id$
+;;; APEL-CFG: installation setting about APEL.
 ;;;
 
 (defvar default-load-path load-path)
