@@ -1,5 +1,8 @@
 2000-02-04  Yuuichi Teranishi  <teranisi@gohome.org>
 
+	* timezone.el (timezone-floor): Eliminated.
+	(timezone-fix-time-2): Use `floor' instead of `timezone-floor'.
+
 	* poe-18.el (current-time): Fixed leap year count bug.
 	(set-time-zone-rule): New function.
 	(current-time-zone): Use `set-time-zone-rule'.
