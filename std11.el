@@ -41,7 +41,7 @@
 (defun std11-field-body (name &optional boundary)
   (save-excursion
     (save-restriction
-      (std11-narrow-to-header)
+      (std11-narrow-to-header boundary)
       (goto-char (point-min))
       (let ((case-fold-search t))
 	(if (re-search-forward (concat "^" name ":[ \t]*") nil t)
