@@ -1,3 +1,8 @@
+2003-06-06  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* APEL: Version 10.5 released.
+	* apel-ver.el (apel-ver): Change APEL version to 10.5.
+
 2003-05-29  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* poe.el (make-temp-file) [no make-temp-file, single-user system]:
