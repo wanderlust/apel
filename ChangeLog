@@ -1,5 +1,9 @@
 1999-05-07  MORIOKA Tomohiko  <tomo@m17n.org>
 
+	* mcs-e20.el: Check coding-system `x-ctext' is not defined.
+
+1999-05-07  MORIOKA Tomohiko  <tomo@m17n.org>
+
 	* poe-18.el (eval-when-compile): New macro.
 
 	* poe.el (make-local-hook): Use `defun-maybe' directly.
