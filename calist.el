@@ -31,33 +31,33 @@
   (if (null rule-tree)
       alist
     (let* ((type (car rule-tree))
-	   (values (cdr rule-tree))
+	   (choices (cdr rule-tree))
 	   (k-value (assoc type alist)))
       (catch 'tag
-	(while values
-	  (let ((cell (car values)))
+	(while choices
+	  (let ((choice (car choices)))
 	    (cond ((null k-value)
 		   (throw 'tag
-			  (if (cdr cell)
+			  (if (cdr choice)
 			      (ctree-match-calist
-			       (cdr cell)
-			       (cons (cons type (car cell)) alist))
-			    (cons (cons type (car cell)) alist)
+			       (cdr choice)
+			       (cons (cons type (car choice)) alist))
+			    (cons (cons type (car choice)) alist)
 			    )))
-		  ((eq (car cell) t)
+		  ((eq (car choice) t)
 		   (throw 'tag
 			  (if (cdr k-value)
-			      (ctree-match-calist (cdr cell) alist)
+			      (ctree-match-calist (cdr choice) alist)
 			    alist)
 			  ))
-		  ((equal (car cell) (cdr k-value))
+		  ((equal (car choice) (cdr k-value))
 		   (throw 'tag
-			  (if (cdr cell)
-			      (ctree-match-calist (cdr cell) alist)
+			  (if (cdr choice)
+			      (ctree-match-calist (cdr choice) alist)
 			    alist)
 			  ))
 		  ))
-	  (setq values (cdr values))))
+	  (setq choices (cdr choices))))
       )))
 
 (defun calist-to-ctree (calist)
