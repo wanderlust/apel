@@ -24,13 +24,6 @@
 
 ;;; Code:
 
-(autoload 'setenv "env"
-  "Set the value of the environment variable named VARIABLE to VALUE.
-VARIABLE should be a string.  VALUE is optional; if not provided or is
-`nil', the environment variable VARIABLE will be removed.  
-This function works by modifying `process-environment'."
-  t)
-
 (defvar-maybe data-directory exec-directory)
 
 
@@ -40,75 +33,11 @@ This function works by modifying `process-environment'."
 (defvar-maybe buffer-undo-list nil)
 
 
-;;; @ hook
+;;; @ Lisp Language
 ;;;
 
-;; These function are imported from EMACS 19.28.
-(defun add-hook (hook function &optional append)
-  "Add to the value of HOOK the function FUNCTION.
-FUNCTION is not added if already present.
-FUNCTION is added (if necessary) at the beginning of the hook list
-unless the optional argument APPEND is non-nil, in which case
-FUNCTION is added at the end.
- 
-HOOK should be a symbol, and FUNCTION may be any valid function.  If
-HOOK is void, it is first set to nil.  If HOOK's value is a single
-function, it is changed to a list of functions.
-\[poe-18.el; EMACS 19 emulating function]"
-  (or (boundp hook)
-      (set hook nil)
-      )
-  ;; If the hook value is a single function, turn it into a list.
-  (let ((old (symbol-value hook)))
-    (if (or (not (listp old))
-	    (eq (car old) 'lambda))
-	(set hook (list old))
-      ))
-  (or (if (consp function)
-	  ;; Clever way to tell whether a given lambda-expression
-	  ;; is equal to anything in the hook.
-	  (let ((tail (assoc (cdr function) (symbol-value hook))))
-	    (equal function tail)
-	    )
-	(memq function (symbol-value hook))
-	)
-      (set hook 
-	   (if append
-	       (nconc (symbol-value hook) (list function))
-	     (cons function (symbol-value hook))
-	     ))
-      ))
-
-(defun remove-hook (hook function)
-  "Remove from the value of HOOK the function FUNCTION.
-HOOK should be a symbol, and FUNCTION may be any valid function.  If
-FUNCTION isn't the value of HOOK, or, if FUNCTION doesn't appear in the
-list of hooks to run in HOOK, then nothing is done.  See `add-hook'.
-\[poe-18.el; EMACS 19 emulating function]"
-  (if (or (not (boundp hook))		;unbound symbol, or
-	  (null (symbol-value hook))	;value is nil, or
-	  (null function))		;function is nil, then
-      nil				;Do nothing.
-    (let ((hook-value (symbol-value hook)))
-      (if (consp hook-value)
-	  (setq hook-value (delete function hook-value))
-	(if (equal hook-value function)
-	    (setq hook-value nil)
-	  ))
-      (set hook hook-value)
-      )))
-
-
-;;; @ list
+;;; @@ list
 ;;;
-
-(defun member (elt list)
-  "Return non-nil if ELT is an element of LIST.  Comparison done with EQUAL.
-The value is actually the tail of LIST whose car is ELT.
-\[poe-18.el; EMACS 19 emulating function]"
-  (while (and list (not (equal elt (car list))))
-    (setq list (cdr list)))
-  list)
 
 (defun delete (elt list)
   "Delete by side effect any occurrences of ELT as a member of LIST.
@@ -130,8 +59,27 @@ to be sure of changing the value of `foo'.
       (rplacd rest (cdr rrest))
       list)))
 
+(defun member (elt list)
+  "Return non-nil if ELT is an element of LIST.  Comparison done with EQUAL.
+The value is actually the tail of LIST whose car is ELT.
+\[poe-18.el; EMACS 19 emulating function]"
+  (while (and list (not (equal elt (car list))))
+    (setq list (cdr list)))
+  list)
 
-;;; @ function
+
+;;; @@ environment variable
+;;;
+
+(autoload 'setenv "env"
+  "Set the value of the environment variable named VARIABLE to VALUE.
+VARIABLE should be a string.  VALUE is optional; if not provided or is
+`nil', the environment variable VARIABLE will be removed.  
+This function works by modifying `process-environment'."
+  t)
+
+
+;;; @@ function
 ;;;
 
 (defun defalias (sym newdef)
@@ -140,6 +88,20 @@ Associates the function with the current load file, if any.
 \[poe-18.el; EMACS 19 emulating function]"
   (fset sym newdef)
   )
+
+
+;;; @ Compilation Features
+;;;
+
+(defmacro-maybe defsubst (name arglist &rest body)
+  "Define an inline function.  The syntax is just like that of `defun'."
+  (cons 'defun (cons name (cons arglist body)))
+  )
+
+(defmacro-maybe eval-and-compile (&rest body)
+  "Like `progn', but evaluates the body at compile time and at load time."
+  ;; Remember, it's magic.
+  (cons 'progn body))
 
 (defun byte-code-function-p (exp)
   "T if OBJECT is a byte-compiled function object.
@@ -159,11 +121,6 @@ Associates the function with the current load file, if any.
 	     ))
 	 )))
 
-(defmacro-maybe defsubst (name arglist &rest body)
-  "Define an inline function.  The syntax is just like that of `defun'."
-  (cons 'defun (cons name (cons arglist body)))
-  )
-
 (defun-maybe make-obsolete (fn new)
   "Make the byte-compiler warn that FUNCTION is obsolete.
 The warning will say that NEW should be used instead.
@@ -175,6 +132,14 @@ If NEW is a string, that is the `use instead' message."
       (put fn 'byte-obsolete-info (cons new handler))
       (put fn 'byte-compile 'byte-compile-obsolete)))
   fn)
+
+
+;;; @ text property
+;;;
+
+(defun set-text-properties (start end properties &optional object))
+
+(defun remove-text-properties (start end properties &optional object))
 
 
 ;;; @ file
@@ -262,17 +227,7 @@ If NOSORT is dummy for compatibility.
   )
 
     
-;;; @ mark
-;;;
-
-(or (fboundp 'si:mark)
-    (fset 'si:mark (symbol-function 'mark)))
-(defun mark (&optional force)
-  (si:mark)
-  )
-
-
-;;; @ mode-line
+;;; @ Display Features
 ;;;
 
 ;;; Imported from Emacs 19.30.
@@ -354,14 +309,6 @@ With optional non-nil ALL, force redisplay of all mode-lines.
 (defun overlay-buffer (overlay))
 
 
-;;; @ text property
-;;;
-
-(defun set-text-properties (start end properties &optional object))
-
-(defun remove-text-properties (start end properties &optional object))
-
-
 ;;; @ buffer
 ;;;
 
@@ -379,6 +326,71 @@ even if a buffer with that name exists."
 	  (setq n (1+ n)))
 	new)
     name))
+
+(or (fboundp 'si:mark)
+    (fset 'si:mark (symbol-function 'mark)))
+(defun mark (&optional force)
+  (si:mark)
+  )
+
+
+;;; @ hook
+;;;
+
+;; These function are imported from EMACS 19.28.
+(defun add-hook (hook function &optional append)
+  "Add to the value of HOOK the function FUNCTION.
+FUNCTION is not added if already present.
+FUNCTION is added (if necessary) at the beginning of the hook list
+unless the optional argument APPEND is non-nil, in which case
+FUNCTION is added at the end.
+ 
+HOOK should be a symbol, and FUNCTION may be any valid function.  If
+HOOK is void, it is first set to nil.  If HOOK's value is a single
+function, it is changed to a list of functions.
+\[poe-18.el; EMACS 19 emulating function]"
+  (or (boundp hook)
+      (set hook nil)
+      )
+  ;; If the hook value is a single function, turn it into a list.
+  (let ((old (symbol-value hook)))
+    (if (or (not (listp old))
+	    (eq (car old) 'lambda))
+	(set hook (list old))
+      ))
+  (or (if (consp function)
+	  ;; Clever way to tell whether a given lambda-expression
+	  ;; is equal to anything in the hook.
+	  (let ((tail (assoc (cdr function) (symbol-value hook))))
+	    (equal function tail)
+	    )
+	(memq function (symbol-value hook))
+	)
+      (set hook 
+	   (if append
+	       (nconc (symbol-value hook) (list function))
+	     (cons function (symbol-value hook))
+	     ))
+      ))
+
+(defun remove-hook (hook function)
+  "Remove from the value of HOOK the function FUNCTION.
+HOOK should be a symbol, and FUNCTION may be any valid function.  If
+FUNCTION isn't the value of HOOK, or, if FUNCTION doesn't appear in the
+list of hooks to run in HOOK, then nothing is done.  See `add-hook'.
+\[poe-18.el; EMACS 19 emulating function]"
+  (if (or (not (boundp hook))		;unbound symbol, or
+	  (null (symbol-value hook))	;value is nil, or
+	  (null function))		;function is nil, then
+      nil				;Do nothing.
+    (let ((hook-value (symbol-value hook)))
+      (if (consp hook-value)
+	  (setq hook-value (delete function hook-value))
+	(if (equal hook-value function)
+	    (setq hook-value nil)
+	  ))
+      (set hook hook-value)
+      )))
 
 
 ;;; @ end

@@ -151,13 +151,8 @@
        ))
 
 
-;;; @ Emacs 19 emulation
+;;; @ Emacs 19.23 emulation
 ;;;
-
-(defmacro-maybe eval-and-compile (&rest body)
-  "Like `progn', but evaluates the body at compile time and at load time."
-  ;; Remember, it's magic.
-  (cons 'progn body))
 
 (defun-maybe minibuffer-prompt-width ()
   "Return the display width of the minibuffer prompt."
@@ -368,7 +363,9 @@ See also `with-temp-file' and `with-output-to-string'."
 	   (and (buffer-name (, temp-buffer))
 		(kill-buffer (, temp-buffer))))))))
 
-(defmacro-maybe combine-after-change-calls (&rest body))
+(defmacro-maybe combine-after-change-calls (&rest body)
+  "Execute BODY."
+  (cons 'progn body))
 
 ;; imported from Emacs 20.3. (cl function)
 (defun-maybe butlast (x &optional n)

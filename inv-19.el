@@ -48,11 +48,13 @@
 
 (defun next-visible-point (pos)
   (save-excursion
-    (goto-char (next-single-property-change pos 'invisible))
-    (if (eq (following-char) ?\n)
-	(forward-char)
+    (if (save-excursion
+	  (goto-char pos)
+	  (eq (following-char) ?\n))
+	(setq pos (1+ pos))
       )
-    (point)))
+    (or (next-single-property-change pos 'invisible)
+	(point-max))))
 
 
 ;;; @ end
