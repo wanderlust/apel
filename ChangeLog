@@ -1,28 +1,3 @@
-2000-12-19  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
-
-	* make.bat: Do not echo.
-
-	* poe-18.el (set-frame-heigth): Bug fixed.
-
-2000-12-16  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
-
-	* poe-18.el (frame-width): New function.
-	(frame-height): Ditto.
-	(set-frame-width): Ditto.
-	(set-frame-heigth): Ditto.
-	(read-from-minibuffer): Run `minibuffer-setup-hook' and
-	`minibuffer-exit-hook'.
-	(buffer-undo-list): Declared with `defvar-maybe' and add doc
-	string.
-	(auto-fill-function): Add doc string.
-	(unread-command-event): Ditto.
-	(unread-command-events): Ditto.
-	(minibuffer-setup-hook): New variable.
-	(minibuffer-exit-hook): Ditto.
-	(minor-mode-map-alist): Ditto.
-	(minor-mode-alist): Ditto.
-	(minor-mode-overriding-map-alist): Ditto.
-
 2000-12-15  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
 	* make.bat (listing): Bug fixed.
