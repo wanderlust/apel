@@ -95,53 +95,11 @@
        )
       ((boundp 'NEMACS)
        ;; for NEmacs and NEpoch
-
-       ;; old MULE emulation
-       (defconst *noconv*    0)
-       (defconst *sjis*      1)
-       (defconst *junet*     2)
-       (defconst *ctext*     2)
-       (defconst *internal*  3)
-       (defconst *euc-japan* 3)
-       
-       (defun code-convert-string (str ic oc)
-	 "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
-else returns nil. [emu-nemacs.el; Mule emulating function]"
-	 (if (not (eq ic oc))
-	     (convert-string-kanji-code str ic oc)
-	   str))
-       
-       (defun code-convert-region (beg end ic oc)
-	 "Convert code of the text between BEGIN and END from SOURCE
-to TARGET. On successful conversion returns t,
-else returns nil. [emu-nemacs.el; Mule emulating function]"
-	 (if (/= ic oc)
-	     (save-excursion
-	       (save-restriction
-		 (narrow-to-region beg end)
-		 (convert-region-kanji-code beg end ic oc)))
-	   ))
+       (require 'emu-nemacs)
        )
       (t
        ;; for Emacs 19 and XEmacs without MULE
-       
-       ;; old MULE emulation
-       (defconst *internal* nil)
-       (defconst *ctext* nil)
-       (defconst *noconv* nil)
-       
-       (defun code-convert-string (str ic oc)
-	 "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
-else returns nil. [emu-latin1.el; old MULE emulating function]"
-	 str)
-
-       (defun code-convert-region (beg end ic oc)
-	 "Convert code of the text between BEGIN and END from SOURCE
-to TARGET. On successful conversion returns t,
-else returns nil. [emu-latin1.el; old MULE emulating function]"
-	 t)
+       (require 'emu-latin1)
        ))
 
 
