@@ -274,6 +274,54 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
 	      (list 'select-window 'save-selected-window-window))))
 
 
+;;; @ Emacs 20.1 emulation
+;;;
+
+(defmacro-maybe save-current-buffer (&rest body)
+  "Save the current buffer; execute BODY; restore the current buffer.
+Executes BODY just like `progn'."
+  (` (let ((orig-buffer (current-buffer)))
+       (unwind-protect
+	   (progn (,@ body))
+	 (set-buffer orig-buffer)))))
+
+;; This macro was imported XEmacs 21.
+(defmacro-maybe with-temp-buffer (&rest forms)
+  "Create a temporary buffer, and evaluate FORMS there like `progn'.
+See also `with-temp-file' and `with-output-to-string'."
+  (let ((temp-buffer (make-symbol "temp-buffer")))
+    (` (let (((, temp-buffer)
+	      (get-buffer-create (generate-new-buffer-name " *temp*"))))
+	 (unwind-protect
+	     (with-current-buffer (, temp-buffer)
+	       (,@ forms))
+	   (and (buffer-name (, temp-buffer))
+		(kill-buffer (, temp-buffer))))))))
+
+;; This macro was imported XEmacs 21.
+(defmacro-maybe with-current-buffer (buffer &rest body)
+  "Execute the forms in BODY with BUFFER as the current buffer.
+The value returned is the value of the last form in BODY.
+See also `with-temp-buffer'."
+  (` (save-current-buffer
+       (set-buffer (, buffer))
+       (,@ body))))
+
+;; This function was imported from XEmacs 21.
+(defun-maybe split-string (string &optional pattern)
+  "Return a list of substrings of STRING which are separated by PATTERN.
+If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
+  (or pattern
+      (setq pattern "[ \f\t\n\r\v]+"))
+  ;; The FSF version of this function takes care not to cons in case
+  ;; of infloop.  Maybe we should synch?
+  (let (parts (start 0))
+    (while (string-match pattern string start)
+      (setq parts (cons (substring string start (match-beginning 0)) parts)
+	    start (match-end 0)))
+    (nreverse (cons (substring string start) parts))))
+
+
 ;;; @ Emacs 20.3 emulation
 ;;;
 
@@ -331,54 +379,6 @@ This function does not move point. [XEmacs emulating function]"
 (or (fboundp 'char-or-char-int-p)
     (fset 'char-or-char-int-p (symbol-function 'integerp))
     )
-
-
-;;; @ for Emacs 19,18
-;;;
-
-(defmacro-maybe save-current-buffer (&rest body)
-  "Save the current buffer; execute BODY; restore the current buffer.
-Executes BODY just like `progn'."
-  (` (let ((orig-buffer (current-buffer)))
-       (unwind-protect
-	   (progn (,@ body))
-	 (set-buffer orig-buffer)))))
-
-;; This macro was imported XEmacs 21.
-(defmacro-maybe with-current-buffer (buffer &rest body)
-  "Execute the forms in BODY with BUFFER as the current buffer.
-The value returned is the value of the last form in BODY.
-See also `with-temp-buffer'."
-  (` (save-current-buffer
-       (set-buffer (, buffer))
-       (,@ body))))
-
-;; This macro was imported XEmacs 21.
-(defmacro-maybe with-temp-buffer (&rest forms)
-  "Create a temporary buffer, and evaluate FORMS there like `progn'.
-See also `with-temp-file' and `with-output-to-string'."
-  (let ((temp-buffer (make-symbol "temp-buffer")))
-    (` (let (((, temp-buffer)
-	      (get-buffer-create (generate-new-buffer-name " *temp*"))))
-	 (unwind-protect
-	     (with-current-buffer (, temp-buffer)
-	       (,@ forms))
-	   (and (buffer-name (, temp-buffer))
-		(kill-buffer (, temp-buffer))))))))
-
-;; This function was imported from XEmacs 21.
-(defun-maybe split-string (string &optional pattern)
-  "Return a list of substrings of STRING which are separated by PATTERN.
-If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
-  (or pattern
-      (setq pattern "[ \f\t\n\r\v]+"))
-  ;; The FSF version of this function takes care not to cons in case
-  ;; of infloop.  Maybe we should synch?
-  (let (parts (start 0))
-    (while (string-match pattern string start)
-      (setq parts (cons (substring string start (match-beginning 0)) parts)
-	    start (match-end 0)))
-    (nreverse (cons (substring string start) parts))))
 
 
 ;;; @ for text/richtext and text/enriched
