@@ -215,6 +215,17 @@ Both SYMBOL and SPEC are unevaluated. The SPEC can be 0, t, a symbol
 (def-edebug-spec defun-maybe defun)
 (def-edebug-spec defmacro-maybe defmacro)
 (def-edebug-spec defsubst-maybe defun)
+(def-edebug-spec defun-maybe-cond
+  (&define name lambda-list
+	   [&optional stringp]
+	   [&rest ([&not eval] [&rest sexp])]
+	   [&optional (eval [&optional ("interactive" interactive)] def-body)]
+	   &rest (&rest sexp)))
+(def-edebug-spec defmacro-maybe-cond
+  (&define name lambda-list
+	   [&rest ([&not eval] [&rest sexp])]
+	   [&optional (eval def-body)]
+	   &rest (&rest sexp)))
 
 ;;; Emacs 20.1 emulation
 

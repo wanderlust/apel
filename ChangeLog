@@ -1,3 +1,11 @@
+1999-09-12  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* poe.el (defmacro-maybe-cond): Add edebug spec.
+
+1999-09-12  Yoshiki Hayashi  <t90553@mail.ecc.u-tokyo.ac.jp>
+
+	* poe.el (defun-maybe-cond): Add edebug spec.
+
 1999-09-09  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* mcs-xm.el (mime-charset-decoder-alist): Don't use
@@ -2055,7 +2063,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
