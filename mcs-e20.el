@@ -161,7 +161,6 @@ Return nil if corresponding MIME-charset is not found."
 (static-when (and (string= (decode-coding-string "\e.A\eN!" 'ctext) "\eN!")
 		  (or (not (find-coding-system 'x-ctext))
 		      (coding-system-get 'x-ctext 'apel)))
-  (require 'poem)
   (unless (find-coding-system 'x-ctext)
     (make-coding-system
      'x-ctext 2 ?x
