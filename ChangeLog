@@ -1,5 +1,7 @@
 1998-06-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* emu-nemacs.el (insert-file-contents-as-raw-text): New function.
+
 	* emu-latin1.el (insert-file-contents-as-raw-text): New alias.
 
 	* emu-e20.el, emu-x20.el (insert-file-contents-as-raw-text): New
