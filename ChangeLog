@@ -1,5 +1,9 @@
 1999-03-16  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* poe.el (defun-maybe-cond): Don't use `unless'.
+
+1999-03-16  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* EMU-ELS (pcustom-modules): New variable.
 	(emu-modules): Add `pcustom-modules'.
 
