@@ -247,48 +247,50 @@ find-file-hooks, etc.
 
 (defvar charsets-mime-charset-alist
   (let ((alist
-	 '(((lc-ascii)					. 'us-ascii)
-	   ((lc-ascii lc-ltn1)				. 'iso-8859-1)
-	   ((lc-ascii lc-ltn2)				. 'iso-8859-2)
-	   ((lc-ascii lc-ltn3)				. 'iso-8859-3)
-	   ((lc-ascii lc-ltn4)				. 'iso-8859-4)
-;;;	   ((lc-ascii lc-crl)				. 'iso-8859-5)
-	   ((lc-ascii lc-crl)				. 'koi8-r)
-	   ((lc-ascii lc-arb)				. 'iso-8859-6)
-	   ((lc-ascii lc-grk)				. 'iso-8859-7)
-	   ((lc-ascii lc-hbw)				. 'iso-8859-8)
-	   ((lc-ascii lc-ltn5)				. 'iso-8859-9)
-	   ((lc-ascii lc-roman lc-jpold lc-jp)		. 'iso-2022-jp)
-	   ((lc-ascii lc-kr)				. 'euc-kr)
-	   ((lc-ascii lc-cn)				. 'gb2312)
-	   ((lc-ascii lc-big5-1 lc-big5-2)		. 'big5)
+	 '(((lc-ascii)					. us-ascii)
+	   ((lc-ascii lc-ltn1)				. iso-8859-1)
+	   ((lc-ascii lc-ltn2)				. iso-8859-2)
+	   ((lc-ascii lc-ltn3)				. iso-8859-3)
+	   ((lc-ascii lc-ltn4)				. iso-8859-4)
+;;;	   ((lc-ascii lc-crl)				. iso-8859-5)
+	   ((lc-ascii lc-crl)				. koi8-r)
+	   ((lc-ascii lc-arb)				. iso-8859-6)
+	   ((lc-ascii lc-grk)				. iso-8859-7)
+	   ((lc-ascii lc-hbw)				. iso-8859-8)
+	   ((lc-ascii lc-ltn5)				. iso-8859-9)
+	   ((lc-ascii lc-roman lc-jpold lc-jp)		. iso-2022-jp)
+	   ((lc-ascii lc-kr)				. euc-kr)
+	   ((lc-ascii lc-cn)				. gb2312)
+	   ((lc-ascii lc-big5-1 lc-big5-2)		. big5)
 	   ((lc-ascii lc-roman lc-ltn1 lc-grk
 		      lc-jpold lc-cn lc-jp lc-kr
-		      lc-jp2)				. 'iso-2022-jp-2)
+		      lc-jp2)				. iso-2022-jp-2)
 	   ((lc-ascii lc-roman lc-ltn1 lc-grk
 		      lc-jpold lc-cn lc-jp lc-kr lc-jp2
-		      lc-cns1 lc-cns2)			. 'iso-2022-int-1)
+		      lc-cns1 lc-cns2)			. iso-2022-int-1)
 	   ((lc-ascii lc-roman
 		      lc-ltn1 lc-ltn2 lc-crl lc-grk
 		      lc-jpold lc-cn lc-jp lc-kr lc-jp2
 		      lc-cns1 lc-cns2 lc-cns3 lc-cns4
-		      lc-cns5 lc-cns6 lc-cns7)		. 'iso-2022-int-1)
+		      lc-cns5 lc-cns6 lc-cns7)		. iso-2022-int-1)
 	   ))
 	dest)
     (while alist
       (catch 'not-found
 	(let ((pair (car alist)))
 	  (setq dest
-		(cons (mapcar (function
-			       (lambda (cs)
-				 (if (boundp cs)
-				     (symbol-value cs)
-				   (throw 'not-found nil)
-				   )))
-			      (car pair))
-		      (cdr pair)))))
-      (setq alist (cdr alist))))
-  )
+		(append dest
+			(list
+			 (cons (mapcar (function
+					(lambda (cs)
+					  (if (boundp cs)
+					      (symbol-value cs)
+					    (throw 'not-found nil)
+					    )))
+				       (car pair))
+			       (cdr pair)))))))
+      (setq alist (cdr alist)))
+    dest))
 
 (defvar default-mime-charset 'x-ctext
   "Default value of MIME-charset.
