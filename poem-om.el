@@ -158,6 +158,7 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 ;;; @ end
 ;;;
 
-(provide 'poem-om)
+(require 'product)
+(product-provide (provide 'poem-om) (require 'apel-ver))
 
 ;;; poem-om.el ends here

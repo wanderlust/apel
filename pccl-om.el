@@ -125,6 +125,7 @@ If CCL-PROG is symbol, it is dereferenced.
 ;;; @ end
 ;;;
 
-(provide 'pccl-om)
+(require 'product)
+(product-provide (provide 'pccl-om) (require 'apel-ver))
 
 ;;; pccl-om.el ends here

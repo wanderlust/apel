@@ -185,6 +185,7 @@
 ;;; @ end
 ;;;
 
-(provide 'atype)
+(require 'product)
+(product-provide (provide 'atype) (require 'apel-ver))
 
 ;;; atype.el ends here

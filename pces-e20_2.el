@@ -144,6 +144,7 @@ be applied to `coding-system-for-read'."
 ;;; @ end
 ;;;
 
-(provide 'pces-e20_2)
+(require 'product)
+(product-provide (provide 'pces-e20_2) (require 'apel-ver))
 
 ;;; pces-e20_2.el ends here

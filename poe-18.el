@@ -34,7 +34,10 @@
 
 ;;; Code:
 
-(provide 'poe-18)			; beware of circular dependency.
+;; beware of circular dependency.
+(require 'product)
+(product-provide (provide 'poe-18) (require 'apel-ver))
+
 (require 'poe)				; load definitions of `*-maybe'.
 
 ;;; @ for EMACS 18.55

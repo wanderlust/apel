@@ -159,6 +159,7 @@ Return nil if corresponding MIME-charset is not found."
 ;;; @ end
 ;;;
 
-(provide 'mcs-xm)
+(require 'product)
+(product-provide (provide 'mcs-xm) (require 'apel-ver))
 
 ;;; mcs-xm.el ends here

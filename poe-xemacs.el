@@ -148,6 +148,7 @@ FILE should be the name of a library, with no directory name."
 ;;; @ end
 ;;;
 
-(provide 'poe-xemacs)
+(require 'product)
+(product-provide (provide 'poe-xemacs) (require 'apel-ver))
 
 ;;; poe-xemacs.el ends here

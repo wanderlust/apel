@@ -42,7 +42,7 @@
 ;;; @ end
 ;;;
 
-
-(provide 'pces-e20)
+(require 'product)
+(product-provide (provide 'pces-e20) (require 'apel-ver))
 
 ;;; pces-e20.el ends here

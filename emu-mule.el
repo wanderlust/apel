@@ -55,6 +55,7 @@
 ;;; @ end
 ;;;
 
-(provide 'emu-mule)
+(require 'product)
+(product-provide (provide 'emu-mule) (require 'apel-ver))
 
 ;;; emu-mule.el ends here

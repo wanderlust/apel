@@ -213,6 +213,7 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 ;;; @ end
 ;;;
 
-(provide 'poem-nemacs)
+(require 'product)
+(product-provide (provide 'poem-nemacs) (require 'apel-ver))
 
 ;;; poem-nemacs.el ends here

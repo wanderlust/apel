@@ -40,6 +40,7 @@
 ;;; @ end
 ;;;
 
-(provide 'invisible)
+(require 'product)
+(product-provide (provide 'invisible) (require 'apel-ver))
 
 ;;; invisible.el ends here

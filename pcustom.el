@@ -68,6 +68,7 @@
       ;; load emulation version of "new custom".
       (require 'tinycustom)))
 
-(provide 'pcustom)
+(require 'product)
+(product-provide (provide 'pcustom) (require 'apel-ver))
 
 ;;; pcustom.el ends here

@@ -307,6 +307,7 @@ conversion except for line-break code."
 ;;; @ end
 ;;;
 
-(provide 'pces-om)
+(require 'product)
+(product-provide (provide 'pces-om) (require 'apel-ver))
 
 ;;; pces-om.el ends here

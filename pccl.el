@@ -71,6 +71,7 @@
 ;;; @ end
 ;;;
 
-(provide 'pccl)
+(require 'product)
+(product-provide (provide 'pccl) (require 'apel-ver))
 
 ;;; pccl.el ends here

@@ -100,6 +100,7 @@ its value regard as nil."
 ;;; @ end
 ;;;
 
-(provide 'alist)
+(require 'product)
+(product-provide (provide 'alist) (require 'apel-ver))
 
 ;;; alist.el ends here

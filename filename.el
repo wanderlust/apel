@@ -147,6 +147,7 @@ It refers variable `filename-filters' and default filters refers
 ;;; @ end
 ;;;
 
-(provide 'filename)
+(require 'product)
+(product-provide (provide 'filename) (require 'apel-ver))
 
 ;;; filename.el ends here

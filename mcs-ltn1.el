@@ -104,6 +104,7 @@
 ;;; @ end
 ;;;
 
-(provide 'mcs-ltn1)
+(require 'product)
+(product-provide (provide 'mcs-ltn1) (require 'apel-ver))
 
 ;;; mcs-ltn1.el ends here

@@ -108,6 +108,7 @@ compile(macro expansion) time and run time, warn it."
 ;;; @ end
 ;;;
 
-(provide 'broken)
+(require 'product)
+(product-provide (provide 'broken) (require 'apel-ver))
 
 ;;; broken.el ends here

@@ -60,6 +60,7 @@
 ;;; @ end
 ;;;
 
-(provide 'poem-e20_3)
+(require 'product)
+(product-provide (provide 'poem-e20_3) (require 'apel-ver))
 
 ;;; poem-e20_3.el ends here

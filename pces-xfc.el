@@ -42,6 +42,7 @@
 ;;; @ end
 ;;;
 
-(provide 'pces-xfc)
+(require 'product)
+(product-provide (provide 'pces-xfc) (require 'apel-ver))
 
 ;;; pces-xfc.el ends here

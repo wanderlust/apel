@@ -197,6 +197,7 @@ If PATHS is omitted, `load-path' is used."
 ;;; @ end
 ;;;
 
-(provide 'path-util)
+(require 'product)
+(product-provide (provide 'path-util) (require 'apel-ver))
 
 ;;; path-util.el ends here

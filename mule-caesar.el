@@ -80,6 +80,7 @@ for 96 or 96x96 graphic character set)."
 	  )))))
 
 
-(provide 'mule-caesar)
+(require 'product)
+(product-provide (provide 'mule-caesar) (require 'apel-ver))
 
 ;;; mule-caesar.el ends here

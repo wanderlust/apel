@@ -270,6 +270,7 @@ applied to `kanji-fileio-code'. [emu-nemacs.el]"
 ;;; @ end
 ;;;
 
-(provide 'pces-nemacs)
+(require 'product)
+(product-provide (provide 'pces-nemacs) (require 'apel-ver))
 
 ;;; pces-nemacs.el ends here

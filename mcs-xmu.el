@@ -95,6 +95,7 @@ works for only decoding MIME-CHARSET.  If it is nil, size is unlimited."
 ;;; @ end
 ;;;
 
-(provide 'mcs-xmu)
+(require 'product)
+(product-provide (provide 'mcs-xmu) (require 'apel-ver))
 
 ;;; mcs-xmu.el ends here

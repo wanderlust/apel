@@ -325,6 +325,7 @@ even if other rules are matched for ALIST."
 ;;; @ end
 ;;;
 
-(provide 'calist)
+(require 'product)
+(product-provide (provide 'calist) (require 'apel-ver))
 
 ;;; calist.el ends here

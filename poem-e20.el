@@ -59,6 +59,7 @@ in the region between START and END."
   (require 'poem-e20_2) ; for Emacs 20.1 and 20.2
   )
 
-(provide 'poem-e20)
+(require 'product)
+(product-provide (provide 'poem-e20) (require 'apel-ver))
 
 ;;; poem-e20.el ends here

@@ -87,6 +87,7 @@ but the contents viewed as characters do change.
 ;;; @ end
 ;;;
 
-(provide 'poem-e20_2)
+(require 'product)
+(product-provide (provide 'poem-e20_2) (require 'apel-ver))
 
 ;;; poem-e20_2.el ends here

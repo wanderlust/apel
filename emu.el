@@ -227,6 +227,7 @@ find-file-hooks, etc.
 ;;; @ end
 ;;;
 
-(provide 'emu)
+(require 'product)
+(product-provide (provide 'emu) (require 'apel-ver))
 
 ;;; emu.el ends here

@@ -29,7 +29,8 @@
 
 ;;; Code:
 
-(provide 'poe)
+(require 'product)
+(product-provide (provide 'poe) (require 'apel-ver))
 
 (or (boundp 'current-load-list) (setq current-load-list nil))
 

@@ -163,4 +163,7 @@
 ;;; @ end
 ;;;
 
-(provide 'tinyrich)
+(require 'product)
+(product-provide (provide 'tinyrich) (require 'apel-ver))
+
+;; tinyrich.el ends here.

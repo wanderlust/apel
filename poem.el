@@ -94,6 +94,7 @@ N defaults to 0 if omitted. [XEmacs-mule emulating function]"
 ;;; @ end
 ;;;
 
-(provide 'poem)
+(require 'product)
+(product-provide (provide 'poem) (require 'apel-ver))
 
 ;;; poem.el ends here

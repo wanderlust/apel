@@ -146,6 +146,7 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 ;;; @ end
 ;;;
 
-(provide 'poem-ltn1)
+(require 'product)
+(product-provide (provide 'poem-ltn1) (require 'apel-ver))
 
 ;;; poem-ltn1.el ends here

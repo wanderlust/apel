@@ -109,6 +109,7 @@ This function works by modifying `process-environment'."
 		    (cons (concat variable "=" value)
 			  process-environment)))))))
 
-(provide 'env)
+(require 'product)
+(product-provide (provide 'env) (require 'apel-ver))
 
 ;;; env.el ends here

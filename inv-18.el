@@ -80,6 +80,7 @@
 ;;; @ end
 ;;;
 
-(provide 'inv-18)
+(require 'product)
+(product-provide (provide 'inv-18) (require 'apel-ver))
 
 ;;; inv-18.el ends here

@@ -113,6 +113,7 @@ variable `default-mime-charset-for-write' is returned."
 ;;; @ end
 ;;;
 
-(provide 'mcharset)
+(require 'product)
+(product-provide (provide 'mcharset) (require 'apel-ver))
 
 ;;; mcharset.el ends here

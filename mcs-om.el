@@ -237,6 +237,7 @@ It must be symbol.")
 ;;; @ end
 ;;;
 
-(provide 'mcs-om)
+(require 'product)
+(product-provide (provide 'mcs-om) (require 'apel-ver))
 
 ;;; mcs-om.el ends here

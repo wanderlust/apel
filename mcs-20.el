@@ -155,6 +155,7 @@ It must be symbol."
 ;;; @ end
 ;;;
 
-(provide 'mcs-20)
+(require 'product)
+(product-provide (provide 'mcs-20) (require 'apel-ver))
 
 ;;; mcs-20.el ends here

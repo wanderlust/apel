@@ -122,6 +122,7 @@
 ;;; @ end
 ;;;
 
-(provide 'mcs-nemacs)
+(require 'product)
+(product-provide (provide 'mcs-nemacs) (require 'apel-ver))
 
 ;;; mcs-nemacs.el ends here

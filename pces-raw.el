@@ -166,6 +166,7 @@ code conversion will not take place."
 ;;; @ end
 ;;;
 
-(provide 'pces-raw)
+(require 'product)
+(product-provide (provide 'pces-raw) (require 'apel-ver))
 
 ;;; pces-raw.el ends here

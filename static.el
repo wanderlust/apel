@@ -83,6 +83,7 @@ The variable SYMBOL can be referenced at either compile-time or run-time."
 ;;; @ end
 ;;;
 
-(provide 'static)
+(require 'product)
+(product-provide (provide 'static) (require 'apel-ver))
 
 ;;; static.el ends here

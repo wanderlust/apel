@@ -157,7 +157,9 @@ The third argument DOC is a documentation string for the widget.
 This is a nop define-widget only for emulating purpose."
   nil)
 
-(provide 'tinycustom)
 (provide 'custom)
+
+(require 'product)
+(product-provide (provide 'tinycustom) (require 'apel-ver))
 
 ;;; tinycustom.el ends here.

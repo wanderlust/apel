@@ -233,6 +233,7 @@ applied to `coding-system-for-write'."
 ;;; @ end
 ;;;
 
-(provide 'pces-20)
+(require 'product)
+(product-provide (provide 'pces-20) (require 'apel-ver))
 
 ;;; pces-20.el ends here

@@ -274,7 +274,8 @@ The first character of DD is space if the value is less than 10."
     (concat (substring date 11 13)
 	    (substring date 14 16))))
 
-(provide 'time-stamp)
+(require 'product)
+(product-provide (provide 'time-stamp) (require 'apel-ver))
 
 ;;; time-stamp.el ends here
 

@@ -72,6 +72,7 @@
 ;;; @ end
 ;;;
 
-(provide 'pces-xm)
+(require 'product)
+(product-provide (provide 'pces-xm) (require 'apel-ver))
 
 ;;; pces-xm.el ends here
