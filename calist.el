@@ -33,15 +33,35 @@
 (defvar calist-package-alist nil)
 (defvar calist-field-match-method-obarray nil)
 
-(defun make-calist-package (name)
-  "Create a new calist-package."
-  (let ((p (make-vector 7 0)))
-    (set-alist 'calist-package-alist name p)
-    p))
-
 (defun find-calist-package (name)
   "Return a calist-package by NAME."
   (cdr (assq name calist-package-alist)))
+
+(defun define-calist-field-match-method (field-type function)
+  "Set field-match-method for FIELD-TYPE to FUNCTION."
+  (fset (intern (symbol-name field-type) calist-field-match-method-obarray)
+	function))
+
+(defun use-calist-package (name)
+  "Make the symbols of package NAME accessible in the current package."
+  (mapatoms (lambda (sym)
+	      (if (intern-soft (symbol-name sym)
+			       calist-field-match-method-obarray)
+		  (signal 'conflict-of-calist-symbol
+			  (list (format "Conflict of symbol %s")))
+		(if (fboundp sym)
+		    (define-calist-field-match-method
+		      sym (symbol-function sym))
+		  )))
+	    (find-calist-package name)))
+
+(defun make-calist-package (name &optional use)
+  "Create a new calist-package."
+  (let ((calist-field-match-method-obarray (make-vector 7 0)))
+    (set-alist 'calist-package-alist name
+	       calist-field-match-method-obarray)
+    (use-calist-package (or use 'standard))
+    calist-field-match-method-obarray))
 
 (defun in-calist-package (name)
   "Set the current calist-package to a new or existing calist-package."
@@ -50,11 +70,6 @@
 	    (make-calist-package name))))
 
 (in-calist-package 'standard)
-
-(defun define-calist-field-match-method (field-type function)
-  "Set field-match-method for FIELD-TYPE to FUNCTION."
-  (fset (intern (symbol-name field-type) calist-field-match-method-obarray)
-	function))
 
 (defun calist-default-field-match-method (calist field-type field-value)
   (let ((s-field (assoc field-type calist)))
