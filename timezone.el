@@ -137,10 +137,10 @@ Understands the following styles:
  (4) 6 May 1992 1641-JST (Wednesday)
  (5) 22-AUG-1993 10:59:12.82
  (6) Thu, 11 Apr 16:17:12 91 [MET]
- (7) Mon, 6  Jul 16:47:20 T 1992 [MET]"
-  (condition-case nil
-      (progn
-  ;; Get rid of any text properties.
+ (7) Mon, 6  Jul 16:47:20 T 1992 [MET]
+ (8) 1996-06-24 21:13:12 [GMT]
+ (9) 1996-06-24 21:13-ZONE"
+ ;; Get rid of any text properties.
   (and (stringp date)
        (or (text-properties-at 0 date)
 	   (next-property-change 0 date))
@@ -153,6 +153,16 @@ Understands the following styles:
 	(time nil)
 	(zone nil))			;This may be nil.
     (cond ((string-match
+	    "\\([0-9]+\\)[ \t]+\\([^ \t,]+\\)[ \t]+\\([0-9]+\\)[ \t]+\\([0-9]+:[0-9:]+\\)[ \t]*\\([-+a-zA-Z0-9]+\\)" date)
+	   ;; Styles: (1) and (2) with timezone and buggy timezone
+	   ;; This is most common in mail and news,
+	   ;; so it is worth trying first.
+	   (setq year 3 month 2 day 1 time 4 zone 5))
+	  ((string-match
+	    "\\([0-9]+\\)[ \t]+\\([^ \t,]+\\)[ \t]+\\([0-9]+\\)[ \t]+\\([0-9]+:[0-9:]+\\)[ \t]*\\'" date)
+	   ;; Styles: (1) and (2) without timezone
+	   (setq year 3 month 2 day 1 time 4 zone nil))
+	  ((string-match
 	    "\\([^ \t,]+\\),[ \t]+\\([0-9]+\\)[ \t]+\\([^ \t,]+\\)[ \t]+\\([0-9]+:[0-9:]+\\)[ \t]+\\(T[ \t]+\\|\\)\\([0-9]+\\)[ \t]*\\'" date)
 	   ;; Styles: (6) and (7) without timezone
 	   (setq year 6 month 3 day 2 time 4 zone nil))
@@ -160,14 +170,6 @@ Understands the following styles:
 	    "\\([^ \t,]+\\),[ \t]+\\([0-9]+\\)[ \t]+\\([^ \t,]+\\)[ \t]+\\([0-9]+:[0-9:]+\\)[ \t]+\\(T[ \t]+\\|\\)\\([0-9]+\\)[ \t]*\\([-+a-zA-Z0-9]+\\)" date)
 	   ;; Styles: (6) and (7) with timezone and buggy timezone
 	   (setq year 6 month 3 day 2 time 4 zone 7))
-	  ((string-match
-	    "\\([0-9]+\\)[ \t]+\\([^ \t,]+\\)[ \t]+\\([0-9]+\\)[ \t]+\\([0-9]+:[0-9:]+\\)[ \t]*\\'" date)
-	   ;; Styles: (1) and (2) without timezone
-	   (setq year 3 month 2 day 1 time 4 zone nil))
-	  ((string-match
-	    "\\([0-9]+\\)[ \t]+\\([^ \t,]+\\)[ \t]+\\([0-9]+\\)[ \t]+\\([0-9]+:[0-9:]+\\)[ \t]*\\([-+a-zA-Z0-9]+\\)" date)
-	   ;; Styles: (1) and (2) with timezone and buggy timezone
-	   (setq year 3 month 2 day 1 time 4 zone 5))
 	  ((string-match
 	    "\\([^ \t,]+\\)[ \t]+\\([0-9]+\\)[ \t]+\\([0-9]+:[0-9:]+\\)[ \t]+\\([0-9]+\\)" date)
 	   ;; Styles: (3) without timezone
@@ -181,47 +183,56 @@ Understands the following styles:
 	   ;; Styles: (4) with timezone
 	   (setq year 3 month 2 day 1 time 4 zone 5))
 	  ((string-match
-	    "\\([0-9]+\\)-\\([A-Za-z]+\\)-\\([0-9]+\\)[ \t]+\\([0-9]+:[0-9]+:[0-9]+\\)\\.[0-9]+" date)
+	    "\\([0-9]+\\)-\\([A-Za-z]+\\)-\\([0-9]+\\)[ \t]+\\([0-9]+:[0-9]+:[0-9]+\\)\\(\\.[0-9]+\\)?[ \t]+\\([-+a-zA-Z0-9]+\\)" date)
+	   ;; Styles: (5) with timezone.
+	   (setq year 3 month 2 day 1 time 4 zone 6))
+	  ((string-match
+	    "\\([0-9]+\\)-\\([A-Za-z]+\\)-\\([0-9]+\\)[ \t]+\\([0-9]+:[0-9]+:[0-9]+\\)\\(\\.[0-9]+\\)?" date)
 	   ;; Styles: (5) without timezone.
 	   (setq year 3 month 2 day 1 time 4 zone nil))
+	  ((string-match
+	    "\\([0-9]+\\)-\\([0-9]+\\)-\\([0-9]+\\)[ \t]+\\([0-9]+:[0-9]+:[0-9]+\\)[ \t]*\\([-+a-zA-Z0-9]+\\)" date)
+	   ;; Styles: (8) with timezone.
+	   (setq year 1 month 2 day 3 time 4 zone 5))
+	  ((string-match
+	    "\\([0-9]+\\)-\\([0-9]+\\)-\\([0-9]+\\)[ \t]+\\([0-9]+:[0-9]+\\)[ \t]*\\([-+a-zA-Z0-9:]+\\)" date)
+	   ;; Styles: (8) with timezone with a colon in it.
+	   (setq year 1 month 2 day 3 time 4 zone 5))
+	  ((string-match
+	    "\\([0-9]+\\)-\\([0-9]+\\)-\\([0-9]+\\)[ \t]+\\([0-9]+:[0-9]+:[0-9]+\\)" date)
+	   ;; Styles: (8) without timezone.
+	   (setq year 1 month 2 day 3 time 4 zone nil))
 	  )
-    (if year
-	(progn
-	  (setq year
-		(substring date (match-beginning year) (match-end year)))
-	  ;; It is now Dec 1992.  8 years before the end of the World.
-	  (if (< (length year) 4)
-	      ;; 2 digit years are bogus, so guess the century
-	      (let ((yr (string-to-int year)))
-		(when (>= yr 100)
-		  ;; What does a three digit year mean?
-		  (setq yr (- yr 100)))
-		(setq year (format "%d%02d"
-				   (if (< yr 70)
-				       20
-				     19)
-				   yr))))
-	  (let ((string (substring date
-				   (match-beginning month)
-				   (+ (match-beginning month) 3))))
-	    (setq month
-		  (int-to-string
-		   (cdr (assoc (upcase string) timezone-months-assoc)))))
-
-	  (setq day
-		(substring date (match-beginning day) (match-end day)))
-	  (setq time
-		(substring date (match-beginning time) (match-end time)))))
-    (if zone
-	(setq zone
-	      (substring date (match-beginning zone) (match-end zone))))
+    (when year
+      (setq year (match-string year date))
+      ;; Guess ambiguous years.  Assume years < 69 don't predate the
+      ;; Unix Epoch, so are 2000+.  Three-digit years are assumed to
+      ;; be relative to 1900.
+      (if (< (length year) 4)
+	  (let ((y (string-to-int year)))
+	    (if (< y 69)
+		(setq y (+ y 100)))
+	    (setq year (int-to-string (+ 1900 y)))))
+      (setq month
+	    (if (= (aref date (+ (match-beginning month) 2)) ?-)
+		;; Handle numeric months, spanning exactly two digits.
+		(substring date
+			   (match-beginning month)
+			   (+ (match-beginning month) 2))
+	      (let* ((string (substring date
+					(match-beginning month)
+					(+ (match-beginning month) 3)))
+		     (monthnum
+		      (cdr (assoc (upcase string) timezone-months-assoc))))
+		(if monthnum
+		    (int-to-string monthnum)))))
+      (setq day (match-string day date))
+      (setq time (match-string time date)))
+    (if zone (setq zone (match-string zone date)))
     ;; Return a vector.
-    (if year
+    (if (and year month)
 	(vector year month day time zone)
-      (vector "0" "0" "0" "0" nil))
-    )
-  )
-    (t (signal 'error (list "Invalid date string" date)))))
+      (vector "0" "0" "0" "0" nil))))
 
 (defun timezone-parse-time (time)
   "Parse TIME (HH:MM:SS) and return a vector [hour minute second].
