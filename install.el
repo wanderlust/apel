@@ -120,7 +120,8 @@
 	    (princ (format "%s -> %s\n" elc-file dest))))))))
 
 (defun install-elisp-modules (modules src dest &optional just-print)
-  (or (file-exists-p dest)
+  (or just-print
+      (file-exists-p dest)
       (make-directory dest t))
   (mapcar
    (function
