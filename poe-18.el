@@ -18,19 +18,34 @@
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; along with this program; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;; Note to developers:
+;; 
+;; If old (v18) compiler is used, top-level macros are expanded at
+;; *load-time*, not compile-time.  So, you cannot use macros defined
+;; in this file using `defmacro-maybe'.  Especially, you cannot use
+;; `eval-when-compile' and `eval-and-compile' in this file.
+
 ;;; Code:
 
-(defvar-maybe data-directory exec-directory)
-
+(provide 'poe-18)			; beware of circular dependency.
+(require 'poe)				; load definitions of `*-maybe'.
 
 ;;; @ for EMACS 18.55
 ;;;
 
 (defvar-maybe buffer-undo-list nil)
+
+
+;;; @ Emacs 19 emulation
+;;;
+
+(defvar-maybe data-directory exec-directory)
 
 
 ;;; @ Lisp Language
@@ -50,13 +65,11 @@ to be sure of changing the value of `foo'.
   (if (equal elt (car list))
       (cdr list)
     (let ((rest list)
-	  (rrest (cdr list))
-	  )
+	  (rrest (cdr list)))
       (while (and rrest (not (equal elt (car rrest))))
 	(setq rest rrest
-	      rrest (cdr rrest))
-	)
-      (rplacd rest (cdr rrest))
+	      rrest (cdr rrest)))
+      (setcdr rest (cdr rrest))
       list)))
 
 (defun member (elt list)
@@ -66,6 +79,21 @@ The value is actually the tail of LIST whose car is ELT.
   (while (and list (not (equal elt (car list))))
     (setq list (cdr list)))
   list)
+
+
+;;; @@ buffer-local variable
+;;;
+
+(defun default-boundp (symbol)
+  "Return t if SYMBOL has a non-void default value.
+This is the value that is seen in buffers that do not have their own values
+for this variable.
+\[poe-18.el; EMACS 19 emulating function]"
+  (condition-case error
+      (progn
+	(default-value symbol)
+	t)
+    (void-variable nil)))
 
 
 ;;; @@ environment variable
@@ -84,55 +112,72 @@ This function works by modifying `process-environment'."
 
 (defun defalias (sym newdef)
   "Set SYMBOL's function definition to NEWVAL, and return NEWVAL.
-Associates the function with the current load file, if any.
-\[poe-18.el; EMACS 19 emulating function]"
-  (fset sym newdef)
-  )
-
-
-;;; @ Compilation Features
-;;;
-
-(defmacro-maybe eval-when-compile (&rest body)
-  "Like `progn', but evaluates the body at compile time.
-The result of the body appears to the compiler as a quoted constant."
-  ;; Not necessary because we have it in b-c-initial-macro-environment
-  ;; (list 'quote (eval (cons 'progn body)))
-  (cons 'progn body))
-
-(defmacro-maybe eval-and-compile (&rest body)
-  "Like `progn', but evaluates the body at compile time and at load time."
-  ;; Remember, it's magic.
-  (cons 'progn body))
+Associates the function with the current load file, if any."
+  (fset sym newdef))
 
 (defun byte-code-function-p (exp)
   "T if OBJECT is a byte-compiled function object.
 \[poe-18.el; EMACS 19 emulating function]"
   (and (consp exp)
-       (let* ((rest (cdr (cdr exp))) elt)
+       (let ((rest (cdr (cdr exp)))
+	     elt)
 	 (if (stringp (car rest))
-	     (setq rest (cdr rest))
-	   )
+	     (setq rest (cdr rest)))
 	 (catch 'tag
 	   (while rest
 	     (setq elt (car rest))
-	     (if (and (consp elt)(eq (car elt) 'byte-code))
-		 (throw 'tag t)
-	       )
-	     (setq rest (cdr rest))
-	     ))
-	 )))
+	     (if (and (consp elt)
+		      (eq (car elt) 'byte-code))
+		 (throw 'tag t))
+	     (setq rest (cdr rest)))))))
+
+
+;;; @ Compilation Features
+;;;
+
+(put 'eval-when-compile 'lisp-indent-hook 0)
+(defmacro-maybe eval-when-compile (&rest body)
+  "Like progn, but evaluates the body at compile-time.
+
+This emulating macro does not work if used at top-level.
+Top-level macros are expanded at load-time.
+\[poe-18.el; EMACS 19 emulating macro]"
+  (list 'quote (eval (cons 'progn body))))
+
+(put 'eval-and-compile 'lisp-indent-hook 0)
+(defmacro-maybe eval-and-compile (&rest body)
+  "Like progn, but evaluates the body at compile-time as well as at load-time.
+
+This emulating macro does not work if used at top-level.
+Top-level macros are expanded at load-time.
+\[poe-18.el; EMACS 19 emulating macro]"
+  ;; `form' is a parameter of `byte-compile-form'. kludge! kludge! kludge!
+  ;; this kludge prevents from evaluating `body' twice when this macro is
+  ;; expanded at load-time.
+  (if (and (boundp 'form)
+           (eq (car-safe form) 'eval-and-compile))
+      (eval (cons 'progn body)))
+  (cons 'progn body))
+
+(put 'defsubst 'lisp-indent-hook 'defun)
+(put 'defsubst 'edebug-form-spec 'defun)
+(defmacro-maybe defsubst (name arglist &rest body)
+  "Define an inline function.  The syntax is just like that of `defun'.
+
+This emulating macro does not support function inlining because old (v18)
+compiler does not support inlining feature.
+\[poe-18.el; EMACS 19 emulating macro]"
+  (cons 'defun (cons name (cons arglist body))))
 
 (defun-maybe make-obsolete (fn new)
   "Make the byte-compiler warn that FUNCTION is obsolete.
 The warning will say that NEW should be used instead.
-If NEW is a string, that is the `use instead' message."
+If NEW is a string, that is the `use instead' message.
+
+This emulating function does nothing because old (v18) compiler does not
+support this feature.
+\[poe-18.el; EMACS 19 emulating function]"
   (interactive "aMake function obsolete: \nxObsoletion replacement: ")
-  (let ((handler (get fn 'byte-compile)))
-    (if (eq 'byte-compile-obsolete handler)
-	(setcar (get fn 'byte-obsolete-info) new)
-      (put fn 'byte-obsolete-info (cons new handler))
-      (put fn 'byte-compile 'byte-compile-obsolete)))
   fn)
 
 
@@ -152,7 +197,7 @@ If NEW is a string, that is the `use instead' message."
 \[poe-18.el; EMACS 19 emulating function]"
  (let ((dir (expand-file-name dirname)))
    (if (file-exists-p dir)
-      (error "Creating directory: %s is already exist" dir)
+       (error "Creating directory: %s is already exist" dir)
      (call-process "mkdir" nil nil nil dir))))
 
 (defun make-directory (dir &optional parents)
@@ -166,24 +211,17 @@ to create parent directories if they don't exist.
       (while (and (< p len) (string-match "[^/]*/?" dir p))
 	(setq p1 (match-end 0))
 	(if (= p1 len)
-	    (throw 'tag nil)
-	  )
+	    (throw 'tag nil))
 	(setq path (substring dir 0 p1))
 	(if (not (file-directory-p path))
 	    (cond ((file-exists-p path)
-		   (error "Creating directory: %s is not directory" path)
-		   )
+		   (error "Creating directory: %s is not directory" path))
 		  ((null parents)
-		   (error "Creating directory: %s is not exist" path)
-		   )
+		   (error "Creating directory: %s is not exist" path))
 		  (t
-		   (make-directory-internal path)
-		   ))
-	  )
-	(setq p p1)
-	))
-    (make-directory-internal dir)
-    ))
+		   (make-directory-internal path))))
+	(setq p p1)))
+    (make-directory-internal dir)))
 
 ;; Imported from files.el of EMACS 19.33.
 (defun parse-colon-path (cd-path)
@@ -195,7 +233,7 @@ to create parent directories if they don't exist.
 	   (setq cd-list
 		 (nconc cd-list
 			(list (if (= cd-start cd-colon)
-				   nil
+				  nil
 				(substitute-in-file-name
 				 (file-name-as-directory
 				  (substring cd-path cd-start cd-colon)))))))
@@ -224,8 +262,7 @@ If FULL is non-nil, return absolute file names.  Otherwise return names
 If MATCH is non-nil, mention only file names that match the regexp MATCH.
 If NOSORT is dummy for compatibility.
 \[poe-18.el; EMACS 19 emulating function]"
-  (si:directory-files directory full match)
-  )
+  (si:directory-files directory full match))
 
     
 ;;; @ Display Features
@@ -295,17 +332,13 @@ With optional non-nil ALL, force redisplay of all mode-lines.
 
        (defun overlay-put (overlay prop value)
 	 (let ((ret (and (eq prop 'face)
-			 (assq value emu:available-face-attribute-alist)
-			 )))
+			 (assq value emu:available-face-attribute-alist))))
 	   (if ret
 	       (attribute-add-narrow-attribute (cdr ret)
-					       (car overlay)(cdr overlay))
-	     )))
-       )
+					       (car overlay)(cdr overlay))))))
       (t
        (defun make-overlay (beg end &optional buffer type))
-       (defun overlay-put (overlay prop value))
-       ))
+       (defun overlay-put (overlay prop value))))
 
 (defun overlay-buffer (overlay))
 
@@ -331,13 +364,10 @@ even if a buffer with that name exists."
 (or (fboundp 'si:mark)
     (fset 'si:mark (symbol-function 'mark)))
 (defun mark (&optional force)
-  (si:mark)
-  )
+  (si:mark))
 
 
 ;;; @ end
 ;;;
-
-(provide 'poe-18)
 
 ;;; poe-18.el ends here
