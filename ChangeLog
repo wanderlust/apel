@@ -1,3 +1,13 @@
+Wed Jan 31 00:07:57 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el (mu-cite/get-field-value-methoda-list): fixed problem
+	in mh-letter-mode
+
+Thu Jan 25 08:07:39 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el: Don't use `equal' to compare strings.
+
+
 Thu Jan 25 02:13:37 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.10 was released.
