@@ -139,28 +139,59 @@ If suffixes is omitted, `exec-suffix-list' is used."
   (or suffixes
       (setq suffixes exec-suffix-list)
       )
-  (catch 'tag
-    (while paths
-      (let ((stem (expand-file-name file (car paths)))
-	    (sufs suffixes)
+  (let (files)
+    (catch 'tag
+      (while suffixes
+	(let (suf (car suffixes))
+	  (if (and (not (string= suf ""))
+		   (string-match (concat (regexp-quote suf) "$") file))
+	      (progn
+		(setq files (list file))
+		(throw 'tag nil)
+		)
+	    (setq files (cons (concat file suf) files))
 	    )
-	(while sufs
-	  (let ((file (concat stem (car sufs))))
-	    (if (file-exists-p file)
+	  (setq suffixes (cdr suffixes))
+	  )))
+    (setq files (nreverse files))
+    (catch 'tag
+      (while paths
+	(let ((path (car paths))
+	      (files files)
+	      )
+	  (while files
+	    (setq file (expand-file-name (car files) path))
+	    (if (file-executable-p file)
 		(throw 'tag file)
-	      ))
-	  (setq sufs (cdr sufs))
-	  ))
-      (setq paths (cdr paths))
-      )))
+	      )
+	    (setq files (cdr files))
+	    )
+	  (setq paths (cdr paths))
+	  )))))
 
 ;;;###autoload
 (defun module-installed-p (module &optional paths)
   "Return t if module is provided or exists in PATHS.
 If PATHS is omitted, `load-path' is used."
   (or (featurep module)
-      (exec-installed-p (symbol-name module) load-path '(".elc" ".el"))
-      ))
+      (let ((file (symbol-name module)))
+	(or paths
+	    (setq paths load-path)
+	    )
+	(catch 'tag
+	  (while paths
+	    (let ((stem (expand-file-name file (car paths)))
+		  (sufs '(".elc" ".el"))
+		  )
+	      (while sufs
+		(let ((file (concat stem (car sufs))))
+		  (if (file-exists-p file)
+		      (throw 'tag file)
+		    ))
+		(setq sufs (cdr sufs))
+		))
+	    (setq paths (cdr paths))
+	    )))))
 
 
 ;;; @ end
