@@ -219,7 +219,7 @@ even if other rules are matched for ALIST."
 		(type (car cell))
 		(value (cdr cell)))
 	   (cons type
-		 (list '(t)
+		 (list (list t)
 		       (cons value (calist-to-ctree (cdr calist)))))
 	   ))
 	(t
@@ -238,12 +238,19 @@ even if other rules are matched for ALIST."
 					 (delete ret (copy-alist calist)))
 					))))
 		   (setq values (cdr values)))
-		 (setcdr ctree (list* '(t)
-				      (cons (cdr ret)
-					    (calist-to-ctree
-					     (delete ret (copy-alist calist))))
-				      (cdr ctree)))
-		 )
+		 (if (assq t (cdr ctree))
+		     (setcdr ctree
+			     (cons (cons (cdr ret)
+					 (calist-to-ctree
+					  (delete ret (copy-alist calist))))
+				   (cdr ctree)))
+		   (setcdr ctree
+			   (list* (list t)
+				  (cons (cdr ret)
+					(calist-to-ctree
+					 (delete ret (copy-alist calist))))
+				  (cdr ctree)))
+		   ))
 	     (catch 'tag
 	       (while values
 		 (let ((cell (car values)))
@@ -251,10 +258,16 @@ even if other rules are matched for ALIST."
 			   (ctree-add-calist-with-default (cdr cell) calist))
 		   )
 		 (setq values (cdr values)))
-	       (let ((elt (cons t (calist-to-ctree calist))))
-		 (or (member elt (cdr ctree))
-		     (setcdr ctree (cons elt (cdr ctree)))
-		     )))
+	       (let ((cell (assq t (cdr ctree))))
+		 (if cell
+		     (setcdr cell
+			     (ctree-add-calist-with-default (cdr cell)
+							    calist))
+		   (let ((elt (cons t (calist-to-ctree calist))))
+		     (or (member elt (cdr ctree))
+			 (setcdr ctree (cons elt (cdr ctree)))
+			 ))
+		   )))
 	     )
 	   ctree))))
 
