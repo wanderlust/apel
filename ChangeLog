@@ -1,3 +1,8 @@
+2000-11-26  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* make.bat: New file.
+	* .cvsignore: Ditto.
+
 2000-11-09  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* path-util.el (add-path): Check for both "path" and "path/".
@@ -2645,7 +2650,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
