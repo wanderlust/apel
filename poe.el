@@ -379,7 +379,7 @@ This function does not move point. [XEmacs emulating function]"
   "Define OLDFUN as an obsolete alias for function NEWFUN.
 This makes calling OLDFUN equivalent to calling NEWFUN and marks OLDFUN
 as obsolete. [XEmacs emulating function]"
-  (define-function oldfun newfun)
+  (defalias oldfun newfun)
   (make-obsolete oldfun newfun)
   )
 
