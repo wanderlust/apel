@@ -42,7 +42,8 @@
   ;; (product-define "APEL" nil '(10 2))	; Released 01 March 2000
   ;; (product-define "APEL" nil '(10 3))	; Released 30 December 2000
   ;; (product-define "APEL" nil '(10 4))	; Released 04 October 2002
-  (product-define "APEL" nil '(10 5))		; Released 06 June 2003
+  ;; (product-define "APEL" nil '(10 5))	; Released 06 June 2003
+  (product-define "APEL" nil '(10 6))		; Released 05 July 2003
   )
 
 (defun apel-version ()
