@@ -1,7 +1,9 @@
 2001-10-15  Katsumi Yamaoka  <yamaoka@jpl.org>
 
-	* poe.el (support-timezone-in-numeric-form-and-3rd-arg): Renamed
-	from `support-timezone-in-numeric-form'; add support the 3rd arg.
+	* poe.el (format-time-string): Support the 3rd arg `universal'.
+	(support-timezone-in-numeric-form-and-3rd-arg): Renamed from
+	`support-timezone-in-numeric-form';
+	support the 3rd arg `universal'.
 
 2001-10-12  TSUCHIYA Masatoshi  <tsuchiya@pine.kuee.kyoto-u.ac.jp>
 

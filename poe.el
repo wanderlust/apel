@@ -267,7 +267,7 @@ HIST, if non-nil, specifies a history list
 DEF, if non-nil, is the default value.
 
 Completion ignores case if the ambient value of
-  `completion-ignore-case' is non-nil."  
+  `completion-ignore-case' is non-nil."
 	(let ((string (si:completing-read prompt table predicate
 					  require-match init hist)))
 	  (if (and (string= string "") def)
@@ -1250,9 +1250,24 @@ Not fully compatible especially when invalid format is specified."
 	  field-result
 	  pad-left change-case
 	  (paren-level 0)
-	  hour
-	  (time-string (current-time-string time)))
-      (setq hour (string-to-int (substring time-string 11 13)))
+	  hour ms ls
+	  (tz (car (current-time-zone)))
+	  time-string)
+      (if universal
+	  (progn
+	    (or time
+		(setq time (current-time)))
+	    (setq ms (car time)
+		  ls (- (nth 1 time) tz))
+	    (cond ((< ls 0)
+		   (setq ms (1- ms)
+			 ls (+ ls 65536)))
+		  ((>= ls 65536)
+		   (setq ms (1+ ms)
+			 ls (- ls 65536))))
+	    (setq time (append (list ms ls) (nth 2 time)))))
+      (setq time-string (current-time-string time)
+	    hour (string-to-int (substring time-string 11 13)))
       (while (< ind fmt-len)
 	(setq cur-char (aref format ind))
 	(setq
@@ -1301,7 +1316,7 @@ Not fully compatible especially when invalid format is specified."
 		(cond
 		 ((eq cur-char ?%)
 		  "%")
-		 ;; the abbreviated name of the day of week.		 
+		 ;; the abbreviated name of the day of week.
 		 ((eq cur-char ?a)
 		  (substring time-string 0 3))
 		 ;; the full name of the day of week
@@ -1322,7 +1337,7 @@ Not fully compatible especially when invalid format is specified."
 		 ((eq cur-char ?C)
 		  "")
 		 ;; the day of month, zero-padded
-		 ((eq cur-char ?d)	
+		 ((eq cur-char ?d)
 		  (format "%02d" (string-to-int (substring time-string 8 10))))
 		 ;; a synonym for `%m/%d/%y'
 		 ((eq cur-char ?D)
@@ -1390,7 +1405,7 @@ Not fully compatible especially when invalid format is specified."
 			  (substring time-string 11 13)
 			  (substring time-string 14 16)
 			  (substring time-string 17 19)))
-		 ;; the week of the year (01-52), assuming that weeks 
+		 ;; the week of the year (01-52), assuming that weeks
 		 ;; start on Sunday (yet to come)
 		 ((eq cur-char ?U)
 		  "")
@@ -1416,13 +1431,18 @@ Not fully compatible especially when invalid format is specified."
 		  (substring time-string -4))
 		 ;; the time zone abbreviation
 		 ((eq cur-char ?Z)
-		  (setq change-case (not change-case))
-		  (downcase (cadr (current-time-zone))))
+		  (if universal
+		      "UTC"
+		    (setq change-case (not change-case))
+		    (downcase (cadr (current-time-zone)))))
 		 ((eq cur-char ?z)
-		  (let ((tz (car (current-time-zone))))
+		  (if universal
+		      "+0000"
 		    (if (< tz 0)
-			(format "-%02d%02d" (/ (- tz) 3600) (/ (% (- tz) 3600) 60))
-		      (format "+%02d%02d" (/ tz 3600) (/ (% tz 3600) 60)))))
+			(format "-%02d%02d"
+				(/ (- tz) 3600) (/ (% (- tz) 3600) 60))
+		      (format "+%02d%02d"
+			      (/ tz 3600) (/ (% tz 3600) 60)))))
 		 (t
 		  (concat
 		   "%"
