@@ -79,17 +79,6 @@ This function works by modifying `process-environment'."
   t)
 
 
-;;; @@ function
-;;;
-
-(defun defalias (sym newdef)
-  "Set SYMBOL's function definition to NEWVAL, and return NEWVAL.
-Associates the function with the current load file, if any.
-\[poe-18.el; EMACS 19 emulating function]"
-  (fset sym newdef)
-  )
-
-
 ;;; @ Compilation Features
 ;;;
 
@@ -97,11 +86,6 @@ Associates the function with the current load file, if any.
   "Define an inline function.  The syntax is just like that of `defun'."
   (cons 'defun (cons name (cons arglist body)))
   )
-
-(defmacro-maybe eval-and-compile (&rest body)
-  "Like `progn', but evaluates the body at compile time and at load time."
-  ;; Remember, it's magic.
-  (cons 'progn body))
 
 (defun byte-code-function-p (exp)
   "T if OBJECT is a byte-compiled function object.
@@ -132,6 +116,17 @@ If NEW is a string, that is the `use instead' message."
       (put fn 'byte-obsolete-info (cons new handler))
       (put fn 'byte-compile 'byte-compile-obsolete)))
   fn)
+
+
+;;; @@ function
+;;;
+
+(defun defalias (sym newdef)
+  "Set SYMBOL's function definition to NEWVAL, and return NEWVAL.
+Associates the function with the current load file, if any.
+\[poe-18.el; EMACS 19 emulating function]"
+  (fset sym newdef)
+  )
 
 
 ;;; @ text property
