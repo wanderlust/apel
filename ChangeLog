@@ -1,3 +1,52 @@
+Fri Apr 26 05:28:30 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.22 was released.
+
+	* tl-els: Version check for enriched.el was fixed for XEmacs 19.14.
+
+Fri Apr 26 02:45:12 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* bitmap.el (bitmap-decode-x-face): New function.
+	(bitmap-uncompface-program): New variable.
+
+	* bitmap.el: New module.
+
+Thu Apr 25 22:15:52 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/get-field-names): New function.
+
+Thu Apr 25 21:30:12 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/get-field-bodies): New argument `boundary';
+ 	use function `rfc822/narrow-to-header'.
+
+	* tl-822.el (rfc822/get-field-body): add new argument `boundary';
+ 	use function `rfc822/narrow-to-header'.
+
+	* tl-822.el (rfc822/narrow-to-header): New function.
+	(rfc822/get-header-string): Use function `rfc822/narrow-to-header'.
+	(rfc822/get-header-string-except): Use function
+	`rfc822/narrow-to-header'.
+
+Thu Apr 25 16:15:12 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/get-header-string,
+ 	rfc822/get-header-string-except): Argument `boundary' is changed
+ 	to optional.
+
+	* tl-822.el (rfc822/get-header-string): New function.
+
+Thu Apr 25 15:04:17 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/get-field-bodies): New function.
+
+Thu Apr 25 13:22:26 1996  Michael Sperber <sperber@informatik.uni-tuebingen.de>
+
+	* tl-list.el (caar, cadr, last, butlast): changed to function
+ 	because these macros in tl-list.el screw up at least the loop
+ 	macro in CL which causes other lossage. (cf. [tm-en:467])
+
+
 Thu Apr 25 12:08:33 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.19.3 was released.
