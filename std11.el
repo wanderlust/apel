@@ -38,7 +38,7 @@
 (defconst std11-next-field-head-regexp
   (concat "\n" std11-field-name-regexp ":"))
 
-(defun std11-field-body (name &optional boundary)
+(defun std11-get-field-body (name &optional boundary)
   "Return body of field NAME.
 If BOUNDARY is not nil, it is used as message header separator.
 \[std11.el]"
