@@ -244,6 +244,12 @@ Both SYMBOL and SPEC are unevaluated. The SPEC can be 0, t, a symbol
 	   [&rest ([&not eval] [&rest sexp])]
 	   [&optional (eval def-body)]
 	   &rest (&rest sexp)))
+(def-edebug-spec defsubst-maybe-cond
+  (&define name lambda-list
+	   [&optional stringp]
+	   [&rest ([&not eval] [&rest sexp])]
+	   [&optional (eval [&optional ("interactive" interactive)] def-body)]
+	   &rest (&rest sexp)))
 
 ;; edebug-spec for `static-*' macros are also defined here.
 ;; XXX: not defined yet.  FIXME!
