@@ -205,10 +205,19 @@
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)
   "Like `insert-file-contents', q.v., but don't character code conversion.
-\[emu-nemacs.el]"
-  (as-binary-input-file
-   ;; Returns list absolute file name and length of data inserted.
-   (insert-file-contents filename visit)))
+It converts line-break code from CRLF to LF. [emu-nemacs.el]"
+  (save-restriction
+    (narrow-to-region (point) (point))
+    (let ((return (as-binary-input-file
+		   (insert-file-contents filename visit))))
+      (while (search-forward "\r\n" nil t)
+	(replace-match "\n"))
+      (goto-char (point-min))
+      ;; Returns list absolute file name and length of data inserted.
+      (list (car return) (- (point-max) (point-min))))))
+
+(defalias 'insert-file-contents-as-raw-text-CRLF
+  'insert-file-contents-as-raw-text)
 
 (defun write-region-as-raw-text-CRLF (start end filename
 					    &optional append visit lockname)
@@ -223,27 +232,42 @@
 			      filename append visit))))
 
 (defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but don't code conversion."
-  (as-binary-input-file (find-file-noselect filename nowarn rawfile)))
+  "Like `find-file-noselect', q.v., but don't code conversion.
+\[emu-nemacs.el]"
+  (as-binary-input-file (find-file-noselect filename nowarn)))
 
 (defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but it does not code conversion
-except for line-break code."
-  (as-binary-input-file (find-file-noselect filename nowarn rawfile)))
+except for line-break code. [emu-nemacs.el]"
+  (or (get-file-buffer filename)
+      (save-excursion
+	(prog1
+	    (set-buffer
+	     (as-binary-input-file
+	      (find-file-noselect filename nowarn)))
+	  (while (search-forward "\r\n" nil t)
+	    (replace-match "\n"))
+	  (goto-char (point-min))
+	  (set-buffer-modified-p nil)))))
+
+(defalias 'find-file-noselect-as-raw-text-CRLF
+  'find-file-noselect-as-raw-text)
 
 (defun open-network-stream-as-binary (name buffer host service)
-  "Like `open-network-stream', q.v., but don't code conversion."
+  "Like `open-network-stream', q.v., but don't code conversion.
+\[emu-nemacs.el]"
   (let ((process (open-network-stream name buffer host service)))
     (set-process-kanji-code process 0)
     process))
 
 (defun save-buffer-as-binary (&optional args)
-  "Like `save-buffer', q.v., but don't encode."
+  "Like `save-buffer', q.v., but don't encode. [emu-nemacs.el]"
   (as-binary-output-file
    (save-buffer args)))
 
 (defun save-buffer-as-raw-text-CRLF (&optional args)
-  "Like `save-buffer', q.v., but save as network representation."
+  "Like `save-buffer', q.v., but save as network representation.
+\[emu-nemacs.el]"
   (if (buffer-modified-p)
       (save-restriction
 	(widen)
@@ -268,7 +292,7 @@ except for line-break code."
 (defun insert-file-contents-as-coding-system
   (coding-system filename &optional visit beg end replace)
   "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
-be applied to `kanji-fileio-code'."
+be applied to `kanji-fileio-code'. [emu-nemacs.el]"
   (let ((kanji-fileio-code coding-system)
 	kanji-expected-code)
     (insert-file-contents filename visit)))
@@ -276,7 +300,7 @@ be applied to `kanji-fileio-code'."
 (defun write-region-as-coding-system
   (coding-system start end filename &optional append visit lockname)
   "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
-applied to `kanji-fileio-code'."
+applied to `kanji-fileio-code'. [emu-nemacs.el]"
   (let ((kanji-fileio-code coding-system)
 	jka-compr-compression-info-list jam-zcat-filename-list)
     (write-region start end filename append visit)))
@@ -284,14 +308,14 @@ applied to `kanji-fileio-code'."
 (defun find-file-noselect-as-coding-system
   (coding-system filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
-be applied to `kanji-fileio-code'."
+be applied to `kanji-fileio-code'. [emu-nemacs.el]"
   (let ((kanji-fileio-code coding-system)
 	kanji-expected-code)
     (find-file-noselect filename nowarn)))
 
 (defun save-buffer-as-coding-system (coding-system &optional args)
   "Like `save-buffer', q.v., but CODING-SYSTEM the first arg will be
-applied to `kanji-fileio-code'."
+applied to `kanji-fileio-code'. [emu-nemacs.el]"
   (let ((kanji-fileio-code coding-system))
     (save-buffer args)))
 
@@ -337,7 +361,8 @@ but the contents viewed as characters do change.
 (defalias 'char-length 'char-bytes)
 
 (defmacro char-next-index (char index)
-  "Return index of character succeeding CHAR whose index is INDEX."
+  "Return index of character succeeding CHAR whose index is INDEX.
+\[emu-nemacs.el]"
   (` (+ (, index) (char-bytes (, char)))))
 
 

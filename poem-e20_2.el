@@ -120,6 +120,22 @@ code."
       ;; This operation does not change the length.
       (set-buffer-multibyte flag))))
 
+(defun insert-file-contents-as-raw-text-CRLF (filename
+					      &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+Like `insert-file-contents-as-binary', but it converts line-break code
+from CRLF to LF."
+  (let ((flag enable-multibyte-characters)
+	(coding-system-for-read 'raw-text-dos)
+	format-alist)
+    (prog1
+	;; Returns list absolute file name and length of data inserted.
+	(insert-file-contents filename visit beg end replace)
+      ;; This operation does not change the length.
+      (set-buffer-multibyte flag))))
+
 (defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but don't code and format conversion."
   (let ((flag enable-multibyte-characters)
@@ -135,6 +151,17 @@ code."
 except for line-break code."
   (let ((flag enable-multibyte-characters)
 	(coding-system-for-read 'raw-text)
+	format-alist)
+    (save-current-buffer
+      (prog1
+	  (set-buffer (find-file-noselect filename nowarn rawfile))
+	(set-buffer-multibyte flag)))))
+
+(defun find-file-noselect-as-raw-text-CRLF (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but it does not code and format conversion
+except for line-break code."
+  (let ((flag enable-multibyte-characters)
+	(coding-system-for-read 'raw-text-dos)
 	format-alist)
     (save-current-buffer
       (prog1

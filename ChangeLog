@@ -1,5 +1,32 @@
 1999-02-25  Katsumi Yamaoka   <yamaoka@jpl.org>
 
+	* poem-om.el (find-file-noselect-as-raw-text-CRLF): New function.
+	It is an alias for `find-file-noselect-as-raw-text'.
+	(insert-file-contents-as-raw-text-CRLF): New function.
+	It is an alias for `insert-file-contents-as-raw-text'.
+
+	* poem-nemacs.el (find-file-noselect-as-raw-text-CRLF): New
+	function. It is an alias for `find-file-noselect-as-raw-text'.
+	(find-file-noselect-as-raw-text): Convert line-break code from
+	CRLF to LF.
+	(insert-file-contents-as-raw-text-CRLF): New function. It is an
+	alias for `insert-file-contents-as-raw-text'.
+	(insert-file-contents-as-raw-text): Convert line-break code from
+	CRLF to LF.
+	(find-file-noselect-as-binary): Don't specify the optional third
+	argument `rawfile' for `find-file-noselect'.
+
+	* poem-ltn1.el (find-file-noselect-as-raw-text-CRLF): New function.
+	It is an alias for `find-file-noselect'.
+	(insert-file-contents-as-raw-text-CRLF): New function. It is an
+	alias for `insert-file-contents'.
+
+	* poem-20.el, poem-e20_2.el (find-file-noselect-as-raw-text-CRLF):
+	New function.
+	(insert-file-contents-as-raw-text-CRLF): New function.
+
+1999-02-25  Katsumi Yamaoka   <yamaoka@jpl.org>
+
 	* poem-20.el, poem-e20_2.el, poem-om.el
 	(find-file-noselect-as-raw-text): Undo the last change.
 	(insert-file-contents-as-raw-text): Likewise.
