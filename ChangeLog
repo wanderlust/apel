@@ -1,3 +1,15 @@
+1999-05-27  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* calist.el (calist-package-alist): New variable.
+	(make-calist-package): New function.
+	(find-calist-package): New function.
+	(in-calist-package): New function.
+	(standard): New calist package.
+	(calist-field-match-method): Use method for `t' as a default
+	method; set up `calist-default-field-match-method' as method for
+	`t' of `standard' package.
+
+
 1999-05-26  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* APEL: Version 9.19 released.
