@@ -1,5 +1,7 @@
 1998-04-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* APEL: Version 8.2 was released.
+
 	* install.el (install-detect-elisp-directory): Modify regexp to
  	allow trailing `/'.
 
