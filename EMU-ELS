@@ -4,52 +4,58 @@
 
 ;;; Code:
 
-(setq emu-modules '(poe poem mcharset emu))
+(setq emu-modules (cons 'emu
+			(if (or running-emacs-19_29-or-later
+				running-xemacs-19_14-or-later)
+			    '(richtext)
+			  '(tinyrich)
+			  )))
 
-(setq emu-modules
-      (nconc
-       (cond ((featurep 'xemacs)
-	      ;; for XEmacs
-	      (cons 'poe-xemacs
-		    (if (featurep 'mule)
-			;; for XEmacs with MULE
-			'(poem-20 poem-xm mcs-20 mcs-xm emu-20 emu-x20)
-		      ;; for XEmacs without MULE
-		      '(poem-ltn1 mcs-ltn1)
-		      ))
-	      )
-	     (running-mule-merged-emacs
-	      ;; for Emacs 20.1 or later
-	      (cons (if (and (fboundp 'set-buffer-multibyte)
-			     (subrp (symbol-function 'set-buffer-multibyte)))
-			'poem-e20_3 ; for Emacs 20.3
-		      'poem-e20_2 ; for Emacs 20.1 and 20.2
-		      )
-		    '(poe-19 poem-20 poem-e20 mcs-20 mcs-e20 emu-20 emu-e20))
-	      )
-	     ((boundp 'MULE)
-	      ;; for MULE 1.* and MULE 2.*
-	      (append '(poem-om mcs-om emu-mule)
-		      (if running-emacs-18
-			  '(poe-18 env)
-			'(poe-19)))
-	      )
-	     ((boundp 'NEMACS)
-	      ;; for NEmacs
-	      '(poe-18 poem-nemacs mcs-nemacs)
-	      )
-	     (t
-	      ;; for Emacs 19.34
-	      '(poe-19 poem-ltn1 mcs-ltn1)
-	      ))
-       emu-modules))
-
-(setq emu-modules
-      (append emu-modules
-	      (if (or running-emacs-19_29-or-later
-		      running-xemacs-19_14-or-later)
-		  '(richtext)
-		'(tinyrich)
-		)))
+(let ((poe-modules '(poe))
+      (poem-modules '(poem))
+      (mcs-modules '(mcharset))
+      pccl-modules)
+  (setq poe-modules (cons (cond ((featurep 'xemacs)
+				 'poe-xemacs)
+				((>= emacs-major-version 19)
+				 'poe-19)
+				(t
+				 'poe-18))
+			  poe-modules))
+  
+  (cond ((featurep 'mule)
+	 (setq pccl-modules '(pccl))
+	 (cond ((featurep 'xemacs)
+		(setq poem-modules (cons 'poem-xm (cons 'poem-20
+							poem-modules))
+		      mcs-modules (cons 'mcs-xm (cons 'mcs-20 mcs-modules))
+		      pccl-modules (cons 'pccl-20 pccl-modules))
+		)
+	       ((>= emacs-major-version 20)
+		(setq poem-modules (cons 'poem-e20 (cons 'poem-20
+							 poem-modules))
+		      mcs-modules (cons 'mcs-e20 (cons 'mcs-20
+						       mcs-modules))
+		      pccl-modules (cons 'pccl-20 pccl-modules))
+		)
+	       (t
+		(setq poem-modules (cons 'poem-om poem-modules)
+		      mcs-modules (cons 'mcs-om mcs-modules)
+		      pccl-modules (cons (pccl-om pccl-modules)))
+		))
+	 )
+	((boundp 'NEMACS)
+	 (setq poem-modules (cons 'poem-nemacs poem-modules)
+	       mcs-modules (cons 'mcs-nemacs mcs-modules))
+	 )
+	(t
+	 (setq poem-modules (cons 'poem-ltn1 poem-modules)
+	       mcs-modules (cons 'mcs-ltn1 mcs-modules))
+	 ))
+  
+  (setq emu-modules (append poe-modules poem-modules
+			    mcs-modules pccl-modules
+			    emu-modules))
+  )
 
 ;;; EMU-ELS ends here
