@@ -1,3 +1,15 @@
+1998-04-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el: emu-x20.el doesn't require 'emu-xemacs and 'emu-20.
+
+1998-04-16  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el: Don't require 'emu-xemacs and 'emu-20.
+
+	* emu.el: emu-latin1.el does not require 'emu-xemacs or 'emu-e19.
+
+	* emu-latin1.el: Don't require 'emu-xemacs or 'emu-e19.
+
 1998-04-16  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-mule.el, emu-latin1.el, emu-e20.el, emu-e19.el, emu-19.el,
