@@ -81,7 +81,7 @@
 	  ((equal (cdr s-field) field-value)
 	   calist))))
 
-(define-calist-field-match-method t #'calist-default-field-match-method)
+(define-calist-field-match-method t (function calist-default-field-match-method))
 
 (defsubst calist-field-match-method (field-type)
   (symbol-function

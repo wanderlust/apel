@@ -51,13 +51,15 @@
 	       (list (quote quote) (, bodyform))
 	     (,@ (mapcar
 		  (if var
-		      (lambda (h)
-			(` ((, (car h))
-			    (list (quote funcall)
-				  (lambda ((, var)) (,@ (cdr h)))
-				  (list (quote quote) (, var))))))
-		    (lambda (h)
-		      (` ((, (car h)) (quote (progn (,@ (cdr h))))))))
+		      (function
+		       (lambda (h)
+			 (` ((, (car h))
+			     (list (quote funcall)
+				   (function (lambda ((, var)) (,@ (cdr h))))
+				   (list (quote quote) (, var)))))))
+		    (function
+		     (lambda (h)
+		       (` ((, (car h)) (quote (progn (,@ (cdr h)))))))))
 		  handlers))))))
 
 (put 'static-defconst 'lisp-indent-function 'defun)

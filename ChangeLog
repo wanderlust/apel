@@ -1,3 +1,11 @@
+1999-06-18  Tanaka Akira      <akr@jaist.ac.jp>
+
+	* static.el (static-condition-case): Wrap lambda expression by
+	`function'.
+
+	* calist.el (calist-default-field-match-method): Use `function'
+	instead of #'.
+
 1999-06-17  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* pcustom.el: Load "custom" anyway.
