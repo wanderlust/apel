@@ -3,7 +3,7 @@
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Keywords: emulation, compatibility, NEmacs, MULE, Emacs/mule, XEmacs
+;; Keywords: emulation, compatibility, Nemacs, MULE, Emacs/mule, XEmacs
 
 ;; This file is part of emu.
 
@@ -118,7 +118,7 @@ TABLE defaults to the current buffer's category table."
 	      ))
        )
       ((boundp 'NEMACS)
-       ;; for NEmacs and NEpoch
+       ;; for Nemacs and Nepoch
 
        ;; old MULE emulation
        (defconst *noconv*    0)

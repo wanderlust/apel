@@ -135,7 +135,7 @@ PRODUCT-NAME is a string of the product's name."
   "Add checker function(s) to a product.
 PRODUCT is a product structure which returned by `product-define'.
 The rest arguments CHECKERS should be functions.  These functions
-are regist to the product's checkers list, and will be called by
+are registered to the product's checkers list, and will be called by
  `product-run-checkers'.
 If a checker is `ignore' will be ignored all checkers after this."
   (setq product (product-find product))

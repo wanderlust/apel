@@ -5,7 +5,7 @@ rem * Edit following lines to set PREFIX, EMACS, LISPDIR and VLISPDIR  *
 rem * according to your environment                                    *
 rem ********************************************************************
 rem * for Meadow                                                       *
-rem *   If you use Meadow on Windows NT, use meadowNT.exe insted of    *
+rem *   If you use Meadow on Windows NT, use meadowNT.exe instead of   *
 rem *   meadow95.exe                                                   *
 set MEADOWVER=1.10
 set PREFIX=c:\usr\meadow

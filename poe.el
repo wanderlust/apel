@@ -292,7 +292,7 @@ Completion ignores case if the ambient value of
 	 (if (fboundp 'string-to-number)
 	     (fset 'si:string-to-number (symbol-function 'string-to-number))
 	   (fset 'si:string-to-number (symbol-function 'string-to-int))
-	   ;; XXX: In v18, this causes infinite loop while bytecompiling.
+	   ;; XXX: In v18, this causes infinite loop while byte-compiling.
 	   ;; (defalias 'string-to-int 'string-to-number)
 	   )
 	 (put 'string-to-number 'defun-maybe t)
