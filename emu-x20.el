@@ -81,6 +81,7 @@ find-file-hooks, etc.
   '((iso-2022-jp . decode-mime-charset-region-with-iso646-unification)
     (iso-2022-jp-2 . decode-mime-charset-region-with-iso646-unification)
     (x-ctext . decode-mime-charset-region-with-iso646-unification)
+    (hz-gb-2312 . decode-mime-charset-region-for-hz)
     (t . decode-mime-charset-region-default))
   "Alist MIME-charset vs. decoder function."
   :group 'i18n
@@ -133,6 +134,9 @@ find-file-hooks, etc.
 	      )
 	    ))
 	(setq rest (cdr rest))))))
+
+(defun decode-mime-charset-region-for-hz (start end charset)
+  (decode-hz-region start end))
 
 (defun decode-mime-charset-region (start end charset)
   "Decode the text between START and END as MIME CHARSET."
