@@ -4,9 +4,10 @@
 	(add-to-list): Ditto.
 	(buffer-live-p): Return bool value.
 	(cadr, cdar, cddr): New functions.
-	(save-current-buffer): Check whether orig-buffer is alive.
+	(save-current-buffer): Check whether `orig-buffer' is alive.
 	(functionp): Sync with 20.3; use `car-safe'.
-	(line-beginning-position, line-end-position): Simplified.
+	(line-beginning-position, line-end-position): Use `forward-line'
+	or `end-of-line' only.
 	(point-at-bol, point-at-eol): Ditto.
 
 1999-05-15  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
