@@ -1,3 +1,7 @@
+1999-05-13  Tanaka Akira      <akr@jaist.ac.jp>
+
+	* pccl-om.el: pccl-om.el does not support Mule 1.*.
+
 1999-05-10  Daiki Ueno        <ueno@ueda.info.waseda.ac.jp>
 
 	* tinycustom.el (define-widget): Accept the optional arguments.

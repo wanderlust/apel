@@ -1,4 +1,4 @@
-;;; pccl-om.el --- Portable CCL utility for Mule 1.* and Mule 2.*
+;;; pccl-om.el --- Portable CCL utility for Mule 2.*
 
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 ;; Copyright (C) 1998 Tanaka Akira
