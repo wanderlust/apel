@@ -1,0 +1,44 @@
+;;; -*-Emacs-Lisp-*-
+;;;
+;;; $Id $
+;;;
+
+(setq emu-modules
+      (cons
+       'emu
+       (if (or running-emacs-19_29-or-later
+	       running-xemacs-19_14-or-later)
+	   '(richtext)
+	 '(tinyrich)
+	 )))
+
+(setq emu-modules
+      (nconc
+       (cond (running-mule-merged-emacs
+	      '(emu-e20)
+	      )
+	     (running-xemacs-with-mule
+	      '(emu-x20)
+	      )
+	     ((boundp 'MULE)
+	      '(emu-mule)
+	      )
+	     ((boundp 'NEMACS)
+	      '(emu-nemacs)
+	      )
+	     (t
+	      '(emu-e19)
+	      ))
+       emu-modules))
+
+(cond (running-emacs-18
+       (setq emu-modules (cons 'emu-18 (cons 'env emu-modules)))
+       )
+      (running-xemacs
+       (setq emu-modules (cons 'emu-xemacs emu-modules))
+       )
+      (t
+       (setq emu-modules (cons 'emu-19 emu-modules))
+       ))
+
+;;; EMU-ELS ends here
