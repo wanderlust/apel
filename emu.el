@@ -147,15 +147,11 @@ and `default-mime-charset'."
 			(while set1
 			  (setq obj (car set1))
 			  (or (memq obj set2)
-			      (throw 'not-subset nil)
-			      )
-			  (setq set1 (cdr set1))
-			  )
+			      (throw 'not-subset nil))
+			  (setq set1 (cdr set1)))
 			t))
-		    (throw 'tag (cdr cell))
-		  )
-		(setq rest (cdr rest))
-		)))
+		    (throw 'tag (cdr cell)))
+		(setq rest (cdr rest)))))
 	  default-mime-charset)))
 
 
@@ -166,8 +162,7 @@ and `default-mime-charset'."
   "Return the display width of the minibuffer prompt."
   (save-excursion
     (set-buffer (window-buffer (minibuffer-window)))
-    (current-column)
-    ))
+    (current-column)))
 
 
 ;;; @ Emacs 19.29 emulation
@@ -208,8 +203,7 @@ STRING should be given if the last search was by `string-match' on STRING.
 If non-nil, second arg INITIAL-INPUT is a string to insert before reading.
 The third arg HISTORY, is dummy for compatibility. [emu.el]
 See `read-from-minibuffer' for details of HISTORY argument."
-	(si:read-string prompt initial-input)
-	)
+	(si:read-string prompt initial-input))
       ))
 
 
@@ -224,8 +218,7 @@ until a certain package is loaded, you should put the call to `add-to-list'
 into a hook function that will be run only after loading the package.
 \[Emacs 19.30 emulating function]"
   (or (member element (symbol-value list-var))
-      (set list-var (cons element (symbol-value list-var)))
-      ))
+      (set list-var (cons element (symbol-value list-var)))))
 
 (cond ((fboundp 'insert-file-contents-literally)
        )
@@ -239,8 +232,7 @@ find-file-hooks, etc.
   This function ensures that none of these modifications will take place.
 \[Emacs 19.30 emulating function]"
 	 (let (file-name-handler-alist)
-	   (insert-file-contents filename visit beg end replace)
-	   ))
+	   (insert-file-contents filename visit beg end replace)))
        )
       (t
        (defalias 'insert-file-contents-literally 'insert-file-contents)
@@ -256,8 +248,7 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
 \[Emacs 19.31 emulating function]"
   (and object
        (get-buffer object)
-       (buffer-name (get-buffer object))
-       ))
+       (buffer-name (get-buffer object))))
 
 ;; This macro was imported Emacs 19.33.
 (defmacro-maybe save-selected-window (&rest body)
@@ -307,6 +298,38 @@ See also `with-temp-file' and `with-output-to-string'."
 	       (,@ forms))
 	   (and (buffer-name (, temp-buffer))
 		(kill-buffer (, temp-buffer))))))))
+
+;; This function was imported Emacs 20.3.
+(defun-maybe last (x &optional n)
+  "Return the last link of the list X.  Its car is the last element.
+If X is nil, return nil.
+If N is non-nil, return the Nth-to-last link of X.
+If N is bigger than the length of X, return X."
+  (if n
+      (let ((m 0) (p x))
+	(while (consp p)
+	  (setq m (1+ m) p (cdr p)))
+	(if (<= n 0) p
+	  (if (< n m) (nthcdr (- m n) x) x)))
+    (while (cdr x)
+      (setq x (cdr x)))
+    x))
+
+;; This function was imported Emacs 20.3. (cl function)
+(defun-maybe butlast (x &optional n)
+  "Returns a copy of LIST with the last N elements removed."
+  (if (and n (<= n 0)) x
+    (nbutlast (copy-sequence x) n)))
+  
+;; This function was imported Emacs 20.3. (cl function)
+(defun-maybe nbutlast (x &optional n)
+  "Modifies LIST to remove the last N elements."
+  (let ((m (length x)))
+    (or n (setq n 1))
+    (and (< n m)
+	 (progn
+	   (if (> n 0) (setcdr (nthcdr (- (1- m) n) x) nil))
+	   x))))
 
 ;; This function was imported from XEmacs 21.
 (defun-maybe split-string (string &optional pattern)
@@ -364,8 +387,7 @@ This function does not move point. [XEmacs emulating function]"
 	(forward-line (1- arg))
       )
     (end-of-line)
-    (point)
-    ))
+    (point)))
 
 
 ;;; @ for XEmacs 20
