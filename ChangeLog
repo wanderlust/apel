@@ -1,8 +1,8 @@
 1999-06-04  MORIOKA Tomohiko  <tomo@m17n.org>
 
-	* pces-xfc.el (insert-file-contents-literacy-treats-binary): New
+	* pces-xfc.el (insert-file-contents-literally-treats-binary): New
 	facility.
-	(insert-file-contents-literacy-treats-file-name-handler): New
+	(insert-file-contents-literally-treats-file-name-handler): New
 	facility.
 	(insert-file-contents-as-binary): Define as an alias for
 	`insert-file-contents-literally' if it is not broken.

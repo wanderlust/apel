@@ -48,8 +48,8 @@
 
 (require 'broken)
 
-(broken-facility insert-file-contents-literacy-treats-binary
-  "Function `insert-file-contents-literacy' decodes text."
+(broken-facility insert-file-contents-literally-treats-binary
+  "Function `insert-file-contents-literally' decodes text."
   (let ((str "\xa1\xa3")
 	(coding-system-for-write 'binary)
 	(coding-system-for-read 'euc-jp))
@@ -66,7 +66,7 @@
        )
      str)))
 
-(broken-facility insert-file-contents-literacy-treats-file-name-handler
+(broken-facility insert-file-contents-literally-treats-file-name-handler
   "Function `insert-file-contents' doesn't call file-name-handler."
   (let (called)
     (with-temp-buffer
@@ -83,8 +83,8 @@
     called))
 
 (static-if
-    (or (broken-p 'insert-file-contents-literacy-treats-binary)
-	(broken-p 'insert-file-contents-literacy-treats-file-name-handler))
+    (or (broken-p 'insert-file-contents-literally-treats-binary)
+	(broken-p 'insert-file-contents-literally-treats-file-name-handler))
     (defun insert-file-contents-as-binary (filename
 					   &optional visit beg end replace)
       "Like `insert-file-contents', but only reads in the file literally.
