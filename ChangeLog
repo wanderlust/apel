@@ -1,3 +1,7 @@
+2000-01-30  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* poe-18.el (window-minibuffer-p): New function.
+
 2000-01-30  Tsukamoto Tetsuo  <czkmt@remus.dti.ne.jp>
 
 	* pces-om.el (insert-file-contents-as-coding-system): Ignore BEG,
@@ -2492,7 +2496,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>

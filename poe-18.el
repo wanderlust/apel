@@ -519,6 +519,9 @@ even if a buffer with that name exists."
 (defun mark (&optional force)
   (si:mark))
 
+(defun-maybe window-minibuffer-p (&optional window)
+"Return non-nil if WINDOW is a minibuffer window."
+  (eq (or window (selected-window)) (minibuffer-window)))
 
 ;;; @@ Environment variables.
 ;;;
