@@ -1,5 +1,13 @@
 1998-05-15  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* emu-x20.el (mime-character-unification-limit-size): New
+	variable.
+	(decode-mime-charset-region-with-iso646-unification): Don't unify
+	if size of region is larger than
+	'mime-character-unification-limit-size.
+
+1998-05-15  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu-x20.el, emu-nemacs.el, emu-mule.el, emu-latin1.el,
 	emu-e20_3.el (looking-at-as-unibyte): New alias.
 
