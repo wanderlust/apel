@@ -45,6 +45,7 @@
 	   (iso-2022-jp-2 . iso-2022-7bit-ss2)
 	   (tis-620	  . tis620)
 	   (windows-874	  . tis620)
+	   (cp874	  . tis620)
 	   (x-ctext       . ctext)
 	   (unknown       . undecided)
 	   (x-unknown     . undecided)
