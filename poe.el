@@ -29,7 +29,7 @@
 
 (provide 'poe)				; beware of circular dependency.
 					; localhook.el depends on poe.el.
-(require 'pym)				; `static-*' and `def*-maybe'.
+(require 'pym)
 
 
 ;;; @ Version information.
@@ -641,7 +641,9 @@ On other systems, this variable is normally always nil.")
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (save-current-buffer &rest BODY)
 ;; v20 defines `save-current-buffer' as a C primitive (in src/editfns.c)
 ;; and introduces a new bytecode Bsave_current_buffer(_1), replacing an
-;; obsolete bytecode Bread_char.
+;; obsolete bytecode Bread_char.  To make things worse, Emacs 20.1 and
+;; 20.2 have a bug that it will restore the current buffer without
+;; confirming that it is alive.
 ;; This is a source of incompatibility of .elc between v18/v19 and v20.
 ;; (XEmacs compiler takes care of it if compatibility mode is enabled.)
 (defmacro-maybe save-current-buffer (&rest body)

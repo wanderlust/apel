@@ -25,7 +25,7 @@
 
 ;;; Code:
 
-(require 'pym)				; `static-*' and `def*-maybe'.
+(require 'pym)
 
 
 ;;; @ color
