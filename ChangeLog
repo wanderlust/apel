@@ -30,7 +30,7 @@
 
 	* poe-18.el: Abolish function `char-list-to-string'.
 
-1998-10-18  Tanaka Akira  <morioka@jaist.ac.jp>
+1998-10-18  Tanaka Akira  <akr@jaist.ac.jp>
 
 	* broken.el (check-broken-facility): Also use compile time
 	description.
@@ -40,7 +40,7 @@
 
 	* APEL: Version 9.4 was released.
 
-1998-10-17  Tanaka Akira  <morioka@jaist.ac.jp>
+1998-10-17  Tanaka Akira  <akr@jaist.ac.jp>
 
 	* broken.el (check-broken-facility): New macro.
 
