@@ -24,6 +24,8 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'poe))
 (require 'poem-20)
 
 

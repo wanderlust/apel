@@ -28,6 +28,10 @@
 ;;; @ color
 ;;;
 
+
+(eval-when-compile
+  (require 'poe))
+
 (defun-maybe set-cursor-color (color-name)
   "Set the text cursor color of the selected frame to COLOR.
 When called interactively, prompt for the name of the color to use."
