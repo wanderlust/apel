@@ -1,3 +1,17 @@
+1998-06-09  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* emu.el (split-string): New function (Emacs 20/XEmacs 20
+	emulating function).
+
+	* emu.el (with-temp-buffer): New macro (Emacs 20/XEmacs 20
+	emulating macro).
+
+	* emu.el (with-current-buffer): New macro (Emacs 20/XEmacs 20
+	emulating macro).
+
+	* emu.el (save-current-buffer): New macro (Emacs 20/XEmacs 20
+	emulating macro).
+
 1998-06-08  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* mule-caesar.el (mule-caesar-region): Don't compare charset with
