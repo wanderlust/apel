@@ -28,11 +28,11 @@
 
 ;;; Code:
 
-(defsubst encode-mime-charset-region (start end charset)
+(defsubst encode-mime-charset-region (start end charset &optional lbt)
   "Encode the text between START and END as MIME CHARSET."
   (let (cs)
     (if (and enable-multibyte-characters
-	     (setq cs (mime-charset-to-coding-system charset)))
+	     (setq cs (mime-charset-to-coding-system charset lbt)))
 	(encode-coding-region start end cs)
       )))
 
@@ -45,11 +45,11 @@
       )))
 
 
-(defsubst encode-mime-charset-string (string charset)
+(defsubst encode-mime-charset-string (string charset &optional lbt)
   "Encode the STRING as MIME CHARSET."
   (let (cs)
     (if (and enable-multibyte-characters
-	     (setq cs (mime-charset-to-coding-system charset)))
+	     (setq cs (mime-charset-to-coding-system charset lbt)))
 	(encode-coding-string string cs)
       string)))
 
@@ -85,45 +85,72 @@
 	    latin-jisx0201 japanese-jisx0208-1978
 	    chinese-gb2312 japanese-jisx0208
 	    korean-ksc5601 japanese-jisx0212)		. iso-2022-jp-2)
-    ((ascii latin-iso8859-1 greek-iso8859-7
-	    latin-jisx0201 japanese-jisx0208-1978
-	    chinese-gb2312 japanese-jisx0208
-	    korean-ksc5601 japanese-jisx0212
-	    chinese-cns11643-1 chinese-cns11643-2)	. iso-2022-int-1)
-    ((ascii latin-iso8859-1 latin-iso8859-2
-	    cyrillic-iso8859-5 greek-iso8859-7
-	    latin-jisx0201 japanese-jisx0208-1978
-	    chinese-gb2312 japanese-jisx0208
-	    korean-ksc5601 japanese-jisx0212
-	    chinese-cns11643-1 chinese-cns11643-2
-	    chinese-cns11643-3 chinese-cns11643-4
-	    chinese-cns11643-5 chinese-cns11643-6
-	    chinese-cns11643-7)				. iso-2022-int-1)
+;     ((ascii latin-iso8859-1 greek-iso8859-7
+; 	    latin-jisx0201 japanese-jisx0208-1978
+; 	    chinese-gb2312 japanese-jisx0208
+; 	    korean-ksc5601 japanese-jisx0212
+; 	    chinese-cns11643-1 chinese-cns11643-2)	. iso-2022-int-1)
+;     ((ascii latin-iso8859-1 latin-iso8859-2
+; 	    cyrillic-iso8859-5 greek-iso8859-7
+; 	    latin-jisx0201 japanese-jisx0208-1978
+; 	    chinese-gb2312 japanese-jisx0208
+; 	    korean-ksc5601 japanese-jisx0212
+; 	    chinese-cns11643-1 chinese-cns11643-2
+; 	    chinese-cns11643-3 chinese-cns11643-4
+; 	    chinese-cns11643-5 chinese-cns11643-6
+; 	    chinese-cns11643-7)				. iso-2022-int-1)
     ))
 
+(defun-maybe coding-system-get (coding-system prop)
+  "Extract a value from CODING-SYSTEM's property list for property PROP."
+  (plist-get (coding-system-plist coding-system) prop)
+  )
 
 (defun coding-system-to-mime-charset (coding-system)
   "Convert CODING-SYSTEM to a MIME-charset.
 Return nil if corresponding MIME-charset is not found."
   (or (car (rassq coding-system mime-charset-coding-system-alist))
-      (coding-system-get coding-system 'mime-charset)))
+      (coding-system-get coding-system 'mime-charset)
+      ))
 
-(defun mime-charset-list ()
+(defun-maybe-cond mime-charset-list ()
   "Return a list of all existing MIME-charset."
-  (let ((dest (mapcar (function car) mime-charset-coding-system-alist))
-	(rest coding-system-list)
-	cs)
-    (while rest
-      (setq cs (car rest))
-      (unless (rassq cs mime-charset-coding-system-alist)
-	(if (setq cs (coding-system-get cs 'mime-charset))
+  ((boundp 'coding-system-list)
+   (let ((dest (mapcar (function car) mime-charset-coding-system-alist))
+	 (rest coding-system-list)
+	 cs)
+     (while rest
+       (setq cs (car rest))
+       (unless (rassq cs mime-charset-coding-system-alist)
+	 (if (setq cs (coding-system-get cs 'mime-charset))
+	     (or (rassq cs mime-charset-coding-system-alist)
+		 (memq cs dest)  
+		 (setq dest (cons cs dest))
+		 )))
+       (setq rest (cdr rest)))
+     dest))
+   (t
+    (let ((dest (mapcar (function car) mime-charset-coding-system-alist))
+	  (rest (coding-system-list))
+	  cs)
+      (while rest
+	(setq cs (car rest))
+	(unless (rassq cs mime-charset-coding-system-alist)
+	  (when (setq cs (or (coding-system-get cs 'mime-charset)
+			     (and
+			      (setq cs (aref
+					(coding-system-get cs 'coding-spec)
+					2))
+			      (string-match "(MIME:[ \t]*\\([^,)]+\\)" cs)
+			      (match-string 1 cs))))
+	    (setq cs (intern (downcase cs)))
 	    (or (rassq cs mime-charset-coding-system-alist)
-		(memq cs dest)  
+		(memq cs dest)
 		(setq dest (cons cs dest))
 		)))
-      (setq rest (cdr rest)))
-    dest))
-
+	(setq rest (cdr rest)))
+      dest)
+    ))
 
 ;;; @ end
 ;;;

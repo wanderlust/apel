@@ -32,9 +32,9 @@
 (require 'mcs-20)
 
 
-(defun encode-mime-charset-region (start end charset)
+(defun encode-mime-charset-region (start end charset &optional lbt)
   "Encode the text between START and END as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
+  (let ((cs (mime-charset-to-coding-system charset lbt)))
     (if cs
 	(encode-coding-region start end cs)
       )))
@@ -125,9 +125,9 @@
 		       (assq t mime-charset-decoder-alist)))))
     (funcall func start end charset lbt)))
 
-(defsubst encode-mime-charset-string (string charset)
+(defsubst encode-mime-charset-string (string charset &optional lbt)
   "Encode the STRING as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
+  (let ((cs (mime-charset-to-coding-system charset lbt)))
     (if cs
 	(encode-coding-string string cs)
       string)))
@@ -169,11 +169,11 @@
 	    latin-jisx0201 japanese-jisx0208-1978
 	    chinese-gb2312 japanese-jisx0208
 	    korean-ksc5601 japanese-jisx0212)		. iso-2022-jp-2)
-    ((ascii latin-iso8859-1 greek-iso8859-7
-	    latin-jisx0201 japanese-jisx0208-1978
-	    chinese-gb2312 japanese-jisx0208
-	    korean-ksc5601 japanese-jisx0212
-	    chinese-cns11643-1 chinese-cns11643-2)	. iso-2022-int-1)
+    ;; ((ascii latin-iso8859-1 greek-iso8859-7
+    ;;         latin-jisx0201 japanese-jisx0208-1978
+    ;;         chinese-gb2312 japanese-jisx0208
+    ;;         korean-ksc5601 japanese-jisx0212
+    ;;         chinese-cns11643-1 chinese-cns11643-2)      . iso-2022-int-1)
     ))
 
 

@@ -23,11 +23,12 @@ elc:
 
 install:
 	$(EMACS) $(FLAGS) -f install-apel $(PREFIX) $(LISPDIR) \
-		$(VERSION_SPECIFIC_LISPDIR)
+		$(VERSION_SPECIFIC_LISPDIR)	# $(MAKE)
 
 
 install-package:
-	$(XEMACS) $(FLAGS) -f install-apel-package $(PACKAGEDIR)
+	$(XEMACS) $(FLAGS) -f install-apel-package $(PACKAGEDIR) \
+		# $(MAKE)
 
 
 what-where:

@@ -1,3 +1,118 @@
+1999-02-26  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL-MK (install-just-print-p): Modify for special option of GNU
+	make.
+
+1999-02-26  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL-MK (install-just-print-p): New function.
+	(install-apel): Use `install-just-print-p'.
+	(install-apel-package): Likewise.
+
+1999-02-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* Makefile (install): Add voodoo comment `# $(MAKE)'.
+	(install-package): Likewise.
+
+	* APEL-MK (install-apel): Run installer with `just-print' mode if
+	environment variable "MAKEFLAGS" matches "^[^ =]*n" option.
+	(install-apel-package): Likewise.
+
+1999-02-21  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* install.el (install-file): New optional argument JUST-PRINT.
+	(install-files): Likewise.
+	(install-elisp-module): Likewise.
+	(install-elisp-modules): Likewise.
+
+1999-02-18  Keiichi Suzuki  <kei-suzu@mail.wbs.ne.jp>
+
+	* mcs-e20.el (coding-system-get): New function.
+	(mime-charset-list): Fix for Emacs 20.2.
+
+1999-02-14  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* mcs-om.el (default-mime-charset-for-write): Delete the remaining
+	arguments for `defcustom'.
+
+1999-02-13  Tanaka Akira  <akr@jaist.ac.jp>
+
+	* mcs-e20.el (charsets-mime-charset-alist): Don't set up
+	`iso-2022-int-1' in default.
+
+1999-02-11  Tanaka Akira  <akr@jaist.ac.jp>
+
+	* README.en, README.ja, pccl.el: pccl does not support Mule 1.x.
+
+	* pccl-20.el: Update broken facility message with Emacs version
+	it fixes.
+
+1999-02-07  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* install.el (install-prefix): Modify for Meadow.
+
+1999-01-26  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mcs-20.el (mime-charset-to-coding-system-default-method): New
+	user option.
+	(mime-charset-to-coding-system): Call
+	`mime-charset-to-coding-system-default-method' if suitable
+	coding-system is not found.
+
+1999-01-21  Keiichi Suzuki  <kei-suzu@mail.wbs.ne.jp>
+
+	* mcs-xm.el (encode-mime-charset-region): Add new optional
+	argument `lbt'.
+	(encode-mime-charset-string): Ditto.
+
+	* mcs-nemacs.el (lbt-to-string): New inline function.
+	(encode-mime-charset-region): Add new optional argument `lbt'.
+	(encode-mime-charset-string): Ditto.
+
+	* mcs-ltn1.el (lbt-to-string): New inline function.
+	(encode-mime-charset-region): Add new optional argument `lbt'.
+	(encode-mime-charset-string): Ditto.
+	(decode-mime-charset-region): Use `lbt-to-string'.
+
+	* mcs-e20.el (encode-mime-charset-region): Add new optional
+	argument `lbt'.
+	(encode-mime-charset-string): Ditto.
+
+	* mcs-om.el (lbt-to-string): New inline function.
+	(encode-mime-charset-region): Add new optional argument `lbt'.
+	(encode-mime-charset-string): Ditto.
+	(decode-mime-charset-region): Use `lbt-to-string'.
+	(decode-mime-charset-string): Ditto.
+
+1998-12-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mcs-om.el (default-mime-charset-for-write): New variable.
+	(detect-mime-charset-region): Return
+	`default-mime-charset-for-write' if suitable mime-charset is not
+	found.
+
+	* mcs-20.el (detect-mime-charset-region): Don't call
+	`default-mime-charset-detect-method-for-write' if suitable
+	mime-charset is found.
+
+	* mcharset.el (charsets-to-mime-charset): Return nil if suitable
+	mime-charset is not found; abolish optional argument `default'.
+
+1998-12-23  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mcs-xm.el (charsets-mime-charset-alist): Don't set up
+	`iso-2022-int-1' in default.
+
+	* mcs-20.el (default-mime-charset-for-write): New user option.
+	(default-mime-charset-detect-method-for-write): New user option.
+	(detect-mime-charset-region): Refer
+	`default-mime-charset-detect-method-for-write' or
+	`default-mime-charset-for-write' if suitable mime-charset is not
+	found.
+
+	* mcharset.el (charsets-to-mime-charset): Add new optional
+	argument `default'.
+
 1999-02-26  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poem-nemacs.el (find-file-noselect-as-coding-system): Bind
@@ -1299,7 +1414,7 @@
 1998-04-27  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* calist.el (ctree-find-calist): Renamed from
- 	'ctree-match-calist-all.
+	'ctree-match-calist-all.
 
 
 1998-04-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>

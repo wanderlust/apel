@@ -1,10 +1,9 @@
 ;;; install.el --- Emacs Lisp package install utility
 
-;; Copyright (C) 1996 Free Software Foundation, Inc.
+;; Copyright (C) 1996,1997,1998,1999 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Created: 1996/08/18
-;; Version: $Id$
 ;; Keywords: install, byte-compile, directory detection
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -57,35 +56,37 @@
 
 (defvar install-overwritten-file-modes (+ (* 64 6)(* 8 4) 4))
 
-(defun install-file (file src dest &optional move overwrite)
-  (let ((src-file (expand-file-name file src)))
-    (if (file-exists-p src-file)
-	(let ((full-path (expand-file-name file dest)))
-	  (if (and (file-exists-p full-path) overwrite)
-              (delete-file full-path)
-	    )
-	  (copy-file src-file full-path t t)
-	  (if move
-	      (catch 'tag
-		(while (and (file-exists-p src-file)
-			    (file-writable-p src-file))
-		  (condition-case err
-		      (progn
-			(delete-file src-file)
-			(throw 'tag nil)
-			)
-		    (error (princ (format "%s\n" (nth 1 err))))
-		    ))))
-	  (princ (format "%s -> %s\n" file dest))
-	  ))
-    ))
+(defun install-file (file src dest &optional move overwrite just-print)
+  (if just-print
+      (princ (format "%s -> %s\n" file dest))
+    (let ((src-file (expand-file-name file src)))
+      (if (file-exists-p src-file)
+	  (let ((full-path (expand-file-name file dest)))
+	    (if (and (file-exists-p full-path) overwrite)
+		(delete-file full-path)
+	      )
+	    (copy-file src-file full-path t t)
+	    (if move
+		(catch 'tag
+		  (while (and (file-exists-p src-file)
+			      (file-writable-p src-file))
+		    (condition-case err
+			(progn
+			  (delete-file src-file)
+			  (throw 'tag nil)
+			  )
+		      (error (princ (format "%s\n" (nth 1 err))))
+		      ))))
+	    (princ (format "%s -> %s\n" file dest))
+	    ))
+      )))
 
-(defun install-files (files src dest &optional move overwrite)
+(defun install-files (files src dest &optional move overwrite just-print)
   (or (file-exists-p dest)
       (make-directory dest t)
       )
   (mapcar (function (lambda (file)
-		      (install-file file src dest move overwrite)
+		      (install-file file src dest move overwrite just-print)
 		      ))
 	  files))
 
@@ -93,23 +94,29 @@
 ;;; @@ install Emacs Lisp files
 ;;;
 
-(defun install-elisp-module (module src dest)
+(defun install-elisp-module (module src dest &optional just-print)
   (let (el-file elc-file)
     (let ((name (symbol-name module)))
       (setq el-file (concat name ".el"))
       (setq elc-file (concat name ".elc"))
       )
     (let ((src-file (expand-file-name el-file src)))
-      (if (file-exists-p src-file)
+      (if (not (file-exists-p src-file))
+	  nil 
+	(if just-print
+	    (princ (format "%s -> %s\n" el-file dest))
 	  (let ((full-path (expand-file-name el-file dest)))
 	    (if (file-exists-p full-path)
-                (delete-file full-path)
+		(delete-file full-path)
 	      )
 	    (copy-file src-file full-path t t)
 	    (princ (format "%s -> %s\n" el-file dest))
-	    ))
+	    )))
       (setq src-file (expand-file-name elc-file src))
-      (if (file-exists-p src-file)
+      (if (not (file-exists-p src-file))
+	  nil 
+	(if just-print
+	    (princ (format "%s -> %s\n" elc-file dest))
 	  (let ((full-path (expand-file-name elc-file dest)))
             (if (file-exists-p full-path)
                 (delete-file full-path)
@@ -125,15 +132,15 @@
 		  (error (princ (format "%s\n" (nth 1 err))))
 		  )))
 	    (princ (format "%s -> %s\n" elc-file dest))
-	    ))
+	    )))
       )))
 
-(defun install-elisp-modules (modules src dest)
+(defun install-elisp-modules (modules src dest &optional just-print)
   (or (file-exists-p dest)
       (make-directory dest t)
       )
   (mapcar (function (lambda (module)
-		      (install-elisp-module module src dest)
+		      (install-elisp-module module src dest just-print)
 		      ))
 	  modules))
 
@@ -142,7 +149,8 @@
 ;;;
 
 (defvar install-prefix
-  (if (or running-emacs-18 running-xemacs)
+  (if (or running-emacs-18 running-xemacs
+	  (string= system-configuration-options "NT")) ; for Meadow
       (expand-file-name "../../.." exec-directory)
     (expand-file-name "../../../.." data-directory)
     )) ; install to shared directory (maybe "/usr/local")
