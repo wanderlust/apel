@@ -27,6 +27,8 @@
 ;;;
 ;;; Code:
 
+(require 'emu-xemacs)
+
 (defvar xemacs-beta-version
   (if (string-match "(beta\\([0-9]+\\))" emacs-version)
       (string-to-number
@@ -137,6 +139,10 @@ in the region between START and END.
 
 (defalias 'string-width 'length)
 
+(defun string-to-int-list (str)
+  (mapcar #'char-int str)
+  )
+
 (defalias 'sref 'aref)
 
 (defun truncate-string (str width &optional start-column)
@@ -147,12 +153,6 @@ Optional non-nil arg START-COLUMN specifies the starting column.
       (setq start-column 0))
   (substring str start-column width)
   )
-
-
-;;; @ etc
-;;;
-
-(require 'emu-xemacs)
 
 
 ;;; @ end

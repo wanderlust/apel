@@ -27,6 +27,36 @@
 ;;;
 ;;; Code:
 
+;;; @ version specific features
+;;;
+
+(cond (running-emacs-19
+       (require 'emu-19)
+       
+       ;; Suggested by SASAKI Osamu <osamu@shuugr.bekkoame.or.jp>
+       ;; (cf. [os2-emacs-ja:78])
+       (defun fontset-pixel-size (fontset)
+	 (let* ((font (get-font-info
+		       (aref (cdr (get-fontset-info fontset)) 0)))
+		(open (aref font 4)))
+	   (if (= open 1)
+	       (aref font 5)
+	     (if (= open 0)
+		 (let ((pat (aref font 1)))
+		   (if (string-match "-[0-9]+-" pat)
+		       (string-to-number
+			(substring
+			 pat (1+ (match-beginning 0)) (1- (match-end 0))))
+		     0)))
+	     )))
+       )
+      (running-emacs-18
+       (require 'emu-18)
+       (defun tl:make-overlay (beg end &optional buffer type))
+       (defun tl:overlay-put (overlay prop value))
+       ))
+
+
 ;;; @ character set
 ;;;
 
@@ -61,38 +91,10 @@ encoded in CODING-SYSTEM. [emu-mule.el]"
   )
 
 
-;;; @ version specific features
+;;; @ character and string
 ;;;
 
-(cond (running-emacs-19
-       (require 'emu-19)
-       
-       ;; Suggested by SASAKI Osamu <osamu@shuugr.bekkoame.or.jp>
-       ;; (cf. [os2-emacs-ja:78])
-       (defun fontset-pixel-size (fontset)
-	 (let* ((font (get-font-info
-		       (aref (cdr (get-fontset-info fontset)) 0)))
-		(open (aref font 4)))
-	   (if (= open 1)
-	       (aref font 5)
-	     (if (= open 0)
-		 (let ((pat (aref font 1)))
-		   (if (string-match "-[0-9]+-" pat)
-		       (string-to-number
-			(substring
-			 pat (1+ (match-beginning 0)) (1- (match-end 0))))
-		     0)))
-	     )))
-       )
-      (running-emacs-18
-       (require 'emu-18)
-       (defun tl:make-overlay (beg end &optional buffer type))
-       (defun tl:overlay-put (overlay prop value))
-       ))
-
-
-;;; @@ truncate-string
-;;;
+(defalias 'string-to-int-list 'string-to-char-list)
 
 (or (fboundp 'truncate-string)
 ;;; Imported from Mule-2.3

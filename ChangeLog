@@ -1,3 +1,45 @@
+Wed May 15 14:23:50 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.24 was released.
+
+	* tl-822.el (rfc822/lexical-analyze): Unnecessary local variable
+ 	`len' was abolished.
+
+Wed May 15 14:19:45 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/lexical-analyze): Unnecessary local variable
+ 	`i' was abolished.
+
+Wed May 15 14:12:22 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (permute): Unnecessary local variable `ret' was
+ 	abolished.
+
+Wed May 15 14:05:34 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-xemacs.el: Function `string-to-int-list' for XEmacs 19 was
+ 	deleted, for XEmacs 20 with Mule was moved to emu-x20.el.
+
+	* emu-x20.el, emu-e19.el: rearrangement.
+
+Tue May 14 16:28:33 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el: rearrangement.
+
+	* emu-mule.el (string-to-int-list): New alias; moved from emu-19.el.
+
+Tue May 14 16:23:29 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e19.el (string-to-int-list): New alias; moved from emu-19.el.
+
+	* emu-19.el: Alias `string-to-int-list' was moved to emu-e19.el
+ 	and emu-mule.el.
+
+Tue May 14 06:55:46 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el (compress-cited-prefix): New function.
+
+
 Tue May 14 02:41:20 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.22.5 was released.

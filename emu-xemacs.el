@@ -96,13 +96,6 @@
   "Convert list of character CHAR-LIST to string. [emu-xemacs.el]"
   `(mapconcat #'char-to-string ,char-list ""))
 
-(if running-xemacs-20
-    (defun string-to-int-list (str)
-      (mapcar #'char-int str)
-      )
-  (fset 'string-to-int-list 'string-to-char-list)
-  )
-
 
 ;;; @ end
 ;;;

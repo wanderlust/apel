@@ -27,6 +27,16 @@
 ;;;
 ;;; Code:
 
+;;; @ version and variant specific features
+;;;
+
+(cond (running-xemacs
+       (require 'emu-xemacs))
+      (running-emacs-19
+       (require 'emu-19)
+       ))
+
+
 ;;; @ character set
 ;;;
 
@@ -120,6 +130,8 @@ between START and END. [emu-e19.el; Mule emulating function]"
   (mapcar (function identity) str)
   )
 
+(defalias 'string-to-int-list 'string-to-char-list)
+
 (defalias 'sref 'aref)
 
 (defun truncate-string (str width &optional start-column)
@@ -130,16 +142,6 @@ Optional non-nil arg START-COLUMN specifies the starting column.
       (setq start-column 0))
   (substring str start-column width)
   )
-
-
-;;; @ etc
-;;;
-
-(cond (running-xemacs
-       (require 'emu-xemacs))
-      (running-emacs-19
-       (require 'emu-19)
-       ))
 
 
 ;;; @ end
