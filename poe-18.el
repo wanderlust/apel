@@ -50,7 +50,9 @@
 
 ;;; @ Compilation.
 ;;;
-(fset 'defalias 'fset)
+(defun defalias (sym newdef)
+  "Set SYMBOL's function definition to NEWVAL, and return NEWVAL."
+  (fset sym newdef))
 
 (defun byte-code-function-p (object)
   "Return t if OBJECT is a byte-compiled function object."

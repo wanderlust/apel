@@ -62,6 +62,7 @@
 	    (if (and (file-exists-p full-path) overwrite)
 		(delete-file full-path))
 	    (copy-file src-file full-path t t)
+	    (set-file-modes full-path install-overwritten-file-modes)
 	    (if move
 		(catch 'tag
 		  (while (and (file-exists-p src-file)
@@ -101,6 +102,7 @@
 	    (if (file-exists-p full-path)
 		(delete-file full-path))
 	    (copy-file src-file full-path t t)
+	    (set-file-modes full-path install-overwritten-file-modes)
 	    (princ (format "%s -> %s\n" el-file dest)))))
       (setq src-file (expand-file-name elc-file src))
       (if (not (file-exists-p src-file))
@@ -111,6 +113,7 @@
             (if (file-exists-p full-path)
                 (delete-file full-path))
 	    (copy-file src-file full-path t t)
+	    (set-file-modes full-path install-overwritten-file-modes)
 	    (catch 'tag
 	      (while (file-exists-p src-file)
 		(condition-case err
