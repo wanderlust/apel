@@ -1,3 +1,7 @@
+Sat Feb  2 17:08:20 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.11 was released.
+
 Wed Jan 31 00:07:57 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* mu-cite.el (mu-cite/get-field-value-methoda-list): fixed problem
