@@ -378,6 +378,15 @@ resolution finer than a second."
 	    ct2 (- ct2 65536)))
     (list ct1 ct2 0)))
 
+;;; @@ Floating point numbers.
+;;;
+
+(defalias 'numberp 'integerp)
+
+(defun abs (arg)
+  "Return the absolute value of ARG."
+  (if (< arg 0) (- arg) arg))
+
 
 ;;; @ Basic lisp subroutines.
 ;;;
