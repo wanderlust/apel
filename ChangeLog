@@ -1,3 +1,36 @@
+Wed Feb 28 13:26:26 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.13 was released.
+
+Wed Feb 27 19:37:46 1996  Shuhei KOBAYASHI  <shuhei@cmpt01.phys.tohoku.ac.jp>
+
+        * mk-tl: Add `mu-bbdb.el' to module list.
+
+        * mu-bbdb.el: New file.
+
+        * mu-cite.el: (mu-cite/get-field-value-method-alist),
+        (mu-cite/get-field-value): Typo fixed.
+        (mu-cite/get-citation-name): Changed to function.
+        (mu-cite/add-citation-name): New implementation.
+        (mu-cite/save-to-file): Add sore comments.
+        (mu-cite/get-prefix-register-method),
+        (mu-cite/get-prefix-register-verbose-method): Use 'x-attribution.
+        (mu-cite/default-methods-alist): Method `'x-attribution' was added.
+        (replace-top-string): New implementation.
+        
+Tue Feb 27 17:50:41 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el (*noconv*): New constant.
+	(*sjis*): New constant.
+	(code-detect-region): New function.
+	(set-file-coding-system): New function.
+
+	* emu-orig.el (code-detect-region): New function.
+	(set-file-coding-system): New function.
+
+	* emu-orig.el (*noconv*): New constant.
+
+
 Mon Feb 26 01:14:28 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.11.3 was released.

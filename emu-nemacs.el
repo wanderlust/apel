@@ -2,7 +2,7 @@
 ;;; emu-nemacs.el --- Mule 2 emulation module for NEmacs
 ;;;
 ;;; Copyright (C) 1995 Free Software Foundation, Inc.
-;;; Copyright (C) 1994 .. 1996 MORIOKA Tomohiko
+;;; Copyright (C) 1993 .. 1996 MORIOKA Tomohiko
 ;;;
 ;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;;; modified by KOBAYASHI Shuhei <shuhei@cmpt01.phys.tohoku.ac.jp>
@@ -56,9 +56,11 @@
 ;;; @ coding-system
 ;;;
 
-(defconst *junet* 2)
-(defconst *ctext* 2)
-(defconst *internal* 3)
+(defconst *noconv*    0)
+(defconst *sjis*      1)
+(defconst *junet*     2)
+(defconst *ctext*     2)
+(defconst *internal*  3)
 (defconst *euc-japan* 3)
 
 (defun code-convert-string (str ic oc)
@@ -76,24 +78,39 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
   (if (not (eq ic oc))
       (convert-region-kanji-code beg end ic oc)))
 
+(defun code-detect-region (start end)
+  "Detect coding-system of the text in the region between START and END.
+\[emu-orig.el; Mule emulating function]"
+  (if (save-excursion
+	(save-restriction
+	  (narrow-to-region start end)
+	  (goto-char start)
+	  (re-search-forward "[\200-\377]" nil t)
+	  ))
+      *euc-japan*
+    ))
+
+(defun set-file-coding-system (coding-system &optional force)
+  (set-kanji-fileio-code coding-system)
+  )
+
 
 ;;; @ character and string
 ;;;
 
 (defun char-bytes (chr)
   "Return number of bytes CHAR will occupy in a buffer.
- [Mule compatible function in tm-nemacs]"
+\[Mule compatible function in tm-nemacs]"
   (if (< chr 128) 1 2))
 
 (defun char-width (chr)
   "Return number of columns CHAR will occupy when displayed.
- [Mule compatible function in tm-nemacs]"
+\[Mule compatible function in tm-nemacs]"
   (if (< chr 128) 1 2))
 
-;; by mol. 1993/9/26
 (defun string-width (str)
   "Return number of columns STRING will occupy.
- [Mule compatible function in tm-nemacs]"
+\[Mule compatible function in tm-nemacs]"
   (length str))
 
 (defun string-to-char-list (str)
@@ -111,11 +128,15 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
     ))
 
 (defun find-charset-string (str)
+  "Return a list of leading-chars in the string.
+\[emu-nemacs.el; Mule emulating function]"
   (if (string-match "[\200-\377]" str)
       (list lc-jp)
     ))
 
 (defun find-charset-region (start end)
+  "Return a list of leading-chars in the region between START and END.
+\[emu-nemacs.el; Mule emulating function]"
   (if (save-excursion
 	(save-restriction
 	  (narrow-to-region start end)
