@@ -1464,23 +1464,39 @@ Not fully compatible especially when invalid format is specified."
   (setq current-load-list (cons 'format-time-string current-load-list))
   (put 'format-time-string 'defun-maybe t))))
 
-;; Emacs 19.29-19.34/XEmacs: format-time-string() doesn't support `%z'.
-(unless (string-match "\\`[\\-\\+][0-9]+\\'"
-		      (format-time-string "%z" (current-time)))
+;; Emacs 19.29-19.34/XEmacs: `format-time-string' neither supports "%z"
+;; in the format string nor the third argument `universal'.
+(when (or (not (string-match "\\`[\\-\\+][0-9]+\\'"
+			     (format-time-string "%z" (current-time))))
+	  (condition-case err
+	      (progn (format-time-string "" '(0 0) t) nil)
+	    (wrong-number-of-arguments t)))
   (defadvice format-time-string
-    (before support-timezone-in-numeric-form activate compile)
-    "Advice to support the construct `%z'."
-    (if (let ((case-fold-search nil))
-	  (string-match "\\(\\(\\`\\|[^%]\\)\\(%%\\)*\\)%z" (ad-get-arg 0)))
-	(ad-set-arg
-	 0
-	 (concat
-	  (substring (ad-get-arg 0) 0 (match-end 1))
-	  (let ((tz (car (current-time-zone))))
+    (before support-timezone-in-numeric-form-and-3rd-arg
+	    (format-string &optional time universal) activate compile)
+    "Advice to support the construct `%z' and the third argument `universal'."
+    (let ((tz (car (current-time-zone)))
+	  case-fold-search ms ls)
+      (if (string-match "\\(\\(\\`\\|[^%]\\)\\(%%\\)*\\)%z" format-string)
+	  (setq
+	   format-string
+	   (concat
+	    (substring format-string 0 (match-end 1))
 	    (if (< tz 0)
 		(format "-%02d%02d" (/ (- tz) 3600) (/ (% (- tz) 3600) 60))
-	      (format "+%02d%02d" (/ tz 3600) (/ (% tz 3600) 60))))
-	  (substring (ad-get-arg 0) (match-end 0)))))))
+	      (format "+%02d%02d" (/ tz 3600) (/ (% tz 3600) 60)))
+	    (substring format-string (match-end 0)))))
+      (if (and (consp time) universal)
+	  (progn
+	    (setq ms (car time)
+		  ls (- (nth 1 time) tz))
+	    (cond ((< ls 0)
+		   (setq ms (1- ms)
+			 ls (+ ls 65536)))
+		  ((>= ls 65536)
+		   (setq ms (1+ ms)
+			 ls (- ls 65536))))
+	    (setq time (append (list ms ls) (nth 2 time))))))))
 
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (split-string STRING &optional PATTERN)
 ;; Here is a XEmacs version.
