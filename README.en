@@ -228,7 +228,7 @@ Function add-latest-path (PATTERN &optional ALL-PATHS)
   and if bbdb-1.51 is newer than bbdb-1.50, and site-lisp is
   /usr/local/share/emacs/site-lisp,
 
-	(add-path "bbdb")
+	(add-latest-path "bbdb")
 
   it adds "/usr/local/share/emacs/site-lisp/bbdb-1.51" to top of
   `load-path'.
