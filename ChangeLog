@@ -1,3 +1,9 @@
+1999-09-08  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* tinycustom.el (frame-background-mode): New variable.
+
+	* poe.el (frame-background-mode): Move to tinycustom.el.
+
 1999-09-03  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* tinycustom.el (defface): Set the face attributes according to
