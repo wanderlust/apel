@@ -70,14 +70,14 @@ find-file-hooks, etc.
 ;;; @ MIME charset
 ;;;
 
-(defsubst encode-mime-charset-region (start end charset)
+(defun encode-mime-charset-region (start end charset)
   "Encode the text between START and END as MIME CHARSET."
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(encode-coding-region start end cs)
       )))
 
-(defsubst decode-mime-charset-region (start end charset)
+(defun decode-mime-charset-region (start end charset)
   "Decode the text between START and END as MIME CHARSET."
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
