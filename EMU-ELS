@@ -24,7 +24,11 @@
 	      )
 	     ((featurep 'mule)
 	      ;; for Emacs 20.1 or later
-	      '(emu-20 emu-e19 emu-e20 emu-e20_2)
+	      (cons (if (= (length "あ") 1)
+			'emu-e20_3 ; for Emacs 20.3
+		      'emu-e20_2 ; for Emacs 20.1 and 20.2
+		      )
+		    '(emu-20 emu-e19 emu-e20))
 	      )
 	     ((boundp 'MULE)
 	      ;; for MULE 1.* and MULE 2.*
