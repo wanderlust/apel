@@ -170,7 +170,7 @@
        (while (setq dir (car rest))
 	 (if (string-match pat dir)
 	     (if (or allow-version-specific
-		     (not (string-match (format "%d\\.%d"
+		     (not (string-match (format "/%d\\.%d"
 						emacs-major-version
 						emacs-minor-version) dir))
 		     )
