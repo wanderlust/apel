@@ -36,12 +36,13 @@
  ((featurep 'mule)
   (condition-case nil
       (require 'image)
-    (file-error
+    (error
      (condition-case nil
-	 (progn
-	   (require 'bitmap)
-	   (require 'image-bm))
-       (file-error (require 'tinyimage.el))))))
+	 (progn (require 'bitmap) (require 'image-bm))
+       (error 
+	(if (fboundp 'set-face-stipple)
+	    (require 'image-stpl)
+	  (require 'tinyimage.el)))))))
  (t (require 'tinyimage.el)))
 
 (require 'product)
