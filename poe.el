@@ -384,12 +384,11 @@ Under `windows-nt' or `ms-dos', it refers `filename-replacement-alist' and
 	  (filter (function (lambda (string)
 			      (filename-maybe-truncate-by-size
 			       (filename-special-filter string))))))
-     (concat (if (and (string-match "^[^/]:$" drive-name)
-		      (>= (length names) 2))
-		 drive-name
-	       (funcall filter drive-name))
-	     "/"
-	     (mapconcat filter (cdr names) "/"))))
+     (cond ((eq 1 (length names))
+	    (funcall filter drive-name))
+	   ((string-match "^[^/]:$" drive-name)
+	    (concat drive-name "/" (mapconcat filter (cdr names) "/")))
+	   (t (mapconcat filter names "/")))))
   (t filename))
 
 
