@@ -156,7 +156,7 @@ automatic uncompression, etc.
 Namely this function ensures that only format decoding and character
 code conversion will not take place."
   (let (mc-flag
-	(file-coding-system *noconv*))
+	(file-coding-system-for-read *noconv*))
     (insert-file-contents filename visit beg end replace)
     ))
 
