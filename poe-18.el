@@ -411,6 +411,176 @@ even if a buffer with that name exists."
 (defun mark (&optional force)
   (si:mark))
 
+;;; @@ current-time
+;;;
+
+(or (fboundp 'si:current-time-string)
+    (fset 'si:current-time-string (symbol-function 'current-time-string)))
+(defun current-time-string (&optional specified-time)
+  "Return the current time, as a human-readable string.
+Programs can use this function to decode a time,
+since the number of columns in each field is fixed.
+The format is `Sun Sep 16 01:03:52 1973'.
+If an argument is given, it specifies a time to format
+instead of the current time.  The argument should have the form:
+  (HIGH . LOW)
+or the form:
+  (HIGH LOW . IGNORED).
+Thus, you can use times obtained from `current-time'
+and from `file-attributes'.
+\[poe-18.el; EMACS 19 emulating function]"
+  (if (null specified-time)
+      (si:current-time-string)
+    (unless (consp specified-time)
+      (error "Wrong type argument %s" specified-time))
+    (let ((high (car specified-time))
+	  (low  (cdr specified-time))
+	  (mdays '(31 28 31 30 31 30 31 31 30 31 30 31))
+	  (mnames '("Jan" "Feb" "Mar" "Apr" "May" "Jun" 
+		    "Jul" "Aug" "Sep" "Oct" "Nov" "Dec"))
+	  (wnames '("Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat"))
+	  days dd yyyy mm HH MM SS)
+      (if (consp low)
+	  (setq low (car low)))
+      (unless (integerp high)
+	(error "Wrong type argument %s" high))
+      (unless (integerp low)
+	(error "Wrong type argument %s" low))
+      (setq low (+ low 32400))
+      (while (> low 65535)
+	(setq high (1+ high)
+	      low (- low 65536)))
+      (setq yyyy 1970)
+      (while (or (> high 481)
+		 (and (eq high 481)
+		      (>= low 13184)))
+	(when (and (> high 0)
+		   (< low 13184))
+	  (setq high (1- high)
+		low  (+ 65536 low)))
+	(setq high (- high 481)
+	      low  (- low 13184))
+	(if (and (zerop (% yyyy 4))
+		 (or (not (zerop (% yyyy 100)))
+		   (zerop (% yyyy 400))))
+	    (progn
+	      (when (and (> high 0) 
+			 (< low 20864))
+		(setq high (1- high)
+		      low  (+ 65536 low)))
+	      (setq high (- high 1)
+		    low (- low 20864))))
+	(setq yyyy (1+ yyyy)))
+      (setq dd 1)
+      (while (or (> high 1)
+		 (and (eq high 1)
+		      (>= low 20864)))
+	(when (and (> high 0)
+		   (< low 20864))
+	  (setq high (1- high)
+		low  (+ 65536 low)))
+	(setq high (- high 1)
+	      low  (- low 20864)
+	      dd (1+ dd)))
+      (setq days dd)
+      (if (eq high 1)
+	  (setq low (+ 65536 low)))
+      (setq mm 0)
+      (setq uru (and (zerop (% yyyy 4))
+		     (or (not (zerop (% yyyy 100)))
+			 (zerop (% yyyy 400)))))
+      (while (> (- dd (nth mm mdays)) 0)
+	(if (and (eq mm 1) uru)
+	    (setq dd (- dd 29))
+	  (setq dd (- dd (nth mm mdays))))
+	(setq mm (1+ mm)))
+      (setq HH (/ low 3600)
+	    low (% low 3600)
+	    MM (/ low 60)
+	    SS (% low 60))
+      (format "%s %s %2d %02d:%02d:%02d %4d"
+	      (nth (% (+ days
+			 (- (+ (* (1- yyyy) 365) (/ (1- yyyy) 400) 
+			       (/ (1- yyyy) 4)) (/ (1- yyyy) 100))) 7)
+		   wnames)
+	      (nth mm mnames)
+	      dd HH MM SS yyyy))))
+
+(defun current-time ()
+  "Return the current time, as the number of seconds since 1970-01-01 00:00:00.
+The time is returned as a list of three integers.  The first has the
+most significant 16 bits of the seconds, while the second has the
+least significant 16 bits.  The third integer gives the microsecond
+count.
+
+The microsecond count is zero on systems that do not provide
+resolution finer than a second.
+\[poe-18.el; EMACS 19 emulating function]"
+  (let* ((str (current-time-string))
+	 (yyyy (string-to-int (substring str 20 24)))
+	 (mm (length (member (substring str 4 7)
+			     '("Dec" "Nov" "Oct" "Sep" "Aug" "Jul"
+			       "Jun" "May" "Apr" "Mar" "Feb" "Jan"))))
+	 (dd (string-to-int (substring str 8 10)))
+	 (HH (string-to-int (substring str 11 13)))
+	 (MM (string-to-int (substring str 14 16)))
+	 (SS (string-to-int (substring str 17 19)))
+	 dn ct1 ct2 i1 i2
+	 year uru)
+    (setq ct1 0 ct2 0 i1 0 i2 0)
+    (setq year (- yyyy 1970))
+    (while (> year 0)
+      (setq year (1- year)
+	    ct1 (+ ct1 481)
+	    ct2 (+ ct2 13184))
+      (while (> ct2 65535)
+	(setq ct1 (1+ ct1)
+	      ct2 (- ct2 65536))))
+    (setq uru (- (+ (- (/ yyyy 4) (/ yyyy 100)) 
+		    (/ yyyy 400)) 477))
+    (while (> uru 0)
+      (setq uru (1- uru)
+	    i1 (1+ i1)
+	    i2 (+ i2 20864))
+      (if (> i2 65535)
+	  (setq i1 (1+ i1)
+		i2 (- i2 65536))))
+    (setq ct1 (+ ct1 i1)
+	  ct2 (+ ct2 i2))
+    (while (> ct2 65535)
+      (setq ct1 (1+ ct1)
+	    ct2 (- ct2 65536)))
+    (setq dn (+ dd (* 31 (1- mm))))
+    (if (> mm 2)
+	(setq dn (+ (- dn (/ (+ 23 (* 4 mm)) 10))
+		    (if (and (zerop (% yyyy 4))
+			     (or (not (zerop (% yyyy 100)))
+				 (zerop (% yyyy 400))))
+			1 0))))
+    (setq dn (1- dn)
+	  i1 0 
+	  i2 0)
+    (while (> dn 0)
+      (setq dn (1- dn)
+	    i1 (1+ i1)
+	    i2 (+ i2 20864))
+      (if (> i2 65535)
+	  (setq i1 (1+ i1)
+		i2 (- i2 65536))))
+    (setq ct1 (+ (+ (+ ct1 i1) (/ ct2 65536)) 
+		 (/ (+ (* HH 3600) (* MM 60) SS)
+		    65536))
+	  ct2 (+ (+ i2 (% ct2 65536))
+		 (% (+ (* HH 3600) (* MM 60) SS)
+		    65536)))
+    (while (< (- ct2 32400) 0)
+      (setq ct1 (1- ct1)
+	    ct2 (+ ct2 65536)))
+    (setq ct2 (- ct2 32400))
+    (while (> ct2 65535)
+      (setq ct1 (1+ ct1)
+	    ct2 (- ct2 65536)))
+    (list ct1 ct2 0)))
 
 ;;; @ end
 ;;;
