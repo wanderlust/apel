@@ -1,3 +1,15 @@
+2000-03-12  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* APEL-MK (config-apel, config-apel-package): Replace
+	"\n" in fotmat-strings with actual newline.
+	(install-apel): Add comment.
+	(what-where-apel): Remove old code.
+
+	* install.el (install-files, install-elisp-modules):
+	Don't make destination directory when dry-run.
+	(install-just-print-p): Add comment.
+	Make format-string more verbose.
+
 2000-03-11  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* install.el: Update headers.
@@ -43,7 +55,7 @@
 
 2000-12-30  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
-	*  APEL: Version 10.3 released.
+	* APEL: Version 10.3 released.
 	* apel-ver.el (apel-ver): Change APEL version to 10.3.
 	
 	* Makefile : Apply patch from TAKAHASHI Kaoru <kaoru@se.uec.ac.jp>
