@@ -77,27 +77,54 @@
 (require 'poem)
 (require 'mcharset)
 
-(cond (running-xemacs
-       (if (featurep 'mule)
-	   ;; for XEmacs with MULE
-	   (require 'emu-x20)
-	 ;; for XEmacs without MULE
-	 (require 'emu-latin1)
-	 ))
-      (running-mule-merged-emacs
-       ;; for Emacs 20.1 and 20.2
-       (require 'emu-e20)
-       )
-      ((boundp 'MULE)
-       ;; for MULE 1.* and 2.*
-       (require 'emu-mule)
+(cond ((featurep 'mule)
+       (cond ((featurep 'xemacs)
+	      ;; for XEmacs with MULE
+	      (require 'emu-x20)
+	      )
+	     ((>= emacs-major-version 20)
+	      ;; for Emacs 20
+	      (require 'emu-e20)
+	      (defalias 'insert-binary-file-contents-literally
+		'insert-file-contents-literally)
+	      )
+	     (t
+	      ;; for MULE 1.* and 2.*
+	      (require 'emu-mule)
+	      ))
        )
       ((boundp 'NEMACS)
        ;; for NEmacs and NEpoch
-       (require 'emu-nemacs)
+
+       ;; old MULE emulation
+       (defconst *noconv*    0)
+       (defconst *sjis*      1)
+       (defconst *junet*     2)
+       (defconst *ctext*     2)
+       (defconst *internal*  3)
+       (defconst *euc-japan* 3)
+       
+       (defun code-convert-string (str ic oc)
+	 "Convert code in STRING from SOURCE code to TARGET code,
+On successful converion, returns the result string,
+else returns nil. [emu-nemacs.el; Mule emulating function]"
+	 (if (not (eq ic oc))
+	     (convert-string-kanji-code str ic oc)
+	   str))
+       
+       (defun code-convert-region (beg end ic oc)
+	 "Convert code of the text between BEGIN and END from SOURCE
+to TARGET. On successful conversion returns t,
+else returns nil. [emu-nemacs.el; Mule emulating function]"
+	 (if (/= ic oc)
+	     (save-excursion
+	       (save-restriction
+		 (narrow-to-region beg end)
+		 (convert-region-kanji-code beg end ic oc)))
+	   ))
        )
       (t
-       ;; for Emacs 19
+       ;; for Emacs 19 and XEmacs without MULE
        (require 'emu-latin1)
        ))
 

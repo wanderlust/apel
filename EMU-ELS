@@ -36,7 +36,7 @@
 	      )
 	     ((boundp 'NEMACS)
 	      ;; for NEmacs
-	      '(poe-18 poem-nemacs mcs-nemacs emu-nemacs)
+	      '(poe-18 poem-nemacs mcs-nemacs)
 	      )
 	     (t
 	      ;; for Emacs 19.34
