@@ -9,7 +9,7 @@
 #	MULE2	= for MULE 2.* (based on Emacs 19.*)
 
 	NEMACS	= nemacs
-	MULE1	= mule
+	MULE1	= mule1
 	ORIG19	= emacs19
 	MULE2	= mule2
 
@@ -21,33 +21,52 @@
 	TLDIR18	= /usr/local/lib/emacs/local.lisp
 	TLDIR19	= /usr/local/lib/mule/site-lisp
 
+#	TLDIR18 = $(HOME)/lib/emacs18/lisp
+#	TLDIR19 = $(HOME)/lib/emacs19/lisp
+
 
 nemacs:
-	make -f Makefile.bc nemacs EMACS=$(NEMACS)
+	make -f Makefile.bc all \
+		EMACS=$(NEMACS) EMACS_TYPE=nemacs \
+		TL18=tl-18.el OPT='-l tl-18.el'
 
-install-nemacs:
-	make -f Makefile.bc install-nemacs EMACS=$(NEMACS) TLDIR=$(TLDIR18)
+install-nemacs:	nemacs
+	make -f Makefile.bc install \
+		EMACS=$(NEMACS) EMACS_TYPE=nemacs \
+		TL18=tl-18.el OPT='-l tl-18.el' \
+		TLDIR=$(TLDIR18)
 
 
 mule1:
-	make -f Makefile.bc mule1 EMACS=$(MULE1)
+	make -f Makefile.bc all \
+		EMACS=$(MULE1) EMACS_TYPE=mule \
+		TL18=tl-18.el OPT='-l tl-18.el'
 
-install-mule1:
-	make -f Makefile.bc install-mule1 EMACS=$(MULE1) TLDIR=$(TLDIR18)
+install-mule1:	mule1
+	make -f Makefile.bc install \
+		EMACS=$(MULE1) EMACS_TYPE=mule \
+		TL18=tl-18.el OPT='-l tl-18.el' \
+		TLDIR=$(TLDIR18)
 
 
 orig19:
-	make -f Makefile.bc orig EMACS=$(ORIG19)
+	make -f Makefile.bc all \
+		EMACS=$(ORIG19) EMACS_TYPE=orig
 
-install-orig19:
-	make -f Makefile.bc install-orig EMACS=$(ORIG19) TLDIR=$(TLDIR19)
+install-orig19:	orig19
+	make -f Makefile.bc install \
+		EMACS=$(ORIG19) EMACS_TYPE=orig \
+		TLDIR=$(TLDIR19)
 
 
 mule2:
-	make -f Makefile.bc mule EMACS=$(MULE2)
+	make -f Makefile.bc all \
+		EMACS=$(MULE2) EMACS_TYPE=mule
 
-install-mule2:
-	make -f Makefile.bc install-mule EMACS=$(MULE2) TLDIR=$(TLDIR19)
+install-mule2:	mule2
+	make -f Makefile.bc install \
+		EMACS=$(MULE2) EMACS_TYPE=mule \
+		TLDIR=$(TLDIR19)
 
 
 clean:
