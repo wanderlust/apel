@@ -155,9 +155,7 @@
       *euc-japan*
     ))
 
-(defun set-file-coding-system (coding-system &optional force)
-  (set-kanji-fileio-code coding-system)
-  )
+(defalias 'set-buffer-file-coding-system 'set-kanji-fileio-code)
 
 (defmacro as-binary-process (&rest body)
   (` (let (selective-display	; Disable ^M to nl translation.

@@ -1,3 +1,19 @@
+Tue Sep 24 22:02:05 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.8 was released.
+
+Mon Sep 23 20:38:05 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el, emu-mule.el (set-buffer-file-coding-system): New
+ 	alias.
+
+	* emu-e19.el (set-buffer-file-coding-system): Renamed from
+ 	`set-file-coding-system'.
+
+	* emu-nemacs.el (set-buffer-file-coding-system): New alias for
+ 	`set-kanji-fileio-code'; renamed from `set-file-coding-system'.
+
+
 Mon Sep 23 17:44:23 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.7 was released.

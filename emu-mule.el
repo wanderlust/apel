@@ -93,6 +93,8 @@
 
 (defalias 'detect-coding-region 'code-detect-region)
 
+(defalias 'set-buffer-file-coding-system 'set-file-coding-system)
+
 (defmacro as-binary-process (&rest body)
   (` (let (selective-display	; Disable ^M to nl translation.
 	   ;; Mule

@@ -20,8 +20,8 @@
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with This program; see the file COPYING.  If not, write to
-;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Code:
@@ -91,6 +91,8 @@ in the region between START and END.
 (defconst *big5*   'big5)
 (defconst *euc-kr* 'euc-kr)
 (defconst *koi8*   'koi8)
+
+(defalias 'set-buffer-file-coding-system 'set-file-coding-system)
 
 (defmacro as-binary-process (&rest body)
   `(let (selective-display	; Disable ^M to nl translation.

@@ -122,7 +122,9 @@
 \[emu-e19.el; Emacs 20 emulating function]"
   )
 
-(defun set-file-coding-system (coding-system &optional force)
+(defun set-buffer-file-coding-system (coding-system &optional force)
+  "Set buffer-file-coding-system of the current buffer to CODING-SYSTEM.
+\[emu-e19.el; Emacs 20 emulating function]"
   )
 
 (defmacro as-binary-process (&rest body)
