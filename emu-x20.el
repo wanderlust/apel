@@ -33,6 +33,10 @@
 (require 'emu-20)
 
 
+(and (coding-system-property 'iso-2022-jp 'input-charset-conversion)
+     (copy-coding-system 'iso-2022-7bit 'iso-2022-jp))
+
+    
 ;;; @ MIME charset
 ;;;
 

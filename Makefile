@@ -2,7 +2,7 @@
 # $Id$
 #
 
-VERSION = 7.1
+VERSION = 7.1.1
 
 TAR	= tar
 RM	= /bin/rm -f
@@ -30,9 +30,11 @@ tar:
 	cvs commit
 	sh -c 'cvs tag -RF apel-`echo $(VERSION) \
 				| sed s/\\\\./_/ | sed s/\\\\./_/`; \
-	cd /tmp; cvs export -d apel-$(VERSION) \
-		-r apel-`echo $(VERSION) \
-			| sed s/\\\\./_/ | sed s/\\\\./_/` APEL'
+	cd /tmp; \
+	cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
+		export -d apel-$(VERSION) \
+		-r apel-`echo $(VERSION) | sed s/\\\\./_/ | sed s/\\\\./_/` \
+		apel'
 	cd /tmp; $(RM) apel-$(VERSION)/ftp.in ; \
 		$(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
 	cd /tmp; $(RM) -r apel-$(VERSION)
@@ -41,5 +43,4 @@ tar:
 release:
 	-$(RM) /pub/GNU/elisp/apel/apel-$(VERSION).tar.gz
 	mv /tmp/apel-$(VERSION).tar.gz /pub/GNU/elisp/apel/
-	cd /pub/GNU/elisp/mime/alpha/ ; \
-		ln -s ../../apel/apel-$(VERSION).tar.gz .
+	cd /pub/GNU/elisp/semi/ ; ln -s ../apel/apel-$(VERSION).tar.gz .

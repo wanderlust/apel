@@ -1,3 +1,24 @@
+1998-02-12  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 7.1.1 was released.
+
+	* README.en (Bug reports): Modify for APEL.
+
+1998-02-04  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* std11.el (std11-msg-id-string): New function.
+	(std11-fill-msg-id-list-string): New function.
+
+	* std11-parse.el (std11-parse-msg-id): New function.
+
+1998-01-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el: If coding-system `iso-2022-jp' unifies JIS X
+ 	0201-Latin to ASCII and JIS X 0208-1978 to JIS X 0208-1983 by
+ 	code-point, copy coding-system `iso-2022-7bit' to `iso-2022-jp' to
+ 	avoid this problem.
+
+
 1997-11-08  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 7.1 was released.
