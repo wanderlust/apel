@@ -33,7 +33,7 @@
 (eval-when-compile (require 'wid-edit))
 
 
-;;; @ binary access
+;;; @ without code-conversion
 ;;;
 
 (defmacro as-binary-process (&rest body)
@@ -55,6 +55,31 @@
   "Like `write-region', q.v., but don't encode."
   (let ((coding-system-for-write 'binary))
     (write-region start end filename append visit lockname)
+    ))
+
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+
+Namely this function ensures that only format decoding and character
+code conversion will not take place."
+  (let ((coding-system-for-read 'binary)
+	format-alist)
+    (insert-file-contents filename visit beg end replace)
+    ))
+
+(defun insert-file-contents-as-raw-text (filename
+					 &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+Like `insert-file-contents-as-binary', but it converts line-break
+code."
+  (let ((coding-system-for-read 'raw-text)
+	format-alist)
+    (insert-file-contents filename visit beg end replace)
     ))
 
 
