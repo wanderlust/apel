@@ -1,5 +1,37 @@
 1999-11-13  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
+	* Removed "[SOURCE INFO]" style comment from docstrings.
+	Most of them are out of sync, and now there are some other
+	ways to get such information.
+
+	* poe-18.el: Rearranged.
+	(lambda): New macro.
+	(get-char-property, next-single-property-change,
+	 previous-property-change, previous-single-property-change,
+	 text-property-any, text-property-not-all,
+	 next-char-property-change, previous-char-property-change):
+	Define as null function.
+
+	* poe-xemacs.el: Rearranged.
+	(eval-after-load): Moved to poe.el.
+
+	* poe.el: Rearranged; reduce load-time check.
+	Moved many macros to pym.el.
+	(require): New function; emulate optional 3rd arg.
+	(plist-get, plist-put): New functions.
+	(string-to-number): New function.
+	(push, pop): New macros.
+	(assoc-default): New function.
+	(eval-after-load, eval-next-after-load): New functions;
+	moved from poe-xemacs.el and modified for Emacs 19.28.
+	(buffer-file-type): New variable.
+	(with-temp-message, with-output-to-string): New macros.
+	(combine-after-change-calls): Docstring sync.
+	(match-string-no-properties): New function.
+	(convert-standard-filename): Do load-time check.
+
+1999-11-13  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
 	* pym.el (defsubst-maybe-cond): New macro.
 
 	* pym.el (defun-maybe, defmacro-maybe, defsubst-maybe,
