@@ -141,8 +141,24 @@
 ;;; @ binary access
 ;;;
 
-(defun insert-binary-file-contents-literally
-  (filename &optional visit beg end replace)
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+
+Namely this function ensures that only format decoding and character
+code conversion will not take place."
+  (let (mc-flag
+	(file-coding-system *noconv*))
+    (insert-file-contents filename visit beg end replace)
+    ))
+
+(defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
+(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
+
+(defun insert-binary-file-contents-literally (filename
+					      &optional visit beg end replace)
   "Like `insert-file-contents-literally', q.v., but don't code conversion.
 A buffer may be modified in several ways after reading into the buffer due
 to advanced Emacs features, such as file-name-handlers, format decoding,
@@ -151,14 +167,6 @@ find-file-hooks, etc.
   (let (mc-flag
 	(file-coding-system *noconv*))
     (insert-file-contents-literally filename visit beg end replace)
-    ))
-
-(defun insert-binary-file-contents
-  (filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but don't code and format conversion."
-  (let (mc-flag
-	(file-coding-system *noconv*))
-    (insert-file-contents filename visit beg end replace)
     ))
 
 (if running-emacs-19_29-or-later
