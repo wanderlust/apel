@@ -3,9 +3,8 @@
 ;;; $Id$
 ;;;
 
-(setq apel-modules '(alist atype
+(setq apel-modules '(alist calist atype
 			   path-util filename install
-			   std11 std11-parse
  			   mule-caesar
 			   file-detect))
 
