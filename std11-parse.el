@@ -59,11 +59,14 @@
 	      (substring str end)
 	      ))))
 
-(defun std11-analyze-enclosure (str type open close)
-  (let ((len (length str)))
-    (if (and (> len 0)
-	     (eq (aref str 0) open))
-	(let ((i 1) chr dest)
+(defun std11-check-enclosure (str open close &optional recursive from)
+  (let ((len (length str))
+	(i (or from 0))
+	)
+    (if (and (> len i)
+	     (eq (aref str i) open))
+	(let (p chr dest)
+	  (setq i (1+ i))
 	  (catch 'tag
 	    (while (< i len)
 	      (setq chr (aref str i))
@@ -72,26 +75,44 @@
 		     (if (>= i len)
 			 (throw 'tag nil)
 		       )
-		     (setq dest (concat dest (char-to-string (aref str i))))
+		     (setq i (1+ i))
 		     )
 		    ((eq chr close)
-		     (throw 'tag
-			    (cons (cons type dest) (substring str (1+ i)))
-			    )
+		     (throw 'tag (1+ i))
 		     )
+		    ((eq chr open)
+		     (if (and recursive
+			      (setq p (std11-check-enclosure
+				       str open close recursive i))
+			      )
+			 (setq i p)
+		       (throw 'tag nil)
+		       ))
 		    (t
-		     (setq dest (concat dest (char-to-string (aref str i))))
+		     (setq i (1+ i))
 		     ))
-	      (setq i (1+ i))
 	      ))))))
 
 (defun std11-analyze-quoted-string (str)
-  (std11-analyze-enclosure str 'quoted-string ?\" ?\")
-  )
+  (let ((p (std11-check-enclosure str ?\" ?\")))
+    (if p
+	(cons (cons 'quoted-string (substring str 1 (1- p)))
+	      (substring str p))
+      )))
 
 (defun std11-analyze-domain-literal (str)
-  (std11-analyze-enclosure str 'domain-literal ?\[ ?\])
-  )
+  (let ((p (std11-check-enclosure str ?\[ ?\])))
+    (if p
+	(cons (cons 'domain-literal (substring str 1 (1- p)))
+	      (substring str p))
+      )))
+
+(defun std11-analyze-comment (str)
+  (let ((p (std11-check-enclosure str ?\( ?\) t)))
+    (if p
+	(cons (cons 'comment (substring str 1 (1- p)))
+	      (substring str p))
+      )))
 
 
 ;;; @ end
