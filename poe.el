@@ -171,15 +171,17 @@
 ;;; @ Emacs 19.29 emulation
 ;;;
 
+(eval-when-compile (require 'static))
+
 ;; `add-hook' and `remove-hook' are imported from Emacs 19.28
 ;; (with additional `local' argument).
-(condition-case nil
+(static-condition-case nil
     (let (test-hook)
       (add-hook 'test-hook 'test 'append 'local)
       (remove-hook 'test-hook 'test 'local))
   (void-function
    ;; emulate add-hook/remove-hook for version 18.
-   (defun add-hook (hook function &optional append local)
+   (defun-maybe add-hook (hook function &optional append local)
      "Add to the value of HOOK the function FUNCTION.
 FUNCTION is not added if already present.
 FUNCTION is added \(if necessary\) at the beginning of the hook list
@@ -212,7 +214,7 @@ function, it is changed to a list of functions.
 		  (nconc (symbol-value hook) (list function))
 		(cons function (symbol-value hook))))))
 
-   (defun remove-hook (hook function &optional local)
+   (defun-maybe remove-hook (hook function &optional local)
      "Remove from the value of HOOK the function FUNCTION.
 HOOK should be a symbol, and FUNCTION may be any valid function.  If
 FUNCTION isn't the value of HOOK, or, if FUNCTION doesn't appear in the
