@@ -30,26 +30,30 @@
 ;;; @ character set
 ;;;
 
-(defconst charset-ascii 0 "Character set of ASCII")
-(defconst charset-jisx0208 146 "Character set of JIS X0208-1983")
+(put 'ascii
+     'charset-description "Character set of ASCII")
+(put 'ascii
+     'charset-registry "ASCII")
+
+(put 'japanese-jisx0208
+     'charset-description "Character set of JIS X0208-1983")
+(put 'japanese-jisx0208
+     'charset-registry "JISX0208.1983")
 
 (defun charset-description (charset)
   "Return description of CHARSET. [emu-nemacs.el]"
-  (if (< charset 128)
-      (documentation-property 'charset-ascii 'variable-documentation)
-    (documentation-property 'charset-jisx0208 'variable-documentation)
-    ))
+  (get charset 'charset-description)
+  )
 
 (defun charset-registry (charset)
   "Return registry name of CHARSET. [emu-nemacs.el]"
-  (if (< charset 128)
-      "ASCII"
-    "JISX0208.1983"))
+  (get charset 'charset-registry)
+  )
 
 (defun charset-columns (charset)
   "Return number of columns a CHARSET occupies when displayed.
 \[emu-nemacs.el]"
-  (if (< charset 128)
+  (if (eq charset 'ascii)
       1
     2))
 
@@ -62,7 +66,7 @@
   "Return a list of charsets in the string.
 \[emu-nemacs.el; Mule emulating function]"
   (if (string-match "[\200-\377]" str)
-      (list lc-jp)
+      '(japanese-jisx0208)
     ))
 
 (defalias 'find-non-ascii-charset-string 'find-charset-string)
@@ -76,7 +80,7 @@
 	  (goto-char start)
 	  (re-search-forward "[\200-\377]" nil t)
 	  ))
-      (list lc-jp)
+      '(japanese-jisx0208)
     ))
 
 (defalias 'find-non-ascii-charset-region 'find-charset-region)
@@ -96,8 +100,8 @@
 ;;; @@ for old MULE emulation
 ;;;
 
-(defconst lc-ascii 0)
-(defconst lc-jp  146)
+;;(defconst lc-ascii 0)
+;;(defconst lc-jp  146)
 
 
 ;;; @ coding system
@@ -240,7 +244,7 @@ find-file-hooks, etc.
 ;;;
 
 (defvar charsets-mime-charset-alist
-  (list (cons (list charset-ascii) 'us-ascii)))
+  '(((ascii) . us-ascii)))
 
 (defvar default-mime-charset 'iso-2022-jp)
 
@@ -316,8 +320,8 @@ find-file-hooks, etc.
   "Return the character set of char CHR.
 \[emu-nemacs.el; MULE emulating function]"
   (if (< chr 128)
-      charset-ascii
-    charset-jisx0208))
+      'ascii
+    'japanese-jisx0208))
 
 (defun char-bytes (chr)
   "Return number of bytes CHAR will occupy in a buffer.
