@@ -42,13 +42,11 @@
 
 (defun charset-description (charset)
   "Return description of CHARSET. [emu-nemacs.el]"
-  (get charset 'charset-description)
-  )
+  (get charset 'charset-description))
 
 (defun charset-registry (charset)
   "Return registry name of CHARSET. [emu-nemacs.el]"
-  (get charset 'charset-registry)
-  )
+  (get charset 'charset-registry))
 
 (defun charset-width (charset)
   "Return number of columns a CHARSET occupies when displayed.
@@ -78,8 +76,7 @@
 	(save-restriction
 	  (narrow-to-region start end)
 	  (goto-char start)
-	  (re-search-forward "[\200-\377]" nil t)
-	  ))
+	  (re-search-forward "[\200-\377]" nil t)))
       '(japanese-jisx0208)
     ))
 
@@ -93,8 +90,7 @@
       (while (< i len)
 	(if (>= (elt str i) 128)
 	    (throw 'label nil))
-	(setq i (+ i 1))
-	)
+	(setq i (+ i 1)))
       str)))
 
 ;;; @@ for old MULE emulation
@@ -119,16 +115,14 @@
 \[emu-nemacs.el; EMACS 20 emulating function]"
   (if (eq coding-system 3)
       string
-    (convert-string-kanji-code string coding-system 3)
-    ))
+    (convert-string-kanji-code string coding-system 3)))
 
 (defun encode-coding-string (string coding-system)
   "Encode the STRING to CODING-SYSTEM.
 \[emu-nemacs.el; EMACS 20 emulating function]"
   (if (eq coding-system 3)
       string
-    (convert-string-kanji-code string 3 coding-system)
-    ))
+    (convert-string-kanji-code string 3 coding-system)))
 
 (defun decode-coding-region (start end coding-system)
   "Decode the text between START and END which is encoded in CODING-SYSTEM.
@@ -137,8 +131,8 @@
       (save-excursion
 	(save-restriction
 	  (narrow-to-region start end)
-	  (convert-region-kanji-code start end coding-system 3)
-	  ))))
+	  (convert-region-kanji-code start end coding-system 3)))
+    ))
 
 (defun encode-coding-region (start end coding-system)
   "Encode the text between START and END to CODING-SYSTEM.
@@ -147,8 +141,8 @@
       (save-excursion
 	(save-restriction
 	  (narrow-to-region start end)
-	  (convert-region-kanji-code start end 3 coding-system)
-	  ))))
+	  (convert-region-kanji-code start end 3 coding-system)))
+    ))
 
 (defun detect-coding-region (start end)
   "Detect coding-system of the text in the region between START and END.
@@ -157,8 +151,7 @@
 	(save-restriction
 	  (narrow-to-region start end)
 	  (goto-char start)
-	  (re-search-forward "[\200-\377]" nil t)
-	  ))
+	  (re-search-forward "[\200-\377]" nil t)))
       *euc-japan*
     ))
 
@@ -184,8 +177,8 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
       (save-excursion
 	(save-restriction
 	  (narrow-to-region beg end)
-	  (convert-region-kanji-code beg end ic oc)
-	  ))))
+	  (convert-region-kanji-code beg end ic oc)))
+    ))
 
 
 ;;; @ without code-conversion
@@ -197,33 +190,29 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
 	   kanji-flag
 	   (default-kanji-process-code 0)
 	   program-kanji-code-alist)
-       (,@ body)
-       )))
+       (,@ body))))
 
 (defmacro as-binary-input-file (&rest body)
   (` (let (kanji-flag)
-       (,@ body)
-       )))
+       (,@ body))))
 
 (defmacro as-binary-output-file (&rest body)
   (` (let (kanji-flag)
-       (,@ body)
-       )))
+       (,@ body))))
 
 (defun write-region-as-binary (start end filename
 				     &optional append visit lockname)
   "Like `write-region', q.v., but don't code conversion. [emu-nemacs.el]"
-  (let (kanji-flag)
-    (write-region start end filename append visit)
-    ))
+  (as-binary-output-file
+   (write-region start end filename append visit)))
 
 (defun insert-file-contents-as-binary (filename
 				       &optional visit beg end replace)
   "Like `insert-file-contents', q.v., but don't character code conversion.
 \[emu-nemacs.el]"
-  (let (kanji-flag)
-    (insert-file-contents filename visit beg end replace)
-    ))
+  (as-binary-input-file
+   ;; Returns list absolute file name and length of data inserted.
+   (insert-file-contents filename visit beg end replace)))
 
 (fset 'insert-binary-file-contents 'insert-file-contents-as-binary)
 
@@ -235,17 +224,17 @@ to advanced Emacs features, such as file-name-handlers, format decoding,
 find-file-hooks, etc.
   This function ensures that none of these modifications will take place.
 \[emu-nemacs.el]"
-  (let (kanji-flag)
-    (insert-file-contents-literally filename visit beg end replace)
-    ))
+  (as-binary-input-file
+   ;; Returns list absolute file name and length of data inserted.
+   (insert-file-contents-literally filename visit beg end replace)))
 
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)
   "Like `insert-file-contents', q.v., but don't character code conversion.
 \[emu-nemacs.el]"
-  (let (kanji-flag)
-    (insert-file-contents filename visit beg end replace)
-    ))
+  (as-binary-input-file
+   ;; Returns list absolute file name and length of data inserted.
+   (insert-file-contents filename visit beg end replace)))
 
 (defun write-region-as-raw-text-CRLF (start end filename
 					    &optional append visit lockname)
@@ -255,11 +244,9 @@ find-file-hooks, etc.
       (insert-buffer-substring the-buf start end)
       (goto-char (point-min))
       (while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
-	(replace-match "\\1\r\n")
-	)
-      (let (kanji-flag)
-	(write-region (point-min)(point-max) filename append visit)
-	))))
+	(replace-match "\\1\r\n"))
+      (write-region-as-binary (point-min)(point-max)
+			      filename append visit))))
 
 
 ;;; @ MIME charset
@@ -279,8 +266,7 @@ find-file-hooks, etc.
   (if (stringp charset)
       (setq charset (intern (downcase charset)))
     )
-  (cdr (assq charset mime-charset-coding-system-alist))
-  )
+  (cdr (assq charset mime-charset-coding-system-alist)))
 
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END.
@@ -289,8 +275,7 @@ find-file-hooks, etc.
 	(save-restriction
 	  (narrow-to-region start end)
 	  (goto-char start)
-	  (re-search-forward "[\200-\377]" nil t)
-	  ))
+	  (re-search-forward "[\200-\377]" nil t)))
       default-mime-charset
     'us-ascii))
 
@@ -303,9 +288,8 @@ find-file-hooks, etc.
 	     (save-excursion
 	       (save-restriction
 		 (narrow-to-region start end)
-		 (convert-region-kanji-code start end 3 cs)
-		 ))
-	     ))))
+		 (convert-region-kanji-code start end 3 cs))))
+	 )))
 
 (defun decode-mime-charset-region (start end charset &optional lbt)
   "Decode the text between START and END as MIME CHARSET.
@@ -323,8 +307,8 @@ find-file-hooks, etc.
 		     (progn
 		       (goto-char (point-min))
 		       (while (search-forward nl nil t)
-			 (replace-match "\n"))))
-		 ))
+			 (replace-match "\n")))
+		   )))
 	     ))))
 
 (defun encode-mime-charset-string (string charset)
@@ -347,8 +331,7 @@ find-file-hooks, etc.
   (let ((kanji-fileio-code
 	 (or (mime-charset-to-coding-system charset)
 	     *noconv*)))
-    (write-region start end filename)
-    ))
+    (write-region start end filename)))
 
 
 ;;; @ buffer representation
@@ -378,7 +361,9 @@ but the contents viewed as characters do change.
 (defun char-bytes (chr)
   "Return number of bytes CHAR will occupy in a buffer.
 \[emu-nemacs.el; Mule emulating function]"
-  (if (< chr 128) 1 2))
+  (if (< chr 128)
+      1
+    2))
 
 (defun char-width (char)
   "Return number of columns a CHAR occupies when displayed.
@@ -405,8 +390,7 @@ but the contents viewed as characters do change.
   (let ((chr (aref str idx)))
     (if (< chr 128)
 	chr
-      (logior (lsh (aref str (1+ idx)) 8) chr)
-      )))
+      (logior (lsh (aref str (1+ idx)) 8) chr))))
 
 (defun string-to-char-list (str)
   (let ((i 0)(len (length str)) dest chr)
@@ -414,13 +398,11 @@ but the contents viewed as characters do change.
       (setq chr (aref str i))
       (if (>= chr 128)
 	  (setq i (1+ i)
-		chr (+ (lsh chr 8) (aref str i))
-		))
+		chr (+ (lsh chr 8) (aref str i)))
+	)
       (setq dest (cons chr dest))
-      (setq i (1+ i))
-      )
-    (reverse dest)
-    ))
+      (setq i (1+ i)))
+    (reverse dest)))
 
 (fset 'string-to-int-list (symbol-function 'string-to-char-list))
 
