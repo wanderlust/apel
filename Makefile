@@ -48,10 +48,12 @@ tar:
 	sh -c 'cvs tag -RF apel-`echo $(VERSION) \
 				| sed s/\\\\./_/ | sed s/\\\\./_/`; \
 	cd /tmp; \
-	cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
-		export -d apel-$(VERSION) \
-		-r apel-`echo $(VERSION) | sed s/\\\\./_/ | sed s/\\\\./_/` \
-		apel'
+ 	cvs -d \
+#	:pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
+	:ext:morioka@chamonix.jaist.ac.jp:/hare/cvs/root \
+	export -d apel-$(VERSION) \
+	-r apel-`echo $(VERSION) | sed s/\\\\./_/ | sed s/\\\\./_/` \
+	apel'
 	cd /tmp; $(RM) apel-$(VERSION)/ftp.in ; \
 		$(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
 	cd /tmp; $(RM) -r apel-$(VERSION)
