@@ -1,3 +1,30 @@
+1998-10-31  Mikio Nakajima    <minakaji@osaka.email.ne.jp>
+
+	* poe.el (combine-after-change-calls): New macro.
+
+1998-10-28  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poe.el (defun-maybe-cond): New macro.
+	(next-command-event): Use `defun-maybe-cond'.
+	(cancel-undo-boundary): Use `defun-maybe-cond'.
+
+1998-10-28  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poem-om.el (char-after): Redefine to change `POS' to optional
+	argument.
+
+
+1998-10-27  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 9.8 was released.
+
+	* README.ja, README.en (CVS): New section.
+
+1998-10-27  Mikio Nakajima    <minakaji@osaka.email.ne.jp>
+
+	* poem-om.el (char-before): Redefine to change `POS' to optional
+	argument.
+
 1998-10-27  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* poe.el (subr-fboundp): New function.
@@ -27,7 +54,7 @@
 	* poem.el: Move function `cancel-undo-boundary' to poe-18.el.
 
 
-1998-10-27  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+1998-10-26  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 9.7 was released.
 
