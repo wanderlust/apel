@@ -1,8 +1,10 @@
 ;;; pcustom.el -- a portable custom.el.
 
 ;; Copyright (C) 1999 Mikio Nakajima <minakaji@osaka.email.ne.jp>
+;; Copyright (C) 1999 Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
 
 ;; Author: Mikio Nakajima <minakaji@osaka.email.ne.jp>
+;;	Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
 ;; Maintainer: Mikio Nakajima <minakaji@osaka.email.ne.jp>
 ;; Keywords: emulating, custom
 
@@ -25,9 +27,18 @@
 
 ;;; Code:
 
-(condition-case nil
-    (require 'custom)
-  (error (require 'tinycustom)) )
+(require 'broken)
+
+(broken-facility new-custom
+  "New custom library not found; we use tinycustom for emulation."
+  (condition-case nil
+      (and (require 'custom)
+	   (fboundp 'custom-declare-variable))
+    (error nil)))
+
+(if-broken new-custom
+    (require 'tinycustom)
+  (require 'custom))
 
 (provide 'pcustom)
 
