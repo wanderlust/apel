@@ -209,10 +209,6 @@ find-file-hooks, etc.
 	    chinese-cns11643-7)				. iso-2022-int-1)
     ))
 
-(defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END."
-  (charsets-to-mime-charset (charsets-in-region start end)))
-
 
 ;;; @ character
 ;;;
