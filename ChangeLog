@@ -1,5 +1,18 @@
 1999-11-13  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
+	* pym.el (defsubst-maybe-cond): New macro.
+
+	* pym.el (defun-maybe, defmacro-maybe, defsubst-maybe,
+	defalias-maybe, defvar-maybe, defconst-maybe,
+	defun-maybe-cond, defmacro-maybe-cond, def-edebug-spec):
+	Moved from poe.el.
+
+	* EMU-ELS (emu-modules): Added 'pym.
+
+	* pym.el: New file.
+
+1999-11-13  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
 	* APEL-MK, APEL-CFG, APEL-ELS, EMU-ELS, Makefile: Revised.
 
 1999-11-12  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
