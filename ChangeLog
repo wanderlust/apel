@@ -1,3 +1,8 @@
+1998-04-17  MORIOKA Tomohiko  <morioka@mousai.jaist.ac.jp>
+
+	* emu-e20_2.el, emu-e20.el, EMU-ELS: Separate Emacs 20.1 and 20.2
+	depended definitions from emu-e20.el to emu-e20_2.el.
+
 1998-04-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu.el: emu-x20.el doesn't require 'emu-xemacs and 'emu-20.
