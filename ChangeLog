@@ -1,5 +1,20 @@
 1998-12-16  Katsumi Yamaoka   <yamaoka@jpl.org>
 
+	* poem-om.el (find-file-noselect-as-raw-text): Use
+	`find-file-noselect-as-coding-system' under Mule 2.*.
+	(find-file-noselect-as-binary): Likewise.
+	(insert-file-contents-as-raw-text): Use
+	`insert-file-contents-as-coding-system' under Mule 2.*.
+	(insert-file-contents-as-binary): Likewise.
+	(write-region-as-raw-text-CRLF): Use
+	`write-region-as-coding-system' under Mule 2.*.
+	(write-region-as-binary): Likewise.
+	(truncate-string): Use `defun-maybe'.
+	(toplevel): Don't refer to `running-emacs-19_29-or-later', use
+	`emacs-major-version' and `emacs-minor-version' instead.
+
+1998-12-16  Katsumi Yamaoka   <yamaoka@jpl.org>
+
 	* pccl-om.el (toplevel): Don't require `poem'.
 	Use `code-convert-string' instead of `encode-coding-string' or
 	`decode-coding-string'.
