@@ -81,7 +81,6 @@
 
 (require 'poem)
 (require 'mcharset)
-(require 'invisible)
 
 (defsubst char-list-to-string (char-list)
   "Convert list of character CHAR-LIST to string."
