@@ -174,7 +174,10 @@ TABLE defaults to the current buffer's category table."
       '(1 ((read r0) (loop (write-read-repeat r0)))))
     (condition-case nil
 	(progn
-	  (ccl-execute-on-string
+	  (funcall
+            (if (fboundp 'ccl-vector-program-execute-on-string)
+                'ccl-vector-program-execute-on-string
+              'ccl-execute-on-string)
 	    'ew-ccl-identity-program
 	    (make-vector 9 nil)
 	    "")

@@ -1,6 +1,11 @@
 1998-08-27  Tanaka Akira  <akr@jaist.ac.jp>
 
         * emu-e20.el (ccl-use-symbol-as-program): Use
+	`ccl-vector-program-execute-on-string' if it is defined.
+
+1998-08-27  Tanaka Akira  <akr@jaist.ac.jp>
+
+        * emu-e20.el (ccl-use-symbol-as-program): Use
 	`ccl-execute-on-string' instead of `make-coding-system' for
 	avoiding the error "Coding system already exists".
 
