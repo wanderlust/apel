@@ -16,8 +16,9 @@
   (nconc
    ;; modules are sorted by compilation order.
    '(static broken)
-   ;; coming soon.
-   ;; '(product)
+
+   ;; product information.
+   '(product apel-ver)
 
    ;; poe modules; poe modules depend on static.
    '(pym)
@@ -148,10 +149,28 @@
 	    (or (< emacs-major-version 19)
 		(and (= emacs-major-version 19)
 		     (< emacs-minor-version 16))))
-       '(time-stamp))
+       '(time-stamp)
+     ;; no problem.
+     '())
 
    ;; timezone.el; Some versions have Y2K problem.
-   ;; coming soon.
+   (condition-case nil
+       (let ((load-path (delete (expand-file-name ".")
+				(copy-sequence load-path))))
+	 ;; v18 does not have timezone.el.
+	 (require 'timezone)
+	 ;; Is timezone.el APEL version?
+	 (if (product-find 'timezone)
+	     (error "timezone.el is APEL version. Install newer version."))
+	 ;; Y2K test.
+	 (or (string= (aref (timezone-parse-date "Sat, 1 Jan 00 00:00:00 GMT")
+			    0)
+		      "2000")
+	     (error "timezone.el has Y2K problem. Install fixed version."))
+	 ;; no problem.
+	 '())
+     (error
+      '(timezone)))
 
    ;; invisible modules; provided for backward compatibility with old "tm".
    (cond
