@@ -4,7 +4,6 @@
 
 ;; Author: Mikio Nakajima  <minakaji@osaka.email.ne.jp>
 ;;         Katsumi Yamaoka <yamaoka@jpl.org>
-;; Maintainer: Mikio Nakajima <minakaji@osaka.email.ne.jp>
 ;; Keywords: emulating, custom
 
 ;; This file is part of APEL (A Portable Emacs Library).
