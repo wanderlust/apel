@@ -1,3 +1,7 @@
+2000-08-10  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* poem-e20_3.el: Require `pym'.
+
 2000-07-12  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* alist.el (vassoc): New function [to be compatible with XEmacs
