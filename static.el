@@ -69,6 +69,14 @@ The variable SYMBOL can be referenced at either compile-time or run-time."
     (eval (` (defconst (, symbol) (quote (, value)) (, docstring))))
     (` (defconst (, symbol) (quote (, value)) (, docstring)))))
 
+(defmacro static-cond (&rest clauses)
+  "`cond' expression but the car of each clause is evaluated at compile-time."
+  (while (and clauses
+	      (not (eval (car (car clauses)))))
+    (setq clauses (cdr clauses)))
+  (if clauses
+      (cons 'progn (cdr (car clauses)))))
+
 
 ;;; @ end
 ;;;
