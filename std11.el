@@ -214,23 +214,23 @@ If BOUNDARY is not nil, it is used as message header separator.
 			)) string "")
 	  "\""))
 
-(defun std11-strip-quoted-pair (str)
-  (let ((dest "")
+(defun std11-strip-quoted-pair (string)
+  "Strip quoted-pairs in STRING. [std11.el]"
+  (let (dest
+	(b 0)
 	(i 0)
-	(len (length str))
-	chr flag)
-    (while (< i len)
-      (setq chr (aref str i))
-      (if (or flag (not (eq chr ?\\)))
-	  (progn
-	    (setq dest (concat dest (char-to-string chr)))
-	    (setq flag nil)
-	    )
-	(setq flag t)
+	(len (length string))
 	)
-      (setq i (+ i 1))
-      )
-    dest))
+    (while (< i len)
+      (let ((chr (aref string i)))
+	(if (eq chr ?\\)
+	    (setq dest (concat dest (substring string b i))
+		  b (1+ i)
+		  i (+ i 2))
+	  (setq i (1+ i))
+	  )))
+    (concat dest (substring string b))
+    ))
 
 (defun std11-strip-quoted-string (string)
   "Strip quoted-string STRING. [std11.el]"
