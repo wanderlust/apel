@@ -14,6 +14,7 @@ What's APEL?
 		emu-nemacs.el --- for NEmacs
 		emu-e19.el    --- for Emacs 19 or XEmacs without mule
 		emu-mule.el   --- for MULE 2.3
+		emu-20.el     --- for Emacs/mule and XEmacs/mule
 		emu-e20.el    --- for Emacs/mule (Emacs 20, MULE 3)
 		emu-x20.el    --- for XEmacs/mule
 	    About other API
