@@ -45,7 +45,7 @@ but the contents viewed as characters do change.
 ;;;
 
 ;; avoid bug of XEmacs
-(or (integerp (cdr (split-char ?a)))
+(or (integerp (car (cdr (split-char ?a))))
     (defun split-char (char)
       "Return list of charset and one or two position-codes of CHAR."
       (let ((charset (char-charset char)))
