@@ -1,9 +1,14 @@
+1998-08-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el: Redefine coding-system `iso-2022-jp-2' if
+	`iso-2022-jp-2-dos' is not found.
+
 1998-08-11  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* emu-mule.el (write-region-as-raw-text-CRLF): New function.
 
-	* emu-18.el (generate-new-buffer-name): New function.
-	(Emacs 19 mulating function).
+	* emu-18.el (generate-new-buffer-name): New function (Emacs 19
+	mulating function).
 
 1998-08-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
