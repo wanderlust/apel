@@ -1,9 +1,9 @@
 ;;; -*-byte-compile-dynamic: t;-*-
-;;; poem-20.el --- poem submodule for Emacs 20 and XEmacs-mule
+;;; pces-20.el --- pces submodule for Emacs 20 and XEmacs-mule
 
-;; Copyright (C) 1997,1998 Free Software Foundation, Inc.
+;; Copyright (C) 1997,1998,1999 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -162,6 +162,6 @@ applied to `coding-system-for-write'."
 ;;; @ end
 ;;;
 
-(provide 'poem-20)
+(provide 'pces-20)
 
-;;; poem-20.el ends here
+;;; pces-20.el ends here
