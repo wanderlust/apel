@@ -1,3 +1,18 @@
+2000-03-11  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* install.el: Update headers.
+	(compile-elisp-module, compile-elisp-modules, install-file,
+	install-files, install-elisp-module, install-elisp-modules,
+	install-overwritten-file-modes): Add doc string.
+	(compile-elisp-module, compile-elisp-modules, install-file,
+	install-files, install-elisp-module, install-elisp-modules,
+	install-update-package-files): Rename arguments.
+	(compile-elisp-modules, install-files, install-elisp-modules):
+	Use `while' instead of `mapcar'.
+	(install-file): Use `install-overwritten-file-modes'.
+	(install-elisp-module): Use `install-file'.
+
+
 2000-12-30  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
 	*  APEL: Version 10.3 released.
