@@ -26,12 +26,6 @@
 
 (require 'poe)
 
-(defconst-maybe emacs-minor-version
-  (string-to-int
-   (substring emacs-version
-	      (string-match (format "%d\\." emacs-major-version)
-			    emacs-version))))
-
 (defvar running-emacs-18 (<= emacs-major-version 18))
 (defvar running-xemacs (string-match "XEmacs" emacs-version))
 
@@ -130,58 +124,6 @@ and `default-mime-charset'."
 		    (throw 'tag (cdr cell)))
 		(setq rest (cdr rest)))))
 	  default-mime-charset)))
-
-
-;;; @ Emacs 19 emulation
-;;;
-
-(defun-maybe minibuffer-prompt-width ()
-  "Return the display width of the minibuffer prompt."
-  (save-excursion
-    (set-buffer (window-buffer (minibuffer-window)))
-    (current-column)))
-
-
-;;; @ Emacs 19.29 emulation
-;;;
-
-(defvar path-separator ":"
-  "Character used to separate concatenated paths.")
-
-(defun-maybe buffer-substring-no-properties (start end)
-  "Return the characters of part of the buffer, without the text properties.
-The two arguments START and END are character positions;
-they can be in either order. [Emacs 19.29 emulating function]"
-  (let ((string (buffer-substring start end)))
-    (set-text-properties 0 (length string) nil string)
-    string))
-
-(defun-maybe match-string (num &optional string)
-  "Return string of text matched by last search.
-NUM specifies which parenthesized expression in the last regexp.
- Value is nil if NUMth pair didn't match, or there were less than NUM pairs.
-Zero means the entire text matched by the whole regexp or whole string.
-STRING should be given if the last search was by `string-match' on STRING.
-\[Emacs 19.29 emulating function]"
-  (if (match-beginning num)
-      (if string
-	  (substring string (match-beginning num) (match-end num))
-	(buffer-substring (match-beginning num) (match-end num)))))
-
-(or running-emacs-19_29-or-later
-    running-xemacs
-    ;; for Emacs 19.28 or earlier
-    (fboundp 'si:read-string)
-    (progn
-      (fset 'si:read-string (symbol-function 'read-string))
-      
-      (defun read-string (prompt &optional initial-input history)
-	"Read a string from the minibuffer, prompting with string PROMPT.
-If non-nil, second arg INITIAL-INPUT is a string to insert before reading.
-The third arg HISTORY, is dummy for compatibility. [emu.el]
-See `read-from-minibuffer' for details of HISTORY argument."
-	(si:read-string prompt initial-input))
-      ))
 
 
 ;;; @ Emacs 19.30 emulation
