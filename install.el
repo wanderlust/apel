@@ -29,15 +29,8 @@
 ;; but you should do (require 'emu) explicitly if you use functions and/or
 ;; variables defined in emu module.
 ;;(require 'emu)
-(require 'poe)
-(require 'path-util)			; default-load-path
-
-(defvar emacs-major-version (string-to-int emacs-version))
-(defvar emacs-minor-version
-  (string-to-int
-   (substring emacs-version
-	      (string-match (format "%d\\." emacs-major-version)
-			    emacs-version))))
+(require 'poe)		; emacs-major-version, emacs-minor-version
+(require 'path-util)	; default-load-path
 
 ;; verbatim copy of `defun-maybe' from poe.el, and
 ;; `make-directory-internal' and `make-directory' from poe-18.el
