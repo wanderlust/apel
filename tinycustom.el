@@ -1,9 +1,10 @@
 ;; tinycustom.el -- a tiny custom.el for emulating purpose.
 
-;; Copyright (C) 1999 Mikio Nakajima <minakaji@osaka.email.ne.jp>
+;; Copyright (C) 1999 Mikio Nakajima
+;; Copyright (C) 1999 Katsumi Yamaoka
 
-;; Author: Mikio Nakajima  <minakaji@osaka.email.ne.jp>
-;;         Katsumi Yamaoka <yamaoka@jpl.org>
+;; Author: Mikio Nakajima <minakaji@osaka.email.ne.jp>
+;;	Katsumi Yamaoka <yamaoka@jpl.org>
 ;; Keywords: emulating, custom
 
 ;; This file is part of APEL (A Portable Emacs Library).
