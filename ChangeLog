@@ -1,3 +1,40 @@
+1997-01-21  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.16 was released.
+
+Sat Jan 18 09:48:31 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* char-util.el (char-to-byte-list): modified for GNU MULE
+ 	19.34.91.
+
+Fri Jan 17 05:14:24 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* TL-ELS (tl-modules): Add `char-util' and `char-table' for
+ 	XEmacs/mule.
+
+Fri Jan 17 03:09:02 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* char-table.el (show-char-table): modified for GNU MULE 19.34.91.
+
+Tue Jan 14 02:37:32 1997  Martin Buchholz   <mrb@Eng.Sun.COM>
+
+	* tl-str.el: Add DOC-string of autoload `replace-as-filename'.
+
+Sat Jan 11 17:19:50 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* file-detect.el (add-latest-path): New function.
+
+
+Wed Jan  1 11:00:25 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.17 was released.
+
+Wed Dec 28 13:57:22 1996  Martin Buchholz   <mrb@Eng.Sun.COM>
+
+	* mk-tl: Use variable `default-directory' instead of `(getenv
+ 	"PWD")'. (cf. [tm-en:1084])
+
+
 Mon Dec 23 14:57:21 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.16 was released.
