@@ -30,6 +30,9 @@
 
 ;;; Code:
 
+(require 'custom)
+
+
 ;;; @ binary access
 ;;;
 
@@ -108,38 +111,51 @@ used as line break code type of coding-system."
   (if (find-coding-system charset)
       charset))
 
-(defsubst encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(encode-coding-region start end cs)
-      )))
-
-(defsubst decode-mime-charset-region (start end charset)
-  "Decode the text between START and END as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(decode-coding-region start end cs)
-      )))
-
-(defsubst encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(encode-coding-string string cs)
-      string)))
-
-(defsubst decode-mime-charset-string (string charset)
-  "Decode the STRING as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(decode-coding-string string cs)
-      string)))
+(defsubst mime-charset-list ()
+  "Return a list of all existing MIME-charset."
+  (nconc (mapcar (function car) mime-charset-coding-system-alist)
+	 (coding-system-list)))
 
 
-(defvar default-mime-charset 'x-ctext
-  "Default value of MIME charset used when MIME charset is not specified.
-It must be symbol.")
+(defvar widget-mime-charset-prompt-value-history nil
+  "History of input to `widget-mime-charset-prompt-value'.")
+
+(define-widget 'mime-charset 'coding-system
+  "A mime-charset."
+  :format "%{%t%}: %v"
+  :tag "MIME-charset"
+  :prompt-history 'widget-mime-charset-prompt-value-history
+  :prompt-value 'widget-mime-charset-prompt-value
+  :action 'widget-mime-charset-action)
+
+(defun widget-mime-charset-prompt-value (widget prompt value unbound)
+  ;; Read mime-charset from minibuffer.
+  (intern
+   (completing-read (format "%s (default %s) " prompt value)
+		    (mapcar (function
+			     (lambda (sym)
+			       (list (symbol-name sym))
+			       ))
+			    (mime-charset-list)))))
+
+(defun widget-mime-charset-action (widget &optional event)
+  ;; Read a mime-charset from the minibuffer.
+  (let ((answer
+	 (widget-mime-charset-prompt-value
+	  widget
+	  (widget-apply widget :menu-tag-get)
+	  (widget-value widget)
+	  t)))
+    (widget-value-set widget answer)
+    (widget-apply widget :notify widget event)
+    (widget-setup)))
+
+(defcustom default-mime-charset 'x-ctext
+  "Default value of MIME-charset.
+It is used when MIME-charset is not specified.
+It must be symbol."
+  :group 'i18n
+  :type 'mime-charset)
 
 (defsubst detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END."

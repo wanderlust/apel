@@ -1,3 +1,45 @@
+1997-11-04  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 4.1 was released.
+
+	* APEL-MK (compile-apel): Use `config-apel'; don't use
+	`add-to-list' for compatibility.
+	(install-apel): Don't call `config-apel' directly.
+
+	* APEL-CFG: Add load-path setting.
+
+1997-11-04  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-20.el (mime-charset-list): New inline-function.
+	(widget-mime-charset-prompt-value-history): New variable.
+	(mime-charset): New widget.
+	(widget-mime-charset-prompt-value): New function.
+	(widget-mime-charset-action): New function.
+	(default-mime-charset): Use `defcustom'.
+
+	* emu-20.el (default-mime-charset): Modify DOC-string.
+
+	* emu-mule.el (charsets-mime-charset-alist): New implementation.
+
+	* emu-e20.el (encode-mime-charset-region,
+	decode-mime-charset-region, encode-mime-charset-string,
+	decode-mime-charset-string): New function (copied from emu-20.el);
+	check `enable-multibyte-characters'.
+
+	* emu-x20.el (encode-mime-charset-region,
+	decode-mime-charset-region, encode-mime-charset-string,
+	decode-mime-charset-string): New function (copied from emu-20.el).
+
+	* emu-20.el: Move function `encode-mime-charset-region',
+	`decode-mime-charset-region', `encode-mime-charset-string' and
+	`decode-mime-charset-string' to emu-x20.el and emu-e20.el.
+
+1997-10-04  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (charsets-mime-charset-alist): Use MIME charset
+ 	`iso-8859-5' for cyrillic.
+
+
 1997-09-26  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 3.4.4 was released.

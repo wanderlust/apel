@@ -3,9 +3,8 @@
 ;; Copyright (C) 1996,1997 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version:
-;;	$Id$
-;; Keywords: install, module
+;; Version: $Id$
+;; Keywords: file detection, install, module
 
 ;; This file is part of APEL (A Portable Emacs Library).
 

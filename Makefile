@@ -2,9 +2,9 @@
 # $Id$
 #
 
-VERSION = 3.4.4
+VERSION = 4.1
 
-TAR	= gtar
+TAR	= tar
 RM	= /bin/rm -f
 CP	= /bin/cp -p
 

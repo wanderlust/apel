@@ -1,4 +1,4 @@
-;;; emu-e20.el --- emu API implementation for Emacs/mule (19.34.91-delta)
+;;; emu-e20.el --- emu API implementation for Emacs 20
 
 ;; Copyright (C) 1996,1997 Free Software Foundation, Inc.
 
@@ -25,7 +25,7 @@
 
 ;;; Commentary:
 
-;;    This module requires Emacs 20.0.90 or later.
+;;    This module requires Emacs 20.1 or later.
 
 ;;; Code:
 
@@ -75,6 +75,39 @@ in the region between START and END."
 
 ;;; @ MIME charset
 ;;;
+
+(defsubst encode-mime-charset-region (start end charset)
+  "Encode the text between START and END as MIME CHARSET."
+  (let (cs)
+    (if (and enable-multibyte-characters
+	     (setq cs (mime-charset-to-coding-system charset)))
+	(encode-coding-region start end cs)
+      )))
+
+(defsubst decode-mime-charset-region (start end charset)
+  "Decode the text between START and END as MIME CHARSET."
+  (let (cs)
+    (if (and enable-multibyte-characters
+	     (setq cs (mime-charset-to-coding-system charset)))
+	(decode-coding-region start end cs)
+      )))
+
+(defsubst encode-mime-charset-string (string charset)
+  "Encode the STRING as MIME CHARSET."
+  (let (cs)
+    (if (and enable-multibyte-characters
+	     (setq cs (mime-charset-to-coding-system charset)))
+	(encode-coding-string string cs)
+      string)))
+
+(defsubst decode-mime-charset-string (string charset)
+  "Decode the STRING as MIME CHARSET."
+  (let (cs)
+    (if (and enable-multibyte-characters
+	     (setq cs (mime-charset-to-coding-system charset)))
+	(decode-coding-string string cs)
+      string)))
+
 
 (defvar charsets-mime-charset-alist
   '(((ascii)						. us-ascii)

@@ -1,4 +1,4 @@
-;;; emu-x20.el --- emu API implementation for XEmacs 20 with mule
+;;; emu-x20.el --- emu API implementation for XEmacs with mule
 
 ;; Copyright (C) 1994,1995,1996,1997 MORIOKA Tomohiko
 
@@ -36,14 +36,43 @@
 ;;; @ MIME charset
 ;;;
 
+(defsubst encode-mime-charset-region (start end charset)
+  "Encode the text between START and END as MIME CHARSET."
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(encode-coding-region start end cs)
+      )))
+
+(defsubst decode-mime-charset-region (start end charset)
+  "Decode the text between START and END as MIME CHARSET."
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(decode-coding-region start end cs)
+      )))
+
+(defsubst encode-mime-charset-string (string charset)
+  "Encode the STRING as MIME CHARSET."
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(encode-coding-string string cs)
+      string)))
+
+(defsubst decode-mime-charset-string (string charset)
+  "Decode the STRING as MIME CHARSET."
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(decode-coding-string string cs)
+      string)))
+
+
 (defvar charsets-mime-charset-alist
   '(((ascii)						. us-ascii)
     ((ascii latin-iso8859-1)				. iso-8859-1)
     ((ascii latin-iso8859-2)				. iso-8859-2)
     ((ascii latin-iso8859-3)				. iso-8859-3)
     ((ascii latin-iso8859-4)				. iso-8859-4)
-;;; ((ascii cyrillic-iso8859-5)				. iso-8859-5)
-    ((ascii cyrillic-iso8859-5)				. koi8-r)
+    ((ascii cyrillic-iso8859-5)				. iso-8859-5)
+;;; ((ascii cyrillic-iso8859-5)				. koi8-r)
     ((ascii arabic-iso8859-6)				. iso-8859-6)
     ((ascii greek-iso8859-7)				. iso-8859-7)
     ((ascii hebrew-iso8859-8)				. iso-8859-8)

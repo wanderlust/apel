@@ -75,25 +75,25 @@
 
 (defun encode-coding-region (start end coding-system)
   "Encode the text between START and END to CODING-SYSTEM.
-\[emu-mule.el; EMACS 20 emulating function]"
+\[EMACS 20 emulating function]"
   (code-convert-region start end *internal* coding-system)
   )
 
 (defun decode-coding-region (start end coding-system)
   "Decode the text between START and END which is encoded in CODING-SYSTEM.
-\[emu-mule.el; EMACS 20 emulating function]"
+\[EMACS 20 emulating function]"
   (code-convert-region start end coding-system *internal*)
   )
 
 (defun encode-coding-string (str coding-system)
   "Encode the STRING to CODING-SYSTEM.
-\[emu-mule.el; EMACS 20 emulating function]"
+\[EMACS 20 emulating function]"
   (code-convert-string str *internal* coding-system)
   )
 
 (defun decode-coding-string (str coding-system)
   "Decode the string STR which is encoded in CODING-SYSTEM.
-\[emu-mule.el; EMACS 20 emulating function]"
+\[EMACS 20 emulating function]"
   (let ((len (length str))
 	ret)
     (while (and
@@ -158,36 +158,37 @@ find-file-hooks, etc.
 ;;; @ MIME charset
 ;;;
 
-(defvar charsets-mime-charset-alist
-  (list
-   (cons (list lc-ascii)				'us-ascii)
-   (cons (list lc-ascii lc-ltn1)			'iso-8859-1)
-   (cons (list lc-ascii lc-ltn2)			'iso-8859-2)
-   (cons (list lc-ascii lc-ltn3)			'iso-8859-3)
-   (cons (list lc-ascii lc-ltn4)			'iso-8859-4)
-;;;(cons (list lc-ascii lc-crl)				'iso-8859-5)
-   (cons (list lc-ascii lc-crl)				'koi8-r)
-   (cons (list lc-ascii lc-arb)				'iso-8859-6)
-   (cons (list lc-ascii lc-grk)				'iso-8859-7)
-   (cons (list lc-ascii lc-hbw)				'iso-8859-8)
-   (cons (list lc-ascii lc-ltn5)			'iso-8859-9)
-   (cons (list lc-ascii lc-roman lc-jpold lc-jp)	'iso-2022-jp)
-   (cons (list lc-ascii lc-kr)				'euc-kr)
-   (cons (list lc-ascii lc-cn)				'gb2312)
-   (cons (list lc-ascii lc-big5-1 lc-big5-2)		'big5)
-   (cons (list lc-ascii lc-roman lc-ltn1 lc-grk
-	       lc-jpold lc-cn lc-jp lc-kr lc-jp2)	'iso-2022-jp-2)
-   (cons (list lc-ascii lc-roman lc-ltn1 lc-grk
-	       lc-jpold lc-cn lc-jp lc-kr lc-jp2
-	       lc-cns1 lc-cns2)				'iso-2022-int-1)
-   (cons (list lc-ascii lc-roman
-	       lc-ltn1 lc-ltn2 lc-crl lc-grk
-	       lc-jpold lc-cn lc-jp lc-kr lc-jp2
-	       lc-cns1 lc-cns2 lc-cns3 lc-cns4
-	       lc-cns5 lc-cns6 lc-cns7)			'iso-2022-int-1)
-   ))
+(defun encode-mime-charset-region (start end charset)
+  "Encode the text between START and END as MIME CHARSET."
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(code-convert start end *internal* cs)
+      )))
 
-(defvar default-mime-charset 'x-ctext)
+(defun decode-mime-charset-region (start end charset)
+  "Decode the text between START and END as MIME CHARSET."
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(code-convert start end cs *internal*)
+      )))
+
+(defun encode-mime-charset-string (string charset)
+  "Encode the STRING as MIME CHARSET."
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(code-convert-string string *internal* cs)
+      string)))
+
+(defun decode-mime-charset-string (string charset)
+  "Decode the STRING which is encoded in MIME CHARSET."
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(decode-coding-string string cs)
+      string)))
+
+
+;;; @@ to coding-system
+;;;
 
 (defvar mime-charset-coding-system-alist
   '((iso-8859-1      . *ctext*)
@@ -215,41 +216,64 @@ find-file-hooks, etc.
       (intern (concat (symbol-name cs) (symbol-name lbt)))
       )))
 
+
+;;; @@ detection
+;;;
+
+(defvar charsets-mime-charset-alist
+  (let ((alist
+	 '(((lc-ascii)					. 'us-ascii)
+	   ((lc-ascii lc-ltn1)				. 'iso-8859-1)
+	   ((lc-ascii lc-ltn2)				. 'iso-8859-2)
+	   ((lc-ascii lc-ltn3)				. 'iso-8859-3)
+	   ((lc-ascii lc-ltn4)				. 'iso-8859-4)
+;;;	   ((lc-ascii lc-crl)				. 'iso-8859-5)
+	   ((lc-ascii lc-crl)				. 'koi8-r)
+	   ((lc-ascii lc-arb)				. 'iso-8859-6)
+	   ((lc-ascii lc-grk)				. 'iso-8859-7)
+	   ((lc-ascii lc-hbw)				. 'iso-8859-8)
+	   ((lc-ascii lc-ltn5)				. 'iso-8859-9)
+	   ((lc-ascii lc-roman lc-jpold lc-jp)		. 'iso-2022-jp)
+	   ((lc-ascii lc-kr)				. 'euc-kr)
+	   ((lc-ascii lc-cn)				. 'gb2312)
+	   ((lc-ascii lc-big5-1 lc-big5-2)		. 'big5)
+	   ((lc-ascii lc-roman lc-ltn1 lc-grk
+		      lc-jpold lc-cn lc-jp lc-kr
+		      lc-jp2)				. 'iso-2022-jp-2)
+	   ((lc-ascii lc-roman lc-ltn1 lc-grk
+		      lc-jpold lc-cn lc-jp lc-kr lc-jp2
+		      lc-cns1 lc-cns2)			. 'iso-2022-int-1)
+	   ((lc-ascii lc-roman
+		      lc-ltn1 lc-ltn2 lc-crl lc-grk
+		      lc-jpold lc-cn lc-jp lc-kr lc-jp2
+		      lc-cns1 lc-cns2 lc-cns3 lc-cns4
+		      lc-cns5 lc-cns6 lc-cns7)		. 'iso-2022-int-1)
+	   ))
+	dest)
+    (while alist
+      (catch 'not-found
+	(let ((pair (car alist)))
+	  (setq dest
+		(cons (mapcar (function
+			       (lambda (cs)
+				 (if (boundp cs)
+				     (symbol-value cs)
+				   (throw 'not-found nil)
+				   )))
+			      (car pair))
+		      (cdr pair)))))
+      (setq alist (cdr alist))))
+  )
+
+(defvar default-mime-charset 'x-ctext
+  "Default value of MIME-charset.
+It is used when MIME-charset is not specified.
+It must be symbol.")
+
 (defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END.
-\[emu-mule.el]"
+  "Return MIME charset for region between START and END."
   (charsets-to-mime-charset
    (cons lc-ascii (find-charset-region start end))))
-
-(defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET.
-\[emu-mule.el]"
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(code-convert start end *internal* cs)
-      )))
-
-(defun decode-mime-charset-region (start end charset)
-  "Decode the text between START and END as MIME CHARSET.
-\[emu-mule.el]"
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(code-convert start end cs *internal*)
-      )))
-
-(defun encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET. [emu-mule.el]"
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(code-convert-string string *internal* cs)
-      string)))
-
-(defun decode-mime-charset-string (string charset)
-  "Decode the STRING which is encoded in MIME CHARSET. [emu-mule.el]"
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(decode-coding-string string cs)
-      string)))
 
 
 ;;; @ character

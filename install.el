@@ -3,11 +3,11 @@
 ;; Copyright (C) 1996 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Created: 1996/8/18
+;; Created: 1996/08/18
 ;; Version: $Id$
-;; Keywords: install
+;; Keywords: install, byte-compile, directory detection
 
-;; This file is part of tl (Tiny Library).
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -28,6 +28,7 @@
 
 (require 'emu)
 (require 'file-detect)
+
 
 ;;; @ compile Emacs Lisp files
 ;;;
