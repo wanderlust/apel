@@ -38,8 +38,6 @@
 
 (defconst *noconv* 'no-conversion)
 
-(defalias 'set-buffer-file-coding-system 'set-file-coding-system)
-
 (defmacro as-binary-process (&rest body)
   `(let (selective-display	; Disable ^M to nl translation.
 	 (coding-system-for-write 'no-conversion)
