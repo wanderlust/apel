@@ -43,15 +43,15 @@ Third arg DOC is the group documentation.
 
 This is a nop defgroup only for emulating purpose."
   nil)
-    
-(defmacro-maybe defcustom (symbol value doc &rest args) 
+
+(defmacro-maybe defcustom (symbol value doc &rest args)
   "Declare SYMBOL as a customizable variable that defaults to VALUE.
 DOC is the variable documentation.
 
 This is a defcustom only for emulating purpose.
 Its effect is just as same as that of defvar."
   (` (defvar (, symbol) (, value) (, doc))))
-    
+
 (defvar-maybe frame-background-mode nil
   "*The brightness of the background.
 Set this to the symbol dark if your background color is dark, light if
@@ -98,9 +98,7 @@ match one of the ITEM.  The following REQ are defined:
 
 `background' (the value of `frame-background-mode', what color is used
 for the background text)
-  Should be one of `light' or `dark'.
-
-\[custom emulating macro]"
+  Should be one of `light' or `dark'."
   ((fboundp 'make-face)
    (` (let ((name (quote (, face))))
 	(or
@@ -162,4 +160,4 @@ This is a nop define-widget only for emulating purpose."
 (require 'product)
 (product-provide (provide 'tinycustom) (require 'apel-ver))
 
-;;; tinycustom.el ends here.
+;;; tinycustom.el ends here

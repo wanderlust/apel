@@ -1,7 +1,6 @@
 ;;; localhook.el --- local hook variable support in emacs-lisp.
 
-;; Copyright (C) 1985, 1986, 1992, 1994, 1995 Free Software Foundation, Inc.
-;; Copyright (C) 1999 Shuhei KOBAYASHI
+;; Copyright (C) 1985,86,92,94,95,1999 Free Software Foundation, Inc.
 
 ;; Author: Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
 ;; Keywords: compatibility
