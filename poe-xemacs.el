@@ -1,7 +1,7 @@
-;;; poe-xemacs.el --- poe API implementation for XEmacs
+;;; poe-xemacs.el --- poe submodule for XEmacs -*-byte-compile-dynamic: t;-*-
 
 ;; Copyright (C) 1995 Free Software Foundation, Inc.
-;; Copyright (C) 1995,1996,1997 MORIOKA Tomohiko
+;; Copyright (C) 1995,1996,1997,1998 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: emulation, compatibility, XEmacs
@@ -28,8 +28,7 @@
 ;;; @ face
 ;;;
 
-(or (fboundp 'face-list)
-    (defalias 'face-list 'list-faces))
+(defalias-maybe 'face-list 'list-faces)
 
 (or (memq 'underline (face-list))
     (and (fboundp 'make-face)
@@ -84,15 +83,47 @@
 	(concat ancestor (substring filename (match-end 0)))))
     )
 
-    
+
+;;; @ for anything older than XEmacs 20.2
+;;;
+
+;; eval-after-load is not defined in XEmacs but after-load-alist is
+;; usable.  See subr.el in XEmacs.
+
+(defun-maybe eval-after-load (file form)
+  "Arrange that, if FILE is ever loaded, FORM will be run at that time.
+This makes or adds to an entry on `after-load-alist'.
+If FILE is already loaded, evaluate FORM right now.
+It does nothing if FORM is already on the list for FILE.
+FILE should be the name of a library, with no directory name."
+  ;; Make sure there is an element for FILE.
+  (or (assoc file after-load-alist)
+      (setq after-load-alist (cons (list file) after-load-alist)))
+  ;; Add FORM to the element if it isn't there.
+  (let ((elt (assoc file after-load-alist)))
+    (or (member form (cdr elt))
+	(progn
+	  (nconc elt (list form))
+	  ;; If the file has been loaded already, run FORM right away.
+	  (and (assoc file load-history)
+	       (eval form)))))
+  form)
+
+;; (defun-maybe eval-after-load (file form)
+;;   (or (assoc file after-load-alist)
+;;       (setq after-load-alist (cons (list file) after-load-alist)))
+;;   (let ((elt (assoc file after-load-alist)))
+;;     (or (member form (cdr elt))
+;;         (nconc elt (list form))))
+;;   form)
+
+
 ;;; @ Emacs 20.3 emulation
 ;;;
 
-(or (fboundp 'line-beginning-position)
-    (defalias 'line-beginning-position 'point-at-bol))
+(defalias-maybe 'line-beginning-position 'point-at-bol)
 
-(or (fboundp 'line-end-position)
-    (defalias 'line-end-position 'point-at-eol))
+(defalias-maybe 'line-end-position 'point-at-eol)
 
 
 ;;; @ end
