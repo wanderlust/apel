@@ -553,7 +553,7 @@ If CCL-PROG is symbol, it is dereferenced.
 \[Emacs 20.3 emulating function]"
   (exec-ccl-string
    (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
-   string status))
+   status string))
 
 
 ;;; @ end

@@ -1,3 +1,8 @@
+1998-09-01  Tanaka Akira <akr@jaist.ac.jp>
+
+	* emu-mule.el (ccl-execute-on-string): Fix arguments
+	order `status' and `string'.
+
 1998-08-31  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 8.17 was released.
