@@ -31,9 +31,11 @@
 (defconst std11-field-name-regexp "[!-9;-~]+")
 (defconst std11-field-head-regexp
   (concat "\\(" std11-field-name-regexp "\\):"))
+(defconst std11-next-field-head-regexp
+  (concat "\n" std11-field-head-regexp))
 
 (defun std11-field-end ()
-  (if (re-search-forward rfc822::next-field-top-regexp nil t)
+  (if (re-search-forward std11-next-field-head-regexp nil t)
       (goto-char (match-beginning 0))
     (if (re-search-forward "^$" nil t)
 	(goto-char (1- (match-beginning 0)))
@@ -54,9 +56,8 @@
 	(goto-char (point-min))
 	(let (field header)
 	  (while (re-search-forward std11-field-head-regexp nil t)
-	    (setq field (buffer-substring (match-beginning 0)
-					  (rfc822/field-end)
-					  ))
+	    (setq field
+		  (buffer-substring (match-beginning 0) (std11-field-end)))
 	    (if (string-match pat field)
 		(setq header (concat header field "\n"))
 	      ))
@@ -71,9 +72,8 @@
 	(goto-char (point-min))
 	(let (field header)
 	  (while (re-search-forward std11-field-head-regexp nil t)
-	    (setq field (buffer-substring (match-beginning 0)
-					  (rfc822/field-end)
-					  ))
+	    (setq field
+		  (buffer-substring (match-beginning 0) (std11-field-end)))
 	    (if (not (string-match pat field))
 		(setq header (concat header field "\n"))
 	      ))
