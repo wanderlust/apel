@@ -1,4 +1,4 @@
-2002-10-03  Morishima <qa3507@email.mot.com>
+2002-10-03  Takeshi Morishima  <qa3507@email.mot.com>
 
 	* install.el (install-elisp-module): Delete an elc file if the
 	optional 5th argument `del-elc' is given.
