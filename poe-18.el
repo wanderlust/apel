@@ -93,6 +93,13 @@ Associates the function with the current load file, if any.
 ;;; @ Compilation Features
 ;;;
 
+(defmacro-maybe eval-when-compile (&rest body)
+  "Like `progn', but evaluates the body at compile time.
+The result of the body appears to the compiler as a quoted constant."
+  ;; Not necessary because we have it in b-c-initial-macro-environment
+  ;; (list 'quote (eval (cons 'progn body)))
+  (cons 'progn body))
+
 (defmacro-maybe eval-and-compile (&rest body)
   "Like `progn', but evaluates the body at compile time and at load time."
   ;; Remember, it's magic.
