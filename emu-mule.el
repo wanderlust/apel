@@ -1,10 +1,9 @@
-;;; emu-mule.el --- Mule 2.* emulation module for Mule
+;;; emu-mule.el --- emu module for Mule 1.* and Mule 2.*
 
 ;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version:
-;;	$Id$
+;; Version: $Id$
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of tl (Tiny Library).
@@ -20,8 +19,8 @@
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with This program; see the file COPYING.  If not, write to
-;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Code:
@@ -91,6 +90,8 @@
       )
     (concat ret (substring str len))
     ))
+
+(defalias 'detect-coding-region 'code-detect-region)
 
 (defmacro as-binary-process (&rest body)
   (` (let (selective-display	; Disable ^M to nl translation.

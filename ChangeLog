@@ -1,3 +1,21 @@
+Mon Sep 23 17:44:23 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.7 was released.
+
+	* emu.el (insert-binary-file-contents-literally): New function.
+
+	* emu.el (insert-file-contents-literally): New implementation.
+
+Mon Sep 23 14:58:21 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (detect-coding-region): New alias.
+
+Mon Sep 23 14:55:53 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e19.el, emu-nemacs.el (detect-coding-region): Renamed from
+ 	`code-detect-region'.
+
+
 Mon Sep 23 12:36:01 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.6 was released.

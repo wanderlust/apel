@@ -3,8 +3,7 @@
 ;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version:
-;;	$Id$
+;; Version: $Id$
 ;; Keywords: emulation, compatibility, NEmacs, mule
 
 ;; This file is part of tl (Tiny Library).
@@ -20,8 +19,8 @@
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with this program; see the file COPYING.  If not, write to
-;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Code:
@@ -144,9 +143,9 @@
 	  (convert-region-kanji-code start end 3 coding-system)
 	  ))))
 
-(defun code-detect-region (start end)
+(defun detect-coding-region (start end)
   "Detect coding-system of the text in the region between START and END.
-\[emu-nemacs.el; Mule emulating function]"
+\[emu-nemacs.el; Emacs 20 emulating function]"
   (if (save-excursion
 	(save-restriction
 	  (narrow-to-region start end)
@@ -173,6 +172,7 @@
   (` (let (kanji-flag)
        (,@ body)
        )))
+
 
 ;;; @@ for old MULE emulation
 ;;;

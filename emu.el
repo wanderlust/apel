@@ -77,6 +77,22 @@
        ))
 
 
+;;; @ binary access
+;;;
+
+(defun insert-binary-file-contents-literally
+  (filename &optional visit beg end replace)
+  "Like `insert-file-contents-literally', q.v., but don't code conversion.
+A buffer may be modified in several ways after reading into the buffer due
+to advanced Emacs features, such as file-name-handlers, format decoding,
+find-file-hooks, etc.
+  This function ensures that none of these modifications will take place.
+\[emu.el]"
+  (as-binary-input-file
+   (insert-file-contents-literally filename visit beg end replace)
+   ))
+
+
 ;;; @ MIME charset
 ;;;
 
@@ -155,9 +171,24 @@ into a hook function that will be run only after loading the package.
 ;;; @ EMACS 19.30 emulation
 ;;;
 
-(or (fboundp 'insert-file-contents-literally)
-    (defalias 'insert-file-contents-literally 'insert-file-contents)
-    )
+(cond ((fboundp 'insert-file-contents-literally)
+       )
+      ((boundp 'file-name-handler-alist)
+       (defun insert-file-contents-literally
+	 (filename &optional visit beg end replace)
+	 "Like `insert-file-contents', q.v., but only reads in the file.
+A buffer may be modified in several ways after reading into the buffer due
+to advanced Emacs features, such as file-name-handlers, format decoding,
+find-file-hooks, etc.
+  This function ensures that none of these modifications will take place.
+\[emu.el; Emacs 19.30 emulating function]"
+	 (let (file-name-handler-alist)
+	   (insert-file-contents filename visit beg end replace)
+	   ))
+       )
+      (t
+       (defalias 'insert-file-contents-literally 'insert-file-contents)
+       ))
 
 
 ;;; @ EMACS 19.31 emulation

@@ -19,8 +19,8 @@
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with this program; see the file COPYING.  If not, write to
-;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Code:
@@ -117,9 +117,9 @@
 \[emu-e19.el; Emacs 20 emulating function]"
   0)
 
-(defun code-detect-region (beg end)
-  "Detect coding-system of the text in the region
-between START and END. [emu-e19.el; Mule emulating function]"
+(defun detect-coding-region (start end)
+  "Detect coding-system of the text in the region between START and END.
+\[emu-e19.el; Emacs 20 emulating function]"
   )
 
 (defun set-file-coding-system (coding-system &optional force)
