@@ -12,6 +12,10 @@
 	   (defvar PREFIX prefix)
 	   (setq command-line-args-left (cdr command-line-args-left))
 	   ))
+    (add-to-list 'load-path (expand-file-name "../emu"))
+    (add-to-list 'load-path ".")
+    (require 'install)
+    
     (load-file "APEL-CFG")
     (load-file "APEL-ELS")
     (princ (format "PREFIX=%s\n" PREFIX))
@@ -24,7 +28,8 @@
 
 (defun install-apel ()
   (config-apel)
-  (install-elisp-modules apel-modules	"./"	APEL_DIR)
+  (compile-elisp-modules apel-modules	".")
+  (install-elisp-modules apel-modules	"."	APEL_DIR)
   )
 
 ;;; APEL-MK ends here
