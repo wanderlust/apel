@@ -26,38 +26,22 @@
 
 (require 'poem)
 
-(defsubst lbt-to-string (lbt)
-  (cdr (assq lbt '((nil . nil)
-		   (CRLF . "\r\n")
-		   (CR . "\r")
-		   (dos . "\r\n")
-		   (mac . "\r"))))
-  )
-
-(defun encode-mime-charset-region (start end charset &optional lbt)
+(defun encode-mime-charset-region (start end charset)
   "Encode the text between START and END as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset lbt)))
+  (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(code-convert start end *internal* cs)
-      (if (and lbt (setq cs (mime-charset-to-coding-system charset)))
-	  (let ((newline (lbt-to-string lbt)))
-	    (save-excursion
-	      (save-restriction
-		(narrow-to-region start end)
-		(code-convert (point-min) (point-max) *internal* cs)
-		(if newline
-		    (goto-char (point-min))
-		  (while (search-forward "\n" nil t)
-		    (replace-match newline))))))))))
+      )))
 
 (defun decode-mime-charset-region (start end charset &optional lbt)
   "Decode the text between START and END as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset lbt)))
+  (let ((cs (mime-charset-to-coding-system charset lbt))
+	newline)
     (if cs
 	(code-convert start end cs *internal*)
       (if (and lbt (setq cs (mime-charset-to-coding-system charset)))
-	  (let ((newline (lbt-to-string lbt)))
-	    (if newline
+	  (progn
+	    (if (setq newline (cdr (assq lbt '((CRLF . "\r\n") (CR . "\r")))))
 		(save-excursion
 		  (save-restriction
 		    (narrow-to-region start end)
@@ -67,39 +51,29 @@
 		  (code-convert (point-min) (point-max) cs *internal*))
 	      (code-convert start end cs *internal*)))))))
 
-(defun encode-mime-charset-string (string charset &optional lbt)
+(defun encode-mime-charset-string (string charset)
   "Encode the STRING as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset lbt)))
+  (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(code-convert-string string *internal* cs)
-      (if (and lbt (setq cs (mime-charset-to-coding-system charset)))
-	  (let ((newline (lbt-to-string lbt)))
-	    (if newline
-		(with-temp-buffer
-		  (insert string)
-		  (code-convert (point-min) (point-max) *internal* cs)
-		  (goto-char (point-min))
-		  (while (search-forward "\n" nil t)
-		    (replace-match newline))
-		  (buffer-string))
-	      (decode-coding-string string cs)))
-	string))))
+      string)))
 
 (defun decode-mime-charset-string (string charset &optional lbt)
   "Decode the STRING which is encoded in MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset lbt)))
+  (let ((cs (mime-charset-to-coding-system charset lbt))
+	newline)
     (if cs
 	(decode-coding-string string cs)
       (if (and lbt (setq cs (mime-charset-to-coding-system charset)))
-	  (let ((newline (lbt-to-string lbt)))
-	    (if newline
+	  (progn
+	    (if (setq newline (cdr (assq lbt '((CRLF . "\r\n") (CR . "\r")))))
 		(with-temp-buffer
-		  (insert string)
-		  (goto-char (point-min))
-		  (while (search-forward newline nil t)
-		    (replace-match "\n"))
-		  (code-convert (point-min) (point-max) cs *internal*)
-		  (buffer-string))
+		 (insert string)
+		 (goto-char (point-min))
+		 (while (search-forward newline nil t)
+		   (replace-match "\n"))
+		 (code-convert (point-min) (point-max) cs *internal*)
+		 (buffer-string))
 	      (decode-coding-string string cs)))
 	string))))
 
@@ -145,10 +119,6 @@
     ))
 
 (defsubst mime-charset-to-coding-system (charset &optional lbt)
-  "Return coding-system corresponding with CHARSET.
-CHARSET is a symbol whose name is MIME charset.
-If optional argument LBT (`CRLF', `LF', `CR', `unix', `dos' or `mac')
-is specified, it is used as line break code type of coding-system."
   (if (stringp charset)
       (setq charset (intern (downcase charset)))
     )
