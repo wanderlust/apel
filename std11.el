@@ -155,7 +155,7 @@ If BOUNDARY is not nil, it is used as message header separator.
 	  header)
 	))))
 
-(defun std11-header-field-names (&optional boundary)
+(defun std11-collect-field-names (&optional boundary)
   "Return list of all field-names of the message header in current buffer.
 If BOUNDARY is not nil, it is used as message header separator.
 \[std11.el]"
