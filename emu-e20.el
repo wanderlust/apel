@@ -6,7 +6,7 @@
 ;; Version: $Id$
 ;; Keywords: emulation, compatibility, Mule
 
-;; This file is part of tl (Tiny Library).
+;; This file is part of emu.
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
