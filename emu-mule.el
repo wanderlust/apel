@@ -490,7 +490,7 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 
 ;;; @ CCL
 ;;;
-(require 'ccl)
+(eval-when-compile (require 'ccl))
 
 (defconst ccl-use-symbol-as-program nil
   "t if CCL related builtins accept symbol as CCL program.
