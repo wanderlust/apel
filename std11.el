@@ -80,7 +80,7 @@ If BOUNDARY is not nil, it is used as message header separator.
 	  )
 	dest))))
 
-(defun std11-field-bodies (field-names &optional default-value boundary)
+(defun std11-find-field-bodies (field-names &optional default-value boundary)
   "Return list of each field-bodies of FIELD-NAMES of the message header
 in current buffer. If BOUNDARY is not nil, it is used as message
 header separator. [std11.el]"
