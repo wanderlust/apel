@@ -471,6 +471,24 @@ as obsolete. [XEmacs emulating function]"
   )
 
 
+;;; @ MULE 2 emulation
+;;;
+
+(if (boundp 'buffer-undo-list)
+    ;; for Emacs 19.7 or later
+    (defun-maybe cancel-undo-boundary ()
+      "Cancel undo boundary. [MULE 2.3 emulating function]"
+      (if (and (consp buffer-undo-list)
+	       ;; if car is nil.
+	       (null (car buffer-undo-list)))
+	  (setq buffer-undo-list (cdr buffer-undo-list))
+	))
+  ;; for anything older than Emacs 19.7.    
+  (defun-maybe cancel-undo-boundary ()
+    "Cancel undo boundary. [MULE 2.3 emulating function]")
+  )
+
+
 ;;; @ end
 ;;;
 
