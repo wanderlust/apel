@@ -1,3 +1,8 @@
+2001-12-05  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* tinycustom.el (custom-declare-face): New function.
+	(defface): Use it.
+
 2001-10-15  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* poe.el (format-time-string): Support the 3rd arg `universal'.
