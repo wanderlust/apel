@@ -1,5 +1,11 @@
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* poe.el, emu.el: Move constant `emacs-minor-version', Emacs 19
+	emulating definitions and Emacs 19.29 emulating definitions from
+	emu.el to poe.el.
+
+1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* poe.el: New file (split core part from emu.el).
 
 	* poe-xemacs.el: New file (renamed from emu-xemacs.el).
