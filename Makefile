@@ -19,16 +19,16 @@ TLDIR19 = $(HOME)/lib/emacs19/lisp
 FILES	= tl/README.eng tl/Makefile tl/mk-tl tl/*.el tl/doc/*.texi \
 		tl/Changes*
 
-TARFILE = tl-7.01.7.tar
+TARFILE = tl-7.01.8.tar
 
 
 elc:
 	$(EMACS) -batch -l mk-tl -f compile-tl
 
-install-18:
+install-18:	elc
 	$(EMACS) -batch -l mk-tl -f install-tl $(TLDIR18)
 
-install-19:
+install-19:	elc
 	$(EMACS) -batch -l mk-tl -f install-tl $(TLDIR19)
 
 
