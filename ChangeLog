@@ -1,3 +1,10 @@
+1998-05-15  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el, emu-nemacs.el, emu-mule.el, emu-latin1.el,
+	emu-e20_3.el (looking-at-as-unibyte): New alias.
+
+	* emu-e20_2.el (looking-at-as-unibyte): New function.
+
 1998-05-14  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-x20.el: Delete definition of 'detect-mime-charset-region
