@@ -52,15 +52,53 @@ This is a defcustom only for emulating purpose.
 Its effect is just as same as that of defvar."
   (` (defvar (, symbol) (, value) (, doc))))
     
-(defmacro-maybe-cond defface (face value doc &rest args) 
-      "Declare FACE as a customizable face that defaults to SPEC.
-FACE does not need to be quoted.
-\[custom emulating macro]"
-      ((fboundp 'make-face)
-       (` (make-face (quote (, face)))))
-      (t
-       ;; do nothing.
-       ))
+(defmacro-maybe-cond defface (face spec doc &rest args)
+  "Declare FACE as a customizable face that defaults to SPEC.
+FACE does not need to be quoted.  [custom emulating macro]"
+  ((fboundp 'make-face)
+   (` (let ((name (quote (, face))))
+	(or
+	 (find-face name)
+	 (let ((face (make-face name))
+	       (spec (, spec))
+	       (colorp (and window-system (x-display-color-p)))
+	       display atts req item match done)
+	   (while (and spec (not done))
+	     (setq display (car (car spec))
+		   atts (car (cdr (car spec)))
+		   spec (cdr spec))
+	     (cond
+	      ((consp display)
+	       (setq match t)
+	       (while (and display match)
+		 (setq req (car (car display))
+		       item (car (cdr (car display)))
+		       display (cdr display))
+		 (cond
+		  ((eq 'class req)
+		   (setq match (or (and colorp (eq 'color item))
+				   (and (not colorp)
+					(memq item '(grayscale mono))))))
+		  ((eq 'background req)
+		   (setq match (eq frame-background-mode item)))))
+	       (setq done match))
+	      ((eq t display)
+	       (setq done t))))
+	   (if done
+	       (let ((alist '((:foreground . set-face-foreground)
+			      (:background . set-face-background)
+			      (:bold . set-face-bold-p)
+			      (:italic . set-face-italic-p)
+			      (:underline . set-face-underline-p)))
+		     function)
+		 (while atts
+		   (if (setq function (cdr (assq (car atts) alist)))
+		       (funcall function face (car (cdr atts))))
+		   (setq atts (cdr (cdr atts))))))
+	   face)))))
+  (t
+   ;; do nothing.
+   ))
 
 (defmacro-maybe define-widget (name class doc &rest args)
   "Define a new widget type named NAME from CLASS.
