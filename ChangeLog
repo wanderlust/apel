@@ -1,8 +1,14 @@
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
-	* EMU-ELS: New implementation.
+	* poem-ltn1.el (set-buffer-multibyte): Use `defun-maybe' instead
+	of `defmacro-maybe'.
 
-	* mcharset.el, poem.el: Fix typo.
+	* poem-e20_2.el (set-buffer-multibyte): Use `defun-maybe' instead
+	of `defsubst-maybe'.
+
+1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* EMU-ELS: New implementation.
 
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 

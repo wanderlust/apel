@@ -37,11 +37,20 @@
 		      mcs-modules (cons 'mcs-e20 (cons 'mcs-20
 						       mcs-modules))
 		      pccl-modules (cons 'pccl-20 pccl-modules))
+
+		(setq poem-modules
+		      (cons
+		       (if (and
+			    (fboundp 'set-buffer-multibyte)
+			    (subrp (symbol-function 'set-buffer-multibyte)))
+			   'poem-e20_3
+			 'poem-e20_2)
+		       poem-modules))
 		)
 	       (t
 		(setq poem-modules (cons 'poem-om poem-modules)
 		      mcs-modules (cons 'mcs-om mcs-modules)
-		      pccl-modules (cons (pccl-om pccl-modules)))
+		      pccl-modules (cons 'pccl-om pccl-modules))
 		))
 	 )
 	((boundp 'NEMACS)
