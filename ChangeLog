@@ -1,3 +1,7 @@
+1998-10-18  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 9.4 was released.
+
 1998-10-17  Tanaka Akira  <morioka@jaist.ac.jp>
 
 	* broken.el (check-broken-facility): New macro.
