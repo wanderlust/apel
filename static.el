@@ -60,7 +60,7 @@
 		      (` ((, (car h)) (quote (progn (,@ (cdr h))))))))
 		  handlers))))))
 
-(defmacro static-defconst (symbol initvalue docstring)
+(defmacro static-defconst (symbol initvalue &optional docstring)
   "`defconst' expression but INITVALUE is evaluated at compile-time.
 
 The variable SYMBOL can be referenced at either compile-time or run-time."
