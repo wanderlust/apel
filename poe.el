@@ -143,7 +143,7 @@ See also the function `defconst'."
 				   everything-else)))
 	       (put (quote (, name)) 'defmacro-maybe t))))))
 
-(defsubst subr-fboundp (symbol)
+(defun subr-fboundp (symbol)
   "Return t if SYMBOL's function definition is a built-in function."
   (and (fboundp symbol)
        (subrp (symbol-function symbol))))
