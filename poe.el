@@ -704,49 +704,97 @@ Elements of LIST that are not conses are ignored."
 	     (throw 'found (car list))))
       (setq list (cdr list)))))
 
-;; XEmacs 19.13 and later: (remassq KEY LIST)
-(defun-maybe remassq (key list)
-  "Delete by side effect any elements of LIST whose car is `eq' to KEY.
-The modified LIST is returned.  If the first member of LIST has a car
-that is `eq' to KEY, there is no way to remove it by side effect;
-therefore, write `(setq foo (remassq key foo))' to be sure of changing
-the value of `foo'."
-  (if (setq key (assq key list))
-      (delq key list)
-    list))
-
-;; XEmacs 19.13 and later: (remassoc KEY LIST)
-(defun-maybe remassoc (key list)
-  "Delete by side effect any elements of LIST whose car is `equal' to KEY.
-The modified LIST is returned.  If the first member of LIST has a car
+;; XEmacs 19.13 and later: (remassoc KEY ALIST)
+(defun-maybe remassoc (key alist)
+  "Delete by side effect any elements of ALIST whose car is `equal' to KEY.
+The modified ALIST is returned.  If the first member of ALIST has a car
 that is `equal' to KEY, there is no way to remove it by side effect;
 therefore, write `(setq foo (remassoc key foo))' to be sure of changing
 the value of `foo'."
-  (if (setq key (assoc key list))
-      (delq key list)
-    list))
+  (while (and (consp alist)
+              (or (not (consp (car alist)))
+                  (equal (car (car alist)) key)))
+    (setq alist (cdr alist)))
+  (if (consp alist)
+      (let ((prev alist)
+            (tail (cdr alist)))
+        (while (consp tail)
+          (if (and (consp (car alist))
+                   (equal (car (car tail)) key))
+              ;; `(setcdr CELL NEWCDR)' returns NEWCDR.
+              (setq tail (setcdr prev (cdr tail)))
+            (setq prev (cdr prev)
+                  tail (cdr tail))))))
+  alist)
 
-;; XEmacs 19.13 and later: (remrassq VALUE LIST)
-(defun-maybe remrassq (value list)
-  "Delete by side effect any elements of LIST whose cdr is `eq' to VALUE.
-The modified LIST is returned.  If the first member of LIST has a car
-that is `eq' to VALUE, there is no way to remove it by side effect;
-therefore, write `(setq foo (remrassq value foo))' to be sure of changing
+;; XEmacs 19.13 and later: (remassq KEY ALIST)
+(defun-maybe remassq (key alist)
+  "Delete by side effect any elements of ALIST whose car is `eq' to KEY.
+The modified ALIST is returned.  If the first member of ALIST has a car
+that is `eq' to KEY, there is no way to remove it by side effect;
+therefore, write `(setq foo (remassq key foo))' to be sure of changing
 the value of `foo'."
-  (if (setq value (rassq value list))
-      (delq value list)
-    list))
+  (while (and (consp alist)
+              (or (not (consp (car alist)))
+                  (eq (car (car alist)) key)))
+    (setq alist (cdr alist)))
+  (if (consp alist)
+      (let ((prev alist)
+            (tail (cdr alist)))
+        (while (consp tail)
+          (if (and (consp (car tail))
+                   (eq (car (car tail)) key))
+              ;; `(setcdr CELL NEWCDR)' returns NEWCDR.
+              (setq tail (setcdr prev (cdr tail)))
+            (setq prev (cdr prev)
+                  tail (cdr tail))))))
+  alist)
 
-;; XEmacs 19.13 and later: (remrassoc VALUE LIST)
-(defun-maybe remrassoc (value list)
-  "Delete by side effect any elements of LIST whose cdr is `equal' to VALUE.
-The modified LIST is returned.  If the first member of LIST has a car
+;; XEmacs 19.13 and later: (remrassoc VALUE ALIST)
+(defun-maybe remrassoc (value alist)
+  "Delete by side effect any elements of ALIST whose cdr is `equal' to VALUE.
+The modified ALIST is returned.  If the first member of ALIST has a car
 that is `equal' to VALUE, there is no way to remove it by side effect;
 therefore, write `(setq foo (remrassoc value foo))' to be sure of changing
 the value of `foo'."
-  (if (setq value (rassoc value list))
-      (delq value list)
-    list))
+  (while (and (consp alist)
+              (or (not (consp (car alist)))
+                  (equal (cdr (car alist)) value)))
+    (setq alist (cdr alist)))
+  (if (consp alist)
+      (let ((prev alist)
+            (tail (cdr alist)))
+        (while (consp tail)
+          (if (and (consp (car tail))
+                   (equal (cdr (car tail)) value))
+              ;; `(setcdr CELL NEWCDR)' returns NEWCDR.
+              (setq tail (setcdr prev (cdr tail)))
+            (setq prev (cdr prev)
+                  tail (cdr tail))))))
+  alist)
+
+;; XEmacs 19.13 and later: (remrassq VALUE ALIST)
+(defun-maybe remrassq (value alist)
+  "Delete by side effect any elements of ALIST whose cdr is `eq' to VALUE.
+The modified ALIST is returned.  If the first member of ALIST has a car
+that is `eq' to VALUE, there is no way to remove it by side effect;
+therefore, write `(setq foo (remrassq value foo))' to be sure of changing
+the value of `foo'."
+  (while (and (consp alist)
+              (or (not (consp (car alist)))
+                  (eq (cdr (car alist)) value)))
+    (setq alist (cdr alist)))
+  (if (consp alist)
+      (let ((prev alist)
+            (tail (cdr alist)))
+        (while (consp tail)
+          (if (and (consp (car tail))
+                   (eq (cdr (car tail)) value))
+              ;; `(setcdr CELL NEWCDR)' returns NEWCDR.
+              (setq tail (setcdr prev (cdr tail)))
+            (setq prev (cdr prev)
+                  tail (cdr tail))))))
+  alist)
 
 ;;; Define `functionp' here because "localhook" uses it.
 
