@@ -56,10 +56,10 @@
 Associates the function with the current load file, if any."
   (fset sym newdef))
 
-(defun byte-code-function-p (exp)
-  "T if OBJECT is a byte-compiled function object."
-  (and (consp exp)
-       (let ((rest (cdr (cdr exp)))
+(defun byte-code-function-p (object)
+  "Return t if OBJECT is a byte-compiled function object."
+  (and (consp object)
+       (let ((rest (cdr (cdr object)))
 	     elt)
 	 (if (stringp (car rest))
 	     (setq rest (cdr rest)))
@@ -70,6 +70,41 @@ Associates the function with the current load file, if any."
 		      (eq (car elt) 'byte-code))
 		 (throw 'tag t))
 	     (setq rest (cdr rest)))))))
+
+;; (symbol-plist 'cyclic-function-indirection)
+(put 'cyclic-function-indirection
+     'error-conditions
+     '(cyclic-function-indirection error)
+(put 'cyclic-function-indirection
+     'error-message
+     "Symbol's chain of function indirections contains a loop")
+
+;; The following function definition is a direct translation of its
+;; C definition in emacs-20.4/src/data.c.
+(defun indirect-function (object)
+  "Return the function at the end of OBJECT's function chain.
+If OBJECT is a symbol, follow all function indirections and return the final
+function binding.
+If OBJECT is not a symbol, just return it.
+Signal a void-function error if the final symbol is unbound.
+Signal a cyclic-function-indirection error if there is a loop in the
+function chain of symbols."
+  (let* ((hare object)
+         (tortoise hare))
+    (catch 'found
+      (while t
+        (or (symbolp hare) (throw 'found hare))
+        (or (fboundp hare) (signal 'void-function (cons object nil)))
+        (setq hare (symbol-function hare))
+        (or (symbolp hare) (throw 'found hare))
+        (or (fboundp hare) (signal 'void-function (cons object nil)))
+        (setq hare (symbol-function hare))
+
+        (setq tortoise (symbol-function tortoise))
+
+        (if (eq hare tortoise)
+            (signal 'cyclic-function-indirection (cons object nil)))))
+    hare))
 
 ;;; Emulate all functions and macros of emacs-20.3/lisp/byte-run.el.
 ;;; (note: jwz's original compiler and XEmacs compiler have some more
