@@ -136,7 +136,8 @@ even if other rules are matched for ALIST."
 			    (append (ctree-find-calist
 				     (cdr choice) ret-alist all)
 				    dest))
-		    (setq dest (cons ret-alist dest))
+		    (or (member ret-alist dest)
+			(setq dest (cons ret-alist dest)))
 		    )))))
 	(setq choices (cdr choices)))
       (or (and (not all) dest)
@@ -148,7 +149,8 @@ even if other rules are matched for ALIST."
 			      (append (ctree-find-calist
 				       (cdr default) ret-alist all)
 				      dest))
-		      (setq dest (cons ret-alist dest))
+		      (or (member ret-alist dest)
+			  (setq dest (cons ret-alist dest)))
 		      ))))
 	  )
       dest)))
