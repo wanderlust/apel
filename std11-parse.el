@@ -4,7 +4,8 @@
 
 ;; Author:   MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: mail, news, RFC 822, STD 11
-;; Version: $Id$
+;; Version:
+;;	$Id$
 
 ;; This file is part of tl (Tiny Library).
 
@@ -34,16 +35,17 @@
 ;;;
 
 (defconst std11-space-chars " \t\n")
-(defconst std11-spaces-regexp (concat "^[" std11-space-chars "]+"))
+(defconst std11-spaces-regexp (concat "[" std11-space-chars "]+"))
 (defconst std11-special-chars "][()<>@,;:\\<>.\"")
 (defconst std11-atom-regexp
   (concat "^[^" std11-special-chars std11-space-chars "]+"))
 
-(defun std11-analyze-spaces (str)
-  (if (string-match std11-spaces-regexp str)
+(defun std11-analyze-spaces (string)
+  (if (and (string-match std11-spaces-regexp string)
+	   (= (match-beginning 0) 0))
       (let ((end (match-end 0)))
-	(cons (cons 'spaces (substring str 0 end))
-	      (substring str end)
+	(cons (cons 'spaces (substring string 0 end))
+	      (substring string end)
 	      ))))
 
 (defun std11-analyze-special (str)
