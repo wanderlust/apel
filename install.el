@@ -29,7 +29,6 @@
 ;; but you should do (require 'emu) explicitly if you use functions and/or
 ;; variables defined in emu module.
 ;;(require 'emu)
-(require 'poe)
 (require 'path-util)			; default-load-path
 
 (defvar emacs-major-version (string-to-int emacs-version))
