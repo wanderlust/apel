@@ -1,4 +1,4 @@
-;;; alist.el --- utility functions about assoc-list
+;;; alist.el --- utility functions about association-list
 
 ;; Copyright (C) 1993,1994,1995,1996,1998 Free Software Foundation, Inc.
 
