@@ -254,7 +254,7 @@ find-file-hooks, etc.
     (with-temp-buffer
       (insert-buffer-substring the-buf start end)
       (goto-char (point-min))
-      (while (re-search-forward "\\([^\r]\\)\n" nil t)
+      (while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
 	(replace-match "\\1\r\n")
 	)
       (let (kanji-flag)
