@@ -1,3 +1,237 @@
+Sat Aug 31 15:08:42 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61 was released.
+
+Fri Aug 30 16:12:22 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (list*): New function.
+
+	* std11.el (std11-find-field-body): New function.
+
+Fri Aug 30 15:14:30 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-xemacs.el (next-visible-point): fixed. (cf. [tm-en:719])
+
+	* install.el (install-file): check write
+ 	permission. (cf. [bug-tm-en:720])
+
+Fri Aug 30 06:11:58 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* std11.el (std11-addr-to-string): Add DOC-string.
+	(std11-address-string): Add DOC-string.
+	(std11-full-name-string): Add DOC-string.
+
+Fri Aug 30 04:25:34 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el (mu-cite/get-field-value): Function
+ 	`std11-find-field-body' was renamed to `std11-field-body'.
+
+	* mu-cite.el (mu-cite/get-field-value-method-alist): Function
+ 	`std11-find-field-body' was renamed to `std11-field-body'.
+
+	* tl-822.el (rfc822/get-field-body): Function
+ 	`std11-find-field-body' was renames to `std11-field-body'.
+	(rfc822/get-field-bodies): Function `std11-find-field-bodies' was
+ 	renames to `std11-field-bodies'.
+
+	* std11.el (std11-field-body): Renamed from
+ 	`std11-find-field-body'.
+	(std11-field-bodies): Renamed from `std11-find-field-bodies'.
+
+Wed Aug 28 22:52:29 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* std11.el (std11-parse-addresses-string): New function.
+
+	* mu-cite.el: Use std11.el instead of tl-822.el.
+
+Wed Aug 28 21:06:59 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* std11.el (std11-full-name-string): New function.
+
+	* tl-822.el (rfc822/full-name-string): New alias for
+ 	`std11-full-name-string'; moved to std11.el.
+
+	* std11.el (std11-addr-to-string): eliminate comments.
+
+	* std11.el (std11-addr-to-string): New function; moved from
+ 	tl-822.el.
+	(std11-address-string): New function; moved from tl-822.el.
+
+	* tl-822.el (rfc822/address-string): New aliases for
+ 	`std11-address-string'; moved to std11.el.
+
+	* std11.el (std11-parse-address-string): moved from
+ 	std11-parse.el.
+
+	* std11-parse.el: Function `std11-parse-address-string' was moved
+ 	to std11.el.
+
+Wed Aug 28 20:45:00 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* TL-ELS: Add std11.el and std11-parse.el.
+
+	* tl-822.el (rfc822/extract-address-components): Use function
+ 	`std11-parse-address-string'.
+
+	* std11.el (std11-parse-address-string): Add as autoload function.
+
+	* std11-parse.el (std11-parse-address-string): New function.
+
+Wed Aug 28 20:34:53 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* std11-parse.el: Parser were moved from tl-822.el and renamed to
+ 	`std11-*'.
+
+	* std11.el (std11-parse-address, std11-parse-addresses): Add as
+ 	autoload function.
+
+	* tl-822.el: Parser were moved to std11-parse.el and renamed to
+ 	`std11-*'.
+	(rfc822/parse-address): New aliases for `std11-parse-address'.
+	(rfc822/parse-addresses): New aliases for `std11-parse-addresses'.
+
+Wed Aug 28 18:18:03 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* std11.el: Remove autoload for `std11-analyze-*'.
+	Add `std11-lexical-analyze' as autoload function of std11-parse.
+
+Wed Aug 28 18:15:17 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el: Alias `rfc822/analyze-spaces',
+ 	`rfc822/analyze-special', `rfc822/analyze-atom',
+ 	`rfc822/analyze-quoted-string', `rfc822/analyze-domain-literal',
+ 	and `rfc822/analyze-comment' were abolished.
+
+Wed Aug 28 18:12:56 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/lexical-analyze): New alias for
+	`std11-lexical-analyze'; moved to std11-parse.el.
+
+	* std11-parse.el (std11-lexical-analyze): New function.
+
+	* tl-822.el (rfc822/analyze-comment): New alias; new
+ 	implementation.
+
+	* std11-parse.el (std11-check-enclosure): New function; changed
+ 	from `std11-analyze-enclosure'.
+	(std11-analyze-quoted-string): Use function
+ 	`std11-check-enclosure'.
+	(std11-analyze-domain-literal): Use function
+ 	`std11-check-enclosure'.
+	(std11-analyze-comment): New function.
+
+	* tl-822.el (rfc822/analyze-domain-literal): New alias.
+
+	* std11-parse.el (std11-analyze-domain-literal): New function.
+
+	* std11-parse.el (std11-analyze-enclosure): New function.
+	(std11-analyze-quoted-string): New implementation.
+
+	* std11-parse.el (std11-analyze-quoted-string): New function.
+
+	* tl-822.el (rfc822/analyze-quoted-string): New alias for
+	`std11-analyze-quoted-string'; moved to std11-parse.el.
+
+Wed Aug 28 17:16:30 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/analyze-atom): New alias for
+ 	`std11-analyze-atom'; New implementation.
+
+	* std11-parse.el (std11-analyze-atom): New function.
+
+	* std11.el: Add `std11-analyze-special' as autoload function of
+ 	std11-parse.
+
+	* std11-parse.el (std11-analyze-special): New function.
+
+	* tl-822.el (rfc822/analyze-special):
+	New alias for `std11-analyze-special'; moved
+	to std11-parse.el.
+
+	* std11.el: autoload std11-parse for `std11-analyze-spaces'.
+
+	* std11-parse.el: New module.
+
+	* tl-822.el (rfc822/analyze-spaces): New alias for
+ 	`std11-analyze-spaces'; moved to std11-parse.el.
+
+Wed Aug 28 15:39:00 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el, std11.el: Function `std11-field-names' was renamed to
+ 	`std11-collect-field-names'.
+
+Wed Aug 28 15:26:10 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el, std11.el: Function `std11-field-bodies' was renamed
+ 	to `std11-find-field-bodies'.
+
+Wed Aug 28 15:18:03 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el
+	(mu-cite/get-field-value-method-alist, mu-cite/get-field-value):
+ 	Function `std11-field-body' was renamed to
+ 	`std11-find-field-body'.
+
+	* tl-822.el, std11.el: Function `std11-field-body' was renamed to
+ 	`std11-find-field-body'.
+
+Wed Aug 28 15:11:19 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* std11.el (std11-unfold-string): New function.
+
+Wed Aug 28 14:40:33 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/unfolding-string): New alias for
+ 	`std11-unfold-string'; moved to std11.el.
+
+Wed Aug 28 14:17:21 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* std11.el (std11-field-body): fixed.
+
+	* mu-cite.el: Use function `std11-field-body' instead of
+ 	`rfc822/get-field-body'.
+
+	* x-face-mule.el: Use std11.el.
+
+	* std11.el (std11-field-bodies): New function.
+
+	* tl-822.el (rfc822/get-field-bodies): New alias for
+ 	`std11-field-bodies'; moved to std11.el.
+
+	* tl-822.el: Constant `rfc822/field-name-regexp' was abolished.
+
+	* tl-822.el: Constant `rfc822/field-top-regexp' was abolished.
+
+	* std11.el (std11-field-names): New function.
+
+	* tl-822.el (rfc822/get-field-names): New alias for
+ 	`std11-field-names'; moved to std11.el.
+
+	* tl-822.el: Constant `rfc822::next-field-top-regexp' was
+ 	abolished.
+
+	* std11.el (std11-field-body): New function.
+
+	* tl-822.el (rfc822/get-field-body): New alias for
+ 	`std11-field-body'; moved to std11.el.
+
+	* std11.el (std11-next-field-head-regexp): New constant.
+
+	* std11.el: New module.
+
+	* tl-822.el (rfc822/narrow-to-header): New alias for
+ 	`std11-narrow-to-header'; moved to std11.el.
+	(rfc822/get-header-string): New alias for `std11-header-string';
+ 	moved to std11.el.
+	(rfc822/get-header-string-except): New alias for
+ 	`std11-header-string-except'; moved to std11.el.
+	(rfc822/field-end): New alias for `std11-field-end'; moved to
+ 	std11.el.
+
+	* tl-seq.el: autoload for cl.el does not work to load cl-seq. (cf. 
+	[tm-en:709,710])
+
+
 Fri Aug 23 07:28:37 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.48 was released.

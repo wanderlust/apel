@@ -57,7 +57,8 @@
 	  (copy-file src-file full-path t t)
 	  (if move
 	      (catch 'tag
-		(while (file-exists-p src-file)
+		(while (and (file-exists-p src-file)
+			    (file-writable-p src-file))
 		  (condition-case err
 		      (progn
 			(delete-file src-file)
