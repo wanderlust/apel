@@ -1,6 +1,6 @@
 1998-06-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
-	* emu-mule.el (split-char): New function.
+	* emu-mule.el, emu-latin1.el (split-char): New function.
 
 1998-06-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
