@@ -380,6 +380,9 @@ even if a buffer with that name exists."
 	new)
     name))
 
+(defun-maybe cancel-undo-boundary ()
+  "Cancel undo boundary. [MULE 2.3 emulating function]")
+
 
 ;;; @ end
 ;;;
