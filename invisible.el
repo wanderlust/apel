@@ -1,9 +1,9 @@
-;;; poe-19.el --- poe API implementation for Emacs 19.*
+;;; invisible.el --- hide region
 
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Keywords: emulation, compatibility
+;; Keywords: invisible, text-property, region
 
 ;; This file is part of APEL (A Portable Emacs Library).
 
@@ -24,17 +24,22 @@
 
 ;;; Code:
 
-;;; @ face
-;;;
+(require 'poe)
 
-(defun-maybe find-face (face)
-  (car (memq face (face-list)))
-  )
+(cond ((featurep 'xemacs)
+       (require 'inv-xemacs)
+       )
+      ((>= emacs-major-version 19)
+       (require 'inv-19)
+       )
+      (t
+       (require 'inv-18)
+       ))
 
 
 ;;; @ end
 ;;;
 
-(provide 'poe-19)
+(provide 'invisible)
 
-;;; poe-19.el ends here
+;;; invisible.el ends here
