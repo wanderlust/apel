@@ -26,37 +26,50 @@
 
 (eval-when-compile (require 'cl))
 
+(defvar calist-field-match-method-obarray [nil])
+
+(defun define-calist-field-match-method (field-type function)
+  "Set field-match-method for FIELD-TYPE to FUNCTION."
+  (fset (intern (symbol-name field-type) calist-field-match-method-obarray)
+	function))
+
+(defun calist-default-field-match-method (calist field-type field-value)
+  (let ((s-field (assoc field-type calist)))
+    (cond ((null s-field)
+	   (cons (cons field-type field-value) calist)
+	   )
+	  ((eq field-value t)
+	   calist)
+	  ((equal (cdr s-field) field-value)
+	   calist))))
+
+(defsubst calist-field-match-method (field-type)
+  (condition-case nil
+      (symbol-function
+       (intern-soft
+	(symbol-name field-type) calist-field-match-method-obarray))
+    (error (symbol-function 'calist-default-field-match-method))
+    ))
+
+(defsubst calist-field-match (calist field-type field-value)
+  (funcall (calist-field-match-method field-type)
+	   calist field-type field-value))
+
 (defun ctree-match-calist (rule-tree alist)
   "Return matched condition-alist if ALIST matches RULE-TREE."
   (if (null rule-tree)
       alist
-    (let* ((type (car rule-tree))
-	   (choices (cdr rule-tree))
-	   (k-value (assoc type alist)))
+    (let ((type (car rule-tree))
+	  (choices (cdr rule-tree)))
       (catch 'tag
 	(while choices
-	  (let ((choice (car choices)))
-	    (cond ((null k-value)
-		   (throw 'tag
-			  (if (cdr choice)
-			      (ctree-match-calist
-			       (cdr choice)
-			       (cons (cons type (car choice)) alist))
-			    (cons (cons type (car choice)) alist)
-			    )))
-		  ((eq (car choice) t)
-		   (throw 'tag
-			  (if (cdr k-value)
-			      (ctree-match-calist (cdr choice) alist)
-			    alist)
-			  ))
-		  ((equal (car choice) (cdr k-value))
-		   (throw 'tag
-			  (if (cdr choice)
-			      (ctree-match-calist (cdr choice) alist)
-			    alist)
-			  ))
-		  ))
+	  (let* ((choice (car choices))
+		 (ret-alist (calist-field-match alist type (car choice))))
+	    (if ret-alist
+		(throw 'tag
+		       (if (cdr choice)
+			   (ctree-match-calist (cdr choice) ret-alist)
+			 ret-alist))))
 	  (setq choices (cdr choices))))
       )))
 
