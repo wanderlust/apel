@@ -1,3 +1,225 @@
+Fri Aug 23 07:28:37 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.48 was released.
+
+Thu Aug 22 16:21:21 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (set-process-input-coding-system): New alias.
+
+Wed Aug 21 12:08:41 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* install.el (install-elisp-module, install-elisp-modules): New
+ 	function.
+
+	* file-detect.el (module-installed-p): New function.
+
+Mon Aug 19 17:38:23 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* install.el (install-files): New argument `overwrite'.
+
+	* install.el (install-overwritten-file-modes): New variable.
+
+	(install-file): Use variable `install-overwritten-file-modes'.
+
+	* install.el (install-file, install-files): New function.
+
+	* emu-mule.el (charsets-mime-charset-alist): add iso-2022-int-1 as
+ 	the largest MIME charset.
+
+Sun Aug 18 20:38:49 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* TL-ELS (tl-modules): Changed to list of symbols.
+
+	* mk-tl (compile-tl): Use function `compile-elisp-modules'.
+
+	* mk-tl: tl-els was renamed to TL-ELS.
+
+	* install.el: Initial revision
+
+	* emu-mule.el (charsets-mime-charset-alist): add lc-roman and
+ 	lc-jpold to iso-2022-jp, iso-2022-jp-2 and iso-2022-int-1.
+
+	* emu-18.el (buffer-undo-list): define default variable as nil.
+
+	* tl-list.el (put-alist): New implementation.
+
+	* tl-list.el (put-alist): Use `setcdr' instead of `rplacd'.
+
+Sun Aug 18 08:10:43 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (set-alist): New implementation.
+
+	* tl-list.el (put-alist): DOC-string was modified.
+
+Sun Aug 18 07:30:38 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el: Alias `tl:read-string' was abolished.
+
+Sun Aug 18 07:29:06 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el (mu-cite/get-prefix-register-verbose-method): Use
+ 	`read-string' instead of `tl:read-string'.
+
+	* mu-cite.el (mu-cite/get-prefix-register-method): Use
+ 	`read-string' instead of `tl:read-string'.
+
+	* mu-bbdb.el (mu-cite/get-bbdb-prefix-register-method): Use
+ 	`read-string' instead of `tl:read-string'.
+
+	(mu-cite/get-bbdb-prefix-register-verbose-method): Use
+ 	`read-string' instead of `tl:read-string'.
+
+	* emu.el: Redefine `read-string' for EMACS 19.28 or earlier.
+
+Sun Aug 18 06:39:40 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el (decode-coding-string): New function.
+
+Sat Aug 17 03:25:51 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e19.el (mime-charset-to-coding-system): New function.
+
+	* emu-e19.el (decode-coding-string): New function.
+
+	* emu-mule.el: Function `character-decode-string' was renamed to
+ 	`decode-coding-string'.
+
+Fri Aug 16 06:06:40 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-seq.el: comment was modified.
+
+Fri Aug 16 06:05:21 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-seq.el: Don't autoload `position-if-not'.
+
+	* tl-seq.el: Function `position-mismatched' was abolished.
+
+	* tl-822.el (rfc822/analyze-comment): Use `string-match' instead
+ 	of `position-mismatched'.
+
+	* tl-822.el (rfc822/analyze-domain-literal): New implementation.
+
+	* tl-822.el (rfc822/analyze-atom): New implementation.
+
+	* tl-822.el (rfc822/analyze-spaces): New implementation.
+
+Fri Aug 16 05:02:08 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-seq.el: require file-detect.
+
+Fri Aug 16 04:59:13 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* genjis.el: Use function `find-if' instead of `some-element'.
+
+	* tl-seq.el: Function `some-element' was abolished.
+
+Fri Aug 16 04:36:45 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* file-detect.el (add-path): moved from tl-misc.el.
+
+	* tl-misc.el: Function `add-path' was moved to file-detect.el.
+
+Fri Aug 16 04:32:46 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* file-detect.el (get-latest-path): moved from tl-misc.el.
+
+	* tl-misc.el: Function `get-latest-path' was moved to
+ 	file-detect.el.
+
+Fri Aug 16 04:27:54 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-misc.el, tl-seq.el, tl-els, file-detect.el: module.el was
+ 	renamed to file-detect.el.
+
+Fri Aug 16 04:06:42 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-seq.el, tl-misc.el, tl-els, module.el: install.el was renamed
+ 	to module.el.
+
+Fri Aug 16 03:27:50 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-seq.el: Use `file-installed-p'.
+
+Fri Aug 16 03:09:15 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-seq.el: Don't use cl.el if cl-seq.el is not found.
+
+Fri Aug 16 03:00:43 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-els: Add install.el.
+
+	* install.el: Initial revision
+
+	* tl-misc.el: Function `file-installed-p' was moved to install.el.
+
+Fri Aug 16 02:04:24 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-els: Add range.el.
+
+Fri Aug 16 02:02:55 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* range.el: New module.
+
+	* tl-list.el: Range functions were moved to range.el.
+
+	* tl-list.el: Don't use cl.el for EMACS 18.
+
+Wed Aug 14 23:11:07 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-seq.el: Use cl.el; Don't define function `find' if it is
+ 	already exist.
+
+Wed Aug 14 02:32:13 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el: `(autoload 'last "cl")' instead of `(require 'cl)'.
+
+Wed Aug 14 02:15:12 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-str.el (replace-space-with-underline): fixed problem in
+ 	XEmacs 20.
+
+Wed Aug 14 01:19:22 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (map-union): Use `nreverse' instead of `reverse'.
+
+	* tl-list.el (index): Use `nreverse' instead of `reverse'.
+
+Wed Aug 14 01:01:06 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (permute): Use `nconc'.
+
+Wed Aug 14 00:53:35 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (every-combination): Use `nreverse' instead of
+ 	`reverse'.
+
+Wed Aug 14 00:47:47 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (except-nth): New implementation.
+
+	* tl-list.el (nexcept-nth): New function.
+
+Wed Aug 14 00:24:14 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (nnth-prev): New function.
+	(nth-prev): New implementation.
+
+Tue Aug 13 23:55:20 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el: Function `butlast' and `nbutlast' were abolished;
+ 	Use cl.el.
+
+Tue Aug 13 23:46:50 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el: Function `last' was abolished.
+
+	* tl-list.el: Function `subsetp' was abolished.
+
+	* tl-list.el: Function `cadr' was abolished.
+
+	* tl-list.el: Function `caar' was abolished.
+
+
 Tue Aug  6 12:18:37 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.44 was released.

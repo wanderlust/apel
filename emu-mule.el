@@ -1,30 +1,29 @@
-;;;
 ;;; emu-mule.el --- Mule 2.* emulation module for Mule
-;;;
-;;; Copyright (C) 1995 Free Software Foundation, Inc.
-;;; Copyright (C) 1994 .. 1996 MORIOKA Tomohiko
-;;;
-;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;;; Version:
-;;;	$Id$
-;;; Keywords: emulation, compatibility, Mule
-;;;
-;;; This file is part of tl (Tiny Library).
-;;;
-;;; This program is free software; you can redistribute it and/or
-;;; modify it under the terms of the GNU General Public License as
-;;; published by the Free Software Foundation; either version 2, or
-;;; (at your option) any later version.
-;;;
-;;; This program is distributed in the hope that it will be useful,
-;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-;;; General Public License for more details.
-;;;
-;;; You should have received a copy of the GNU General Public License
-;;; along with This program.  If not, write to the Free Software
-;;; Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
-;;;
+
+;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
+
+;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Version:
+;;	$Id$
+;; Keywords: emulation, compatibility, Mule
+
+;; This file is part of tl (Tiny Library).
+
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation; either version 2, or (at
+;; your option) any later version.
+
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with This program; see the file COPYING.  If not, write to
+;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; Boston, MA 02111-1307, USA.
+
 ;;; Code:
 
 ;;; @ version specific features
@@ -69,7 +68,7 @@
 ;;; @ coding system
 ;;;
 
-(defun character-decode-string (str coding-system)
+(defun decode-coding-string (str coding-system)
   "Decode the string STR which is encoded in CODING-SYSTEM.
 \[emu-mule.el]"
   (let ((len (length str))
@@ -95,6 +94,8 @@
        (,@ body)
        )))
 
+(defalias 'set-process-input-coding-system 'set-process-coding-system)
+
 
 ;;; @ MIME charset
 ;;;
@@ -112,13 +113,19 @@
    (cons (list lc-ascii lc-grk)				'iso-8859-7)
    (cons (list lc-ascii lc-hbw)				'iso-8859-8)
    (cons (list lc-ascii lc-ltn5)			'iso-8859-9)
-   (cons (list lc-ascii lc-jp)				'iso-2022-jp)
+   (cons (list lc-ascii lc-roman lc-jpold lc-jp)	'iso-2022-jp)
    (cons (list lc-ascii lc-kr)				'euc-kr)
    (cons (list lc-ascii lc-big5-1 lc-big5-2)		'big5)
-   (cons (list lc-ascii lc-cn lc-jp lc-kr lc-jp2
-	       lc-ltn1 lc-grk)				'iso-2022-jp-2)
-   (cons (list lc-ascii lc-cn lc-jp lc-kr lc-jp2
-	       lc-cns1 lc-cns2 lc-ltn1 lc-grk)		'iso-2022-int-1)
+   (cons (list lc-ascii lc-roman lc-ltn1 lc-grk
+	       lc-jpold lc-cn lc-jp lc-kr lc-jp2)	'iso-2022-jp-2)
+   (cons (list lc-ascii lc-roman lc-ltn1 lc-grk
+	       lc-jpold lc-cn lc-jp lc-kr lc-jp2
+	       lc-cns1 lc-cns2)				'iso-2022-int-1)
+   (cons (list lc-ascii lc-roman
+	       lc-ltn1 lc-ltn2 lc-crl lc-grk
+	       lc-jpold lc-cn lc-jp lc-kr lc-jp2
+	       lc-cns1 lc-cns2 lc-cns3 lc-cns4
+	       lc-cns5 lc-cns6 lc-cns7)			'iso-2022-int-1)
    ))
 
 (defvar default-mime-charset 'x-ctext)
@@ -176,7 +183,7 @@
   "Decode the STRING which is encoded in MIME CHARSET. [emu-mule.el]"
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
-	(character-decode-string string cs)
+	(decode-coding-string string cs)
       string)))
 
 

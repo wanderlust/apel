@@ -1,30 +1,29 @@
-;;;
-;;; emu-e19.el --- Mule 2 emulation module for Emacs 19 and XEmacs 19
-;;;
-;;; Copyright (C) 1995 Free Software Foundation, Inc.
-;;; Copyright (C) 1994 .. 1996 MORIOKA Tomohiko
-;;;
-;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;;; Version:
-;;;	$Id$
-;;; Keywords: emulation, compatibility, Mule, Latin-1
-;;;
-;;; This file is part of tl (Tiny Library).
-;;;
-;;; This program is free software; you can redistribute it and/or
-;;; modify it under the terms of the GNU General Public License as
-;;; published by the Free Software Foundation; either version 2, or
-;;; (at your option) any later version.
-;;;
-;;; This program is distributed in the hope that it will be useful,
-;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-;;; General Public License for more details.
-;;;
-;;; You should have received a copy of the GNU General Public License
-;;; along with This program.  If not, write to the Free Software
-;;; Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
-;;;
+;;; emu-e19.el --- emu module for Emacs 19 and XEmacs 19
+
+;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
+
+;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Version:
+;;	$Id$
+;; Keywords: emulation, compatibility, mule, Latin-1
+
+;; This file is part of tl (Tiny Library).
+
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation; either version 2, or (at
+;; your option) any later version.
+
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program; see the file COPYING.  If not, write to
+;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; Boston, MA 02111-1307, USA.
+
 ;;; Code:
 
 ;;; @ version and variant specific features
@@ -111,6 +110,11 @@ to TARGET. On successful conversion returns t,
 else returns nil. [emu-e19.el; Mule emulating function]"
   t)
 
+(defun decode-coding-string (string coding-system)
+  "Decode the STRING which is encoded in CODING-SYSTEM.
+\[emu-e19.el]"
+  string)
+
 (defun code-detect-region (beg end)
   "Detect coding-system of the text in the region
 between START and END. [emu-e19.el; Mule emulating function]"
@@ -132,6 +136,14 @@ between START and END. [emu-e19.el; Mule emulating function]"
   (list (cons (list charset-ascii) 'us-ascii)))
 
 (defvar default-mime-charset 'iso-8859-1)
+
+(defun mime-charset-to-coding-system (charset)
+  (if (stringp charset)
+      (setq charset (intern (downcase charset)))
+    )
+  (and (memq charset (list 'us-ascii default-mime-charset))
+       charset)
+  )
 
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END.

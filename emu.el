@@ -1,31 +1,28 @@
-;;;
 ;;; emu.el --- Emulation module for each Emacs variants
-;;;
-;;; Copyright (C) 1995 Free Software Foundation, Inc.
-;;; Copyright (C) 1995,1996 MORIOKA Tomohiko
-;;;
-;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;;; modified by KOBAYASHI Shuhei <shuhei-k@jaist.ac.jp>
-;;; Version:
-;;;	$Id$
-;;; Keywords: emulation, compatibility, NEmacs, Mule, XEmacs
-;;;
-;;; This file is part of tl (Tiny Library).
-;;;
-;;; This program is free software; you can redistribute it and/or
-;;; modify it under the terms of the GNU General Public License as
-;;; published by the Free Software Foundation; either version 2, or
-;;; (at your option) any later version.
-;;;
-;;; This program is distributed in the hope that it will be useful,
-;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-;;; General Public License for more details.
-;;;
-;;; You should have received a copy of the GNU General Public License
-;;; along with This program.  If not, write to the Free Software
-;;; Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
-;;;
+
+;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
+
+;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Version: $Id$
+;; Keywords: emulation, compatibility, NEmacs, Mule, XEmacs
+
+;; This file is part of tl (Tiny Library).
+
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation; either version 2, or (at
+;; your option) any later version.
+
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program; see the file COPYING.  If not, write to
+;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; Boston, MA 02111-1307, USA.
+
 ;;; Code:
 
 (or (boundp 'emacs-major-version)
@@ -111,16 +108,21 @@ and `default-mime-charset'. [emu.el]"
 	string))
     )
 
-(cond ((or running-emacs-19_29-or-later running-xemacs)
-       ;; for Emacs 19.29 or later and XEmacs
-       (defalias 'tl:read-string 'read-string)
-       )
-      (t
-       ;; for Emacs 19.28 or earlier
-       (defun tl:read-string (prompt &optional initial-input history)
-	 (read-string prompt initial-input)
-	 )
-       ))
+(or running-emacs-19_29-or-later
+    running-xemacs
+    ;; for Emacs 19.28 or earlier
+    (fboundp 'si:read-string)
+    (progn
+      (fset 'si:read-string (symbol-function 'read-string))
+      
+      (defun read-string (prompt &optional initial-input history)
+	"Read a string from the minibuffer, prompting with string PROMPT.
+If non-nil, second arg INITIAL-INPUT is a string to insert before reading.
+The third arg HISTORY, is dummy for compatibility. [emu.el]
+See `read-from-minibuffer' for details of HISTORY argument."
+	(si:read-string prompt initial-input)
+	)
+      ))
 
 (or (fboundp 'add-to-list)
     ;; This function was imported Emacs 19.30.
