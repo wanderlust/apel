@@ -109,7 +109,6 @@ This function ensures that none of these modifications will take place."
 	(coding-system-for-read 'binary)
 	(coding-system-for-write 'binary)
 	(jka-compr-compression-info-list nil)
-	(jam-zcat-filename-list nil)
 	(find-buffer-file-type-function
 	 (if (fboundp 'find-buffer-file-type)
 	     (symbol-function 'find-buffer-file-type)

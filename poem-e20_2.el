@@ -120,27 +120,6 @@ code."
       ;; This operation does not change the length.
       (set-buffer-multibyte flag))))
 
-(defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but don't code and format conversion."
-  (let ((flag enable-multibyte-characters)
-	(coding-system-for-read 'binary)
-	format-alist)
-    (save-current-buffer
-      (prog1
-	  (set-buffer (find-file-noselect filename nowarn rawfile))
-	(set-buffer-multibyte flag)))))
-
-(defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but it does not code and format conversion
-except for line-break code."
-  (let ((flag enable-multibyte-characters)
-	(coding-system-for-read 'raw-text)
-	format-alist)
-    (save-current-buffer
-      (prog1
-	  (set-buffer (find-file-noselect filename nowarn rawfile))
-	(set-buffer-multibyte flag)))))
-
 
 ;;; @ with code-conversion
 ;;;
@@ -157,20 +136,6 @@ ARGS must be a coding-system."
 	(apply 'insert-file-contents filename
 	       (nreverse (cdr (nreverse args))))
       (set-buffer-multibyte flag))))
-
-(defun find-file-noselect-as-specified-coding-system (filename &optional args)
-  "Like `find-file-noselect', q.v., but code convert by the specified
-coding-system. ARGS the optional arguments are passed to `find-file-noselect'
-except for the last element. The last element of ARGS must be a
-coding-system."
-  (let ((flag enable-multibyte-characters)
-	(coding-system-for-read (car (reverse args)))
-	format-alist)
-    (save-current-buffer
-      (prog1
-	  (set-buffer (apply' find-file-noselect filename
-			      (nreverse (cdr (nreverse args)))))
-	(set-buffer-multibyte flag)))))
 
 
 ;;; @ end

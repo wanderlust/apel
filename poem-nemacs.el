@@ -200,7 +200,7 @@
 \[emu-nemacs.el]"
   (as-binary-input-file
    ;; Returns list absolute file name and length of data inserted.
-   (insert-file-contents filename visit)))
+   (insert-file-contents filename visit beg end replace)))
 
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)
@@ -208,7 +208,7 @@
 \[emu-nemacs.el]"
   (as-binary-input-file
    ;; Returns list absolute file name and length of data inserted.
-   (insert-file-contents filename visit)))
+   (insert-file-contents filename visit beg end replace)))
 
 (defun write-region-as-raw-text-CRLF (start end filename
 					    &optional append visit lockname)
@@ -221,15 +221,6 @@
 	(replace-match "\\1\r\n"))
       (write-region-as-binary (point-min)(point-max)
 			      filename append visit))))
-
-(defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but don't code conversion."
-  (as-binary-input-file (find-file-noselect filename nowarn rawfile)))
-
-(defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but it does not code conversion
-except for line-break code."
-  (as-binary-input-file (find-file-noselect filename nowarn rawfile)))
 
 (defun open-network-stream-as-binary (name buffer host service)
   "Like `open-network-stream', q.v., but don't code conversion."
@@ -248,7 +239,7 @@ coding-system. ARGS the optional arguments are passed to
 ARGS must be a coding-system."
   (let ((kanji-fileio-code (car (reverse args)))
 	kanji-expected-code)
-    (insert-file-contents filename (car (nreverse (cdr (nreverse args)))))))
+    (apply' insert-file-contents filename (nreverse (cdr (nreverse args))))))
 
 (defun write-region-as-specified-coding-system (start end filename
 						      &rest args)
@@ -259,15 +250,6 @@ element. The last element of ARGS must be a coding-system."
 	jka-compr-compression-info-list jam-zcat-filename-list)
     (apply 'write-region start end filename
 	   (nreverse (cdr (nreverse args))))))
-
-(defun find-file-noselect-as-specified-coding-system (filename &optional args)
-  "Like `find-file-noselect', q.v., but code convert by the specified
-coding-system. ARGS the optional arguments are passed to `find-file-noselect'
-except for the last element. The last element of ARGS must be a
-coding-system."
-  (let ((kanji-fileio-code (car (reverse args)))
-	kanji-expected-code)
-    (apply' find-file-noselect filename (nreverse (cdr (nreverse args))))))
 
 
 ;;; @ buffer representation
