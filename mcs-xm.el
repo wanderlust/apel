@@ -61,57 +61,7 @@
       )))
 
 (unless (featurep 'utf-2000)
-  (defcustom mime-iso646-character-unification-alist
-    (eval-when-compile
-      (let (dest
-	    (i 33))
-	(while (< i 92)
-	  (setq dest
-		(cons (cons (char-to-string (make-char 'latin-jisx0201 i))
-			    (format "%c" i))
-		      dest))
-	  (setq i (1+ i)))
-	(setq i 93)
-	(while (< i 126)
-	  (setq dest
-		(cons (cons (char-to-string (make-char 'latin-jisx0201 i))
-			    (format "%c" i))
-		      dest))
-	  (setq i (1+ i)))
-	(nreverse dest)))
-    "Alist unified string vs. canonical string."
-    :group 'i18n
-    :type '(repeat (cons string string)))
-
-  (defcustom mime-unified-character-face nil
-    "*Face of unified character."
-    :group 'i18n
-    :type 'face)
-
-  (defcustom mime-character-unification-limit-size 2048
-    "*Limit size to unify characters."
-    :group 'i18n
-    :type 'integer)
-
-  (defun decode-mime-charset-region-with-iso646-unification (start end charset
-								   lbt)
-    (decode-mime-charset-region-default start end charset lbt)
-    (if (<= (- end start) mime-character-unification-limit-size)
-	(save-excursion
-	  (let ((rest mime-iso646-character-unification-alist))
-	    (while rest
-	      (let ((pair (car rest)))
-		(goto-char start)
-		(while (search-forward (car pair) end t)
-		  (let ((str (cdr pair)))
-		    (put-text-property 0 (length str)
-				       'face mime-unified-character-face str)
-		    (replace-match str 'fixed-case 'literal)
-		    )
-		  ))
-	      (setq rest (cdr rest)))))
-      ))
-  )
+  (require 'mcs-xmu))
 
 (defun decode-mime-charset-region-for-hz (start end charset lbt)
   (if lbt
