@@ -662,11 +662,11 @@ Optional third arg non-nil means that redisplay should use COLS columns
 but that the idea of the actual width of the frame should not be changed."
   (set-screen-width cols pretend))
 
-(defun set-frame-height (frame cols &optional pretend)
+(defun set-frame-height (frame lines &optional pretend)
   "Specify that the frame FRAME has LINES lines.
 Optional third arg non-nil means that redisplay should use LINES lines
 but that the idea of the actual height of the frame should not be changed."
-  (set-screen-height cols pretend))
+  (set-screen-height lines pretend))
 
 ;;; @@ Environment variables.
 ;;;
