@@ -1,5 +1,9 @@
 1999-05-16  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
+	* pcustom.el (toplevel): Require 'poe.
+
+1999-05-16  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
 	* localhook.el (toplevel): Move provide to the top to avoid
 	circular dependency.
 
@@ -68,7 +72,7 @@
 	defvar-maybe, defconst-maybe, defun-maybe-cond): Return NAME.
 	(defun-maybe, defmacro-maybe, defsubst-maybe): Put edebug spec.
 	(defsubst): Moved to poe-18.el.
-	
+
 1999-05-13  Tanaka Akira      <akr@jaist.ac.jp>
 
 	* pccl-om.el: pccl-om.el does not support Mule 1.*.
