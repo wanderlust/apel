@@ -29,7 +29,7 @@
 ;;;
 
 (cond (running-emacs-19
-       (require 'emu-19)
+       (require 'emu-e19)
        
        ;; Suggested by SASAKI Osamu <osamu@shuugr.bekkoame.or.jp>
        ;; (cf. [os2-emacs-ja:78])

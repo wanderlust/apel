@@ -30,7 +30,7 @@
 (cond (running-xemacs
        (require 'emu-xemacs))
       (running-emacs-19
-       (require 'emu-19)
+       (require 'emu-e19)
        ))
 
 
