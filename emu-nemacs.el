@@ -5,6 +5,7 @@
 ;;; Copyright (C) 1994,1995 MORIOKA Tomohiko
 ;;;
 ;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;;; modified by KOBAYASHI Shuhei <shuhei@cmpt01.phys.tohoku.ac.jp>
 ;;; Version:
 ;;;	$Id$
 ;;; Keywords: emulation, compatibility, NEmacs, Mule
@@ -51,6 +52,13 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
   (if (not (eq ic oc))
       (convert-string-kanji-code str ic oc)
     str))
+
+(defun code-convert-region (beg end ic oc)
+  "Convert code of the text between BEGIN and END from SOURCE
+to TARGET. On successful conversion returns t,
+else returns nil. [emu-nemacs.el; Mule emulating function]"
+  (if (not (eq ic oc))
+      (convert-region-kanji-code beg end ic oc)))
 
 
 ;;; @ character and string
