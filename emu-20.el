@@ -109,6 +109,8 @@ This constant is defined to emulate old MULE anything older than MULE
 	     (gb2312	    . cn-gb-2312)
 	     (iso-2022-jp-2 . iso-2022-7bit-ss2)
 	     (x-ctext       . ctext)
+	     (unknown       . undecided)
+	     (x-unknown     . undecided)
 	     ))
 	  dest)
       (while rest
