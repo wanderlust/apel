@@ -65,6 +65,10 @@ APEL とは？
       tinyrich.el   --- 古い emacs 環境のための text/richtext モジュー
       		        ル
 
+    pcustom.el --- 移植性の高い custom 環境を提供する
+
+      tinycustom.el --- custom.el のエミュレーションを行なう
+
 
 インストール
 ============

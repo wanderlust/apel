@@ -62,6 +62,10 @@ What's APEL?
 			    XEmacs 19.14 or later
       tinyrich.el   --- text/richtext module for old emacsen
 
+    pcustom.el --- provide portable custom environment
+
+      tinycustom.el --- emulation module of custom.el
+
 
 Installation
 ============
