@@ -18,6 +18,7 @@
 			'(tinycustom pcustom)))
 
 (let ((poe-modules '(poe))
+      (pces-modules '(pces))
       (poem-modules '(poem))
       (mcs-modules '(mcharset))
       (invisible-modules '(invisible))
@@ -37,20 +38,41 @@
 	 (setq poe-modules (cons 'poe-18 (cons 'localhook poe-modules))
 	       invisible-modules (cons 'inv-18 invisible-modules))
 	 ))
+  (cond ((and (featurep 'xemacs)
+	      (featurep 'file-coding))
+	 (setq pces-modules (cons 'pces-xfc (cons 'pces-20 pces-modules)))
+	 (if (featurep 'mule)
+	     (setq pces-modules (cons 'pces-xm pces-modules))
+	   ))
+	((featurep 'mule)
+	 (cond ((>= emacs-major-version 20)
+		(setq pces-modules
+		      (cons 'pces-e20 (cons 'pces-20 pces-modules)))
+		(or (and (fboundp 'set-buffer-multibyte)
+			 (subrp (symbol-function 'set-buffer-multibyte)))
+		    (setq pces-modules (cons 'pces-e20_2 pces-modules)))
+		)
+	       (t
+		;; for MULE 1.* and 2.*
+		(setq pces-modules (cons 'pces-om pces-modules))
+		)))
+	((boundp 'NEMACS)
+	 ;; for Nemacs and Nepoch
+	 (setq pces-modules (cons 'pces-nemacs pces-modules))
+	 )
+	(t
+	 (setq pces-modules (cons 'pces-raw pces-modules))
+	 ))
   (cond ((featurep 'mule)
 	 (cond ((featurep 'xemacs)
-		(setq poem-modules (cons 'poem-xm (cons 'poem-20
-							poem-modules))
+		(setq poem-modules (cons 'poem-xm poem-modules)
 		      mcs-modules (cons 'mcs-xm (cons 'mcs-20 mcs-modules)))
 		(if (>= emacs-major-version 21)
 		    (setq pccl-modules (cons 'pccl-20 pccl-modules))
-		  )
-		)
+		  ))
 	       ((>= emacs-major-version 20)
-		(setq poem-modules (cons 'poem-e20 (cons 'poem-20
-							 poem-modules))
-		      mcs-modules (cons 'mcs-e20 (cons 'mcs-20
-						       mcs-modules))
+		(setq poem-modules (cons 'poem-e20 poem-modules)
+		      mcs-modules (cons 'mcs-e20 (cons 'mcs-20 mcs-modules))
 		      pccl-modules (cons 'pccl-20 pccl-modules))
 		(setq poem-modules
 		      (cons
@@ -72,16 +94,13 @@
 	 (setq poem-modules (cons 'poem-nemacs poem-modules)
 	       mcs-modules (cons 'mcs-nemacs mcs-modules))
 	 )
-	((featurep 'file-coding)
-	 (setq poem-modules (cons 'poem-xfc poem-modules)
-	       mcs-modules (cons 'mcs-ltn1 mcs-modules))
-	 )
 	(t
 	 (setq poem-modules (cons 'poem-ltn1 poem-modules)
 	       mcs-modules (cons 'mcs-ltn1 mcs-modules))
 	 ))
 
-  (setq emu-modules (append poe-modules poem-modules
+  (setq emu-modules (append poe-modules
+			    pces-modules poem-modules
 			    mcs-modules invisible-modules
 			    pccl-modules pcustom-modules
 			    emu-modules))
