@@ -1,4 +1,4 @@
-;;; std11.el --- STD 11 parser for GNU Emacs
+;;; std11.el --- STD 11 functions for GNU Emacs
 
 ;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
 
@@ -178,5 +178,7 @@ If BOUNDARY is not nil, it is used as message header separator.
 ;;;
 
 (provide 'std11)
+
+(autoload 'std11-analyze-spaces "std11-parse")
 
 ;;; std11.el ends here
