@@ -131,7 +131,9 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 \[emu-latin1.el; MULE 2.3 emulating function]"
   (or start-column
       (setq start-column 0))
-  (substring str start-column width))
+  (if (> (length str) width)
+      (substring str start-column width)
+    str))
 
 (defalias 'looking-at-as-unibyte 'looking-at)
 

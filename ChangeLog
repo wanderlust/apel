@@ -1,3 +1,13 @@
+2002-05-14  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* pccl.el (ccl-usable): Make non-MULE XEmacs don't require `ccl'
+	even if this file is mis-compiled for XEmacs with MULE.
+
+2002-03-23  Nix  <nix@esperi.demon.co.uk>
+
+	* poem-ltn1.el (truncate-string): Act like the real `truncate-string':
+	do not fail if the string is shorter than the max length.
+
 2002-04-30  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* poem-xm.el (string-to-char-list): Revive it again.
