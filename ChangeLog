@@ -1,3 +1,8 @@
+2000-05-24  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* pces-raw.el (encode-coding-string, decode-coding-string): Return
+	a copy of string.
+
 2000-04-25  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* EMU-ELS (emu-modules): Don't include `pccl-20' for XEmacs 20 and

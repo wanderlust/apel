@@ -29,11 +29,11 @@
 
 (defun decode-coding-string (string coding-system)
   "Decode the STRING which is encoded in CODING-SYSTEM."
-  string)
+  (copy-sequence string))
 
 (defun encode-coding-string (string coding-system)
   "Encode the STRING as CODING-SYSTEM."
-  string)
+  (copy-sequence string))
 
 (defun decode-coding-region (start end coding-system)
   "Decode the text between START and END which is encoded in CODING-SYSTEM."
