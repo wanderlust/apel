@@ -1,3 +1,17 @@
+1998-04-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (encode-mime-charset-region): Use 'defun instead of
+	'defsubst.
+	(decode-mime-charset-region): Use 'defun instead of 'defsubst.
+
+1998-04-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL-ELS (apel-modules): Delete 'std11 and 'std11-parse.
+
+	* std11.el, std11-parse.el: Abolish std11-parse.el and std11.el
+	(moved to RIME).
+
+
 1998-04-09  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 8.0 was released.
