@@ -1,3 +1,248 @@
+2000-12-30  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	*  APEL: Version 10.3 released.
+	* apel-ver.el (apel-ver): Change APEL version to 10.3.
+	
+	* Makefile : Apply patch from TAKAHASHI Kaoru <kaoru@se.uec.ac.jp>
+	of Message-Id: <86vgs2s3cp.wl@tomoko.nantnaq.kaisei.org>.
+ 
+2000-12-28  Tanaka Akira      <akr@m17n.org>
+
+	* pccl-20.el (ccl-compat): new advice for `make-coding-system' of
+	XEmacs to handle Emacs style CCL coding system definition.
+
+2000-12-28  Kenichi Handa     <handa@etl.go.jp>
+
+	* static.el: Doc-string fixed.
+
+2000-12-28  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* mcharset.el (default-mime-charset-for-write): Use
+	`mime-charset-p' instead of `find-coding-system'; don't require
+	`pces'.
+
+	* mcs-nemacs.el, mcs-ltn1.el, mcs-20.el (mime-charset-p): New
+	alias.
+
+2000-12-26  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* README.en: Change major mode to outline-mode.
+	(What's APEL?): Add description about pym.el, pces, time-stamp.el,
+	timezone.el, and product.el.
+	(run in expanded place): Add a reference to `make.bat (for MS-DOS
+	family)'.
+
+	* README.ja: Change major mode to outline-mode.
+	(What's APEL?): Add description about pym.el, pces, time-stamp.el,
+	timezone.el, and product.el.
+
+2000-12-24  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* poe.el (minor-mode-overriding-map-alist): Remove the filename
+	poe.el from doc string.
+
+	* poe-18.el (current-time-world-timezones): Remove the filename
+	poe-18.el from doc string.
+	(current-time-local-timezone): Ditto.
+	(buffer-undo-list): Ditto.
+	(auto-fill-function): Ditto.
+	(unread-command-event): Ditto.
+	(unread-command-events): Ditto.
+	(minor-mode-map-alist): Ditto.
+
+	* README.en ((d) make.bat (for MS-DOS family)): New section.
+	* README.ja ((d) make.bat を利用する (MS-DOS 系 OS の場合)):
+	Ditto.
+
+2000-12-22  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* mcs-e20.el: Require `pces'.
+
+2000-12-22  Yuuichi Teranishi <teranisi@gohome.org>
+
+	* timezone.el (timezone-time-from-absolute): Use `%' instead of
+	`mod'.
+
+2000-12-21  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poe-18.el (numberp, mod): Removed.
+
+2000-12-21  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* mcharset.el (default-mime-charset-for-write): Require `pces' for
+	`find-coding-system'.
+
+2000-12-21  NAKAJIMA Mikio    <minakaji@osaka.email.ne.jp>
+
+	* poe-18.el (minor-mode-alist): Removed.
+	(minor-mode-overriding-map-alist): Move to poe.el.
+
+2000-12-20  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* APEL-MK (install-apel): Add new optional argument `just-print'.
+	(what-where-apel): New implementation [use `install-apel' with
+	`just-print' mode].
+
+2000-12-20  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* APEL-MK (install-just-print-p): Moved to install.el.
+	(install-update-package-files): Moved to install.el.
+
+	* install.el (install-update-package-files): New function [moved
+	from APEL-MK].
+	(install-just-print-p): Likewise.
+
+2000-12-15  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* mcs-xm.el: Don't require `poem' instead of `mcs-20'.
+
+	* mcs-e20.el: Don't require mcs-20.
+
+	* mcs-20.el: - Don't require `poem'.
+	- Require `custom' instead of `pcustom'.
+	- Require mcs-xm for XEmacs-Mule.
+	- Require mcs-e20 for GNU Emacs 20.1 or later.
+	(default-mime-charset): Change initial value to `x-unknown'.
+
+	* mcharset.el: Require mcs-20 if running with XEmacs-Mule and GNU
+	Emacs 20.1 or later.
+
+2000-12-19  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poe.el (current-fill-column): New emulating function.
+	(current-left-margin): New emulating function.
+
+	* poe-18.el (numberp): Use `defalias-maybe' instead of `defalias'.
+	(mod): Ditto.
+
+2000-12-20  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* poe-18.el (set-frame-height): Typo fixed.
+	(read-from-minibuffer): Do not run `minibuffer-setup-hook' and
+	`minibuffer-exit-hook'.
+	(minibuffer-setup-hook): Comment out.
+	(minibuffer-exit-hook): Ditto.
+
+2000-12-19  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* make.bat: Do not echo.
+
+	* poe-18.el (set-frame-heigth): Bug fixed.
+
+2000-12-16  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* poe-18.el (frame-width): New function.
+	(frame-height): Ditto.
+	(set-frame-width): Ditto.
+	(set-frame-heigth): Ditto.
+	(read-from-minibuffer): Run `minibuffer-setup-hook' and
+	`minibuffer-exit-hook'.
+	(buffer-undo-list): Declared with `defvar-maybe' and add doc
+	string.
+	(auto-fill-function): Add doc string.
+	(unread-command-event): Ditto.
+	(unread-command-events): Ditto.
+	(minibuffer-setup-hook): New variable.
+	(minibuffer-exit-hook): Ditto.
+	(minor-mode-map-alist): Ditto.
+	(minor-mode-alist): Ditto.
+	(minor-mode-overriding-map-alist): Ditto.
+
+2000-12-15  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* make.bat (listing): Bug fixed.
+
+	* README.en: Add URL that can be used to getting SKK 10.62a with
+	the new byte compiler for Emacs 18.
+	* README.ja: Ditto.
+
+2000-12-15  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* Makefile (tar): Remove .cvsignore.  Use `cvs tag -R' instead of
+	`cvs tag -RF'.
+
+2000-12-15  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poe-18.el (buffer-disable-undo): Define it as a function to make
+	an argument optional instead of the use of `defalias' to
+	`buffer-flush-undo'.
+
+2000-12-14   Daiki Ueno  <ueno@unixuser.org>
+
+	* alist.el (del-alist): Simplified.
+
+2000-12-14  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* pym.el (static-if): Put t on edebug spec instead of if.
+
+2000-12-13  Kenichi Handa  <handa@etl.go.jp>
+
+	* alist.el: Fix and add DOCs and comments; fix coding style.
+
+2000-04-26  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* mcs-xm.el (charsets-mime-charset-alist): Add coded-charset
+	`japanese-jisx0208-1990' to MIME-charset `iso-2022-jp' and
+	`iso-2022-jp-2' in UTF-2000; add new MIME-charset `iso-2022-jp-3'.
+
+2000-11-26  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* make.bat: New file.
+	* .cvsignore: Ditto.
+
+2000-11-09  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* path-util.el (add-path): Check for both "path" and "path/".
+
+2000-10-06  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe.el (require): Update `current-load-list'.
+
+2000-10-10  Keiichi Suzuki  <keiichi@mdcnet.co.jp>
+
+	* product.el (product-version-as-string): New function.
+	(product-string-1): Use `product-version-as-string'.
+
+2000-08-10  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* poem-e20_3.el: Require `pym'.
+
+2000-07-12  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* alist.el (vassoc): New function [to be compatible with XEmacs
+	21.2.32 or later].
+
+2000-05-25  Tanaka Akira      <akr@m17n.org>
+
+	* README.en, README.ja: Update for CVS via SSH.
+
+2000-05-24  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* pces-raw.el (encode-coding-string, decode-coding-string): Return
+	a copy of string.
+
+2000-04-25  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* EMU-ELS (emu-modules): Don't include `pccl-20' for XEmacs 20 and
+	earlier.
+
+2000-03-25  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* pym.el: Define edebug specs for `static-if', `static-when',
+	`static-unless', `static-condition-case', `static-defconst' and
+	`static-cond'.
+
+2000-03-08  Akihiro Arisawa  <ari@atesoft.advantest.co.jp>
+
+	* poe.el (format-time-string): Fix problem when `format' contains
+	"%d" or "%D".
+
+2000-03-04   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* poe.el (remassq,remassoc,remrassoc): Rewrite.
+	(remrassq): New function.
+
+
 2000-03-01  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* APEL: Version 10.2 released.

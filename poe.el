@@ -75,7 +75,6 @@
    (or (fboundp 'si:require)
        (progn
 	 (fset 'si:require (symbol-function 'require))
-	 (put 'require 'defun-maybe t)
 	 (defun require (feature &optional filename noerror)
 	   "\
 If feature FEATURE is not loaded, load it from FILENAME.
@@ -90,7 +89,10 @@ Normally the return value is FEATURE."
 	       (condition-case nil
 		   (si:require feature filename)
 		 (file-error))
-	     (si:require feature filename)))))))
+	     (si:require feature filename)))
+	 ;; for `load-history'.
+	 (setq current-load-list (cons 'require current-load-list))
+	 (put 'require 'defun-maybe t)))))
 
 ;; Emacs 19.29 and later: (plist-get PLIST PROP)
 ;; (defun-maybe plist-get (plist prop)
@@ -710,7 +712,7 @@ that is `eq' to KEY, there is no way to remove it by side effect;
 therefore, write `(setq foo (remassq key foo))' to be sure of changing
 the value of `foo'."
   (if (setq key (assq key list))
-      (delete key list)
+      (delq key list)
     list))
 
 ;; XEmacs 19.13 and later: (remassoc KEY LIST)
@@ -721,7 +723,18 @@ that is `equal' to KEY, there is no way to remove it by side effect;
 therefore, write `(setq foo (remassoc key foo))' to be sure of changing
 the value of `foo'."
   (if (setq key (assoc key list))
-      (delete key list)
+      (delq key list)
+    list))
+
+;; XEmacs 19.13 and later: (remrassq VALUE LIST)
+(defun-maybe remrassq (value list)
+  "Delete by side effect any elements of LIST whose cdr is `eq' to VALUE.
+The modified LIST is returned.  If the first member of LIST has a car
+that is `eq' to VALUE, there is no way to remove it by side effect;
+therefore, write `(setq foo (remrassq value foo))' to be sure of changing
+the value of `foo'."
+  (if (setq value (rassq value list))
+      (delq value list)
     list))
 
 ;; XEmacs 19.13 and later: (remrassoc VALUE LIST)
@@ -732,7 +745,7 @@ that is `equal' to VALUE, there is no way to remove it by side effect;
 therefore, write `(setq foo (remrassoc value foo))' to be sure of changing
 the value of `foo'."
   (if (setq value (rassoc value list))
-      (delete value list)
+      (delq value list)
     list))
 
 ;;; Define `functionp' here because "localhook" uses it.
@@ -835,6 +848,11 @@ FILE should be the name of a library, with no directory name."
 This variable is meaningful on MS-DOG and Windows NT.
 On those systems, it is automatically local in every buffer.
 On other systems, this variable is normally always nil.")
+
+;; Emacs 20.3 or later.
+(defvar-maybe minor-mode-overriding-map-alist nil
+  "Alist of keymaps to use for minor modes, in current major mode.
+APEL provides this as dummy for a compatibility.")
 
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (save-current-buffer &rest BODY)
 ;;
@@ -1257,13 +1275,13 @@ Not fully compatible especially when invalid format is specified."
 		  "")
 		 ;; the day of month, zero-padded
 		 ((eq cur-char ?d)	
-		  (substring time-string 8 10))
+		  (format "%02d" (string-to-int (substring time-string 8 10))))
 		 ;; a synonym for `%m/%d/%y'
 		 ((eq cur-char ?D)
-		  (format "%02d/%s/%s"
+		  (format "%02d/%02d/%s"
 			  (cddr (assoc (substring time-string 4 7)
 				       format-time-month-list))
-			  (substring time-string 8 10)
+			  (string-to-int (substring time-string 8 10))
 			  (substring time-string -2)))
 		 ;; the day of month, blank-padded
 		 ((eq cur-char ?e)
@@ -1542,6 +1560,19 @@ The extension, in a file name, is the part that follows the last `.'."
 				directory)
 	    (substring file 0 (match-beginning 0)))
 	filename))))
+
+
+;;; @ Miscellanea.
+
+;; Emacs 19.29 and later: (current-fill-column)
+(defun-maybe current-fill-column ()
+  "Return the fill-column to use for this line."
+  fill-column)
+
+;; Emacs 19.29 and later: (current-left-margin)
+(defun-maybe current-left-margin ()
+  "Return the left margin to use for this line."
+  left-margin)
 
 
 ;;; @ XEmacs emulation.

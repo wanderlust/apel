@@ -54,18 +54,16 @@ You can specify following OPTIONS:
 	       (while rest
 		 (setq p (expand-file-name path (car rest)))
 		 (if (file-directory-p p)
-		     (throw 'tag p)
-		   )
-		 (setq rest (cdr rest))
-		 ))
-	     (not (member p load-path))
-	     )
+		     (throw 'tag p))
+		 (setq rest (cdr rest))))
+	     (not (or (member p load-path)
+		      (if (string-match "/$" p)
+			  (member (substring p 0 (1- (length p))) load-path)
+			(member (file-name-as-directory p) load-path)))))
 	(setq load-path
 	      (if (memq 'append options)
 		  (append load-path (list p))
-		(cons p load-path)
-		))
-      )))
+		(cons p load-path))))))
 
 ;;;###autoload
 (defun add-latest-path (pattern &optional all-paths)

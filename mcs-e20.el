@@ -1,6 +1,6 @@
 ;;; mcs-e20.el --- MIME charset implementation for Emacs 20.1 and 20.2
 
-;; Copyright (C) 1996,1997,1998,1999 Free Software Foundation, Inc.
+;; Copyright (C) 1996,1997,1998,1999,2000 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: emulation, compatibility, Mule
@@ -28,10 +28,8 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'static)
-  (require 'poem)
-  )
+(require 'pces)
+(eval-when-compile (require 'static))
 
 (defsubst encode-mime-charset-region (start end charset &optional lbt)
   "Encode the text between START and END as MIME CHARSET."
@@ -176,8 +174,6 @@ Return nil if corresponding MIME-charset is not found."
 
 ;;; @ end
 ;;;
-
-(require 'mcs-20)
 
 (require 'product)
 (product-provide (provide 'mcs-e20) (require 'apel-ver))

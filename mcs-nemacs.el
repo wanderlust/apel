@@ -1,8 +1,8 @@
 ;;; mcs-nemacs.el --- MIME charset implementation for Nemacs
 
-;; Copyright (C) 1995,1996,1997,1998 MORIOKA Tomohiko
+;; Copyright (C) 1995,1996,1997,1998,2000 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -47,6 +47,8 @@
       (setq charset (intern (downcase charset)))
     )
   (cdr (assq charset mime-charset-coding-system-alist)))
+
+(fset 'mime-charset-p 'mime-charset-to-coding-system)
 
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END.

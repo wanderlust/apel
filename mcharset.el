@@ -1,6 +1,6 @@
 ;;; mcharset.el --- MIME charset API
 
-;; Copyright (C) 1997,1998,1999 Free Software Foundation, Inc.
+;; Copyright (C) 1997,1998,1999,2000 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: emulation, compatibility, Mule
@@ -28,28 +28,18 @@
 (require 'pcustom)
 
 (cond ((featurep 'mule)
-       (cond ((featurep 'xemacs)
-	      (require 'mcs-xm)
-	      )
-	     ((>= emacs-major-version 20)
-	      (require 'mcs-e20)
-	      )
-	     (t
-	      ;; for MULE 1.* and 2.*
-	      (require 'mcs-om)
-	      ))
-       )
+       (if (>= emacs-major-version 20)
+	   (require 'mcs-20)
+	 ;; for MULE 1.* and 2.*
+	 (require 'mcs-om)))
       ((boundp 'NEMACS)
        ;; for Nemacs and Nepoch
-       (require 'mcs-nemacs)
-       )
+       (require 'mcs-nemacs))
       (t
-       (require 'mcs-ltn1)
-       ))
+       (require 'mcs-ltn1)))
 
 (defcustom default-mime-charset-for-write
-  (if (and (fboundp 'find-coding-system)
-	   (find-coding-system 'utf-8))
+  (if (mime-charset-p 'utf-8)
       'utf-8
     default-mime-charset)
   "Default value of MIME-charset for encoding.

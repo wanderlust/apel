@@ -26,27 +26,27 @@
 
 (put 'static-if 'lisp-indent-function 2)
 (defmacro static-if (cond then &rest else)
-  "`if' expression but COND is evaluated at compile-time."
+  "Like `if', but evaluate COND at compile time."
   (if (eval cond)
       then
     (` (progn  (,@ else)))))
 
 (put 'static-when 'lisp-indent-function 1)
 (defmacro static-when (cond &rest body)
-  "`when' expression but COND is evaluated at compile-time."
+  "Like `when', but evaluate COND at compile time."
   (if (eval cond)
       (` (progn (,@ body)))))
 
 (put 'static-unless 'lisp-indent-function 1)
 (defmacro static-unless (cond &rest body)
-  "`unless' expression but COND is evaluated at compile-time."
+  "Like `unless', but evaluate COND at compile time."
   (if (eval cond)
       nil
     (` (progn (,@ body)))))
 
 (put 'static-condition-case 'lisp-indent-function 2)
 (defmacro static-condition-case (var bodyform &rest handlers)
-  "`condition-case' expression but BODYFORM is evaluated at compile-time."
+  "Like `condition-case', but evaluate BODYFORM at compile time."
   (eval (` (condition-case (, var)
 	       (list (quote quote) (, bodyform))
 	     (,@ (mapcar
@@ -64,15 +64,15 @@
 
 (put 'static-defconst 'lisp-indent-function 'defun)
 (defmacro static-defconst (symbol initvalue &optional docstring)
-  "`defconst' expression but INITVALUE is evaluated at compile-time.
+  "Like `defconst', but evaluate INITVALUE at compile time.
 
-The variable SYMBOL can be referenced at either compile-time or run-time."
+The variable SYMBOL can be referred at both compile time and run time."
   (let ((value (eval initvalue)))
     (eval (` (defconst (, symbol) (quote (, value)) (, docstring))))
     (` (defconst (, symbol) (quote (, value)) (, docstring)))))
 
 (defmacro static-cond (&rest clauses)
-  "`cond' expression but the car of each clause is evaluated at compile-time."
+  "Like `cond', but evaluate CONDITION part of each clause at compile time."
   (while (and clauses
 	      (not (eval (car (car clauses)))))
     (setq clauses (cdr clauses)))

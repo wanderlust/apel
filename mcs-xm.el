@@ -1,9 +1,9 @@
 ;;; mcs-xm.el --- MIME charset implementation for XEmacs-mule
 
-;; Copyright (C) 1997,1998,1999 Free Software Foundation, Inc.
+;; Copyright (C) 1997,1998,1999,2000 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Keywords: emulation, compatibility, Mule
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
+;; Keywords: MIME-charset, coding-system, emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
 
@@ -29,7 +29,7 @@
 
 ;;; Code:
 
-(require 'mcs-20)
+(require 'poem)
 
 
 (defun encode-mime-charset-region (start end charset &optional lbt)
@@ -103,7 +103,7 @@
 
 
 (defvar charsets-mime-charset-alist
-  '(((ascii)						. us-ascii)
+  `(((ascii)						. us-ascii)
     ((ascii latin-iso8859-1)				. iso-8859-1)
     ((ascii latin-iso8859-2)				. iso-8859-2)
     ((ascii latin-iso8859-3)				. iso-8859-3)
@@ -114,18 +114,48 @@
     ((ascii greek-iso8859-7)				. iso-8859-7)
     ((ascii hebrew-iso8859-8)				. iso-8859-8)
     ((ascii latin-iso8859-9)				. iso-8859-9)
-    ((ascii latin-jisx0201
-	    japanese-jisx0208-1978 japanese-jisx0208)	. iso-2022-jp)
-    ((ascii latin-jisx0201
-	    katakana-jisx0201 japanese-jisx0208)	. shift_jis)
+    ,(if (featurep 'utf-2000)
+	 '((ascii latin-jisx0201
+		  japanese-jisx0208-1978
+		  japanese-jisx0208
+		  japanese-jisx0208-1990)		. iso-2022-jp)
+       '((ascii latin-jisx0201
+		japanese-jisx0208-1978 japanese-jisx0208)
+	 . iso-2022-jp))
+    ,(if (featurep 'utf-2000)
+	 '((ascii latin-jisx0201
+		  japanese-jisx0208-1978
+		  japanese-jisx0208
+		  japanese-jisx0208-1990
+		  japanese-jisx0213-1
+		  japanese-jisx0213-2)			. iso-2022-jp-3)
+       '((ascii latin-jisx0201
+		japanese-jisx0208-1978 japanese-jisx0208
+		japanese-jisx0213-1
+		japanese-jisx0213-2)			. iso-2022-jp-3))
+    ,(if (featurep 'utf-2000)
+	 '((ascii latin-jisx0201 katakana-jisx0201
+		  japanese-jisx0208-1990)		. shift_jis)
+       '((ascii latin-jisx0201
+		katakana-jisx0201 japanese-jisx0208)	. shift_jis))
     ((ascii korean-ksc5601)				. euc-kr)
     ((ascii chinese-gb2312)				. gb2312)
     ((ascii chinese-big5-1 chinese-big5-2)		. big5)
     ((ascii thai-xtis)					. tis-620)
-    ((ascii latin-iso8859-1 greek-iso8859-7
-	    latin-jisx0201 japanese-jisx0208-1978
-	    chinese-gb2312 japanese-jisx0208
-	    korean-ksc5601 japanese-jisx0212)		. iso-2022-jp-2)
+    ,(if (featurep 'utf-2000)
+	 '((ascii latin-jisx0201 latin-iso8859-1
+		  greek-iso8859-7
+		  japanese-jisx0208-1978 japanese-jisx0208
+		  japanese-jisx0208-1990
+		  japanese-jisx0212
+		  chinese-gb2312
+		  korean-ksc5601)		. iso-2022-jp-2)
+       '((ascii latin-jisx0201 latin-iso8859-1
+		greek-iso8859-7
+		japanese-jisx0208-1978 japanese-jisx0208
+		japanese-jisx0212
+		chinese-gb2312
+		korean-ksc5601)			. iso-2022-jp-2))
     ;; ((ascii latin-iso8859-1 greek-iso8859-7
     ;;         latin-jisx0201 japanese-jisx0208-1978
     ;;         chinese-gb2312 japanese-jisx0208

@@ -1,8 +1,8 @@
 ;;; mcs-20.el --- MIME charset implementation for Emacs 20 and XEmacs/mule
 
-;; Copyright (C) 1997,1998,1999 Free Software Foundation, Inc.
+;; Copyright (C) 1997,1998,1999,2000 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -29,9 +29,12 @@
 
 ;;; Code:
 
-(require 'poem)
-(require 'pcustom)
+(require 'custom)
 (eval-when-compile (require 'wid-edit))
+
+(if (featurep 'xemacs)
+    (require 'mcs-xm)
+  (require 'mcs-e20))
 
 
 ;;; @ MIME charset
@@ -100,6 +103,8 @@ is specified, it is used as line break code type of coding-system."
 		   charset lbt cs)
 	))))
 
+(defalias 'mime-charset-p 'mime-charset-to-coding-system)
+
 (defvar widget-mime-charset-prompt-value-history nil
   "History of input to `widget-mime-charset-prompt-value'.")
 
@@ -132,7 +137,7 @@ is specified, it is used as line break code type of coding-system."
     (widget-apply widget :notify widget event)
     (widget-setup)))
 
-(defcustom default-mime-charset 'x-ctext
+(defcustom default-mime-charset 'x-unknown
   "Default value of MIME-charset.
 It is used when MIME-charset is not specified.
 It must be symbol."

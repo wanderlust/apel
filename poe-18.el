@@ -453,8 +453,6 @@ resolution finer than a second."
 ;;; @@ Floating point numbers.
 ;;;
 
-(defalias 'numberp 'integerp)
-
 (defun abs (arg)
   "Return the absolute value of ARG."
   (if (< arg 0) (- arg) arg))
@@ -467,8 +465,6 @@ With optional DIVISOR, return the largest integer no greater than ARG/DIVISOR."
   (if (< arg 0)
       (- (/ (- divisor 1 arg) divisor))
     (/ arg divisor)))
-
-(defalias 'mod '%)
 
 ;;; @ Basic lisp subroutines.
 ;;;
@@ -515,12 +511,29 @@ With optional non-nil ALL, force redisplay of all mode-lines."
 ;;;
 
 ;; 18.55 does not have these variables.
-(defvar buffer-undo-list nil)
-(defvar auto-fill-function nil)
-(defvar unread-command-event nil)
-(defvar unread-command-events nil)
+(defvar buffer-undo-list nil
+  "List of undo entries in current buffer.
+APEL provides this as dummy for a compatibility.")
 
-(defalias 'buffer-disable-undo 'buffer-flush-undo)
+(defvar auto-fill-function nil
+  "Function called (if non-nil) to perform auto-fill.
+APEL provides this as dummy for a compatibility.")
+
+(defvar unread-command-event nil
+  "APEL provides this as dummy for a compatibility.")
+(defvar unread-command-events nil
+  "List of events to be read as the command input.
+APEL provides this as dummy for a compatibility.")
+
+;; (defvar minibuffer-setup-hook nil
+;;   "Normal hook run just after entry to minibuffer.")
+;; (defvar minibuffer-exit-hook nil
+;;   "Normal hook run just after exit from minibuffer.")
+
+(defvar minor-mode-map-alist nil
+  "Alist of keymaps to use for minor modes.
+APEL provides this as dummy for a compatibility.")
+
 (defalias 'insert-and-inherit 'insert)
 (defalias 'insert-before-markers-and-inherit 'insert-before-markers)
 (defalias 'number-to-string 'int-to-string)
@@ -584,7 +597,7 @@ Fifth arg HIST is ignored in this implementatin."
 Optional argunemt FRAME is ignored in this implementation."
 	(si:get-buffer-window buffer))))
 
-(defun-maybe walk-windows (proc &optional minibuf all-frames)
+(defun walk-windows (proc &optional minibuf all-frames)
   "Cycle through all visible windows, calling PROC for each one.
 PROC is called with a window as argument.
 
@@ -604,6 +617,39 @@ Optional third argunemt ALL-FRAMES is ignored in this implementation."
 		 (funcall proc walk-windows-current)
 		 (not (eq walk-windows-current walk-windows-start))))
       (select-window walk-windows-start))))
+
+(defun buffer-disable-undo (&optional buffer)
+  "Make BUFFER stop keeping undo information.
+No argument or nil as argument means do this for the current buffer."
+   (buffer-flush-undo (or buffer (current-buffer))))
+
+
+;;; @@ Frame (Emacs 18 cannot make frame)
+;;;
+;; The following four are frequently used for manupulating the current frame.
+;; frame.el has `screen-width', `screen-height', `set-screen-width' and
+;; `set-screen-height' for backward compatibility and declare them as obsolete.
+(defun frame-width (&optional frame)
+  "Return number of columns available for display on FRAME.
+If FRAME is omitted, describe the currently selected frame."
+  (screen-width))
+
+(defun frame-height (&optional frame)
+  "Return number of lines available for display on FRAME.
+If FRAME is omitted, describe the currently selected frame."
+  (screen-height))
+
+(defun set-frame-width (frame cols &optional pretend)
+  "Specify that the frame FRAME has COLS columns.
+Optional third arg non-nil means that redisplay should use COLS columns
+but that the idea of the actual width of the frame should not be changed."
+  (set-screen-width cols pretend))
+
+(defun set-frame-height (frame lines &optional pretend)
+  "Specify that the frame FRAME has LINES lines.
+Optional third arg non-nil means that redisplay should use LINES lines
+but that the idea of the actual height of the frame should not be changed."
+  (set-screen-height lines pretend))
 
 ;;; @@ Environment variables.
 ;;;

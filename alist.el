@@ -1,11 +1,11 @@
-;;; alist.el --- utility functions about association-list
+;;; alist.el --- utility functions for association list
 
-;; Copyright (C) 1993,1994,1995,1996,1998 Free Software Foundation, Inc.
+;; Copyright (C) 1993,1994,1995,1996,1998,2000 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: alist
 
-;; This file is part of APEL (A Portable Emacs Library).
+;; This file is part of GNU Emacs.
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -25,76 +25,71 @@
 ;;; Code:
 
 ;;;###autoload
-(defun put-alist (item value alist)
-  "Modify ALIST to set VALUE to ITEM.
-If there is a pair whose car is ITEM, replace its cdr by VALUE.
-If there is not such pair, create new pair (ITEM . VALUE) and
-return new alist whose car is the new pair and cdr is ALIST.
-\[tomo's ELIS like function]"
-  (let ((pair (assoc item alist)))
-    (if pair
+(defun put-alist (key value alist)
+  "Set cdr of an element (KEY . ...) in ALIST to VALUE and return ALIST.
+If there is no such element, create a new pair (KEY . VALUE) and
+return a new alist whose car is the new pair and cdr is ALIST."
+  (let ((elm (assoc key alist)))
+    (if elm
 	(progn
-	  (setcdr pair value)
+	  (setcdr elm value)
 	  alist)
-      (cons (cons item value) alist)
-      )))
+      (cons (cons key value) alist))))
 
 ;;;###autoload
-(defun del-alist (item alist)
-  "If there is a pair whose key is ITEM, delete it from ALIST.
-\[tomo's ELIS emulating function]"
-  (if (equal item (car (car alist)))
-      (cdr alist)
-    (let ((pr alist)
-	  (r (cdr alist))
-	  )
-      (catch 'tag
-	(while (not (null r))
-	  (if (equal item (car (car r)))
-	      (progn
-		(rplacd pr (cdr r))
-		(throw 'tag alist)))
-	  (setq pr r)
-	  (setq r (cdr r))
-	  )
-	alist))))
+(defun del-alist (key alist)
+  "Delete an element whose car equals KEY from ALIST.
+Return the modified ALIST."
+  (let ((pair (assoc key alist)))
+    (if pair
+	(delq pair alist)
+      alist)))
 
 ;;;###autoload
-(defun set-alist (symbol item value)
-  "Modify a alist indicated by SYMBOL to set VALUE to ITEM."
+(defun set-alist (symbol key value)
+  "Set cdr of an element (KEY . ...) in the alist bound to SYMBOL to VALUE."
   (or (boundp symbol)
-      (set symbol nil)
-      )
-  (set symbol (put-alist item value (symbol-value symbol)))
-  )
+      (set symbol nil))
+  (set symbol (put-alist key value (symbol-value symbol))))
 
 ;;;###autoload
-(defun remove-alist (symbol item)
-  "Remove ITEM from the alist indicated by SYMBOL."
+(defun remove-alist (symbol key)
+  "Delete an element whose car equals KEY from the alist bound to SYMBOL."
   (and (boundp symbol)
-       (set symbol (del-alist item (symbol-value symbol)))
-       ))
+       (set symbol (del-alist key (symbol-value symbol)))))
 
 ;;;###autoload
 (defun modify-alist (modifier default)
-  "Modify alist DEFAULT into alist MODIFIER."
+  "Store elements in the alist MODIFIER in the alist DEFAULT.
+Return the modified alist."
   (mapcar (function
 	   (lambda (as)
-	     (setq default (put-alist (car as)(cdr as) default))
-	     ))
+	     (setq default (put-alist (car as)(cdr as) default))))
 	  modifier)
   default)
 
 ;;;###autoload
-(defun set-modified-alist (sym modifier)
-  "Modify a value of a symbol SYM into alist MODIFIER.
-The symbol SYM should be alist. If it is not bound,
-its value regard as nil."
-  (if (not (boundp sym))
-      (set sym nil)
-    )
-  (set sym (modify-alist modifier (eval sym)))
-  )
+(defun set-modified-alist (symbol modifier)
+  "Store elements in the alist MODIFIER in an alist bound to SYMBOL.
+If SYMBOL is not bound, set it to nil at first."
+  (if (not (boundp symbol))
+      (set symbol nil))
+  (set symbol (modify-alist modifier (eval symbol))))
+
+
+;;; @ association-vector-list
+;;;
+
+;;;###autoload
+(defun vassoc (key avlist)
+  "Search AVLIST for an element whose first element equals KEY.
+AVLIST is a list of vectors.
+See also `assoc'."
+  (while (and avlist
+	      (not (equal key (aref (car avlist) 0))))
+    (setq avlist (cdr avlist)))
+  (and avlist
+       (car avlist)))
 
 
 ;;; @ end

@@ -49,45 +49,6 @@
 (defvar EMU_DIR nil)			; VERSION_SPECIFIC_LISPDIR/EMU_PREFIX
 
 
-;;; Utilities. (XXX: should be moved to install.el ?)
-
-(defun install-just-print-p ()
-  (let ((flag (getenv "MAKEFLAGS"))
-	(case-fold-search nil))
-    (princ (format "%s\n" flag))
-    (if flag
-	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag))))
-
-(defun install-update-package-files (package dir &optional just-print)
-  (cond
-   (just-print
-    (princ (format "Updating autoloads in directory %s..\n\n" dir))
-
-    (princ (format "Processing %s\n" dir))
-    (princ "Generating custom-load.el...\n\n")
-
-    (princ (format "Compiling %s...\n"
-		   (expand-file-name "auto-autoloads.el" dir)))
-    (princ (format "Wrote %s\n"
-		   (expand-file-name "auto-autoloads.elc" dir)))
-
-    (princ (format "Compiling %s...\n"
-		   (expand-file-name "custom-load.el" dir)))
-    (princ (format "Wrote %s\n"
-		   (expand-file-name "custom-load.elc" dir))))
-   (t
-    (setq autoload-package-name package)
-
-    (let ((command-line-args-left (list dir)))
-      (batch-update-directory))
-
-    (let ((command-line-args-left (list dir)))
-      (Custom-make-dependencies))
-
-    (byte-compile-file (expand-file-name "auto-autoloads.el" dir))
-    (byte-compile-file (expand-file-name "custom-load.el" dir)))))
-
-
 ;;; Configure, Compile, and Install.
 
 (defun config-apel ()
@@ -157,11 +118,12 @@
   (compile-elisp-modules emu-modules-to-compile	".")
   (compile-elisp-modules apel-modules		"."))
 
-(defun install-apel ()
+(defun install-apel (&optional just-print)
   (config-apel)
-  (let ((just-print (install-just-print-p)))
-    (install-elisp-modules emu-modules	"." EMU_DIR  just-print)
-    (install-elisp-modules apel-modules	"." APEL_DIR just-print)))
+  (or just-print
+      (setq just-print (install-just-print-p)))
+  (install-elisp-modules emu-modules	"." EMU_DIR  just-print)
+  (install-elisp-modules apel-modules	"." APEL_DIR just-print))
 
 ;; For XEmacs package system.
 (defun config-apel-package ()
@@ -224,21 +186,23 @@
     (install-update-package-files "apel" dir just-print)))
 
 (defun what-where-apel ()
-  (config-apel)
-  (princ (format "
-The files that belong to the EMU modules:
-  %s
-  -> %s
+  (install-apel 'just-print)
+  ;; (config-apel)
+;;;   (princ (format "
+;;; The files that belong to the EMU modules:
+;;;   %s
+;;;   -> %s
 
-The files that belong to the APEL modules:
-  %s
-  -> %s
+;;; The files that belong to the APEL modules:
+;;;   %s
+;;;   -> %s
 
-Do `make elc', `make install', `make package', or `make install-package'.
-"
-		 (mapconcat (function symbol-name) emu-modules ", ")
-		 EMU_DIR
-		 (mapconcat (function symbol-name) apel-modules ", ")
-		 APEL_DIR)))
+;;; Do `make elc', `make install', `make package', or `make install-package'.
+;;; "
+;;; 		 (mapconcat (function symbol-name) emu-modules ", ")
+;;; 		 EMU_DIR
+;;; 		 (mapconcat (function symbol-name) apel-modules ", ")
+;;; 		 APEL_DIR))
+  )
 
 ;;; APEL-MK ends here

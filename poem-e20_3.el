@@ -1,9 +1,9 @@
 ;;; -*-byte-compile-dynamic: t;-*-
 ;;; poem-e20_3.el --- poem submodule for Emacs 20.3
 
-;; Copyright (C) 1998 Free Software Foundation, Inc.
+;; Copyright (C) 1998,1999,2000 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -28,6 +28,8 @@
 ;;    This module requires Emacs 20.2.91 or later.
 
 ;;; Code:
+
+(require 'pym)
 
 ;;; @ character
 ;;;
