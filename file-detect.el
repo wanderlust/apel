@@ -117,31 +117,40 @@ If PATHS is omitted, `load-path' is used. [file-detect.el]"
 	(setq paths (cdr paths))
 	))))
 
+(defvar exec-suffix-list '("")
+  "*List of suffixes for executable.")
+
+(defun exec-installed-p (file &optional paths suffixes)
+  "Return absolute-path of FILE if FILE exists in PATHS.
+If PATHS is omitted, `exec-path' is used.
+If suffixes is omitted, `exec-suffix-list' is used. [file-detect.el]"
+  (or paths
+      (setq paths exec-path)
+      )
+  (or suffixes
+      (setq suffixes exec-suffix-list)
+      )
+  (catch 'tag
+    (while paths
+      (let ((stem (expand-file-name file (car paths)))
+	    (sufs suffixes)
+	    )
+	(while sufs
+	  (let ((file (concat stem (car sufs))))
+	    (if (file-exists-p file)
+		(throw 'tag file)
+	      ))
+	  (setq sufs (cdr sufs))
+	  ))
+      (setq paths (cdr paths))
+      )))
+
 (defun module-installed-p (module &optional paths)
   "Return t if module is provided or exists in PATHS.
 If PATHS is omitted, `load-path' is used. [file-detect.el]"
   (or (featurep module)
-      (let ((name (symbol-name module)))
-	(if (null paths)
-	    (setq paths load-path)
-	  )
-	(catch 'tag
-	  (while paths
-	    (let ((file (expand-file-name name (car paths))))
-	      (let ((elc-file (concat file ".elc")))
-		(if (file-exists-p elc-file)
-		    (throw 'tag elc-file)
-		  ))
-	      (let ((el-file (concat file ".el")))
-		(if (file-exists-p el-file)
-		    (throw 'tag el-file)
-		  ))
-	      (if (file-exists-p file)
-		  (throw 'tag file)
-		)
-	      )
-	    (setq paths (cdr paths))
-	    )))))
+      (exec-installed-p (symbol-name module) load-path '(".elc" ".el"))
+      ))
 
 
 ;;; @ end

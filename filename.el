@@ -43,7 +43,7 @@
 
 (defvar filename-filters
   (nconc
-   (and (file-installed-p "kakasi" exec-path)
+   (and (exec-installed-p "kakasi")
 	'(filename-japanese-to-roman-string)
 	)
    '(filename-special-filter

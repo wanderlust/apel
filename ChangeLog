@@ -1,3 +1,18 @@
+1997-03-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.18 was released.
+
+	* filename.el (filename-filters): Use `exec-installed-p' instead
+ 	of `file-installed-p' to search "kakasi".
+
+1997-03-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* file-detect.el (module-installed-p): Use function
+ 	`exec-installed-p'.
+
+	* file-detect.el (exec-suffix-list): New variable.
+	(exec-installed-p): New function.
+
 1997-03-03  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* file-detect.el (file-installed-p): Fixed DOC-string.
