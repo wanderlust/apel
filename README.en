@@ -205,7 +205,7 @@ Function add-path (PATH &rest OPTIONS)
   You can use following PATH styles:
 
     load-path relative: "PATH" (it is searched from
-				`default-load-path')
+				`defaul-load-path')
 
     home directory relative: "~/PATH" "~USER/PATH"
 
@@ -256,12 +256,12 @@ Function file-installed-p (FILE &optional PATHS)
 Function exec-installed-p (FILE &optional PATHS SUFFIXES)
 
   Return absolute-path of FILE if FILE exists in PATHS.  If PATHS is
-  omitted, `exec-path' is used.  If SUFFIXES is omitted,
+  omitted, `exec-path' is used.  If suffixes is omitted,
   `exec-suffix-list' is used.
 
 Function module-installed-p (MODULE &optional PATHS)
 
-  Return non-nil if MODULE is provided or exists in PATHS.  If PATHS
+  Return non-nil if module is provided or exists in PATHS.  If PATHS
   is omitted, `load-path' is used.
 
 filename
