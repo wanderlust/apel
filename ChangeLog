@@ -1,5 +1,10 @@
 2003-07-03  Yuuichi Teranishi  <teranisi@gohome.org>
 
+	* poe.el (toplevel): Fixed the compile-time check for the definition of
+	`make-temp-file' [apel-ja: 00874].
+	(make-temp-file) [no make-temp-file, single-user system]:
+	Don't use set-default-file-modes nor default-file-modes.
+
 	* poe-18.el (make-directory-internal): Signal an error according to
 	the exit status of mkdir.
 	(delete-directory): New function.

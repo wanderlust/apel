@@ -1595,26 +1595,55 @@ See `walk-windows' for the meaning of MINIBUF and FRAME."
 	  (or (getenv "TMPDIR") (getenv "TMP") (getenv "TEMP") "/tmp"))))
   "The directory for writing temporary files.")
 
-;; Emacs 21: Create a temporary file. (lisp/subr.el)
-;; Emacs 21.1-21.3
-;;  (make-temp-file PREFIX &optional DIR-FLAG)
-;; Emacs 21.3.x(?) and later
+;; Emacs 21 CVS         ; nothing to do.
 ;;  (make-temp-file PREFIX &optional DIR-FLAG SUFFIX)
-(static-condition-case nil
-    ;; compile-time check
-    (progn
-      (delete-file (make-temp-file "EMU" nil ".txt"))
-      (if (get 'make-temp-file 'defun-maybe)
-	  (error "`make-temp-file' is already defined")))
-  (wrong-number-of-arguments ; Emacs 21.1-21.3
-   ;; load-time check.
-   ;; Replace original definition.
-   (or (fboundp 'si:make-temp-file)
-       (progn
-	 (fset 'si:make-temp-file (symbol-function 'make-temp-file))
-	 (put 'make-temp-file 'defun-maybe t)
-	 (defun make-temp-file (prefix &optional dir-flag suffix)
-	   "\
+;;
+;; Emacs 21.1-21.3      ; replace with CVS version of `make-temp-file'.
+;;  (make-temp-file PREFIX &optional DIR-FLAG)
+;;
+;; Emacs 20 and earlier ; install our version of `make-temp-file', for
+;;  or XEmacs		; single-user system or for multi-user system.
+(eval-when-compile
+  (cond
+   ((get 'make-temp-file 'defun-maybe)
+    ;; this form is already evaluated during compilation.
+    )
+   ((not (fboundp 'make-temp-file))
+    ;; Emacs 20 and earlier, or XEmacs.
+    (put 'make-temp-file 'defun-maybe 'none))
+   (t
+    (let* ((object (symbol-function 'make-temp-file))
+           (arglist (cond
+                     ((byte-code-function-p object)
+                      (if (fboundp 'compiled-function-arglist)
+                          (compiled-function-arglist object)
+                        (aref object 0)))
+                     ((eq (car-safe object) 'lambda)
+                      (nth 1 object))
+                     ;; `make-temp-file' is a built-in.
+                     )))
+      ;; arglist: (prefix &optional dir-flag suffix)
+      (cond
+       ((not arglist)
+        ;; `make-temp-file' is a built-in; expects 3-args.
+        (put 'make-temp-file 'defun-maybe '3-args))
+       ((> (length arglist) 3)
+        ;; Emacs 21 CVS.
+        (put 'make-temp-file 'defun-maybe '3-args))
+       (t
+        ;; Emacs 21.1-21.3
+        (put 'make-temp-file 'defun-maybe '2-args)))))))
+
+(static-cond
+ ((eq (get 'make-temp-file 'defun-maybe) '3-args)
+  (put 'make-temp-file 'defun-maybe '3-args))
+ ((eq (get 'make-temp-file 'defun-maybe) '2-args)
+  (put 'make-temp-file 'defun-maybe '2-args)
+  (or (fboundp 'si:make-temp-file)
+      (fset 'si:make-temp-file (symbol-function 'make-temp-file)))
+  (setq current-load-list (cons 'make-temp-file current-load-list))
+  (defun make-temp-file (prefix &optional dir-flag suffix)
+    "\
 Create a temporary file.
 The returned file name (created by appending some random characters at the end
 of PREFIX, and expanding against `temporary-file-directory' if necessary),
@@ -1624,138 +1653,131 @@ You can then use `write-region' to write new data into the file.
 If DIR-FLAG is non-nil, create a new empty directory instead of a file.
 
 If SUFFIX is non-nil, add that at the end of the file name."
-	   (let ((umask (default-file-modes))
-		 file)
-	     (unwind-protect
-		 (progn
-		   ;; Create temp files with strict access rights.  
-		   ;; It's easy toloosen them later, whereas it's impossible
-		   ;;  to close the time-window of loose permissions otherwise.
-		   (set-default-file-modes ?\700)
-		   (while (condition-case ()
-			      (progn
-				(setq file
-				      (make-temp-name
-				       (expand-file-name
-					prefix temporary-file-directory)))
-				(if suffix
-				    (setq file (concat file suffix)))
-				(if dir-flag
-				    (make-directory file)
-				  (write-region "" nil file nil
-						'silent nil 'excl))
-				nil)
-			    (file-already-exists t))
-		     ;; the file was somehow created by someone else between
-		     ;; `make-temp-name' and `write-region', let's try again.
-		     nil)
-		   file)
-	       ;; Reset the umask.
-	       (set-default-file-modes umask))))
-	 ;; for `load-history'.
-	 (setq current-load-list (cons 'make-temp-file current-load-list)))))
-  (error)) ; found our definition or no definition at compile-time.
-
-;; For the Emacsen which don't have make-temp-file.
-(cond
- ;; must be load-time check to share .elc between different systems.
- ((fboundp 'make-temp-file))
- ((memq system-type '(windows-nt ms-dos OS/2 emx))
-  ;; For single-user systems:
-  (defun-maybe make-temp-file (prefix &optional dir-flag suffix)
-    "Create a temporary file.
-The returned file name (created by appending some random characters at the end
-of PREFIX, and expanding against `temporary-file-directory' if necessary),
-is guaranteed to point to a newly created empty file.
-You can then use `write-region' to write new data into the file.
-
-If DIR-FLAG is non-nil, create a new empty directory instead of a file.
-
-If SUFFIX is non-nil, add that at the end of the file name."
-    (let ((file (make-temp-name (expand-file-name prefix
-						  temporary-file-directory))))
-      (if suffix
-	  (setq file (concat file suffix)))
-      (if dir-flag
-	  (make-directory file)
-	(write-region "" nil file nil 'silent))
-      file)))
- (t
-  (defun-maybe make-temp-file (prefix &optional dir-flag suffix)
-    "Create a temporary file.
-The returned file name (created by appending some random characters at the end
-of PREFIX, and expanding against `temporary-file-directory' if necessary),
-is guaranteed to point to a newly created empty file.
-You can then use `write-region' to write new data into the file.
-
-If DIR-FLAG is non-nil, create a new empty directory instead of a file.
-
-If SUFFIX is non-nil, add that at the end of the file name."
-    (let ((umask (default-file-modes)))
+    (let ((umask (default-file-modes))
+          file)
       (unwind-protect
-          (let ((prefix (expand-file-name prefix temporary-file-directory)))
-            ;; Create temp files with strict access rights.  It's easy to
-            ;; loosen them later, whereas it's impossible to close the
-            ;; time-window of loose permissions otherwise.
-            (set-default-file-modes 448)
-            (if dir-flag
-                ;; Create a new empty directory.
-                (let (dir)
+          (progn
+            ;; Create temp files with strict access rights.  
+            ;; It's easy toloosen them later, whereas it's impossible
+            ;;  to close the time-window of loose permissions otherwise.
+            (set-default-file-modes ?\700)
+            (while (condition-case ()
+                       (progn
+                         (setq file
+                               (make-temp-name
+                                (expand-file-name
+                                 prefix temporary-file-directory)))
+                         (if suffix
+                             (setq file (concat file suffix)))
+                         (if dir-flag
+                             (make-directory file)
+                           (write-region "" nil file nil
+                                         'silent nil 'excl))
+                         nil)
+                     (file-already-exists t))
+              ;; the file was somehow created by someone else between
+              ;; `make-temp-name' and `write-region', let's try again.
+              nil)
+            file)
+        ;; Reset the umask.
+        (set-default-file-modes umask)))))
+ ((eq (get 'make-temp-file 'defun-maybe) 'none)
+  (put 'make-temp-file 'defun-maybe 'none)
+  (setq current-load-list (cons 'make-temp-file current-load-list))
+  ;; must be load-time check to share .elc between different systems.
+  (cond
+   ((memq system-type '(windows-nt ms-dos OS/2 emx))
+    ;; for single-user systems.
+    (defun make-temp-file (prefix &optional dir-flag suffix)
+      "Create a temporary file.
+The returned file name (created by appending some random characters at the end
+of PREFIX, and expanding against `temporary-file-directory' if necessary),
+is guaranteed to point to a newly created empty file.
+You can then use `write-region' to write new data into the file.
+
+If DIR-FLAG is non-nil, create a new empty directory instead of a file.
+
+If SUFFIX is non-nil, add that at the end of the file name."
+      (let ((file (make-temp-name
+                   (expand-file-name prefix temporary-file-directory))))
+        (if suffix
+            (setq file (concat file suffix)))
+        (if dir-flag
+            (make-directory file)
+          (write-region "" nil file nil 'silent))
+        file)))
+   (t
+    ;; for multi-user systems.
+    (defun make-temp-file (prefix &optional dir-flag suffix)
+      "Create a temporary file.
+The returned file name (created by appending some random characters at the end
+of PREFIX, and expanding against `temporary-file-directory' if necessary),
+is guaranteed to point to a newly created empty file.
+You can then use `write-region' to write new data into the file.
+
+If DIR-FLAG is non-nil, create a new empty directory instead of a file.
+
+If SUFFIX is non-nil, add that at the end of the file name."
+      (let ((prefix (expand-file-name prefix temporary-file-directory)))
+        (if dir-flag
+            ;; Create a new empty directory.
+            (let (dir)
+              (while (condition-case ()
+                         (progn
+                           (setq dir (make-temp-name prefix))
+                           (if suffix
+                               (setq dir (concat dir suffix)))
+                           ;; `make-directory' returns nil for success,
+                           ;; otherwise signals an error.
+                           (make-directory dir))
+                       ;; the dir was somehow created by someone else
+                       ;; between `make-temp-name' and `make-directory',
+                       ;; let's try again.
+                       (file-already-exists t)))
+              (set-file-modes dir 448)
+              dir)
+          ;; Create a new empty file.
+          (let (tempdir tempfile)
+            (unwind-protect
+                (let (file)
+                  ;; First, create a temporary directory.
                   (while (condition-case ()
                              (progn
-                               (setq dir (make-temp-name prefix))
-                               (if suffix
-                                   (setq dir (concat dir suffix)))
-                               ;; `make-directory' returns nil for success,
-                               ;; otherwise signals an error.
-                               (make-directory dir))
-                           ;; the dir was somehow created by someone else
-                           ;; between `make-temp-name' and `make-directory',
+                               (setq tempdir (make-temp-name
+                                              (concat
+                                               (file-name-directory prefix)
+                                               "DIR")))
+                               ;; return nil or signal an error.
+                               (make-directory tempdir))
                            ;; let's try again.
                            (file-already-exists t)))
-                  dir)
-              ;; Create a new empty file.
-              (let (tempdir tempfile)
-                (unwind-protect
-                    (let (file)
-                      ;; First, create a temporary directory.
-                      (while (condition-case ()
-                                 (progn
-                                   (setq tempdir (make-temp-name
-                                                  (concat
-                                                   (file-name-directory prefix)
-                                                   "DIR")))
-                                   ;; return nil or signal an error.
-                                   (make-directory tempdir))
-                               ;; let's try again.
-                               (file-already-exists t)))
-                      ;; Second, create a temporary file in the tempdir.
-                      ;; There *is* a race condition between `make-temp-name'
-                      ;; and `write-region', but we don't care it since we are
-                      ;; in a private directory now.
-                      (setq tempfile (make-temp-name (concat tempdir "/EMU")))
-                      (write-region "" nil tempfile nil 'silent)
-                      ;; Finally, make a hard-link from the tempfile.
-                      (while (condition-case ()
-                                 (progn
-                                   (setq file (make-temp-name prefix))
-                                   (if suffix
-                                       (setq file (concat file suffix)))
-                                   ;; return nil or signal an error.
-                                   (add-name-to-file tempfile file))
-                               ;; let's try again.
-                               (file-already-exists t)))
-                      file)
-                  ;; Cleanup the tempfile.
-                  (and tempfile
-                       (file-exists-p tempfile)
-                       (delete-file tempfile))
-                  ;; Cleanup the tempdir.
-                  (and tempdir
-                       (file-directory-p tempdir)
-                       (delete-directory tempdir))))))
-        ;; Reset the umask.
-        (set-default-file-modes umask))))))
+                  (set-file-modes tempdir 448)
+                  ;; Second, create a temporary file in the tempdir.
+                  ;; There *is* a race condition between `make-temp-name'
+                  ;; and `write-region', but we don't care it since we are
+                  ;; in a private directory now.
+                  (setq tempfile (make-temp-name (concat tempdir "/EMU")))
+                  (write-region "" nil tempfile nil 'silent)
+                  (set-file-modes tempfile 384)
+                  ;; Finally, make a hard-link from the tempfile.
+                  (while (condition-case ()
+                             (progn
+                               (setq file (make-temp-name prefix))
+                               (if suffix
+                                   (setq file (concat file suffix)))
+                               ;; return nil or signal an error.
+                               (add-name-to-file tempfile file))
+                           ;; let's try again.
+                           (file-already-exists t)))
+                  file)
+              ;; Cleanup the tempfile.
+              (and tempfile
+                   (file-exists-p tempfile)
+                   (delete-file tempfile))
+              ;; Cleanup the tempdir.
+              (and tempdir
+                   (file-directory-p tempdir)
+                   (delete-directory tempdir)))))))))))
 
 ;; Actually, `path-separator' is defined in src/emacs.c and overrided
 ;; in dos-w32.el.
