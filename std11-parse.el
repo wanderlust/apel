@@ -27,8 +27,7 @@
 ;;; Code:
 
 (require 'std11)
-
-(autoload 'find-charset-string "emu")
+(require 'emu)
 
 
 ;;; @ lexical analyze
@@ -164,7 +163,7 @@
     (while (and lal
 		(setq token (car lal))
 		(if (and (setq token-value (cdr token))
-			 (find-charset-string token-value)
+			 (find-non-ascii-charset-string token-value)
 			 )
 		    (setq token nil)
 		  (std11-ignored-token-p token)
