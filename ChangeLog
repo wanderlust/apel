@@ -1,5 +1,12 @@
 1999-05-21  MORIOKA Tomohiko  <tomo@m17n.org>
 
+	* mcs-20.el (detect-mime-charset-region): Use
+	`find-mime-charset-by-charsets'.
+
+	* mcharset.el (find-mime-charset-by-charsets): New function.
+
+1999-05-21  MORIOKA Tomohiko  <tomo@m17n.org>
+
 	* mcharset.el: Require pcustom.
 	(default-mime-charset-for-write): New variable [moved from
 	mcs-20.el].
