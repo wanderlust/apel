@@ -1,7 +1,8 @@
 ;;; -*-Emacs-Lisp-*-
-;;;
-;;; $Id$
-;;;
+
+;; EMU-ELS: list of EMU modules to install
+
+;;; Code:
 
 (setq emu-modules
       (cons
