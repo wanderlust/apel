@@ -194,7 +194,7 @@ TABLE defaults to the current buffer's category table."
 ;;; You should not use them.
 
 (defalias 'char-length 'char-bytes)
-(defalias 'char-columns 'char-width)
+;;(defalias 'char-columns 'char-width)
 
 
 ;;; @ string

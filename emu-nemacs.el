@@ -350,7 +350,7 @@ find-file-hooks, etc.
 ;;; You should not use them.
 
 (defalias 'char-length 'char-bytes)
-(defalias 'char-columns 'char-width)
+;;(defalias 'char-columns 'char-width)
 
 
 ;;; @ string
