@@ -1,7 +1,8 @@
 ;;; -*-Emacs-Lisp-*-
-;;;
-;;; $Id$
-;;;
+
+;; APEL-MK: installer for APEL.
+
+;;; Code:
 
 (defun config-apel ()
   (let (prefix lisp-dir)
@@ -38,6 +39,49 @@
   ;;(config-apel)
   (install-elisp-modules emu-modules	"."	EMU_DIR)
   (install-elisp-modules apel-modules	"."	APEL_DIR)
+  )
+
+(defun config-apel-package ()
+  (let (package-dir)
+    (and (setq package-dir (car command-line-args-left))
+	 (or (string= "NONE" package-dir)
+	     (defvar PACKAGEDIR package-dir)
+	     ))
+    (setq command-line-args-left (cdr command-line-args-left))
+    (load-file "APEL-CFG")
+    (load-file "APEL-ELS")
+					  
+    (princ (format "PACKAGEDIR=%s\n" PACKAGEDIR))
+    ))
+
+(defun compile-apel-package ()
+  (config-apel-package)
+  (load "EMU-ELS")
+  (load-file "APEL-ELS")
+  
+  (setq autoload-package-name "apel")
+  (add-to-list 'command-line-args-left ".")
+  (batch-update-directory)
+
+  (add-to-list 'command-line-args-left ".")
+  (Custom-make-dependencies)
+
+  (compile-elisp-modules emu-modules	".")
+  (compile-elisp-modules (append apel-modules
+				 '(auto-autoloads custom-load))
+			 ".")
+  )
+
+(defun install-apel-package ()
+  (config-apel-package)
+  (load "EMU-ELS")
+  (install-elisp-modules (append emu-modules
+				 apel-modules
+				 '(mime auto-autoloads custom-load))
+			 "./"
+			 (expand-file-name APEL_PREFIX
+					   (expand-file-name "lisp"
+							     PACKAGEDIR)))
   )
 
 ;;; APEL-MK ends here
