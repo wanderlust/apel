@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(require 'emu-19)
+(require 'emu-e19)
 
 (defun fontset-pixel-size (fontset)
   (let* ((info (fontset-info fontset))
@@ -42,6 +42,12 @@
 	   )
 	  (t 0)
 	  )))
+
+(if (and (fboundp 'set-buffer-multibyte)
+	 (subrp (symbol-function 'set-buffer-multibyte)))
+    (require 'emu-e20_3) ; for Emacs 20.3
+  (require 'emu-e20_2) ; for Emacs 20.1 and 20.2
+  )
 
 
 ;;; @ character set
@@ -87,7 +93,7 @@ code conversion will not take place."
 	(coding-system-for-read 'binary)
 	format-alist)
     (insert-file-contents filename visit beg end replace)
-    (setq enable-multibyte-characters flag)
+    (set-buffer-multibyte flag)
     ))
 
 (defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
@@ -174,12 +180,6 @@ code conversion will not take place."
 ;;; @ character
 ;;;
 
-(defalias 'char-length 'char-bytes)
-
-(defmacro char-next-index (char index)
-  "Return index of character succeeding CHAR whose index is INDEX."
-  `(+ index (char-bytes char)))
-
 ;;; @@ Mule emulating aliases
 ;;;
 ;;; You should not use them.
@@ -190,34 +190,6 @@ CHAR can be any multilingual character
 TABLE defaults to the current buffer's category table."
   (category-set-mnemonics (char-category-set character))
   )
-
-
-;;; @ string
-;;;
-
-(defalias 'sset 'store-substring)
-
-(defun string-to-char-list (string)
-  "Return a list of which elements are characters in the STRING."
-  (let* ((len (length string))
-	 (i 0)
-	 l chr)
-    (while (< i len)
-      (setq chr (sref string i))
-      (setq l (cons chr l))
-      (setq i (+ i (char-bytes chr)))
-      )
-    (nreverse l)
-    ))
-
-(defalias 'string-to-int-list 'string-to-char-list)
-
-;;; @@ obsoleted aliases
-;;;
-;;; You should not use them.
-
-(defalias 'string-columns 'string-width)
-(make-obsolete 'string-columns 'string-width)
 
 
 ;;; @ end

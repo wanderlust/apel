@@ -1,9 +1,9 @@
-;;; emu-e19.el --- emu module for Emacs 19 and XEmacs without MULE
+;;; emu-e19.el --- emu API implementation for Emacs 19.*
 
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Keywords: emulation, compatibility, mule, Latin-1
+;; Keywords: emulation, compatibility
 
 ;; This file is part of emu.
 
@@ -24,265 +24,78 @@
 
 ;;; Code:
 
-;;; @ version and variant specific features
+;;; @ face
 ;;;
 
-(cond (running-xemacs
-       (require 'emu-xemacs))
-      (running-emacs-19
-       (require 'emu-19)
-       ))
+(defun-maybe find-face (face)
+  (car (memq face (face-list)))
+  )
 
 
-;;; @ character set
+;;; @ for tm-7.106
 ;;;
 
-(put 'ascii 'charset-description "Character set of ASCII")
-(put 'ascii 'charset-registry "ASCII")
+(defalias 'tl:make-overlay 'make-overlay)
+(defalias 'tl:overlay-put 'overlay-put)
+(defalias 'tl:overlay-buffer 'overlay-buffer)
 
-(put 'latin-iso8859-1 'charset-description "Character set of ISO-8859-1")
-(put 'latin-iso8859-1 'charset-registry "ISO8859-1")
+(make-obsolete 'tl:make-overlay 'make-overlay)
+(make-obsolete 'tl:overlay-put 'overlay-put)
+(make-obsolete 'tl:overlay-buffer 'overlay-buffer)
 
-(defun charset-description (charset)
-  "Return description of CHARSET."
-  (get charset 'charset-description)
-  )
 
-(defun charset-registry (charset)
-  "Return registry name of CHARSET."
-  (get charset 'charset-registry)
-  )
+;;; @ visible/invisible
+;;;
 
-(defun charset-width (charset)
-  "Return number of columns a CHARSET occupies when displayed."
-  1)
+(defmacro enable-invisible ())
 
-(defun charset-direction (charset)
-  "Return the direction of a character of CHARSET by
-  0 (left-to-right) or 1 (right-to-left)."
-  0)
+(defmacro end-of-invisible ())
 
-(defun find-charset-string (str)
-  "Return a list of charsets in the string."
-  (if (string-match "[\200-\377]" str)
-      '(latin-iso8859-1)
-    ))
-
-(defalias 'find-non-ascii-charset-string 'find-charset-string)
-
-(defun find-charset-region (start end)
-  "Return a list of charsets in the region between START and END.
-\[emu-e19.el; Mule emulating function]"
+(defun invisible-region (start end)
   (if (save-excursion
-	(goto-char start)
-	(re-search-forward "[\200-\377]" end t)
+	(goto-char (1- end))
+	(eq (following-char) ?\n)
 	)
-      '(latin-iso8859-1)
-    ))
-
-(defalias 'find-non-ascii-charset-region 'find-charset-region)
-
-
-;;; @ coding-system
-;;;
-
-(defconst *internal* nil)
-(defconst *ctext* nil)
-(defconst *noconv* nil)
-
-(defun decode-coding-string (string coding-system)
-  "Decode the STRING which is encoded in CODING-SYSTEM.
-\[emu-e19.el; Emacs 20 emulating function]"
-  string)
-
-(defun encode-coding-string (string coding-system)
-  "Encode the STRING as CODING-SYSTEM.
-\[emu-e19.el; Emacs 20 emulating function]"
-  string)
-
-(defun decode-coding-region (start end coding-system)
-  "Decode the text between START and END which is encoded in CODING-SYSTEM.
-\[emu-e19.el; Emacs 20 emulating function]"
-  0)
-
-(defun encode-coding-region (start end coding-system)
-  "Encode the text between START and END to CODING-SYSTEM.
-\[emu-e19.el; Emacs 20 emulating function]"
-  0)
-
-(defun detect-coding-region (start end)
-  "Detect coding-system of the text in the region between START and END.
-\[emu-e19.el; Emacs 20 emulating function]"
-  )
-
-(defun set-buffer-file-coding-system (coding-system &optional force)
-  "Set buffer-file-coding-system of the current buffer to CODING-SYSTEM.
-\[emu-e19.el; Emacs 20 emulating function]"
-  )
-
-(defmacro as-binary-process (&rest body)
-  (` (let (selective-display)	; Disable ^M to nl translation.
-       (,@ body)
-       )))
-
-(defmacro as-binary-input-file (&rest body)
-  (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
-       (,@ body)
-       )))
-
-(defmacro as-binary-output-file (&rest body)
-  (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
-       (,@ body)
-       )))
-
-
-;;; @@ for old MULE emulation
-;;;
-
-(defun code-convert-string (str ic oc)
-  "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
-else returns nil. [emu-e19.el; old MULE emulating function]"
-  str)
-
-(defun code-convert-region (beg end ic oc)
-  "Convert code of the text between BEGIN and END from SOURCE
-to TARGET. On successful conversion returns t,
-else returns nil. [emu-e19.el; old MULE emulating function]"
-  t)
-
-
-;;; @ binary access
-;;;
-
-(defun insert-file-contents-as-binary (filename
-				       &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but don't code and format conversion.
-Like `insert-file-contents-literary', but it allows find-file-hooks,
-automatic uncompression, etc.
-
-Namely this function ensures that only format decoding and character
-code conversion will not take place."
-  (let ((emx-binary-mode t))
-    (insert-file-contents filename visit beg end replace)
-    ))
-
-(defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
-(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
-
-(defun insert-binary-file-contents-literally (filename
-					      &optional visit beg end replace)
-  "Like `insert-file-contents-literally', q.v., but don't code conversion.
-A buffer may be modified in several ways after reading into the buffer due
-to advanced Emacs features, such as file-name-handlers, format decoding,
-find-file-hooks, etc.
-  This function ensures that none of these modifications will take place."
-  (let ((emx-binary-mode t))
-    (insert-file-contents-literally filename visit beg end replace)
-    ))
-
-(defun write-region-as-binary (start end filename
-				     &optional append visit lockname)
-  "Like `write-region', q.v., but don't code conversion."
-  (let ((emx-binary-mode t))
-    (write-region start end filename append visit lockname)
-    ))
-
-
-;;; @ MIME charset
-;;;
-
-(defvar charsets-mime-charset-alist
-  '(((ascii) . us-ascii)))
-
-(defvar default-mime-charset 'iso-8859-1)
-
-(defun mime-charset-to-coding-system (charset)
-  (if (stringp charset)
-      (setq charset (intern (downcase charset)))
+      (setq end (1- end))
     )
-  (and (memq charset (list 'us-ascii default-mime-charset))
-       charset)
+  (put-text-property start end 'invisible t)
   )
 
-(defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END."
-  (if (save-excursion
-	(goto-char start)
-	(re-search-forward "[\200-\377]" end t)
-	)
-      default-mime-charset
-    'us-ascii))
-
-(defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET."
+(defun visible-region (start end)
+  (put-text-property start end 'invisible nil)
   )
 
-(defun decode-mime-charset-region (start end charset)
-  "Decode the text between START and END as MIME CHARSET."
+(defun invisible-p (pos)
+  (get-text-property pos 'invisible)
   )
 
-(defun encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET."
-  string)
+(defun next-visible-point (pos)
+  (save-excursion
+    (goto-char (next-single-property-change pos 'invisible))
+    (if (eq (following-char) ?\n)
+	(forward-char)
+      )
+    (point)
+    ))
 
-(defun decode-mime-charset-string (string charset)
-  "Decode the STRING as MIME CHARSET."
-  string)
 
-
-;;; @ character
+;;; @ mouse
 ;;;
 
-(defun char-charset (char)
-  "Return the character set of char CHAR."
-  (if (< chr 128)
-      'ascii
-    'latin-iso8859-1))
-
-(defun char-bytes (char)
-  "Return number of bytes a character in CHAR occupies in a buffer."
-  1)
-
-(defun char-width (char)
-  "Return number of columns a CHAR occupies when displayed."
-  1)
-
-(defalias 'char-length 'char-bytes)
-
-(defmacro char-next-index (char index)
-  "Return index of character succeeding CHAR whose index is INDEX."
-  (` (1+ index)))
+(defvar mouse-button-1 [mouse-1])
+(defvar mouse-button-2 [mouse-2])
+(defvar mouse-button-3 [down-mouse-3])
 
 
 ;;; @ string
 ;;;
 
-(defalias 'string-width 'length)
-
-(defun string-to-char-list (str)
-  (mapcar (function identity) str)
-  )
-
-(defalias 'string-to-int-list 'string-to-char-list)
-
-(defalias 'sref 'aref)
-
-(defun truncate-string (str width &optional start-column)
-  "Truncate STR to fit in WIDTH columns.
-Optional non-nil arg START-COLUMN specifies the starting column.
-\[emu-e19.el; MULE 2.3 emulating function]"
-  (or start-column
-      (setq start-column 0))
-  (substring str start-column width)
-  )
-
-;;; @@ obsoleted aliases
-;;;
-;;; You should not use them.
-
-(defalias 'string-columns 'length)
-(make-obsolete 'string-columns 'string-width)
+(defmacro char-list-to-string (char-list)
+  "Convert list of character CHAR-LIST to string."
+  (` (mapconcat (function char-to-string)
+		(, char-list)
+		"")
+     ))
 
 
 ;;; @ end
