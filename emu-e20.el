@@ -165,6 +165,7 @@ TABLE defaults to the current buffer's category table."
 
 ;;; @ CCL
 ;;;
+(require 'ccl)
 
 (eval-and-compile
 (defconst ccl-use-symbol-as-program
@@ -172,12 +173,12 @@ TABLE defaults to the current buffer's category table."
     (define-ccl-program ew-ccl-identity-program
       '(1 ((read r0) (loop (write-read-repeat r0)))))
     (condition-case nil
-        (progn
-          (make-coding-system
-           'ew-ccl-identity 4 ?I
-           "Identity coding system for byte-compile time checking"
-           '(ew-ccl-identity-program . ew-ccl-identity-program))
-          t)
+	(progn
+	  (ccl-execute-on-string
+	    'ew-ccl-identity-program
+	    (make-vector 9 nil)
+	    "")
+	  t)
       (error nil)))
   "t if CCL related builtins accept symbol as CCL
 program. (20.2 with ExCCL, 20.3 or later)
