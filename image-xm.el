@@ -67,7 +67,7 @@ means display it in the right marginal area.
   (let ((extent (make-extent (point) (progn (insert string)(point)))))
     (set-extent-property extent 'pimage-extent t)
     (set-extent-property extent 'invisible t)
-    (set-extent-begin-glyph extent image)))
+    (set-extent-end-glyph extent image)))
 
 (defun-maybe remove-images (start end &optional buffer)
   "Remove images between START and END in BUFFER.
