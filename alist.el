@@ -40,19 +40,10 @@ return a new alist whose car is the new pair and cdr is ALIST."
 (defun del-alist (key alist)
   "Delete an element whose car equals KEY from ALIST.
 Return the modified ALIST."
-  (if (equal key (car (car alist)))
-      (cdr alist)
-    (let ((pr alist)
-	  (r (cdr alist)))
-      (catch 'tag
-	(while (not (null r))
-	  (if (equal key (car (car r)))
-	      (progn
-		(rplacd pr (cdr r))
-		(throw 'tag alist)))
-	  (setq pr r)
-	  (setq r (cdr r)))
-	alist))))
+  (let ((pair (assoc item alist)))
+    (if pair
+	(delq pair alist)
+      alist)))
 
 ;;;###autoload
 (defun set-alist (symbol key value)
