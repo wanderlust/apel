@@ -1,30 +1,3 @@
-1998-12-15  Tanaka Akira  <akr@jaist.ac.jp>
-
-	* pccl-20.el: Do not require 'poem.
-
-1998-12-14  Katsumi Yamaoka   <yamaoka@jpl.org>
-
-	* poem-20.el, poem-e20_2.el, poem-ltn1.el, poem-nemacs.el, poem-om.el
-	(find-file-noselect-as-coding-system): Be CODING-SYSTEM the 1st arg.
-	(insert-file-contents-as-coding-system): Likewise.
-	* poem-20.el, poem-ltn1.el, poem-nemacs.el, poem-om.el
-	(write-region-as-coding-system): Likewise.
-
-1998-12-14  Katsumi Yamaoka   <yamaoka@jpl.org>
-
-	* poem-20.el, poem-e20_2.el, poem-ltn1.el, poem-nemacs.el, poem-om.el
-	(find-file-noselect-as-coding-system): Renamed from
-	`find-file-noselect-as-specified-coding-system'.
-
-	* poem-e20_2.el (insert-file-contents-as-coding-system): Renamed
-	from `insert-file-contents-as-specified-coding-system'.
-
-	* poem-20.el, poem-ltn1.el, poem-nemacs.el, poem-om.el
-	(write-region-as-coding-system): Renamed from
-	`write-region-as-specified-coding-system'.
-	(insert-file-contents-as-coding-system): Renamed from
-	`insert-file-contents-as-specified-coding-system'.
-
 1998-12-09  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poem-20.el, poem-e20_2.el, poem-ltn1.el, poem-nemacs.el, poem-om.el

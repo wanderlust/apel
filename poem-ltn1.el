@@ -172,23 +172,28 @@ code conversion will not take place."
 ;;; @ with code-conversion (but actually it might be not done)
 ;;;
 
-(defun insert-file-contents-as-coding-system
-  (coding-system filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., CODING-SYSTEM the first arg will be
-ignored."
-  (insert-file-contents filename visit beg end replace))
+(defun insert-file-contents-as-specified-coding-system (filename &rest args)
+  "Like `insert-file-contents', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to
+`insert-file-contents' except for the last element. The last element of
+ARGS must be a coding-system."
+  (apply 'insert-file-contents filename (nreverse (cdr (nreverse args)))))
 
-(defun write-region-as-coding-system
-  (coding-system start end filename &optional append visit lockname)
-  "Like `write-region', q.v., CODING-SYSTEM the first arg will be ignored."
+(defun write-region-as-specified-coding-system (start end filename
+						      &rest args)
+  "Like `write-region', q.v., but code convert by the specified coding-system.
+ARGS the optional arguments are passed to `write-region' except for the last
+element. The last element of ARGS must be a coding-system."
   (let (jka-compr-compression-info-list jam-zcat-filename-list)
-    (write-region start end filename append visit lockname)))
+    (apply 'write-region start end filename
+	   (nreverse (cdr (nreverse args))))))
 
-(defun find-file-noselect-as-coding-system
-  (coding-system filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., CODING-SYSTEM the first arg will be
-ignored."
-  (find-file-noselect filename nowarn rawfile))
+(defun find-file-noselect-as-specified-coding-system (filename &optional args)
+  "Like `find-file-noselect', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to `find-file-noselect'
+except for the last element. The last element of ARGS must be a
+coding-system."
+  (apply' find-file-noselect filename (nreverse (cdr (nreverse args)))))
 
 
 ;;; @ character

@@ -231,15 +231,15 @@ find-file-hooks, etc.
 (defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but it does not code and format conversion
 except for line-break code."
-  (save-current-buffer
-    (prog1
-	(set-buffer (find-file-noselect-as-binary filename nowarn rawfile))
-      (let ((flag (buffer-modified-p)))
-	(save-excursion
-	  (goto-char (point-min))
+  (let ((buffer (get-file-buffer filename)))
+    (save-current-buffer
+      (prog1
+	  (set-buffer (find-file-noselect-as-binary filename nowarn rawfile))
+	(unless buffer
 	  (while (re-search-forward "\r$" nil t)
-	    (replace-match "")))
-	(set-buffer-modified-p flag)))))
+	    (replace-match ""))
+	  (goto-char (point-min))
+	  (set-buffer-modified-p nil))))))
 
 (defun open-network-stream-as-binary (name buffer host service)
   "Like `open-network-stream', q.v., but don't code conversion."
@@ -251,48 +251,49 @@ except for line-break code."
 ;;; @ with code-conversion
 ;;;
 
-(defun insert-file-contents-as-coding-system
-  (coding-system filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
-be applied to `file-coding-system-for-read'."
-  (let ((file-coding-system-for-read coding-system))
-    (insert-file-contents filename visit beg end replace)))
+(defun insert-file-contents-as-specified-coding-system (filename &rest args)
+  "Like `insert-file-contents', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to
+`insert-file-contents' except for the last element. The last element of
+ARGS must be a coding-system."
+  (let ((file-coding-system-for-read (car (reverse args))))
+    (apply 'insert-file-contents filename (nreverse (cdr (nreverse args))))))
 
 (cond
  (running-emacs-19_29-or-later
   ;; for MULE 2.3 based on Emacs 19.34.
-  (defun write-region-as-coding-system
-    (coding-system start end filename &optional append visit lockname)
-    "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
-applied to `file-coding-system'."
-    (let ((file-coding-system coding-system)
+  (defun write-region-as-specified-coding-system (start end filename
+							&rest args)
+    "Like `write-region', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to `write-region'
+except for the last element. The last element of ARGS must be a
+coding-system."
+    (let ((file-coding-system (car (reverse args)))
 	  jka-compr-compression-info-list jam-zcat-filename-list)
-      (write-region start end filename append visit lockname)))
-
-  (defun find-file-noselect-as-coding-system
-    (coding-system filename &optional nowarn rawfile)
-    "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
-be applied to `file-coding-system-for-read'."
-    (let ((file-coding-system-for-read coding-system))
-      (find-file-noselect filename nowarn rawfile)))
+      (apply 'write-region start end filename
+	     (nreverse (cdr (nreverse args))))))
   )
  (t
   ;; for MULE 2.3 based on Emacs 19.28.
-  (defun write-region-as-coding-system
-    (coding-system start end filename &optional append visit lockname)
-    "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
-applied to `file-coding-system'."
-    (let ((file-coding-system coding-system)
+  (defun write-region-as-specified-coding-system (start end filename
+							&rest args)
+    "Like `write-region', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to `write-region'
+except for the last element. The last element of ARGS must be a
+coding-system."
+    (let ((code (car (reverse args)))
+	  (args (nreverse (cdr (nreverse args))))
 	  jka-compr-compression-info-list jam-zcat-filename-list)
-      (write-region start end filename append visit)))
-
-  (defun find-file-noselect-as-coding-system
-    (coding-system filename &optional nowarn rawfile)
-    "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
-be applied to `file-coding-system-for-read'."
-    (let ((file-coding-system-for-read coding-system))
-      (find-file-noselect filename nowarn)))
+      (write-region start end filename (car args) (car (cdr args)) code)))
   ))
+
+(defun find-file-noselect-as-specified-coding-system (filename &optional args)
+  "Like `find-file-noselect', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to `find-file-noselect'
+except for the last element. The last element of ARGS must be a
+coding-system."
+  (let ((file-coding-system-for-read (car (reverse args))))
+    (apply' find-file-noselect filename (nreverse (cdr (nreverse args))))))
 
 
 ;;; @ buffer representation
