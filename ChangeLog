@@ -1,3 +1,23 @@
+1999-06-22  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* atype.el: Require 'poe.
+
+	* mule-caesar.el: Require 'poe and 'poem.
+
+	* filename.el: Require 'poe and 'poem.
+	Don't require 'cl.
+	(filename-special-filter): Eliminate `assoc-if'.
+
+1999-06-22  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* install.el: Require 'emu for backward compatibility.
+	(defun-maybe): New macro; imported from poe.el.
+	(make-directory-internal, make-directory): New functions; imported
+	from poe-18.el.
+
+	* APEL-CFG: Provide 'emu to prevent install.el from loading emu
+	while compiling APEL itself.
+
 1999-06-20  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* install.el: Require 'poe instead of 'emu.
