@@ -9,6 +9,10 @@
       (t               (require 'emu-orig))
       )
 
+(if (string-match "XEmacs\\|Lucid" emacs-version)
+    (require 'emu-xemacs)
+  )
+
 
 ;;; @ Emacs 19.29 emulation
 ;;;
