@@ -54,10 +54,10 @@
 	    )))
     )
 
-(defun tl:add-text-properties (start end properties)
+(defun tl:add-text-properties (start end properties &optional object)
   (add-text-properties start end
 		       (append properties (list 'highlight t))
-		       )
+		       object)
   )
 
 (defalias 'tl:make-overlay 'make-extent)
