@@ -48,13 +48,6 @@
 
 (or (boundp 'current-load-list) (setq current-load-list nil))
 
-;; We cannot use `eval-when-compile' here because v18 does not have it.
-;; (eval-when-compile (require 'static))
-;; Should we use these two macros to emulate `eval-when-compile' ?
-;; (defmacro pym-dummy-require-static ()
-;;   (list 'quote (eval '(require 'static))))
-;; (defmacro pym-dummy-require-static-at-compile-time ()
-;;   (pym-dummy-require-static))
 (require 'static)
 
 
