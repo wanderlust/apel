@@ -2,7 +2,7 @@
 ;;; emu-nemacs.el --- Mule 2 emulation module for NEmacs
 ;;;
 ;;; Copyright (C) 1995 Free Software Foundation, Inc.
-;;; Copyright (C) 1994,1995 MORIOKA Tomohiko
+;;; Copyright (C) 1994 .. 1996 MORIOKA Tomohiko
 ;;;
 ;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;;; modified by KOBAYASHI Shuhei <shuhei@cmpt01.phys.tohoku.ac.jp>
@@ -10,8 +10,23 @@
 ;;;	$Id$
 ;;; Keywords: emulation, compatibility, NEmacs, Mule
 ;;;
-;;; This file is part of tl and tm (Tools for MIME).
+;;; This file is part of tl (Tiny Library).
 ;;;
+;;; This program is free software; you can redistribute it and/or
+;;; modify it under the terms of the GNU General Public License as
+;;; published by the Free Software Foundation; either version 2, or
+;;; (at your option) any later version.
+;;;
+;;; This program is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;;; General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with This program.  If not, write to the Free Software
+;;; Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+;;;
+;;; Code:
 
 (require 'emu-18)
 
@@ -42,6 +57,7 @@
 ;;;
 
 (defconst *junet* 2)
+(defconst *ctext* 2)
 (defconst *internal* 3)
 (defconst *euc-japan* 3)
 
@@ -189,3 +205,5 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
 ;;;
 
 (provide 'emu-nemacs)
+
+;;; emu-nemacs.el ends here

@@ -2,7 +2,7 @@
 ;;; emu-18.el --- Emacs 19.* emulation module for Emacs 18.*
 ;;;
 ;;; Copyright (C) 1995 Free Software Foundation, Inc.
-;;; Copyright (C) 1994,1995 MORIOKA Tomohiko
+;;; Copyright (C) 1994 .. 1996 MORIOKA Tomohiko
 ;;;
 ;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;;; Version:

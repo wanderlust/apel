@@ -1,3 +1,26 @@
+Thu Jan 25 02:13:37 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.10 was released.
+
+	* emu-orig.el (*internal*, *ctext*): new constant
+
+	* emu-orig.el (code-convert-string): new function
+
+	* emu-orig.el (code-convert-region): new function
+
+	* emu-nemacs.el (*ctext*): new constant
+
+	* emu-18.el: Comment was fixed.
+
+	* emu-18.el (byte-code-function-p): check whether cons or not
+
+Wed Jan 24 07:12:37 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el (mu-cite/get-field-value-methoda-list): new variable
+
+	* mu-cite.el (mu-cite/get-field-value): new function
+
+
 Sat Jan 20 13:25:43 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.09 was released.
@@ -23,6 +46,7 @@ Thu Jan 18 01:55:25 1996  Yoshiyuki Yamagami <yamagami@hb.nmcc.co.jp>
 
 	* Makefile: specify `-no-site-file' option (cf. [tm-ja:1474])
 
+
 Wed Jan 17 08:23:41 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: version 7.08 was released.
