@@ -31,9 +31,14 @@
 (require 'emu-20)
 
 
+;;; @ fix coding-system definition
+;;;
+
+;; It seems not bug, but I can not permit it...
 (and (coding-system-property 'iso-2022-jp 'input-charset-conversion)
      (copy-coding-system 'iso-2022-7bit 'iso-2022-jp))
 
+;; Redefine if -{dos|mac|unix} is not found.
 (or (find-coding-system 'raw-text-dos)
     (copy-coding-system 'no-conversion-dos 'raw-text-dos))
 (or (find-coding-system 'raw-text-mac)
@@ -41,13 +46,13 @@
 (or (find-coding-system 'raw-text-unix)
     (copy-coding-system 'no-conversion-unix 'raw-text-unix))
 
-(or (find-coding-system 'euc-kr-dos)
+(or (find-coding-system 'ctext-dos)
     (make-coding-system
-     'euc-kr 'iso2022
-     "Coding-system of Korean EUC (Extended Unix Code)."
-     '(charset-g0 ascii charset-g1 korean-ksc5601
-		  mnemonic "ko/EUC"
-		  eol-type nil)))
+     'ctext 'iso2022
+     "Coding-system used in X as Compound Text Encoding."
+     '(charset-g0 ascii charset-g1 latin-iso8859-1
+		  eol-type nil
+		  mnemonic "CText")))
 
 (or (find-coding-system 'iso-2022-jp-2-dos)
     (make-coding-system
@@ -59,6 +64,14 @@
        short t
        mnemonic "ISO7/SS2"
        eol-type nil)))
+
+(or (find-coding-system 'euc-kr-dos)
+    (make-coding-system
+     'euc-kr 'iso2022
+     "Coding-system of Korean EUC (Extended Unix Code)."
+     '(charset-g0 ascii charset-g1 korean-ksc5601
+		  mnemonic "ko/EUC"
+		  eol-type nil)))
 
 
 ;;; @ without code-conversion
