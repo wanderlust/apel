@@ -689,7 +689,7 @@ If TEST is omitted or nil, `equal' is used."
 ;; (defun assoc-ignore-case (key alist))
 ;; (defun assoc-ignore-representation (key alist))
 
-;; Emacs 19.29/XEmacs 19.14(?) and later: (rassoc KEY LIST)
+;; Emacs 19.29/XEmacs 19.13 and later: (rassoc KEY LIST)
 ;; Actually, `rassoc' is defined in src/fns.c.
 (defun-maybe rassoc (key list)
   "Return non-nil if KEY is `equal' to the cdr of an element of LIST.
@@ -701,6 +701,39 @@ Elements of LIST that are not conses are ignored."
 	    ((equal (cdr (car list)) key)
 	     (throw 'found (car list))))
       (setq list (cdr list)))))
+
+;; XEmacs 19.13 and later: (remassq KEY LIST)
+(defun-maybe remassq (key list)
+  "Delete by side effect any elements of LIST whose car is `eq' to KEY.
+The modified LIST is returned.  If the first member of LIST has a car
+that is `eq' to KEY, there is no way to remove it by side effect;
+therefore, write `(setq foo (remassq key foo))' to be sure of changing
+the value of `foo'."
+  (if (setq key (assq key list))
+      (delete key list)
+    list))
+
+;; XEmacs 19.13 and later: (remassoc KEY LIST)
+(defun-maybe remassoc (key list)
+  "Delete by side effect any elements of LIST whose car is `equal' to KEY.
+The modified LIST is returned.  If the first member of LIST has a car
+that is `equal' to KEY, there is no way to remove it by side effect;
+therefore, write `(setq foo (remassoc key foo))' to be sure of changing
+the value of `foo'."
+  (if (setq key (assoc key list))
+      (delete key list)
+    list))
+
+;; XEmacs 19.13 and later: (remrassoc VALUE LIST)
+(defun-maybe remrassoc (value list)
+  "Delete by side effect any elements of LIST whose cdr is `equal' to VALUE.
+The modified LIST is returned.  If the first member of LIST has a car
+that is `equal' to VALUE, there is no way to remove it by side effect;
+therefore, write `(setq foo (remrassoc value foo))' to be sure of changing
+the value of `foo'."
+  (if (setq value (rassoc value list))
+      (delete value list)
+    list))
 
 ;;; Define `functionp' here because "localhook" uses it.
 
@@ -1075,6 +1108,19 @@ If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
       (setq parts (cons (substring string start (match-beginning 0)) parts)
 	    start (match-end 0)))
     (nreverse (cons (substring string start) parts))))
+
+;; Emacs 20.4 and later:
+;;  (subst-char-in-string FROMCHAR TOCHAR STRING &optional INPLACE)
+(defun subst-char-in-string (fromchar tochar string &optional inplace)
+  "Replace FROMCHAR with TOCHAR in STRING each time it occurs.
+Unless optional argument INPLACE is non-nil, return a new string."
+  (let ((i (length string))
+	(newstr (if inplace string (copy-sequence string))))
+    (while (> i 0)
+      (setq i (1- i))
+      (if (eq (aref newstr i) fromchar)
+	  (aset newstr i tochar)))
+    newstr))
 
 
 ;;; @ Window commands emulation. (lisp/window.el)
@@ -1087,6 +1133,33 @@ If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
 	(list 'unwind-protect
 	      (cons 'progn body)
 	      (list 'select-window 'save-selected-window-window))))
+
+;; Emacs 19.31 and later:
+;;  (get-buffer-window-list &optional BUFFER MINIBUF FRAME)
+(defun-maybe get-buffer-window-list (buffer &optional minibuf frame)
+  "Return windows currently displaying BUFFER, or nil if none.
+See `walk-windows' for the meaning of MINIBUF and FRAME."
+  (let ((buffer (if (bufferp buffer) buffer (get-buffer buffer))) windows)
+    (walk-windows
+     (function (lambda (window)
+		 (if (eq (window-buffer window) buffer)
+		     (setq windows (cons window windows)))))
+     minibuf frame)
+    windows))
+
+
+;;; @ Frame commands emulation. (lisp/frame.el)
+;;;
+
+;; XEmacs 21.0 and later:
+;;  (save-selected-frame &rest BODY)
+(defmacro-maybe save-selected-frame (&rest body)
+  "Execute forms in BODY, then restore the selected frame."
+  (list 'let
+	'((save-selected-frame-frame (selected-frame)))
+	(list 'unwind-protect
+	      (cons 'progn body)
+	      (list 'select-frame 'save-selected-frame-frame))))
 
 
 ;;; @ Basic editing commands emulation. (lisp/simple.el)
