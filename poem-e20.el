@@ -50,21 +50,8 @@ in the region between START and END."
   (delq 'ascii (find-charset-string (buffer-substring start end))))
 
 
-;;; @ coding system
-;;;
-
-(defsubst-maybe find-coding-system (obj)
-  "Return OBJ if it is a coding-system."
-  (if (coding-system-p obj)
-      obj))
-
-(defalias 'set-process-input-coding-system 'set-process-coding-system)
-
-
 ;;; @ end
 ;;;
-
-(require 'poem-20)
 
 (if (and (fboundp 'set-buffer-multibyte)
 	 (subrp (symbol-function 'set-buffer-multibyte)))
