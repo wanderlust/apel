@@ -1,8 +1,17 @@
+2000-01-26  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe-18.el (set-match-data): New alias for `store-match-data'.
+	(save-match-data-internal): New variable.
+	(save-match-data): New macro; use above.
+
+	(defalias): Docstring sync.
+	(put-text-property): Typo.
+
 2000-01-23  Tsukamoto Tetsuo  <czkmt@remus.dti.ne.jp>
 
 	* poe-18.el (byte-code-function-p): Check if the CDR of OBJECT is
 	a cons cell.
-
+
 2000-01-21  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* APEL: Version 10.1 released.
