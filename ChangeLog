@@ -1,3 +1,17 @@
+1998-09-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 9.0 was released.
+
+	* Delete EMU-CFG and EMU-MK because they have not been used.
+
+1998-09-22  Tanaka Akira      <akr@jaist.ac.jp>
+
+	* README.en (What's APEL?): Add notice for broken.el.
+
+1998-09-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* README.en (What's APEL?): Modify for latest structure.
+
 1998-09-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* mcs-xm.el (charsets-mime-charset-alist): Comment out invalid
@@ -754,7 +768,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>

@@ -1,5 +1,4 @@
 [README for APEL (English Version)]
-by MORIOKA Tomohiko <morioka@jaist.ac.jp>
 
 What's APEL?
 ============
@@ -32,17 +31,11 @@ What's APEL?
       mcs-e20.el    --- for Emacs 20
       mcs-xm.el     --- for XEmacs-MULE
 
+    broken.el --- provide information of broken facilities of Emacs.
+
     pccl.el --- utility to write portable CCL program
       pccl-om.el --- for MULE 1.*, 2.*
       pccl-20.el --- for Emacs 20/XEmacs-MULE
-
-    emu.el --- (emu bundled in tm-7.106 compatibility module; it
-	        required poe, poem and mcharset)
-      emu-mule:	for MULE 1.*, 2.*
-      richtext.el   --- text/richtext module
-			for Emacs 19.29 or later,
-			    XEmacs 19.14 or later
-      tinyrich.el   --- text/richtext module for old emacsen
 
     alist.el: utility for Association-list
 
@@ -56,6 +49,14 @@ What's APEL?
     install.el: utility to install emacs-lisp package
 
     mule-caesar.el: ROT 13-47-48 Caesar rotation utility
+
+    emu.el --- (emu bundled in tm-7.106 compatibility module; it
+	        required poe, poem and mcharset)
+      emu-mule:	for MULE 1.*, 2.*
+      richtext.el   --- text/richtext module
+			for Emacs 19.29 or later,
+			    XEmacs 19.14 or later
+      tinyrich.el   --- text/richtext module for old emacsen
 
 
 Installation
