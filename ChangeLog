@@ -1,3 +1,8 @@
+1999-04-09  MORIOKA Tomohiko  <tomo@etl.go.jp>
+
+	* EMU-ELS (poem-modules): Add `poem-xfc' if file-coding feature is
+	available in a XEmacs-without-MULE.
+
 1999-04-09  Andy Piper        <andy@xemacs.org>
 
 	* poem.el: use poem-xfc when we have XEmacs with file coding.
