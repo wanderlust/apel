@@ -99,24 +99,6 @@
 (defconst *ctext* nil)
 (defconst *noconv* nil)
 
-(defun character-encode-string (str coding-system)
-  "Encode the string STR which is encoded in CODING-SYSTEM. [emu-e19.el]"
-  str)
-
-(defun character-decode-string (str coding-system)
-  "Decode the string STR which is encoded in CODING-SYSTEM. [emu-e19.el]"
-  str)
-
-(defun character-encode-region (start end coding-system)
-  "Encode the text between START and END which is
-encoded in CODING-SYSTEM. [emu-e19.el]"
-  t)
-
-(defun character-decode-region (start end coding-system)
-  "Decode the text between START and END which is
-encoded in CODING-SYSTEM. [emu-e19.el]"
-  t)
-
 (defun code-convert-string (str ic oc)
   "Convert code in STRING from SOURCE code to TARGET code,
 On successful converion, returns the result string,
@@ -164,12 +146,21 @@ between START and END. [emu-e19.el; Mule emulating function]"
     'us-ascii))
 
 (defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END which is
-encoded in MIME CHARSET. [emu-e19.el]"
+  "Encode the text between START and END as MIME CHARSET.
+\[emu-e19.el]"
+  )
+
+(defun decode-mime-charset-region (start end charset)
+  "Decode the text between START and END as MIME CHARSET.
+\[emu-e19.el]"
   )
 
 (defun encode-mime-charset-string (string charset)
-  "Encode the STRING which is encoded in MIME CHARSET. [emu-e19.el]"
+  "Encode the STRING as MIME CHARSET. [emu-e19.el]"
+  string)
+
+(defun decode-mime-charset-string (string charset)
+  "Decode the STRING as MIME CHARSET. [emu-e19.el]"
   string)
 
 

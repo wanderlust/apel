@@ -128,11 +128,6 @@ in the region between START and END.
 ;;;
 ))
 
-(defalias 'character-encode-string 'encode-coding-string)
-(defalias 'character-decode-string 'decode-coding-string)
-(defalias 'character-encode-region 'encode-coding-region)
-(defalias 'character-decode-region 'decode-coding-region)
-
 (defmacro as-binary-process (&rest body)
   `(let (selective-display	; Disable ^M to nl translation.
 	 process-input-coding-system
@@ -192,18 +187,33 @@ in the region between START and END.
   (charsets-to-mime-charset (charsets-in-region start end)))
 
 (defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END which is
-encoded in MIME CHARSET. [emu-x20.el]"
+  "Encode the text between START and END as MIME CHARSET.
+\[emu-x20.el]"
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(encode-coding-region start end cs)
       )))
 
+(defun decode-mime-charset-region (start end charset)
+  "Decode the text between START and END as MIME CHARSET.
+\[emu-x20.el]"
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(decode-coding-region start end cs)
+      )))
+
 (defun encode-mime-charset-string (string charset)
-  "Encode the STRING which is encoded in MIME CHARSET. [emu-x20.el]"
+  "Encode the STRING as MIME CHARSET. [emu-x20.el]"
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(encode-coding-string string cs)
+      string)))
+
+(defun decode-mime-charset-string (string charset)
+  "Decode the STRING as MIME CHARSET. [emu-x20.el]"
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(decode-coding-string string cs)
       string)))
 
 

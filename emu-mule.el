@@ -69,12 +69,6 @@
 ;;; @ coding system
 ;;;
 
-(defun character-encode-string (str coding-system)
-  "Encode the string STR which is encoded in CODING-SYSTEM.
-\[emu-mule.el]"
-  (code-convert-string str *internal* coding-system)
-  )
-
 (defun character-decode-string (str coding-system)
   "Decode the string STR which is encoded in CODING-SYSTEM.
 \[emu-mule.el]"
@@ -91,18 +85,6 @@
       )
     (concat ret (substring str len))
     ))
-
-(defun character-encode-region (start end coding-system)
-  "Encode the text between START and END which is
-encoded in CODING-SYSTEM. [emu-mule.el]"
-  (code-convert start end *internal* coding-system)
-  )
-
-(defun character-decode-region (start end coding-system)
-  "Decode the text between START and END which is
-encoded in CODING-SYSTEM. [emu-mule.el]"
-  (code-convert start end coding-system *internal*)
-  )
 
 (defmacro as-binary-process (&rest body)
   (` (let (selective-display	; Disable ^M to nl translation.
@@ -167,18 +149,33 @@ encoded in CODING-SYSTEM. [emu-mule.el]"
    (cons lc-ascii (find-charset-region start end))))
 
 (defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END which is
-encoded in MIME CHARSET. [emu-mule.el]"
+  "Encode the text between START and END as MIME CHARSET.
+\[emu-mule.el]"
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(code-convert start end *internal* cs)
       )))
 
+(defun decode-mime-charset-region (start end charset)
+  "Decode the text between START and END as MIME CHARSET.
+\[emu-mule.el]"
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(code-convert start end cs *internal*)
+      )))
+
 (defun encode-mime-charset-string (string charset)
-  "Encode the STRING which is encoded in MIME CHARSET. [emu-mule.el]"
+  "Encode the STRING as MIME CHARSET. [emu-mule.el]"
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(code-convert-string string *internal* cs)
+      string)))
+
+(defun decode-mime-charset-string (string charset)
+  "Decode the STRING which is encoded in MIME CHARSET. [emu-mule.el]"
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(character-decode-string string cs)
       string)))
 
 

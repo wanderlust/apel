@@ -1,3 +1,54 @@
+Wed Jul 17 05:35:50 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.43 was released.
+
+Mon Jul 15 08:29:22 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el: Alias `character-decode-region' was abolished.
+
+	* emu-x20.el: Alias `character-decode-string' was abolished.
+
+	* emu-e19.el, emu-nemacs.el, emu-mule.el: Function
+ 	`character-decode-region' was abolished.
+
+	* emu-e19.el, emu-nemacs.el: Function `character-decode-string'
+ 	was abolished.
+
+Sun Jul 14 15:00:32 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el (encode-mime-charset-region): check kanji-code.
+	(decode-mime-charset-region): check kanji-code.
+
+Sun Jul 14 14:56:46 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e19.el, emu-nemacs.el, emu-x20.el, emu-mule.el
+ 	(decode-mime-charset-region): New function.
+
+Sun Jul 14 12:24:45 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el: Alias `character-encode-region' was abolished.
+
+	* emu-e19.el, emu-nemacs.el, emu-mule.el: Function
+ 	`character-encode-region' was abolished.
+
+Sun Jul 14 12:18:35 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (decode-mime-charset-string): Use function
+ 	`character-decode-string'.
+
+Sun Jul 14 11:47:20 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el, emu-e19.el, emu-nemacs.el: Function
+ 	`character-encode-string' was abolished.
+
+	* emu-x20.el: Alias `character-encode-string' was abolished.
+
+Sun Jul 14 11:29:02 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el, emu-e19.el, emu-x20.el, emu-mule.el
+ 	(decode-mime-charset-string): New function.
+
+
 Thu Jul 11 14:11:12 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.36 was released.

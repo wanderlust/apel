@@ -110,34 +110,6 @@
 (defconst *internal*  3)
 (defconst *euc-japan* 3)
 
-(defun character-encode-string (str coding-system)
-  "Encode the string STR which is encoded in CODING-SYSTEM. [emu-nemacs.el]"
-  (convert-string-kanji-code str 3 coding-system)
-  )
-
-(defun character-decode-string (str coding-system)
-  "Decode the string STR which is encoded in CODING-SYSTEM. [emu-nemacs.el]"
-  (convert-string-kanji-code str coding-system 3)
-  )
-
-(defun character-encode-region (start end coding-system)
-  "Encode the text between START and END which is
-encoded in CODING-SYSTEM. [emu-nemacs.el]"
-  (save-excursion
-    (save-restriction
-      (narrow-to-region beg end)
-      (convert-region-kanji-code start end 3 coding-system)
-      )))
-
-(defun character-decode-region (start end coding-system)
-  "Decode the text between START and END which is
-encoded in CODING-SYSTEM. [emu-nemacs.el]"
-  (save-excursion
-    (save-restriction
-      (narrow-to-region beg end)
-      (convert-region-kanji-code start end coding-system 3)
-      )))
-
 (defun code-convert-string (str ic oc)
   "Convert code in STRING from SOURCE code to TARGET code,
 On successful converion, returns the result string,
@@ -216,21 +188,43 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
     'us-ascii))
 
 (defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END which is
-encoded in MIME CHARSET. [emu-nemacs.el]"
+  "Encode the text between START and END as MIME CHARSET.
+\[emu-nemacs.el]"
   (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(save-excursion
-	  (save-restriction
-	    (narrow-to-region start end)
-	    (convert-region-kanji-code start end 3 cs)
-	    )))))
+    (and (numberp cs)
+	 (or (= cs 3)
+	     (save-excursion
+	       (save-restriction
+		 (narrow-to-region start end)
+		 (convert-region-kanji-code start end 3 cs)
+		 ))
+	     ))))
+
+(defun decode-mime-charset-region (start end charset)
+  "Decode the text between START and END as MIME CHARSET.
+\[emu-nemacs.el]"
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (and (numberp cs)
+	 (or (= cs 3)
+	     (save-excursion
+	       (save-restriction
+		 (narrow-to-region start end)
+		 (convert-region-kanji-code start end cs 3)
+		 ))
+	     ))))
 
 (defun encode-mime-charset-string (string charset)
-  "Encode the STRING which is encoded in MIME CHARSET. [emu-nemacs.el]"
+  "Encode the STRING as MIME CHARSET. [emu-nemacs.el]"
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(convert-string-kanji-code string 3 cs)
+      string)))
+
+(defun decode-mime-charset-string (string charset)
+  "Decode the STRING as MIME CHARSET. [emu-nemacs.el]"
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(convert-string-kanji-code string cs 3)
       string)))
 
 
