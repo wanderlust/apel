@@ -1,6 +1,6 @@
 ;;; mcs-20.el --- MIME charset implementation for Emacs 20 and XEmacs/mule
 
-;; Copyright (C) 1997,1998 Free Software Foundation, Inc.
+;; Copyright (C) 1997,1998,1999 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: emulation, compatibility, Mule
@@ -61,6 +61,14 @@ MIME CHARSET and CODING-SYSTEM must be symbol."
   :group 'i18n
   :type '(repeat (cons symbol coding-system)))
 
+(defcustom mime-charset-to-coding-system-default-method
+  nil
+  "Function called when suitable coding-system is not found from MIME-charset.
+It must be nil or function.
+If it is a function, interface must be (CHARSET LBT CODING-SYSTEM)."
+  :group 'i18n
+  :type '(choice function (const nil)))
+
 (defsubst mime-charset-to-coding-system (charset &optional lbt)
   "Return coding-system corresponding with CHARSET.
 CHARSET is a symbol whose name is MIME charset.
@@ -69,20 +77,23 @@ is specified, it is used as line break code type of coding-system."
   (if (stringp charset)
       (setq charset (intern (downcase charset)))
     )
-  (let ((ret (assq charset mime-charset-coding-system-alist)))
-    (if ret
-	(setq charset (cdr ret))
-      ))
-  (if lbt
-      (setq charset (intern (format "%s-%s" charset
-				    (cond ((eq lbt 'CRLF) 'dos)
-					  ((eq lbt 'LF) 'unix)
-					  ((eq lbt 'CR) 'mac)
-					  (t lbt)))))
-    )
-  (if (find-coding-system charset)
-      charset
-    ))
+  (let ((cs (assq charset mime-charset-coding-system-alist)))
+    (setq cs
+	  (if cs
+	      (cdr cs)
+	    charset))
+    (if lbt
+	(setq cs (intern (format "%s-%s" cs
+				 (cond ((eq lbt 'CRLF) 'dos)
+				       ((eq lbt 'LF) 'unix)
+				       ((eq lbt 'CR) 'mac)
+				       (t lbt)))))
+      )
+    (if (find-coding-system cs)
+	cs
+      (if mime-charset-to-coding-system-default-method
+	  (funcall mime-charset-to-coding-system-default-method charset lbt cs)
+	))))
 
 (defvar widget-mime-charset-prompt-value-history nil
   "History of input to `widget-mime-charset-prompt-value'.")
