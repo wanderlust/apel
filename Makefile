@@ -9,10 +9,12 @@ RM	= /bin/rm -f
 CP	= /bin/cp -p
 
 EMACS	= emacs
+XEMACS	= xemacs
 FLAGS   = -batch -q -no-site-file -l APEL-MK
 
 PREFIX = NONE
 LISPDIR = NONE
+PACKAGEDIR = NONE
 
 
 elc:
@@ -21,6 +23,13 @@ elc:
 
 install:
 	$(EMACS) $(FLAGS) -f install-apel $(PREFIX) $(LISPDIR)
+
+
+package:
+	$(XEMACS) $(FLAGS) -f compile-apel-package $(PACKAGEDIR)
+
+install-package:	package
+	$(XEMACS) $(FLAGS) -f install-apel-package $(PACKAGEDIR)
 
 
 clean:
