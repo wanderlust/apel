@@ -67,16 +67,14 @@ but the contents viewed as characters do change.
       (setq l (cons chr l))
       (setq i (+ i (char-bytes chr)))
       )
-    (nreverse l)
-    ))
+    (nreverse l)))
 
 (defalias 'string-to-int-list 'string-to-char-list)
 
 (defun looking-at-as-unibyte (regexp)
   "Like `looking-at', but string is regarded as unibyte sequence."
   (let (enable-multibyte-characters)
-    (looking-at regexp)
-    ))
+    (looking-at regexp)))
 
 ;;; @@ obsoleted aliases
 ;;;
@@ -100,9 +98,11 @@ code conversion will not take place."
   (let ((flag enable-multibyte-characters)
 	(coding-system-for-read 'binary)
 	format-alist)
-    (insert-file-contents filename visit beg end replace)
-    (set-buffer-multibyte flag)
-    ))
+    (prog1
+	;; Returns list absolute file name and length of data inserted.
+	(insert-file-contents filename visit beg end replace)
+      ;; This operation does not change the length.
+      (set-buffer-multibyte flag))))
 
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)
@@ -114,9 +114,11 @@ code."
   (let ((flag enable-multibyte-characters)
 	(coding-system-for-read 'raw-text)
 	format-alist)
-    (insert-file-contents filename visit beg end replace)
-    (set-buffer-multibyte flag)
-    ))
+    (prog1
+	;; Returns list absolute file name and length of data inserted.
+	(insert-file-contents filename visit beg end replace)
+      ;; This operation does not change the length.
+      (set-buffer-multibyte flag))))
 
 
 ;;; @ end
