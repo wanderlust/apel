@@ -1,7 +1,18 @@
 1999-10-22  Katsumi Yamaoka   <yamaoka@jpl.org>
 
-	* EMU-ELS (mcs-modules): Add `mcs-xmu' if the feature `utf-2000' is
-	not provided.
+	* APEL: Version 9.23 released.
+
+1999-10-22  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* APEL-MK (compile-apel-package): Compile `emu-modules-to-compile'
+	instead of `emu-modules'.
+	(compile-apel): Likewise.
+
+	* EMU-ELS (emu-modules-to-compile): New variable which is used for
+	compiling in APEL-MK.  If the feature `utf-2000' is provided,
+	`mcs-xmu' is removed from its value even if `emu-modules' contains
+	it.
+	(emu-modules-not-to-compile): New variable.
 
 	* mcs-xm.el (mime-iso646-character-unification-alist): Move to
 	mcs-xmu.el.
