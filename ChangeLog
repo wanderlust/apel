@@ -1,5 +1,8 @@
 1999-08-27  MORIOKA Tomohiko  <morioka@m17n.org>
 
+	* install.el (emacs-major-version): Deleted.
+	(emacs-minor-version): Deleted.
+
 	* path-util.el: Require `poe'.
 
 1999-08-27  Katsumi Yamaoka   <yamaoka@jpl.org>
