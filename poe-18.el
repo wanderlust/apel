@@ -517,7 +517,6 @@ With optional non-nil ALL, force redisplay of all mode-lines."
 (defvar-maybe unread-command-event nil)
 (defvar-maybe unread-command-events nil)
 
-(defalias 'buffer-disable-undo 'buffer-flush-undo)
 (defalias 'insert-and-inherit 'insert)
 (defalias 'insert-before-markers-and-inherit 'insert-before-markers)
 (defalias 'number-to-string 'int-to-string)
@@ -601,6 +600,11 @@ Optional third argunemt ALL-FRAMES is ignored in this implementation."
 		 (funcall proc walk-windows-current)
 		 (not (eq walk-windows-current walk-windows-start))))
       (select-window walk-windows-start))))
+
+(defun buffer-disable-undo (&optional buffer)
+  "Make BUFFER stop keeping undo information.
+No argument or nil as argument means do this for the current buffer."
+  (buffer-flush-undo (or buffer (current-buffer))))
 
 ;;; @@ Environment variables.
 ;;;

@@ -1,3 +1,9 @@
+2000-12-15  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poe-18.el (buffer-disable-undo): Define it as a function to make
+	an argument optional instead of the use of `defalias' to
+	`buffer-flush-undo'.
+
 2000-12-14   Daiki Ueno  <ueno@unixuser.org>
 
 	* alist.el (del-alist): Simplified.
