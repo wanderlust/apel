@@ -1,5 +1,8 @@
 1998-08-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* emu-nemacs.el, emu-latin1.el (write-region-as-raw-text-CRLF):
+	New function.
+
 	* emu-20.el (write-region-as-raw-text-CRLF): Renamed from
 	`write-region-as-CRLF'.
 
