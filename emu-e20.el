@@ -30,15 +30,14 @@
 
 (require 'emu-19)
 
-(defun fontset-height (fontset)
+(defun fontset-pixel-height (fontset)
+  (require 'cl)
   (let* ((info (fontset-info fontset))
 	 (height (aref info 1))
 	 )
     (if (> height 0)
 	height
-      (let ((str
-	     (car (aref (aref info 2) 0))
-	     ))
+      (let ((str (car (find-if (function identity) (aref info 2)))))
 	(if (string-match "--\\([0-9]+\\)-\\*-\\*-\\*-\\*-\\*-ISO8859-1" str)
 	    (string-to-number
 	     (substring str (match-beginning 1)(match-end 1))
