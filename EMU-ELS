@@ -24,20 +24,20 @@
 			  poe-modules))
   
   (cond ((featurep 'mule)
+	 (setq pccl-modules '(pccl))
 	 (cond ((featurep 'xemacs)
 		(setq poem-modules (cons 'poem-xm (cons 'poem-20
 							poem-modules))
-		      mcs-modules (cons 'mcs-xm (cons 'mcs-20 mcs-modules)))
-		(if (>= emacs-major-version 21)
-		    (setq pccl-modules '(pccl-20 pccl))
-		  )
+		      mcs-modules (cons 'mcs-xm (cons 'mcs-20 mcs-modules))
+		      pccl-modules (cons 'pccl-20 pccl-modules))
 		)
 	       ((>= emacs-major-version 20)
 		(setq poem-modules (cons 'poem-e20 (cons 'poem-20
 							 poem-modules))
 		      mcs-modules (cons 'mcs-e20 (cons 'mcs-20
 						       mcs-modules))
-		      pccl-modules '(pccl-20 pccl))
+		      pccl-modules (cons 'pccl-20 pccl-modules))
+
 		(setq poem-modules
 		      (cons
 		       (if (and
@@ -50,7 +50,7 @@
 	       (t
 		(setq poem-modules (cons 'poem-om poem-modules)
 		      mcs-modules (cons 'mcs-om mcs-modules)
-		      pccl-modules '(pccl-om pccl)
+		      pccl-modules (cons 'pccl-om pccl-modules)
 		      emu-modules (cons 'emu-mule emu-modules))
 		))
 	 )
