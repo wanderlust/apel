@@ -1,3 +1,10 @@
+2003-12-12  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* poe-xemacs.el (run-at-time): Fully implement it for the recent
+	XEmacsen when the fsf-compat package is not available.
+	(run-at-time-tick-tock): Check closely whether a bug is in
+	`start-itimer'.
+
 2003-12-11  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* poe-xemacs.el (run-at-time): Redefine it to make it punctual.

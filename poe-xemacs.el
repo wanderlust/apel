@@ -85,11 +85,20 @@ When called interactively, prompt for the name of the color to use."
     (require 'timer)
   (error
    (require 'itimer)
-   (defun-maybe run-at-time (time repeat function &rest args)
-     (start-itimer (make-temp-name "rat")
-		   `(lambda ()
-		      (,function ,@args))
-		   time repeat))
+   (if (and (= emacs-major-version 19) (<= emacs-minor-version 14))
+       (defun-maybe run-at-time (time repeat function &rest args)
+	 (start-itimer (make-temp-name "rat")
+		       `(lambda ()
+			  (,function ,@args))
+		       time repeat))
+     (defun-maybe run-at-time (time repeat function &rest args)
+       "Emulating function run as `run-at-time'.
+TIME should be nil meaning now, or a number of seconds from now.
+Return an itimer object which can be used in either `delete-itimer'
+or `cancel-timer'."
+       (apply #'start-itimer "run-at-time"
+	      function (if time (max time 1e-9) 1e-9)
+	      repeat nil t args)))
    (defalias 'cancel-timer 'delete-itimer)
    (defun with-timeout-handler (tag)
      (throw tag 'timeout))
@@ -114,10 +123,29 @@ When called interactively, prompt for the name of the color to use."
 
 (broken-facility run-at-time-tick-tock
   "`run-at-time' is not punctual."
-  ;; It should be fixed when someone improves itimer in the future.
   ;; Note that it doesn't support XEmacsen of versions prior to 19.15
   ;; since `start-itimer' doesn't pass arguments to a timer function.
-  (and (= emacs-major-version 19) (<= emacs-minor-version 14)))
+  (or (and (= emacs-major-version 19) (<= emacs-minor-version 14))
+      (condition-case nil
+	  (progn
+	    (unless (or itimer-process itimer-timer)
+	      (itimer-driver-start))
+	    ;; Check whether there is a bug to which the difference of
+	    ;; the present time and the time when the itimer driver was
+	    ;; woken up is subtracted from the initial itimer value.
+	    (let* ((inhibit-quit t)
+		   (ctime (current-time))
+		   (itimer-timer-last-wakeup
+		    (prog1
+			ctime
+		      (setcar ctime (1- (car ctime)))))
+		   (itimer-list nil)
+		   (itimer (start-itimer "run-at-time" 'ignore 5)))
+	      (sleep-for 0.1) ;; Accept the timeout interrupt.
+	      (prog1
+		  (> (itimer-value itimer) 0)
+		(delete-itimer itimer))))
+	(error nil))))
 
 (when-broken run-at-time-tick-tock
   (defadvice run-at-time (around make-it-punctual
@@ -147,7 +175,6 @@ Note that it allows neither a string nor a time in the Emacs style
 		    (set-itimer-function
 		     itimer
 		     (lambda (itimer function &rest args)
-		       (set-itimer-restart itimer nil)
 		       (delete-itimer itimer)
 		       (apply function args)))
 		    (set-itimer-function-arguments
