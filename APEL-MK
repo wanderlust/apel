@@ -118,11 +118,12 @@
   (compile-elisp-modules emu-modules-to-compile	".")
   (compile-elisp-modules apel-modules		"."))
 
-(defun install-apel ()
+(defun install-apel (&optional just-print)
   (config-apel)
-  (let ((just-print (install-just-print-p)))
-    (install-elisp-modules emu-modules	"." EMU_DIR  just-print)
-    (install-elisp-modules apel-modules	"." APEL_DIR just-print)))
+  (or just-print
+      (setq just-print (install-just-print-p)))
+  (install-elisp-modules emu-modules	"." EMU_DIR  just-print)
+  (install-elisp-modules apel-modules	"." APEL_DIR just-print))
 
 ;; For XEmacs package system.
 (defun config-apel-package ()
@@ -185,21 +186,23 @@
     (install-update-package-files "apel" dir just-print)))
 
 (defun what-where-apel ()
-  (config-apel)
-  (princ (format "
-The files that belong to the EMU modules:
-  %s
-  -> %s
+  (install-apel 'just-print)
+  ;; (config-apel)
+;;;   (princ (format "
+;;; The files that belong to the EMU modules:
+;;;   %s
+;;;   -> %s
 
-The files that belong to the APEL modules:
-  %s
-  -> %s
+;;; The files that belong to the APEL modules:
+;;;   %s
+;;;   -> %s
 
-Do `make elc', `make install', `make package', or `make install-package'.
-"
-		 (mapconcat (function symbol-name) emu-modules ", ")
-		 EMU_DIR
-		 (mapconcat (function symbol-name) apel-modules ", ")
-		 APEL_DIR)))
+;;; Do `make elc', `make install', `make package', or `make install-package'.
+;;; "
+;;; 		 (mapconcat (function symbol-name) emu-modules ", ")
+;;; 		 EMU_DIR
+;;; 		 (mapconcat (function symbol-name) apel-modules ", ")
+;;; 		 APEL_DIR))
+  )
 
 ;;; APEL-MK ends here
