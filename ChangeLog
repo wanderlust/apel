@@ -1,3 +1,15 @@
+2000-12-26  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* README.en: Change major mode to outline-mode.
+	(What's APEL?): Add description about pym.el, pces, time-stamp.el,
+	timezone.el, and product.el.
+	(run in expanded place): Add a reference to `make.bat (for MS-DOS
+	family)'.
+
+	* README.ja: Change major mode to outline-mode.
+	(What's APEL?): Add description about pym.el, pces, time-stamp.el,
+	timezone.el, and product.el.
+
 2000-12-24  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
 	* poe.el (minor-mode-overriding-map-alist): Remove the filename
