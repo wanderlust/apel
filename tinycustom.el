@@ -2,7 +2,8 @@
 
 ;; Copyright (C) 1999 Mikio Nakajima <minakaji@osaka.email.ne.jp>
 
-;; Author: Mikio Nakajima <minakaji@osaka.email.ne.jp>
+;; Author: Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+;;         Katsumi Yamaoka <yamaoka@jpl.org>
 ;; Maintainer: Mikio Nakajima <minakaji@osaka.email.ne.jp>
 ;; Keywords: emulating, custom
 
