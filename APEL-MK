@@ -4,6 +4,14 @@
 
 ;;; Code:
 
+(defun install-just-print-p ()
+  (let ((flag (getenv "MAKEFLAGS"))
+	case-fold-search)
+    (princ (format "%s\n" flag))
+    (if flag
+	(string-match "^[^ =]*n" flag)
+      )))
+
 (defun config-apel ()
   (let (prefix lisp-dir version-specific-lisp-dir)
     (and (setq prefix (car command-line-args-left))
@@ -41,12 +49,7 @@
 
 (defun install-apel ()
   (compile-apel)
-  (let ((just-print (getenv "MAKEFLAGS"))
-	case-fold-search)
-    (princ (format "%s\n" just-print))
-    (if just-print
-	(setq just-print (string-match "^[^ =]*n" just-print))
-      )
+  (let ((just-print (install-just-print-p)))
     (install-elisp-modules emu-modules	"." EMU_DIR	just-print)
     (install-elisp-modules apel-modules	"." APEL_DIR	just-print)
     ))
@@ -68,13 +71,7 @@
   (config-apel-package)
   (load "EMU-ELS")
   
-  (let ((just-print (getenv "MAKEFLAGS"))
-	case-fold-search)
-    (princ (format "%s\n" just-print))
-    (if just-print
-	(setq just-print (string-match "^[^ =]*n" just-print))
-      )
-    
+  (let ((just-print (install-just-print-p)))
     (compile-elisp-modules emu-modules	".")
     (compile-elisp-modules apel-modules	".")
     
