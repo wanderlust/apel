@@ -175,18 +175,18 @@ See also the function `defconst'."
        ;; XXX: should do compile-time and load-time check before loading
        ;;      "localhook".  But, it is difficult since "localhook" is
        ;;      already loaded via "install" at compile-time.  any idea?
-       (require 'localhook)
-       ))
+       (require 'localhook)))
 
-(eval-when-compile
-  (condition-case nil
-      (require 'edebug)
-    (error
-     (defmacro def-edebug-spec (symbol spec)
-       (` (put (quote (, symbol)) 'edebug-form-spec (quote (, spec)))))
-     ))
-  (require 'static)
-  )
+;;; `eval-when-compile' is defined in "poe-18" under v18 with old compiler.
+(eval-when-compile (require 'static))
+
+;; imported from emacs-20.3/lisp/emacs-lisp/edebug.el.
+;; `def-edebug-spec' is an autoloaded macro in v19 and later.
+(defmacro-maybe def-edebug-spec (symbol spec)
+  "Set the edebug-form-spec property of SYMBOL according to SPEC.
+Both SYMBOL and SPEC are unevaluated. The SPEC can be 0, t, a symbol
+\(naming a function\), or a list."
+  (` (put (quote (, symbol)) 'edebug-form-spec (quote (, spec)))))
 
 (def-edebug-spec defun-maybe defun)
 (def-edebug-spec defmacro-maybe defmacro)
@@ -198,11 +198,13 @@ See also the function `defconst'."
 (defmacro-maybe when (cond &rest body)
   "If COND yields non-nil, do BODY, else return nil."
   (list 'if cond (cons 'progn body)))
+;; (def-edebug-spec when (&rest form))
 
 ;; imported from emacs-20.3/lisp/subr.el.
 (defmacro-maybe unless (cond &rest body)
   "If COND yields nil, do BODY, else return nil."
   (cons 'if (cons cond (cons nil body))))
+;; (def-edebug-spec unless (&rest form))
 
 
 ;;; @ Emacs 19.23 emulation
@@ -477,8 +479,8 @@ If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
 (static-condition-case nil
     ;; compile-time check.
     (progn
-      ;; XXX: current make process requires this file at compile-time,
-      ;; so this test will be always success at compile-time.
+      ;; XXX: this file is already loaded at compile-time,
+      ;; so this test will always success.
       (char-before)
       ;; If our definition is found at compile-time, signal an error.
       ;; XXX: should signal more specific error. 
@@ -545,8 +547,8 @@ If POS is out of range, the value is nil."
 (static-condition-case nil
     ;; compile-time check.
     (progn
-      ;; XXX: current make process requires this file at compile-time,
-      ;; so this test will be always success at compile-time.
+      ;; XXX: this file is already loaded at compile-time,
+      ;; so this test will always success.
       (char-after)
       ;; If our definition is found at compile-time, signal an error.
       ;; XXX: should signal more specific error. 
@@ -712,7 +714,7 @@ Note that CH (the keystroke specifier) can be an integer, a character
 or a symbol such as 'clear. [XEmacs emulating function]"
     ch)
 
-  (defun-maybe event-to-character (event)
+  (defsubst-maybe event-to-character (event)
     "Return the character approximation to the given event object.
 If the event isn't a keypress, this returns nil.
 \[XEmacs emulating function]"
@@ -724,8 +726,7 @@ If the event isn't a keypress, this returns nil.
 		   (if base
 		       (logior base (car (cdr mask)))
 		     )))))
-	  ((integerp event) event)
-	  ))
+	  ((integerp event) event)))
   )
 
 
