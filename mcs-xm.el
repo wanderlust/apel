@@ -57,8 +57,7 @@
       )))
 
 (defcustom mime-iso646-character-unification-alist
-  (eval-when-compile
-    (let (dest
+  `,(let (dest
 	  (i 33))
       (while (< i 92)
 	(setq dest
@@ -73,7 +72,7 @@
 			  (format "%c" i))
 		    dest))
 	(setq i (1+ i)))
-      (nreverse dest)))
+      (nreverse dest))
   "Alist unified string vs. canonical string."
   :group 'i18n
   :type '(repeat (cons string string)))
@@ -175,28 +174,6 @@
 	    korean-ksc5601 japanese-jisx0212
 	    chinese-cns11643-1 chinese-cns11643-2)	. iso-2022-int-1)
     ))
-
-
-(defun coding-system-to-mime-charset (coding-system)
-  "Convert CODING-SYSTEM to a MIME-charset.
-Return nil if corresponding MIME-charset is not found."
-  (setq coding-system
-	(coding-system-name (coding-system-base coding-system)))
-  (or (car (rassq coding-system mime-charset-coding-system-alist))
-      coding-system))
-
-(defun mime-charset-list ()
-  "Return a list of all existing MIME-charset."
-  (let ((dest (mapcar (function car) mime-charset-coding-system-alist))
-	(rest (coding-system-list))
-	cs)
-    (while rest
-      (setq cs (coding-system-name (coding-system-base (car rest))))
-      (or (rassq cs mime-charset-coding-system-alist)
-	  (memq cs dest)
-	  (setq dest (cons cs dest)))
-      (setq rest (cdr rest)))
-    dest))
 
 
 ;;; @ end
