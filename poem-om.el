@@ -51,14 +51,25 @@
 
        (define-ccl-program poem-ccl-decode-raw-text
 	 '(1
-	   (loop
-	     (read-if (r0 == ?\x0d)
-		      (read-if (r1 == ?\x0a)
-			       (write r1)
-			       ((write r0)
-				(write r1)))
-		      (write r0))
-	     (repeat)))
+	   ((r2 = 0)
+	    (read r0)
+	    (loop
+	      (if (r0 == ?\x0d)
+		  ((r2 = 1)
+		   (read-if (r1 == ?\x0a)
+			    ((r0 = ?\x0a)
+			     (r2 = 0)
+			     (write-read-repeat r0))
+			    ((write r0)
+			     (r0 = (r1 + 0))
+			     (repeat))))
+		((r2 = 0)
+		 (write-read-repeat r0)))))
+	   ;; This EOF BLOCK won't work out in practice. So the last datum
+	   ;; might be lost if it's value is ?\x0d.
+	   (if r2
+	       (write r0))
+	   )
 	 "Convert line-break code from CRLF to LF.")
 
        (define-ccl-program poem-ccl-encode-raw-text
@@ -225,6 +236,12 @@ be applied to `file-coding-system-for-read'."
       (find-file-noselect filename nowarn)))
   ))
 
+(defun save-buffer-as-coding-system (coding-system &optional args)
+  "Like `save-buffer', q.v., but CODING-SYSTEM the first arg will be
+applied to `coding-system-for-write'."
+  (let ((file-coding-system coding-system))
+    (save-buffer args)))
+
 
 ;;; @ without code-conversion
 ;;;
@@ -299,12 +316,6 @@ code."
   (write-region-as-coding-system 'raw-text-dos
 				 start end filename append visit lockname))
 
-(defun open-network-stream-as-binary (name buffer host service)
-  "Like `open-network-stream', q.v., but don't code conversion."
-  (let ((process (open-network-stream name buffer host service)))
-    (set-process-coding-system process *noconv* *noconv*)
-    process))
-
 (defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but don't code and format conversion."
   (find-file-noselect-as-coding-system 'binary filename nowarn rawfile))
@@ -313,6 +324,22 @@ code."
   "Like `find-file-noselect', q.v., but it does not code and format
 conversion except for line-break code."
   (find-file-noselect-as-coding-system 'raw-text filename nowarn rawfile))
+
+(defun save-buffer-as-binary (&optional args)
+  "Like `save-buffer', q.v., but don't encode."
+  (let ((file-coding-system 'binary))
+    (save-buffer args)))
+
+(defun save-buffer-as-raw-text-CRLF (&optional args)
+  "Like `save-buffer', q.v., but save as network representation."
+  (let ((file-coding-system 'raw-text-dos))
+    (save-buffer args)))
+
+(defun open-network-stream-as-binary (name buffer host service)
+  "Like `open-network-stream', q.v., but don't code conversion."
+  (let ((process (open-network-stream name buffer host service)))
+    (set-process-coding-system process *noconv* *noconv*)
+    process))
 
 
 ;;; @ buffer representation

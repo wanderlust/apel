@@ -89,6 +89,16 @@ except for line-break code."
 	format-alist)
     (find-file-noselect filename nowarn rawfile)))
 
+(defun save-buffer-as-binary (&optional args)
+  "Like `save-buffer', q.v., but don't encode."
+  (let ((coding-system-for-write 'binary))
+    (save-buffer args)))
+
+(defun save-buffer-as-raw-text-CRLF (&optional args)
+  "Like `save-buffer', q.v., but save as network representation."
+  (let ((coding-system-for-write 'raw-text-dos))
+    (save-buffer args)))
+
 (defun open-network-stream-as-binary (name buffer host service)
   "Like `open-network-stream', q.v., but don't code conversion."
   (let ((coding-system-for-read 'binary)
@@ -122,6 +132,12 @@ be applied to `coding-system-for-read'."
   (let ((coding-system-for-read coding-system)
 	format-alist)
     (find-file-noselect filename nowarn rawfile)))
+
+(defun save-buffer-as-coding-system (coding-system &optional args)
+  "Like `save-buffer', q.v., but CODING-SYSTEM the first arg will be
+applied to `coding-system-for-write'."
+  (let ((coding-system-for-write coding-system))
+    (save-buffer args)))
 
 
 ;;; @ end
