@@ -1,3 +1,10 @@
+1999-09-03  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* tinycustom.el (defface): Set the face attributes according to
+	SPEC.
+
+	* poe.el (frame-background-mode): New variable.
+
 1999-09-02  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* poe.el: Delete autoload setting for `filename'.
