@@ -52,12 +52,19 @@ This is a defcustom only for emulating purpose.
 Its effect is just as same as that of defvar."
   (` (defvar (, symbol) (, value) (, doc))) )
     
-(defmacro-maybe defface (face value doc &rest args) 
-  "Declare FACE as a customizable face that defaults to SPEC.
+(if (featurep 'faces)
+    (defmacro-maybe defface (face value doc &rest args) 
+      "Declare FACE as a customizable face that defaults to SPEC.
 FACE does not need to be quoted.
 
 This is a defface which only makes face FACE for emulating purpose."
-  (` (make-face (, face))) )
+      (` (make-face (, face))) )
+  (defmacro-maybe defface (face value doc &rest args) 
+    "Declare FACE as a customizable face that defaults to SPEC.
+FACE does not need to be quoted.
+
+This is a nop defface only for emulating purpose."
+    nil ) )
 
 (defmacro-maybe define-widget (name class doc)
   "Define a new widget type named NAME from CLASS.
