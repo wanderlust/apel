@@ -1,6 +1,6 @@
 ;;; product.el --- Functions for product version information.
 
-;; Copyright (C) 1999 Free Software Foundation, Inc.
+;; Copyright (C) 1999,2000 Free Software Foundation, Inc.
 
 ;; Author: Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
 ;;	Keiichi Suzuki <keiichi@nanap.org>
@@ -248,6 +248,19 @@ PRODUCT-DEF is a definition of the product."
 			  nil nil nil (, product-version-string)))))
 	 (, feature-def)))))
 
+(defun product-version-as-string (product)
+  "Return version number of product as a string.
+PRODUCT is a product structure which returned by `product-define'.
+If optional argument UPDATE is non-nil, then regenerate
+`produce-version-string' from `product-version'."
+  (setq product (product-find product))
+  (or (product-version-string product)
+      (and (product-version product)
+	   (product-set-version-string product
+				       (mapconcat (function int-to-string)
+						  (product-version product)
+						  ".")))))
+
 (defun product-string-1 (product &optional verbose)
   "Return information of product as a string of \"NAME/VERSION\".
 PRODUCT is a product structure which returned by `product-define'.
@@ -255,20 +268,11 @@ If optional argument VERBOSE is non-nil, then return string of
 \"NAME/VERSION (CODE-NAME)\"."
   (setq product (product-find product))
   (concat (product-name product)
-	  (cond
-	   ((product-version-string product)
-	    (concat "/" (product-version-string product)))
-	   ((product-version product)
-	    (concat "/"
-		    (product-set-version-string
-		     product
-		     (mapconcat (function int-to-string)
-				(product-version product)
-				"."))))
-	   (""))
-	  (if (and verbose (product-code-name product))
-	      (concat " (" (product-code-name product) ")")
-	    "")))
+	  (let ((version-string (product-version-as-string product)))
+	    (and version-string
+		 (concat "/" version-string)))
+	  (and verbose (product-code-name product)
+	       (concat " (" (product-code-name product) ")"))))
 
 (defun product-for-each (product all function &rest args)
   "Apply a function to a product and the product's family with args.
