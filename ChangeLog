@@ -1,3 +1,29 @@
+Mon Mar  4 14:31:31 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.14 was released.
+
+Mon Mar  4 11:33:53 1996  KON-NO Yoichi <itokon@ssel.toshiba.co.jp>
+
+	* mu-cite.el (mu-cite/cite-original): `(mark)' might occur an
+ 	error. (cf. [tm-ja:1647])
+
+Mon Mar  4 08:58:29 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-els: New module
+
+	* mk-tl: use tl-els file.
+
+Sat Mar  2 13:25:12 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/parse-ascii-token): New function.
+	(rfc822/parse-word, rfc822/parse-local-part,
+ 	rfc822/parse-sub-domain, rfc822/parse-domain,
+ 	rfc822/parse-at-domain, rfc822/parse-route,
+ 	rfc822/parse-route-addr, rfc822/parse-group,
+ 	rfc822/parse-addresses): Use function `rfc822/parse-ascii-token'
+ 	instead of `rfc822/parse-token'.
+
+
 Wed Feb 28 13:26:26 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.13 was released.
