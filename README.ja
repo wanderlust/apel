@@ -237,7 +237,7 @@ path-util
   が bbdb-1.50 よりも新しく、site-lisp が
   /usr/local/share/emacs/site-lisp であるときは、
 
-	(add-path "bbdb")
+	(add-latest-path "bbdb")
 
   は "/usr/local/share/emacs/site-lisp/bbdb-1.51" を `load-path' の先
   頭に追加します。
