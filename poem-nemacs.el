@@ -237,6 +237,30 @@ except for line-break code."
     (set-process-kanji-code process 0)
     process))
 
+(defun save-buffer-as-binary (&optional args)
+  "Like `save-buffer', q.v., but don't encode."
+  (as-binary-output-file
+   (save-buffer args)))
+
+(defun save-buffer-as-raw-text-CRLF (&optional args)
+  "Like `save-buffer', q.v., but save as network representation."
+  (if (buffer-modified-p)
+      (save-restriction
+	(widen)
+	(let ((the-buf (current-buffer))
+	      (filename (buffer-file-name)))
+	  (if filename
+	      (prog1
+		  (with-temp-buffer
+		    (insert-buffer the-buf)
+		    (goto-char (point-min))
+		    (while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
+		      (replace-match "\\1\r\n"))
+		    (setq buffer-file-name filename)
+		    (save-buffer-as-binary args))
+		(set-buffer-modified-p nil)
+		(clear-visited-file-modtime)))))))
+
 
 ;;; @ with code-conversion
 ;;;
@@ -264,6 +288,12 @@ be applied to `kanji-fileio-code'."
   (let ((kanji-fileio-code coding-system)
 	kanji-expected-code)
     (find-file-noselect filename nowarn)))
+
+(defun save-buffer-as-coding-system (coding-system &optional args)
+  "Like `save-buffer', q.v., but CODING-SYSTEM the first arg will be
+applied to `kanji-fileio-code'."
+  (let ((kanji-fileio-code coding-system))
+    (save-buffer args)))
 
 
 ;;; @ buffer representation

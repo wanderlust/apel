@@ -1,5 +1,15 @@
 1999-02-04  Katsumi Yamaoka   <yamaoka@jpl.org>
 
+	* poem-20.el, poem-ltn1.el, poem-nemacs.el, poem-om.el
+	(save-buffer-as-binary): New function.
+	(save-buffer-as-raw-text-CRLF): New function.
+	(save-buffer-as-coding-system): New function.
+
+	* poem-om.el (poem-ccl-decode-raw-text): Rewrite again for plural
+	`CR's.
+
+1999-02-04  Katsumi Yamaoka   <yamaoka@jpl.org>
+
 	* poem-om.el (poem-ccl-decode-raw-text): Rewrite for fixing a bug
 	that the last datum will be missed if the input data is not ended
 	with `CRLF'.
