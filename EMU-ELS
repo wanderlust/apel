@@ -185,9 +185,12 @@
 	   ;; v21.
 	   (require 'image)
 	   '(pimage))
-       (file-error
-	;; Emacs w/ runtime bitmap-mule.
-	'(pimage image-bm tinyimage))))
+       (error
+	(condition-case nil
+	    (require 'bitmap)
+	  (error nil))
+	;; Emacs w/ stipple pixmap or runtime bitmap-mule.
+	'(pimage image-bm image-stpl tinyimage))))
     (t 
      ;; v18.
      '(pimage tinyimage)))
