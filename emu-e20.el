@@ -1,12 +1,12 @@
-;;; emu-e20.el --- emu API implementation for mule merged EMACS
+;;; emu-e20.el --- emu API implementation for Emacs 20.1 and 20.2
 
-;; Copyright (C) 1996 Free Software Foundation, Inc.
+;; Copyright (C) 1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version: $Id$
-;; Keywords: emulation, compatibility, MULE
+;; Keywords: emulation, compatibility, Mule
 
-;; This file is part of tl (Tiny Library).
+;; This file is part of emu.
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -19,152 +19,145 @@
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with This program; see the file COPYING.  If not, write to
-;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
+
+;;; Commentary:
+
+;;    This module requires Emacs 20.1 and 20.2.
 
 ;;; Code:
 
-;;; @ version specific features
-;;;
-
 (require 'emu-19)
+
+(defun fontset-pixel-size (fontset)
+  (let* ((info (fontset-info fontset))
+	 (height (aref info 1))
+	 )
+    (cond ((> height 0) height)
+	  ((string-match "-\\([0-9]+\\)-" fontset)
+	   (string-to-number
+	    (substring fontset (match-beginning 1)(match-end 1))
+	    )
+	   )
+	  (t 0)
+	  )))
 
 
 ;;; @ character set
 ;;;
 
-(defalias 'charset-columns 'charset-width)
+;; (defalias 'charset-columns 'charset-width)
+
+(defun find-non-ascii-charset-string (string)
+  "Return a list of charsets in the STRING except ascii."
+  (delq 'ascii (find-charset-string string))
+  )
+
+(defun find-non-ascii-charset-region (start end)
+  "Return a list of charsets except ascii
+in the region between START and END."
+  (delq 'ascii (find-charset-string (buffer-substring start end)))
+  )
 
 
 ;;; @ coding system
 ;;;
 
-(defconst *noconv* 'no-conversion)
-
-(defmacro as-binary-process (&rest body)
-  (` (let (selective-display	; Disable ^M to nl translation.
-	   ;; Mule merged EMACS
-	   default-process-coding-system
-	   program-coding-system-alist)
-       (,@ body)
-       )))
+(defsubst-maybe find-coding-system (obj)
+  "Return OBJ if it is a coding-system."
+  (if (coding-system-p obj)
+      obj))
 
 (defalias 'set-process-input-coding-system 'set-process-coding-system)
+
+
+;;; @ binary access
+;;;
+
+(defun insert-binary-file-contents (filename &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion."
+  (let ((flag enable-multibyte-characters)
+	(coding-system-for-read 'binary)
+	format-alist)
+    (insert-file-contents filename visit beg end replace)
+    (setq enable-multibyte-characters flag)
+    ))
 
 
 ;;; @ MIME charset
 ;;;
 
-(defvar charsets-mime-charset-alist
-  (list
-   (cons (list charset-ascii)				'us-ascii)
-   (cons (list charset-ascii charset-latin-1)		'iso-8859-1)
-   (cons (list charset-ascii charset-latin-2)		'iso-8859-2)
-   (cons (list charset-ascii charset-latin-3)		'iso-8859-3)
-   (cons (list charset-ascii charset-latin-4)		'iso-8859-4)
-;;;(cons (list charset-ascii charset-cyrillic)		'iso-8859-5)
-   (cons (list charset-ascii charset-cyrillic)		'koi8-r)
-   (cons (list charset-ascii charset-arabic)		'iso-8859-6)
-   (cons (list charset-ascii charset-greek)		'iso-8859-7)
-   (cons (list charset-ascii charset-hebrew)		'iso-8859-8)
-   (cons (list charset-ascii charset-latin-5)		'iso-8859-9)
-   (cons (list charset-ascii
-	       charset-japanese-jisx0201-roman
-	       charset-japanese-jisx0208-1978
-	       charset-japanese-jisx0208)		'iso-2022-jp)
-   (cons (list charset-ascii charset-korean-ksc5601)	'euc-kr)
-   (cons (list charset-ascii charset-chinese-gb2312)	'gb2312)
-   (cons (list charset-ascii
-	       charset-chinese-big5-1
-	       charset-chinese-big5-2)			'big5)
-   (cons (list charset-ascii
-	       charset-latin-1 charset-greek
-	       charset-japanese-jisx0201-roman
-	       charset-japanese-jisx0208-1978
-	       charset-chinese-gb2312
-	       charset-japanese-jisx0208
-	       charset-korean-ksc5601
-	       charset-japanese-jisx0212)		'iso-2022-jp-2)
-   (cons (list charset-ascii
-	       charset-latin-1 charset-greek
-	       charset-japanese-jisx0201-roman
-	       charset-japanese-jisx0208-1978
-	       charset-chinese-gb2312
-	       charset-japanese-jisx0208
-	       charset-korean-ksc5601
-	       charset-japanese-jisx0212
-	       charset-chinese-cns11643-1
-	       charset-chinese-cns11643-2)		'iso-2022-int-1)
-   (cons (list charset-ascii
-	       charset-latin-1 charset-latin-2
-	       charset-cyrillic charset-greek
-	       charset-japanese-jisx0201-roman
-	       charset-japanese-jisx0208-1978
-	       charset-chinese-gb2312
-	       charset-japanese-jisx0208
-	       charset-korean-ksc5601
-	       charset-japanese-jisx0212
-	       charset-chinese-cns11643-1
-	       charset-chinese-cns11643-2
-	       charset-chinese-cns11643-3
-	       charset-chinese-cns11643-4
-	       charset-chinese-cns11643-5
-	       charset-chinese-cns11643-6
-	       charset-chinese-cns11643-7)		'iso-2022-int-1)
-   ))
-
-(defvar default-mime-charset 'x-ctext)
-
-(defvar mime-charset-coding-system-alist
-  '((x-ctext         . coding-system-ctext)
-    (gb2312          . coding-system-euc-china)
-    (iso-2022-jp-2   . coding-system-iso-2022-ss2-7)
-    (shift_jis       . coding-system-sjis)
-    ))
-
-(defun mime-charset-to-coding-system (charset)
-  (if (stringp charset)
-      (setq charset (intern (downcase charset)))
-    )
-  (or (cdr (assq charset mime-charset-coding-system-alist))
-      (let ((cs (intern (concat "coding-system-" (symbol-name charset)))))
-	(and (coding-system-p cs) cs)
-	)))
-
-(defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END. [emu-e20.el]"
-  (charsets-to-mime-charset
-   (find-charset-in-string (buffer-substring start end))
-   ))
-
-(defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET. [emu-e20.el]"
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
+(defsubst encode-mime-charset-region (start end charset)
+  "Encode the text between START and END as MIME CHARSET."
+  (let (cs)
+    (if (and enable-multibyte-characters
+	     (setq cs (mime-charset-to-coding-system charset)))
 	(encode-coding-region start end cs)
       )))
 
-(defun decode-mime-charset-region (start end charset)
-  "Decode the text between START and END as MIME CHARSET. [emu-e20.el]"
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
+(defsubst decode-mime-charset-region (start end charset)
+  "Decode the text between START and END as MIME CHARSET."
+  (let (cs)
+    (if (and enable-multibyte-characters
+	     (setq cs (mime-charset-to-coding-system charset)))
 	(decode-coding-region start end cs)
       )))
 
-(defun encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET. [emu-e20.el]"
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
+(defsubst encode-mime-charset-string (string charset)
+  "Encode the STRING as MIME CHARSET."
+  (let (cs)
+    (if (and enable-multibyte-characters
+	     (setq cs (mime-charset-to-coding-system charset)))
 	(encode-coding-string string cs)
       string)))
 
-(defun decode-mime-charset-string (string charset)
-  "Decode the STRING as MIME CHARSET. [emu-e20.el]"
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
+(defsubst decode-mime-charset-string (string charset)
+  "Decode the STRING as MIME CHARSET."
+  (let (cs)
+    (if (and enable-multibyte-characters
+	     (setq cs (mime-charset-to-coding-system charset)))
 	(decode-coding-string string cs)
       string)))
+
+
+(defvar charsets-mime-charset-alist
+  '(((ascii)						. us-ascii)
+    ((ascii latin-iso8859-1)				. iso-8859-1)
+    ((ascii latin-iso8859-2)				. iso-8859-2)
+    ((ascii latin-iso8859-3)				. iso-8859-3)
+    ((ascii latin-iso8859-4)				. iso-8859-4)
+;;; ((ascii cyrillic-iso8859-5)				. iso-8859-5)
+    ((ascii cyrillic-iso8859-5)				. koi8-r)
+    ((ascii arabic-iso8859-6)				. iso-8859-6)
+    ((ascii greek-iso8859-7)				. iso-8859-7)
+    ((ascii hebrew-iso8859-8)				. iso-8859-8)
+    ((ascii latin-iso8859-9)				. iso-8859-9)
+    ((ascii latin-jisx0201
+	    japanese-jisx0208-1978 japanese-jisx0208)	. iso-2022-jp)
+    ((ascii korean-ksc5601)				. euc-kr)
+    ((ascii chinese-gb2312)				. cn-gb-2312)
+    ((ascii chinese-big5-1 chinese-big5-2)		. cn-big5)
+    ((ascii latin-iso8859-1 greek-iso8859-7
+	    latin-jisx0201 japanese-jisx0208-1978
+	    chinese-gb2312 japanese-jisx0208
+	    korean-ksc5601 japanese-jisx0212)		. iso-2022-jp-2)
+    ((ascii latin-iso8859-1 greek-iso8859-7
+	    latin-jisx0201 japanese-jisx0208-1978
+	    chinese-gb2312 japanese-jisx0208
+	    korean-ksc5601 japanese-jisx0212
+	    chinese-cns11643-1 chinese-cns11643-2)	. iso-2022-int-1)
+    ((ascii latin-iso8859-1 latin-iso8859-2
+	    cyrillic-iso8859-5 greek-iso8859-7
+	    latin-jisx0201 japanese-jisx0208-1978
+	    chinese-gb2312 japanese-jisx0208
+	    korean-ksc5601 japanese-jisx0212
+	    chinese-cns11643-1 chinese-cns11643-2
+	    chinese-cns11643-3 chinese-cns11643-4
+	    chinese-cns11643-5 chinese-cns11643-6
+	    chinese-cns11643-7)				. iso-2022-int-1)
+    ))
 
 
 ;;; @ character
@@ -175,14 +168,27 @@
 (defalias 'char-columns 'char-width)
 
 
+;;; @@ Mule emulating aliases
+;;;
+;;; You should not use them.
+
+(defun char-category (character)
+  "Return string of category mnemonics for CHAR in TABLE.
+CHAR can be any multilingual character
+TABLE defaults to the current buffer's category table."
+  (category-set-mnemonics (char-category-set character))
+  )
+
+
 ;;; @ string
 ;;;
 
 (defalias 'string-columns 'string-width)
 
+(defalias 'sset 'store-substring)
+
 (defun string-to-char-list (string)
-  "Return a list of which elements are characters in the STRING.
-\[emu-e20.el; MULE 2.3 emulating function]"
+  "Return a list of which elements are characters in the STRING."
   (let* ((len (length string))
 	 (i 0)
 	 l chr)
@@ -196,71 +202,11 @@
 
 (defalias 'string-to-int-list 'string-to-char-list)
 
-(or (fboundp 'truncate-string)
-;;; Imported from Mule-2.3
-(defun truncate-string (str width &optional start-column)
-  "Truncate STR to fit in WIDTH columns.
-Optional non-nil arg START-COLUMN specifies the starting column.
-\[emu-e20.el; MULE 2.3 emulating function]"
-  (or start-column
-      (setq start-column 0))
-  (let ((max-width (string-width str))
-	(len (length str))
-	(from 0)
-	(column 0)
-	to-prev to ch)
-    (if (>= width max-width)
-	(setq width max-width))
-    (if (>= start-column width)
-	""
-      (while (< column start-column)
-	(setq ch (aref str from)
-	      column (+ column (char-width ch))
-	      from (+ from (char-bytes ch))))
-      (if (< width max-width)
-	  (progn
-	    (setq to from)
-	    (while (<= column width)
-	      (setq ch (aref str to)
-		    column (+ column (char-width ch))
-		    to-prev to
-		    to (+ to (char-bytes ch))))
-	    (setq to to-prev)))
-      (substring str from to))))
-;;;
-  )
-
-
-;;; @ regulation
-;;;
-
-(defun regulate-latin-char (chr)
-  (cond ((and (<= ?Ａ chr)(<= chr ?Ｚ))
-	 (+ (- chr ?Ａ) ?A)
-	 )
-	((and (<= ?ａ chr)(<= chr ?ｚ))
-	 (+ (- chr ?ａ) ?a)
-	 )
-	((eq chr ?．) ?.)
-	((eq chr ?，) ?,)
-	(t chr)
-	))
-
-(defun regulate-latin-string (str)
-  (let ((len (length str))
-	(i 0)
-	chr (dest ""))
-    (while (< i len)
-      (setq chr (sref str i))
-      (setq dest (concat dest
-			 (char-to-string (regulate-latin-char chr))))
-      (setq i (+ i (char-bytes chr)))
-      )
-    dest))
-
 
 ;;; @ end
 ;;;
+
+(require 'emu-20)
 
 (provide 'emu-e20)
 
