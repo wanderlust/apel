@@ -192,6 +192,18 @@ See also the function `defconst'."
 (def-edebug-spec defmacro-maybe defmacro)
 (def-edebug-spec defsubst-maybe defun)
 
+;;; Emacs 20.1 emulation
+
+;; imported from emacs-20.3/lisp/subr.el.
+(defmacro-maybe when (cond &rest body)
+  "If COND yields non-nil, do BODY, else return nil."
+  (list 'if cond (cons 'progn body)))
+
+;; imported from emacs-20.3/lisp/subr.el.
+(defmacro-maybe unless (cond &rest body)
+  "If COND yields nil, do BODY, else return nil."
+  (cons 'if (cons cond (cons nil body))))
+
 
 ;;; @ Emacs 19.23 emulation
 ;;;
@@ -201,6 +213,7 @@ See also the function `defconst'."
   (save-excursion
     (set-buffer (window-buffer (minibuffer-window)))
     (current-column)))
+
 
 ;;; @ Emacs 19.29 emulation
 ;;;
@@ -270,6 +283,7 @@ The extension, in a file name, is the part that follows the last `.'.
 	    (substring file 0 (match-beginning 0)))
 	filename))))
 
+
 ;;; @ Emacs 19.30 emulation
 ;;;
 
@@ -329,16 +343,6 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
 
 ;;; @ Emacs 20.1 emulation
 ;;;
-
-;; imported from emacs-20.3/lisp/subr.el.
-(defmacro-maybe when (cond &rest body)
-  "If COND yields non-nil, do BODY, else return nil."
-  (list 'if cond (cons 'progn body)))
-
-;; imported from emacs-20.3/lisp/subr.el.
-(defmacro-maybe unless (cond &rest body)
-  "If COND yields nil, do BODY, else return nil."
-  (cons 'if (cons cond (cons nil body))))
 
 ;; imported from emacs-20.3/lisp/subr.el.
 (defsubst-maybe caar (x)
