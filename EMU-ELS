@@ -142,9 +142,6 @@
     (t
      '(mcs-ltn1 mcharset)))
 
-   ;; mule-caesar.el; part of apel-modules, but it is version-dependent.
-   '(mule-caesar)
-
    ;; time-stamp.el; First appeared in Emacs 19.16.
    (if (and (not (featurep 'xemacs))
 	    (or (< emacs-major-version 19)
@@ -184,7 +181,10 @@
 		  (>= emacs-minor-version 29))))
        ;; XEmacs 19.14 and later, or Emacs 19.29 and later.
        '(richtext)
-     '(tinyrich))))
+     '(tinyrich))
+
+   ;; mule-caesar.el; part of apel-modules, but it is version-dependent.
+   '(mule-caesar)))
 
 ;; Generate `emu-modules-to-compile' from `emu-modules-not-to-compile'
 ;; and `emu-modules'.

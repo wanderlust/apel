@@ -190,7 +190,7 @@ For Emacs 18 users: "old byte-compiler" vs "new byte-compiler"
   Lisp Archive and its mirrors.
 
   In Mule 1.* days, "contrib" package for Mule 1.* was distributed and
-  it contained the "new byte-compiler" for Mule.  But, we think it is
+  it contained the "new byte-compiler" for Mule.  But, I think it is
   difficult to obtain this package now.
 
   AFAIK, the "new byte-compiler" for Emacs 18 is also bundled with SKK
