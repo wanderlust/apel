@@ -36,6 +36,18 @@
 
 (or (find-coding-system 'raw-text-dos)
     (copy-coding-system 'no-conversion-dos 'raw-text-dos))
+(or (find-coding-system 'raw-text-mac)
+    (copy-coding-system 'no-conversion-mac 'raw-text-mac))
+(or (find-coding-system 'raw-text-unix)
+    (copy-coding-system 'no-conversion-unix 'raw-text-unix))
+
+(or (find-coding-system 'euc-kr-dos)
+    (make-coding-system
+     'euc-kr 'iso2022
+     "Coding-system of Korean EUC (Extended Unix Code)."
+     '(charset-g0 ascii charset-g1 korean-ksc5601
+		  mnemonic "ko/EUC"
+		  eol-type nil)))
 
 
 ;;; @ without code-conversion
@@ -76,8 +88,8 @@ find-file-hooks, etc.
   :group 'i18n
   :type '(repeat (cons mime-charset function)))
 
-(defsubst decode-mime-charset-region-default (start end charset)
-  (let ((cs (mime-charset-to-coding-system charset)))
+(defsubst decode-mime-charset-region-default (start end charset lbt)
+  (let ((cs (mime-charset-to-coding-system charset lbt)))
     (if cs
 	(decode-coding-region start end cs)
       )))
@@ -113,8 +125,9 @@ find-file-hooks, etc.
   :group 'i18n
   :type 'integer)
 
-(defun decode-mime-charset-region-with-iso646-unification (start end charset)
-  (decode-mime-charset-region-default start end charset)
+(defun decode-mime-charset-region-with-iso646-unification (start end charset
+								 lbt)
+  (decode-mime-charset-region-default start end charset lbt)
   (if (<= (- end start) mime-character-unification-limit-size)
       (save-excursion
 	(let ((rest mime-iso646-character-unification-alist))
@@ -131,17 +144,25 @@ find-file-hooks, etc.
 	    (setq rest (cdr rest)))))
     ))
 
-(defun decode-mime-charset-region-for-hz (start end charset)
-  (decode-hz-region start end))
+(defun decode-mime-charset-region-for-hz (start end charset lbt)
+  (if lbt
+      (save-restriction
+	(narrow-to-region start end)
+	(decode-coding-region (point-min)(point-max)
+			      (mime-charset-to-coding-system 'raw-text lbt))
+	(decode-hz-region (point-min)(point-max))
+	)
+    (decode-hz-region start end)
+    ))
 
-(defun decode-mime-charset-region (start end charset)
+(defun decode-mime-charset-region (start end charset &optional lbt)
   "Decode the text between START and END as MIME CHARSET."
   (if (stringp charset)
       (setq charset (intern (downcase charset)))
     )
   (let ((func (cdr (or (assq charset mime-charset-decoder-alist)
 		       (assq t mime-charset-decoder-alist)))))
-    (funcall func start end charset)
+    (funcall func start end charset lbt)
     ))
 
 (defsubst encode-mime-charset-string (string charset)
@@ -157,11 +178,11 @@ find-file-hooks, etc.
 ;;     (if cs
 ;;         (decode-coding-string string cs)
 ;;       string)))
-(defun decode-mime-charset-string (string charset)
+(defun decode-mime-charset-string (string charset &optional lbt)
   "Decode the STRING as MIME CHARSET."
   (with-temp-buffer
     (insert string)
-    (decode-mime-charset-region (point-min)(point-max) charset)
+    (decode-mime-charset-region (point-min)(point-max) charset lbt)
     (buffer-string)
     ))
 
