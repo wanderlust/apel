@@ -3,7 +3,7 @@
 ;; Copyright (C) 1999 Tanaka Akira <akr@jaist.ac.jp>
 
 ;; Author: Tanaka Akira <akr@jaist.ac.jp>
-;; Keywords: emulation, compatibility, incompatibility, Mule
+;; Keywords: byte compile, evaluation
 
 ;; This file is part of APEL (A Portable Emacs Library).
 
