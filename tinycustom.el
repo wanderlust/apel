@@ -1,13 +1,12 @@
 ;; tinycustom.el -- a tiny custom.el for emulating purpose.
+
 ;; Copyright (C) 1999 Mikio Nakajima <minakaji@osaka.email.ne.jp>
 
 ;; Author: Mikio Nakajima <minakaji@osaka.email.ne.jp>
 ;; Maintainer: Mikio Nakajima <minakaji@osaka.email.ne.jp>
-;; Version: $Id$
 ;; Keywords: emulating, custom
-;; Last Modified: $Date$
 
-;; This file is not part of APEL (A Portable Emacs Library) yet.
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -25,12 +24,14 @@
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Commentary:
-;; Purpose of this program is emulating for who does not have 
+
+;; Purpose of this program is emulating for who does not have
 ;; `custom.el'.
 ;; DEFCUSTOM below has the same effect as the original DEFVAR has.
 ;; DEFGROUP and DEFFACE below are just nop macro.
 
 ;;; Code:
+
 (require 'poe)
 
 (defmacro-maybe defgroup (symbol members doc &rest args)
@@ -58,4 +59,5 @@ This is a nop defface only for emulating purpose."
 
 (provide 'tinycustom)
 (provide 'custom)
+
 ;; end of tinycustom.el
