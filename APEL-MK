@@ -72,8 +72,8 @@
   (config-apel)
   (load-file "EMU-ELS")
   (load-file "APEL-ELS")
-  (compile-elisp-modules emu-modules	".")
-  (compile-elisp-modules apel-modules	".")
+  (compile-elisp-modules emu-modules-to-compile	".")
+  (compile-elisp-modules apel-modules		".")
   )
 
 (defun install-apel ()
@@ -99,8 +99,8 @@
 
 (defun compile-apel-package ()
   (config-apel-package)
-  (compile-elisp-modules emu-modules	".")
-  (compile-elisp-modules apel-modules	".")
+  (compile-elisp-modules emu-modules-to-compile	".")
+  (compile-elisp-modules apel-modules		".")
   )
 
 (defun install-apel-package ()
