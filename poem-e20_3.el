@@ -1,11 +1,11 @@
-;;; emu-e20_3.el --- emu API implementation for Emacs 20.3.
+;;; poem-e20_3.el --- poem implementation for Emacs 20.3.
 
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: emulation, compatibility, Mule
 
-;; This file is part of emu.
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -57,6 +57,6 @@
 ;;; @ end
 ;;;
 
-(provide 'emu-e20_3)
+(provide 'poem-e20_3)
 
-;;; emu-e20_3.el ends here
+;;; poem-e20_3.el ends here

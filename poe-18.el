@@ -1,12 +1,11 @@
-;;; emu-18.el --- emu API implementation for Emacs 18.*
+;;; poe-18.el --- poe API implementation for Emacs 18.*
 
-;; Copyright (C) 1995,1996,1997 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: emulation, compatibility
 
-;; This file is part of emu.
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -55,7 +54,7 @@ FUNCTION is added at the end.
 HOOK should be a symbol, and FUNCTION may be any valid function.  If
 HOOK is void, it is first set to nil.  If HOOK's value is a single
 function, it is changed to a list of functions.
-\[emu-18.el; EMACS 19 emulating function]"
+\[poe-18.el; EMACS 19 emulating function]"
   (or (boundp hook)
       (set hook nil)
       )
@@ -85,7 +84,7 @@ function, it is changed to a list of functions.
 HOOK should be a symbol, and FUNCTION may be any valid function.  If
 FUNCTION isn't the value of HOOK, or, if FUNCTION doesn't appear in the
 list of hooks to run in HOOK, then nothing is done.  See `add-hook'.
-\[emu-18.el; EMACS 19 emulating function]"
+\[poe-18.el; EMACS 19 emulating function]"
   (if (or (not (boundp hook))		;unbound symbol, or
 	  (null (symbol-value hook))	;value is nil, or
 	  (null function))		;function is nil, then
@@ -106,7 +105,7 @@ list of hooks to run in HOOK, then nothing is done.  See `add-hook'.
 (defun member (elt list)
   "Return non-nil if ELT is an element of LIST.  Comparison done with EQUAL.
 The value is actually the tail of LIST whose car is ELT.
-\[emu-18.el; EMACS 19 emulating function]"
+\[poe-18.el; EMACS 19 emulating function]"
   (while (and list (not (equal elt (car list))))
     (setq list (cdr list)))
   list)
@@ -118,7 +117,7 @@ If the first member of LIST is ELT, deleting it is not a side effect;
 it is simply using a different list.
 Therefore, write `(setq foo (delete element foo))'
 to be sure of changing the value of `foo'.
-\[emu-18.el; EMACS 19 emulating function]"
+\[poe-18.el; EMACS 19 emulating function]"
   (if (equal elt (car list))
       (cdr list)
     (let ((rest list)
@@ -138,13 +137,13 @@ to be sure of changing the value of `foo'.
 (defun defalias (sym newdef)
   "Set SYMBOL's function definition to NEWVAL, and return NEWVAL.
 Associates the function with the current load file, if any.
-\[emu-18.el; EMACS 19 emulating function]"
+\[poe-18.el; EMACS 19 emulating function]"
   (fset sym newdef)
   )
 
 (defun byte-code-function-p (exp)
   "T if OBJECT is a byte-compiled function object.
-\[emu-18.el; EMACS 19 emulating function]"
+\[poe-18.el; EMACS 19 emulating function]"
   (and (consp exp)
        (let* ((rest (cdr (cdr exp))) elt)
 	 (if (stringp (car rest))
@@ -165,13 +164,25 @@ Associates the function with the current load file, if any.
   (cons 'defun (cons name (cons arglist body)))
   )
 
+(defun-maybe make-obsolete (fn new)
+  "Make the byte-compiler warn that FUNCTION is obsolete.
+The warning will say that NEW should be used instead.
+If NEW is a string, that is the `use instead' message."
+  (interactive "aMake function obsolete: \nxObsoletion replacement: ")
+  (let ((handler (get fn 'byte-compile)))
+    (if (eq 'byte-compile-obsolete handler)
+	(setcar (get fn 'byte-obsolete-info) new)
+      (put fn 'byte-obsolete-info (cons new handler))
+      (put fn 'byte-compile 'byte-compile-obsolete)))
+  fn)
+
 
 ;;; @ file
 ;;;
 
 (defun make-directory-internal (dirname)
   "Create a directory. One argument, a file name string.
-\[emu-18.el; EMACS 19 emulating function]"
+\[poe-18.el; EMACS 19 emulating function]"
   (if (file-exists-p dirname)
       (error "Creating directory: %s is already exist" dirname)
     (if (not (= (call-process "mkdir" nil nil nil dirname) 0))
@@ -182,7 +193,7 @@ Associates the function with the current load file, if any.
   "Create the directory DIR and any nonexistent parent dirs.
 The second (optional) argument PARENTS says whether
 to create parent directories if they don't exist.
-\[emu-18.el; EMACS 19 emulating function]"
+\[poe-18.el; EMACS 19 emulating function]"
   (let ((len (length dir))
 	(p 0) p1 path)
     (catch 'tag
@@ -246,7 +257,7 @@ If FULL is non-nil, return absolute file names.  Otherwise return names
  that are relative to the specified directory.
 If MATCH is non-nil, mention only file names that match the regexp MATCH.
 If NOSORT is dummy for compatibility.
-\[emu-18.el; EMACS 19 emulating function]"
+\[poe-18.el; EMACS 19 emulating function]"
   (si:directory-files directory full match)
   )
 
@@ -268,7 +279,7 @@ If NOSORT is dummy for compatibility.
 (defun force-mode-line-update (&optional all)
   "Force the mode-line of the current buffer to be redisplayed.
 With optional non-nil ALL, force redisplay of all mode-lines.
-\[emu-18.el; Emacs 19 emulating function]"
+\[poe-18.el; Emacs 19 emulating function]"
   (if all (save-excursion (set-buffer (other-buffer))))
   (set-buffer-modified-p (buffer-modified-p)))
 
@@ -276,11 +287,77 @@ With optional non-nil ALL, force redisplay of all mode-lines.
 ;;; @ overlay
 ;;;
 
+(cond ((boundp 'NEMACS)
+       (defvar emu:available-face-attribute-alist
+	 '(
+	   ;;(bold      . inversed-region)
+	   (italic    . underlined-region)
+	   (underline . underlined-region)
+	   ))
+
+       ;; by YAMATE Keiichirou 1994/10/28
+       (defun attribute-add-narrow-attribute (attr from to)
+	 (or (consp (symbol-value attr))
+	     (set attr (list 1)))
+	 (let* ((attr-value (symbol-value attr))
+		(len (car attr-value))
+		(posfrom 1)
+		posto)
+	   (while (and (< posfrom len)
+		       (> from (nth posfrom attr-value)))
+	     (setq posfrom (1+ posfrom)))
+	   (setq posto posfrom)
+	   (while (and (< posto len)
+		       (> to (nth posto attr-value)))
+	     (setq posto (1+ posto)))
+	   (if  (= posto posfrom)
+	       (if (= (% posto 2) 1)
+		   (if (and (< to len)
+			    (= to (nth posto attr-value)))
+		       (set-marker (nth posto attr-value) from)
+		     (setcdr (nthcdr (1- posfrom) attr-value)
+			     (cons (set-marker-type (set-marker (make-marker)
+								from)
+						    'point-type)
+				   (cons (set-marker-type
+					  (set-marker (make-marker)
+						      to)
+					  nil)
+					 (nthcdr posto attr-value))))
+		     (setcar attr-value (+ len 2))))
+	     (if (= (% posfrom 2) 0)
+		 (setq posfrom (1- posfrom))
+	       (set-marker (nth posfrom attr-value) from))
+	     (if (= (% posto 2) 0)
+		 nil
+	       (setq posto (1- posto))
+	       (set-marker (nth posto attr-value) to))
+	     (setcdr (nthcdr posfrom attr-value)
+		     (nthcdr posto attr-value)))))
+       
+       (defalias 'make-overlay 'cons)
+
+       (defun overlay-put (overlay prop value)
+	 (let ((ret (and (eq prop 'face)
+			 (assq value emu:available-face-attribute-alist)
+			 )))
+	   (if ret
+	       (attribute-add-narrow-attribute (cdr ret)
+					       (car overlay)(cdr overlay))
+	     )))
+       )
+      (t
+       (defun make-overlay (beg end &optional buffer type))
+       (defun overlay-put (overlay prop value))
+       ))
+
 (defun overlay-buffer (overlay))
 
 
 ;;; @ text property
 ;;;
+
+(defun set-text-properties (start end properties &optional object))
 
 (defun remove-text-properties (start end properties &optional object))
 
@@ -341,19 +418,11 @@ With optional non-nil ALL, force redisplay of all mode-lines.
     ))
 
 
-;;; @ mouse
-;;;
-
-(defvar mouse-button-1 nil)
-(defvar mouse-button-2 nil)
-(defvar mouse-button-3 nil)
-
-
 ;;; @ string
 ;;;
 
 (defun char-list-to-string (char-list)
-  "Convert list of character CHAR-LIST to string. [emu-18.el]"
+  "Convert list of character CHAR-LIST to string. [poe-18.el]"
   (mapconcat (function char-to-string) char-list "")
   )
 
@@ -380,6 +449,6 @@ even if a buffer with that name exists."
 ;;; @ end
 ;;;
 
-(provide 'emu-18)
+(provide 'poe-18)
 
-;;; emu-18.el ends here
+;;; poe-18.el ends here

@@ -1,11 +1,11 @@
-;;; emu-latin1.el --- emu module for Emacs 19 and XEmacs without MULE
+;;; poem-ltn1.el --- poem implementation for Emacs 19 and XEmacs without MULE
 
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Keywords: emulation, compatibility, mule, Latin-1
+;; Keywords: emulation, compatibility, Mule
 
-;; This file is part of emu.
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -27,7 +27,7 @@
 ;;; @ buffer representation
 ;;;
 
-(defmacro-maybe set-buffer-multibyte (flag)
+(defun-maybe set-buffer-multibyte (flag)
   "Set the multibyte flag of the current buffer to FLAG.
 If FLAG is t, this makes the buffer a multibyte buffer.
 If FLAG is nil, this makes the buffer a single-byte buffer.
@@ -85,10 +85,6 @@ but the contents viewed as characters do change.
 ;;; @ coding-system
 ;;;
 
-(defconst *internal* nil)
-(defconst *ctext* nil)
-(defconst *noconv* nil)
-
 (defun decode-coding-string (string coding-system)
   "Decode the STRING which is encoded in CODING-SYSTEM."
   string)
@@ -112,22 +108,6 @@ but the contents viewed as characters do change.
 (defun set-buffer-file-coding-system (coding-system &optional force)
   "Set buffer-file-coding-system of the current buffer to CODING-SYSTEM."
   )
-
-
-;;; @@ for old MULE emulation
-;;;
-
-(defun code-convert-string (str ic oc)
-  "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
-else returns nil. [emu-latin1.el; old MULE emulating function]"
-  str)
-
-(defun code-convert-region (beg end ic oc)
-  "Convert code of the text between BEGIN and END from SOURCE
-to TARGET. On successful conversion returns t,
-else returns nil. [emu-latin1.el; old MULE emulating function]"
-  t)
 
 
 ;;; @ without code-conversion
@@ -163,22 +143,6 @@ code conversion will not take place."
     ;; Returns list of absolute file name and length of data inserted.
     (insert-file-contents filename visit beg end replace)))
 
-(defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
-(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
-
-(defun insert-binary-file-contents-literally (filename
-					      &optional visit beg end replace)
-  "Like `insert-file-contents-literally', q.v., but don't code conversion.
-A buffer may be modified in several ways after reading into the buffer due
-to advanced Emacs features, such as file-name-handlers, format decoding,
-find-file-hooks, etc.
-  This function ensures that none of these modifications will take place."
-  (let ((emx-binary-mode t))
-    ;; Returns list of absolute file name and length of data inserted.
-    (insert-file-contents-literally filename visit beg end replace)))
-
-(defalias 'insert-file-contents-as-raw-text 'insert-file-contents)
-
 (defun write-region-as-raw-text-CRLF (start end filename
 					    &optional append visit lockname)
   "Like `write-region', q.v., but write as network representation."
@@ -190,61 +154,7 @@ find-file-hooks, etc.
 	(replace-match "\\1\r\n"))
       (write-region (point-min)(point-max) filename append visit lockname))))
 
-
-;;; @ MIME charset
-;;;
-
-(defvar charsets-mime-charset-alist
-  '(((ascii) . us-ascii)))
-
-(defvar default-mime-charset 'iso-8859-1)
-
-(defun mime-charset-to-coding-system (charset)
-  (if (stringp charset)
-      (setq charset (intern (downcase charset)))
-    )
-  (if (memq charset (list 'us-ascii default-mime-charset))
-      charset
-    ))
-
-(defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END."
-  (if (save-excursion
-	(goto-char start)
-	(re-search-forward "[\200-\377]" end t))
-      default-mime-charset
-    'us-ascii))
-
-(defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET."
-  )
-
-(defun decode-mime-charset-region (start end charset &optional lbt)
-  "Decode the text between START and END as MIME CHARSET."
-  (cond ((eq lbt 'CRLF)
-	 (save-excursion
-	   (save-restriction
-	     (narrow-to-region start end)
-	     (goto-char (point-min))
-	     (while (search-forward "\r\n" nil t)
-	       (replace-match "\n"))
-	     ))
-	 )))
-
-(defun encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET."
-  string)
-
-(defun decode-mime-charset-string (string charset &optional lbt)
-  "Decode the STRING as MIME CHARSET."
-  (if lbt
-      (with-temp-buffer
-	(insert string)
-	(decode-mime-charset-region (point-min)(point-max) charset lbt)
-	(buffer-string))
-    string))
-
-(defalias 'write-region-as-mime-charset 'write-region)
+(defalias 'insert-file-contents-as-raw-text 'insert-file-contents)
 
 
 ;;; @ character
@@ -308,6 +218,6 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 ;;; @ end
 ;;;
 
-(provide 'emu-latin1)
+(provide 'poem-ltn1)
 
-;;; emu-latin1.el ends here
+;;; poem-ltn1.el ends here

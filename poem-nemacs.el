@@ -1,11 +1,11 @@
-;;; emu-nemacs.el --- emu API implementation for NEmacs
+;;; poem-nemacs.el --- poem implementation for Nemacs
 
-;; Copyright (C) 1995,1996,1997,1998 MORIOKA Tomohiko
+;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Keywords: emulation, compatibility, NEmacs, mule
+;; Keywords: emulation, compatibility, Mule
 
-;; This file is part of emu.
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -23,9 +23,6 @@
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Code:
-
-(require 'emu-18)
-
 
 ;;; @ character set
 ;;;
@@ -103,46 +100,60 @@
 ;;; @ coding system
 ;;;
 
-(defconst *noconv*    0)
-(defconst *sjis*      1)
-(defconst *junet*     2)
-(defconst *ctext*     2)
-(defconst *internal*  3)
-(defconst *euc-japan* 3)
+(defvar coding-system-kanji-code-alist
+  '((binary	 . 0)
+    (raw-text	 . 0)
+    (shift_jis	 . 1)
+    (iso-2022-jp . 2)
+    (ctext	 . 2)
+    (euc-jp	 . 3)
+    ))
 
 (defun decode-coding-string (string coding-system)
   "Decode the STRING which is encoded in CODING-SYSTEM.
 \[emu-nemacs.el; EMACS 20 emulating function]"
-  (if (eq coding-system 3)
-      string
-    (convert-string-kanji-code string coding-system 3)))
+  (let ((code (if (integerp coding-system)
+		  coding-system
+		(cdr (assq coding-system coding-system-kanji-code-alist)))))
+    (if (eq code 3)
+	string
+      (convert-string-kanji-code string code 3)
+      )))
 
 (defun encode-coding-string (string coding-system)
   "Encode the STRING to CODING-SYSTEM.
 \[emu-nemacs.el; EMACS 20 emulating function]"
-  (if (eq coding-system 3)
-      string
-    (convert-string-kanji-code string 3 coding-system)))
+  (let ((code (if (integerp coding-system)
+		  coding-system
+		(cdr (assq coding-system coding-system-kanji-code-alist)))))
+    (if (eq code 3)
+	string
+      (convert-string-kanji-code string 3 code)
+      )))
 
 (defun decode-coding-region (start end coding-system)
   "Decode the text between START and END which is encoded in CODING-SYSTEM.
 \[emu-nemacs.el; EMACS 20 emulating function]"
-  (if (/= ic oc)
-      (save-excursion
-	(save-restriction
-	  (narrow-to-region start end)
-	  (convert-region-kanji-code start end coding-system 3)))
-    ))
+  (let ((code (if (integerp coding-system)
+		  coding-system
+		(cdr (assq coding-system coding-system-kanji-code-alist)))))
+    (save-excursion
+      (save-restriction
+	(narrow-to-region start end)
+	(convert-region-kanji-code start end code 3)
+	))))
 
 (defun encode-coding-region (start end coding-system)
   "Encode the text between START and END to CODING-SYSTEM.
 \[emu-nemacs.el; EMACS 20 emulating function]"
-  (if (/= ic oc)
-      (save-excursion
-	(save-restriction
-	  (narrow-to-region start end)
-	  (convert-region-kanji-code start end 3 coding-system)))
-    ))
+  (let ((code (if (integerp coding-system)
+		  coding-system
+		(cdr (assq coding-system coding-system-kanji-code-alist)))))
+    (save-excursion
+      (save-restriction
+	(narrow-to-region start end)
+	(convert-region-kanji-code start end 3 code)
+	))))
 
 (defun detect-coding-region (start end)
   "Detect coding-system of the text in the region between START and END.
@@ -152,33 +163,10 @@
 	  (narrow-to-region start end)
 	  (goto-char start)
 	  (re-search-forward "[\200-\377]" nil t)))
-      *euc-japan*
+      'euc-jp
     ))
 
 (defalias 'set-buffer-file-coding-system 'set-kanji-fileio-code)
-
-
-;;; @@ for old MULE emulation
-;;;
-
-(defun code-convert-string (str ic oc)
-  "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
-else returns nil. [emu-nemacs.el; Mule emulating function]"
-  (if (not (eq ic oc))
-      (convert-string-kanji-code str ic oc)
-    str))
-
-(defun code-convert-region (beg end ic oc)
-  "Convert code of the text between BEGIN and END from SOURCE
-to TARGET. On successful conversion returns t,
-else returns nil. [emu-nemacs.el; Mule emulating function]"
-  (if (/= ic oc)
-      (save-excursion
-	(save-restriction
-	  (narrow-to-region beg end)
-	  (convert-region-kanji-code beg end ic oc)))
-    ))
 
 
 ;;; @ without code-conversion
@@ -214,20 +202,6 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
    ;; Returns list absolute file name and length of data inserted.
    (insert-file-contents filename visit beg end replace)))
 
-(fset 'insert-binary-file-contents 'insert-file-contents-as-binary)
-
-(defun insert-binary-file-contents-literally (filename
-					      &optional visit beg end replace)
-  "Like `insert-file-contents-literally', q.v., but don't code conversion.
-A buffer may be modified in several ways after reading into the buffer due
-to advanced Emacs features, such as file-name-handlers, format decoding,
-find-file-hooks, etc.
-  This function ensures that none of these modifications will take place.
-\[emu-nemacs.el]"
-  (as-binary-input-file
-   ;; Returns list absolute file name and length of data inserted.
-   (insert-file-contents-literally filename visit beg end replace)))
-
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)
   "Like `insert-file-contents', q.v., but don't character code conversion.
@@ -247,91 +221,6 @@ find-file-hooks, etc.
 	(replace-match "\\1\r\n"))
       (write-region-as-binary (point-min)(point-max)
 			      filename append visit))))
-
-
-;;; @ MIME charset
-;;;
-
-(defvar charsets-mime-charset-alist
-  '(((ascii) . us-ascii)))
-
-(defvar default-mime-charset 'iso-2022-jp)
-
-(defvar mime-charset-coding-system-alist
-  '((iso-2022-jp     . 2)
-    (shift_jis       . 1)
-    ))
-
-(defun mime-charset-to-coding-system (charset)
-  (if (stringp charset)
-      (setq charset (intern (downcase charset)))
-    )
-  (cdr (assq charset mime-charset-coding-system-alist)))
-
-(defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END.
-\[emu-nemacs.el]"
-  (if (save-excursion
-	(save-restriction
-	  (narrow-to-region start end)
-	  (goto-char start)
-	  (re-search-forward "[\200-\377]" nil t)))
-      default-mime-charset
-    'us-ascii))
-
-(defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET.
-\[emu-nemacs.el]"
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (and (numberp cs)
-	 (or (= cs 3)
-	     (save-excursion
-	       (save-restriction
-		 (narrow-to-region start end)
-		 (convert-region-kanji-code start end 3 cs))))
-	 )))
-
-(defun decode-mime-charset-region (start end charset &optional lbt)
-  "Decode the text between START and END as MIME CHARSET.
-\[emu-nemacs.el]"
-  (let ((cs (mime-charset-to-coding-system charset))
-	(nl (cdr (assq lbt '((CRLF . "\r\n") (CR . "\r")
-			     (dos . "\r\n") (mac . "\r"))))))
-    (and (numberp cs)
-	 (or (= cs 3)
-	     (save-excursion
-	       (save-restriction
-		 (narrow-to-region start end)
-		 (convert-region-kanji-code start end cs 3)
-		 (if nl
-		     (progn
-		       (goto-char (point-min))
-		       (while (search-forward nl nil t)
-			 (replace-match "\n")))
-		   )))
-	     ))))
-
-(defun encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET. [emu-nemacs.el]"
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(convert-string-kanji-code string 3 cs)
-      string)))
-
-(defun decode-mime-charset-string (string charset &optional lbt)
-  "Decode the STRING as MIME CHARSET. [emu-nemacs.el]"
-  (with-temp-buffer
-    (insert string)
-    (decode-mime-charset-region (point-min)(point-max) charset lbt)
-    (buffer-string)))
-
-(defun write-region-as-mime-charset (charset start end filename)
-  "Like `write-region', q.v., but code-convert by MIME CHARSET.
-\[emu-nemacs.el]"
-  (let ((kanji-fileio-code
-	 (or (mime-charset-to-coding-system charset)
-	     *noconv*)))
-    (write-region start end filename)))
 
 
 ;;; @ buffer representation
@@ -446,70 +335,9 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 (defalias 'string-columns 'length)
 
 
-;;; @ text property emulation
-;;;
-
-(defvar emu:available-face-attribute-alist
-  '(
-    ;;(bold      . inversed-region)
-    (italic    . underlined-region)
-    (underline . underlined-region)
-    ))
-
-;; by YAMATE Keiichirou 1994/10/28
-(defun attribute-add-narrow-attribute (attr from to)
-  (or (consp (symbol-value attr))
-      (set attr (list 1)))
-  (let* ((attr-value (symbol-value attr))
-	 (len (car attr-value))
-	 (posfrom 1)
-	 posto)
-    (while (and (< posfrom len)
-		(> from (nth posfrom attr-value)))
-      (setq posfrom (1+ posfrom)))
-    (setq posto posfrom)
-    (while (and (< posto len)
-		(> to (nth posto attr-value)))
-      (setq posto (1+ posto)))
-    (if  (= posto posfrom)
-	(if (= (% posto 2) 1)
-	    (if (and (< to len)
-		     (= to (nth posto attr-value)))
-		(set-marker (nth posto attr-value) from)
-	      (setcdr (nthcdr (1- posfrom) attr-value)
-		      (cons (set-marker-type (set-marker (make-marker)
-							 from)
-					     'point-type)
-			    (cons (set-marker-type (set-marker (make-marker)
-							       to)
-						   nil)
-				  (nthcdr posto attr-value))))
-	      (setcar attr-value (+ len 2))))
-      (if (= (% posfrom 2) 0)
-	  (setq posfrom (1- posfrom))
-	(set-marker (nth posfrom attr-value) from))
-      (if (= (% posto 2) 0)
-	  nil
-	(setq posto (1- posto))
-	(set-marker (nth posto attr-value) to))
-      (setcdr (nthcdr posfrom attr-value)
-	      (nthcdr posto attr-value)))))
-
-(defalias 'make-overlay 'cons)
-
-(defun overlay-put (overlay prop value)
-  (let ((ret (and (eq prop 'face)
-		  (assq value emu:available-face-attribute-alist)
-		  )))
-    (if ret
-	(attribute-add-narrow-attribute (cdr ret)
-					(car overlay)(cdr overlay))
-      )))
-
-
 ;;; @ end
 ;;;
 
-(provide 'emu-nemacs)
+(provide 'poem-nemacs)
 
-;;; emu-nemacs.el ends here
+;;; poem-nemacs.el ends here

@@ -1,11 +1,11 @@
-;;; emu-e20_2.el --- emu API implementation for Emacs 20.1 and 20.2
+;;; poem-e20_2.el --- poem implementation for Emacs 20.1 and 20.2
 
 ;; Copyright (C) 1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: emulation, compatibility, Mule
 
-;; This file is part of emu.
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -31,7 +31,7 @@
 ;;; @ buffer representation
 ;;;
 
-(defsubst-maybe set-buffer-multibyte (flag)
+(defun-maybe set-buffer-multibyte (flag)
   "Set the multibyte flag of the current buffer to FLAG.
 If FLAG is t, this makes the buffer a multibyte buffer.
 If FLAG is nil, this makes the buffer a single-byte buffer.
@@ -124,6 +124,6 @@ code."
 ;;; @ end
 ;;;
 
-(provide 'emu-e20_2)
+(provide 'poem-e20_2)
 
-;;; emu-e20_2.el ends here
+;;; poem-e20_2.el ends here

@@ -1,12 +1,11 @@
-;;; emu-mule.el --- emu module for Mule 1.* and Mule 2.*
+;;; pccl.el --- Portable CCL utility for Mule 1.* and Mule 2.*
 
-;; Copyright (C) 1995,1996,1997,1998 MORIOKA Tomohiko
+;; Copyright (C) 1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;;         Katsumi Yamaoka <yamaoka@jpl.org>
 ;; Keywords: emulation, compatibility, Mule
 
-;; This file is part of emu.
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -25,36 +24,18 @@
 
 ;;; Code:
 
-(require 'poem)
-
-
-;;; @ regulation
-;;;
-
-(defun regulate-latin-char (chr)
-  (cond ((and (<= ?Ａ chr)(<= chr ?Ｚ))
-	 (+ (- chr ?Ａ) ?A))
-	((and (<= ?ａ chr)(<= chr ?ｚ))
-	 (+ (- chr ?ａ) ?a))
-	((eq chr ?．) ?.)
-	((eq chr ?，) ?,)
-	(t chr)))
-
-(defun regulate-latin-string (str)
-  (let ((len (length str))
-	(i 0)
-	chr (dest ""))
-    (while (< i len)
-      (setq chr (sref str i))
-      (setq dest (concat dest
-			 (char-to-string (regulate-latin-char chr))))
-      (setq i (+ i (char-bytes chr))))
-    dest))
+(if (featurep 'mule)
+    (if (>= emacs-major-version 20)
+	;; for Emacs 20 and XEmacs-mule
+	(require 'pccl-20)
+      ;; for MULE 1.* and 2.*
+      (require 'pccl-om)
+      ))
 
 
 ;;; @ end
 ;;;
 
-(provide 'emu-mule)
+(provide 'pccl)
 
-;;; emu-mule.el ends here
+;;; pccl.el ends here
