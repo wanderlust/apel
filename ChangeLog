@@ -1,7 +1,43 @@
+2002-07-29  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* pym.el (defun-maybe): Use `defalias' instead of `defun'; don't
+	handle `current-load-list'; always return a function symbol.
+	(defmacro-maybe): Set a symbol to a macro definition itself; don't
+	handle `current-load-list'; always return a macro symbol.
+	(defsubst-maybe): Set a symbol to a function definition itself;
+	don't handle `current-load-list'; always return a function symbol.
+	(defalias-maybe): Always return a new definition.
+	(defvar-maybe): Always return a variable symbol.
+	(defconst-maybe): Ditto.
+	(defun-maybe-cond): Use `defalias' instead of `defun'; don't
+	handle `current-load-list'; always return a function symbol.
+	(defmacro-maybe-cond): Set a symbol to a macro definition itself;
+	don't handle `current-load-list'; always return a macro symbol.
+	(defsubst-maybe-cond): Set a symbol to a function definition
+	itself; don't handle `current-load-list'; always return a function
+	symbol.
+	(defun-when-void): Always return a function symbol.
+	(defmacro-when-void): New macro.
+	(defsubst-when-void): New macro.
+	(defalias-when-void): New macro.
+	(defvar-when-void): New macro.
+	(defconst-maybe): New macro.
+
+2002-07-26  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* pym.el (defun-maybe): Doc fix.
+	(defun-when-void): New macro.
+
+2002-07-24  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* pym.el (def*-maybe-enable-compile-time-hack): New variable;
+	default to nil.
+	(defun-maybe): Use it.
+
 2002-07-13  Daiki Ueno  <daiki@xemacs.org>
 
 	* mcs-xm.el (encode-mime-charset-string): Use `defun' instead of
-	`defsubst'
+	`defsubst'.
 
 2002-07-10  Adrian Aichner  <adrian@xemacs.org>
 
