@@ -177,26 +177,10 @@ STRING should be given if the last search was by `string-match' on STRING.
       (defun read-string (prompt &optional initial-input history)
 	"Read a string from the minibuffer, prompting with string PROMPT.
 If non-nil, second arg INITIAL-INPUT is a string to insert before reading.
-The third arg HISTORY, is dummy for compatibility.
+The third arg HISTORY, is dummy for compatibility. [emu.el]
 See `read-from-minibuffer' for details of HISTORY argument."
 	(si:read-string prompt initial-input))
       ))
-
-(defmacro-maybe make-local-hook (hook))
-
-;; They are not Emacs features
-
-(defmacro-maybe add-local-hook (hook function &optional append)
-  (if (fboundp 'make-local-hook)
-      (list 'add-hook hook function append 'local)
-    (list 'add-hook hook function append)
-    ))
-
-(defmacro remove-local-hook (hook function)
-  (if (fboundp 'make-local-hook)
-      (list 'remove-hook hook function 'local)
-    (list 'remove-hook hook function)
-    ))
 
 
 ;;; @ Emacs 19.30 emulation
