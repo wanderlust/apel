@@ -1,3 +1,8 @@
+1999-12-24  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe.el (functionp): Define it before loading "localhook".
+
+
 1999-12-24  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* APEL: Version 10.0 released.

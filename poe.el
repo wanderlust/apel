@@ -543,6 +543,15 @@ Elements of LIST that are not conses are ignored."
 	     (throw 'found (car list))))
       (setq list (cdr list)))))
 
+;;; Define `functionp' here because "localhook" uses it.
+
+;; Emacs 20.1/XEmacs 20.3 (but first appeared in Epoch?): (functionp OBJECT)
+(defun-maybe functionp (object)
+  "Non-nil if OBJECT is a type of object that can be called as a function."
+  (or (subrp object) (byte-code-function-p object)
+      (eq (car-safe object) 'lambda)
+      (and (symbolp object) (fboundp object))))
+
 ;;; @@ Hook manipulation functions.
 
 ;; "localhook" package is written for Emacs 19.28 and earlier.
@@ -793,13 +802,6 @@ If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
       (setq parts (cons (substring string start (match-beginning 0)) parts)
 	    start (match-end 0)))
     (nreverse (cons (substring string start) parts))))
-
-;; Emacs 20.1/XEmacs 20.3 (but first appeared in Epoch?): (functionp OBJECT)
-(defun-maybe functionp (object)
-  "Non-nil if OBJECT is a type of object that can be called as a function."
-  (or (subrp object) (byte-code-function-p object)
-      (eq (car-safe object) 'lambda)
-      (and (symbolp object) (fboundp object))))
 
 
 ;;; @ Window commands emulation. (lisp/window.el)
