@@ -1,3 +1,7 @@
+1998-12-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 9.12 was released.
+
 1998-12-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* mcs-om.el: Avoid error when cyrillic.el is not found.
