@@ -39,7 +39,22 @@
 	       (and (require 'widget)
 		    (require 'custom)
 		    (fboundp 'custom-declare-variable))
-	     (error nil))
+	     (error
+	      (if (null (featurep 'pcustom))
+		  (progn
+		    (message "
+  ** New CUSTOM library is not detected.  If you have that one, e.g. v1.9962,
+  ** please specify the installed path of the new CUSTOM library in the file
+  ** \"subdirs.el\" and rebuild this package.  For example, if you have
+  ** installed it in \"/usr/local/share/emacs/site-lisp/custom/\", put the
+  ** following line in the file \"/usr/local/share/emacs/site-lisp/subdirs.el\".
+  **
+  **   (normal-top-level-add-to-load-path '(\"custom\"))
+  **
+  ** Note that the argument can be a list of subdirectories.
+")
+		    (sleep-for 1)))
+	      nil))
     ;; you have "new custom". no load-time check.
     (require 'custom)
   ;; your custom is "old custom", or you don't have custom library
