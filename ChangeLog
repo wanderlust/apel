@@ -1,3 +1,90 @@
+1998-03-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-20.el: Require 'widget when compile.
+
+
+1998-03-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 7.5 was released.
+
+1998-03-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* calist.el (calist-field-match-method-obarray): New variable.
+	(define-calist-field-match-method): New function.
+	(calist-default-field-match-method): New function.
+	(calist-field-match-method): New function.
+	(calist-field-match): New function.
+	(ctree-match-calist): Use `calist-field-match'.
+
+
+1998-03-23  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 7.4 was released.
+
+1998-03-21  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el, emu-mule.el, emu-e19.el, emu-x20.el, emu-e20.el
+	(insert-file-contents-as-binary): Renamed from
+	`insert-binary-file-contents'; add `insert-binary-file-contents'
+	as obsolete alias.
+
+1998-03-21  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (insert-binary-file-contents-literally): New alias
+	for `insert-file-contents-literally'.
+
+	* emu-x20.el (insert-binary-file-contents-literally): Moved from
+	emu-20.el.
+
+	* emu-20.el: Move `insert-binary-file-contents-literally' to
+	emu-x20.el.
+
+1998-03-21  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (insert-binary-file-contents): Must save
+	`enable-multibyte-characters'.
+
+	* emu-x20.el (insert-binary-file-contents): Moved from emu-20.el.
+
+	* emu-20.el: Move `insert-binary-file-contents' to emu-x20.el.
+
+	* calist.el (ctree-match-calist): Rename local variables.
+
+
+1998-03-16  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 7.3 was released.
+
+1998-03-15  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL-ELS: Add calist.el.
+
+	* calist.el: New module.
+
+1998-03-13  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* emu-mule.el (charsets-mime-charset-alist) fixed.
+
+
+1998-03-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 7.2 was released.
+
+1998-03-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el, emu-mule.el, emu-e19.el, emu-20.el
+	(write-region-as-binary): New function.
+
+1998-03-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el, emu-mule.el, emu-e19.el, emu-20.el
+	(insert-binary-file-contents): New function.
+
+1998-03-08  Shuhei KOBAYASHI  <shuhei-k@jaist.ac.jp>
+
+	* README.en (Bug reports): Modify description of tm mailing list.
+
+
 1998-02-12  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 7.1.1 was released.
