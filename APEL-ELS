@@ -1,0 +1,8 @@
+;;; -*-Emacs-Lisp-*-
+;;;
+;;; $Id$
+;;;
+
+(setq apel-modules '(alist atype file-detect))
+
+;;; APEL-ELS ends here
