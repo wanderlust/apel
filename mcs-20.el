@@ -30,7 +30,7 @@
 ;;; Code:
 
 (require 'poem)
-(require 'custom)
+(require 'pcustom)
 (eval-when-compile (require 'wid-edit))
 
 
