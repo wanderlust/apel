@@ -302,6 +302,22 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
   "(unless COND BODY...): if COND yields nil, do BODY, else return nil."
   (cons 'if (cons cond (cons nil body))))
 
+;; imported from Emacs 20.3.
+(defun-maybe last (x &optional n)
+  "Return the last link of the list X.  Its car is the last element.
+If X is nil, return nil.
+If N is non-nil, return the Nth-to-last link of X.
+If N is bigger than the length of X, return X."
+  (if n
+      (let ((m 0) (p x))
+	(while (consp p)
+	  (setq m (1+ m) p (cdr p)))
+	(if (<= n 0) p
+	  (if (< n m) (nthcdr (- m n) x) x)))
+    (while (cdr x)
+      (setq x (cdr x)))
+    x))
+
 (defmacro-maybe save-current-buffer (&rest body)
   "Save the current buffer; execute BODY; restore the current buffer.
 Executes BODY just like `progn'."
@@ -352,21 +368,7 @@ See also `with-temp-file' and `with-output-to-string'."
 	   (and (buffer-name (, temp-buffer))
 		(kill-buffer (, temp-buffer))))))))
 
-;; imported from Emacs 20.3.
-(defun-maybe last (x &optional n)
-  "Return the last link of the list X.  Its car is the last element.
-If X is nil, return nil.
-If N is non-nil, return the Nth-to-last link of X.
-If N is bigger than the length of X, return X."
-  (if n
-      (let ((m 0) (p x))
-	(while (consp p)
-	  (setq m (1+ m) p (cdr p)))
-	(if (<= n 0) p
-	  (if (< n m) (nthcdr (- m n) x) x)))
-    (while (cdr x)
-      (setq x (cdr x)))
-    x))
+(defmacro-maybe combine-after-change-calls (&rest body))
 
 ;; imported from Emacs 20.3. (cl function)
 (defun-maybe butlast (x &optional n)
