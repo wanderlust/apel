@@ -4,11 +4,9 @@
 
 2000-12-28  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
-	* mcharset.el (default-mime-charset-for-write): Don't require
-	`pces'.
-
 	* mcharset.el (default-mime-charset-for-write): Use
-	`mime-charset-p' instead of `find-coding-system'.
+	`mime-charset-p' instead of `find-coding-system'; don't require
+	`pces'.
 
 	* mcs-nemacs.el, mcs-ltn1.el, mcs-20.el (mime-charset-p): New
 	alias.
