@@ -163,6 +163,22 @@ code conversion will not take place."
 (defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
 (make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
 
+(defun insert-file-contents-as-raw-text (filename
+					 &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+Like `insert-file-contents-as-binary', but it converts line-break
+code."
+  (save-excursion
+    (save-restriction
+      (narrow-to-region (point)(point))
+      (insert-file-contents-as-binary filename visit beg end replace)
+      (goto-char (point-min))
+      (while (re-search-forward "\r$" nil t)
+	(replace-match "")
+	))))
+
 (defun insert-binary-file-contents-literally (filename
 					      &optional visit beg end replace)
   "Like `insert-file-contents-literally', q.v., but don't code conversion.
