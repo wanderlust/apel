@@ -208,8 +208,8 @@ Emacs 18 のユーザのみなさんへ:
 Emacs 19.34 と XEmacs 19.14 のユーザのみなさんへ:
 
   Emacs 19.32〜19.34、XEmacs 19.14 および Gnus 5.2/5.3 に含まれている
-  custom ライブラリは「古い」もので、これの API(*) は Emacs 20.1 また
-  は XEmacs 19.15 より新しい Emacsen と Gnus 5.4/5.5 に含まれている
+  custom ライブラリは「古い」もので、これの API は Emacs 20.1 または
+  XEmacs 19.15 より新しい Emacsen と Gnus 5.4/5.5 に含まれている
   「新しい custom」とは違っています。
 
   Emacs 19.34 と XEmacs 19.15〜20.2 用の「新しい custom」は、以下の
