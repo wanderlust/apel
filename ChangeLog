@@ -1,3 +1,7 @@
+2000-01-19  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe.el (require): Handle `file-error' only.
+
 2000-01-12  OKAZAKI Tetsurou  <okazaki@be.to>
 
 	* EMU-ELS (emu-modules): Add `pccl' even if `mule' is not provided.

@@ -89,7 +89,7 @@ Normally the return value is FEATURE."
 	   (if noerror
 	       (condition-case nil
 		   (si:require feature filename)
-		 (error))
+		 (file-error))
 	     (si:require feature filename)))))))
 
 ;; Emacs 19.29 and later: (plist-get PLIST PROP)
