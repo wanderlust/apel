@@ -197,14 +197,14 @@ If BOUNDARY is not nil, it is used as message header separator.
 ;;; @ quoted-string
 ;;;
 
-(defconst rfc822/non-qtext-char-list '(?\" ?\\ ?\r ?\n))
+(defconst std11-non-qtext-char-list '(?\" ?\\ ?\r ?\n))
 
 (defun rfc822/wrap-as-quoted-string (str)
   "Wrap string STR as RFC 822 quoted-string. [tl-822.el]"
   (concat "\""
 	  (mapconcat (function
 		      (lambda (chr)
-			(if (memq chr rfc822/non-qtext-char-list)
+			(if (memq chr std11-non-qtext-char-list)
 			    (concat "\\" (char-to-string chr))
 			  (char-to-string chr)
 			  )
