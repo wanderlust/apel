@@ -114,15 +114,6 @@ If CCL-PROG is symbol, it is dereferenced.
 	   (broken-p 'ccl-execute-eof-block-on-decoding)))
   t)
 
-(broken-facility ccl-cascading-read
-  "Emacs CCL read command does not accept more than 2 arguments."
-  (condition-case nil
-      (progn
-        (define-ccl-program cascading-read-test
-          '(1
-            (read r0 r1 r2)))
-        t)
-    (error nil)))
 
 ;;; @ end
 ;;;

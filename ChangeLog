@@ -1,21 +1,6 @@
-1998-11-10  Tanaka Akira  <akr@jaist.ac.jp>
+1998-11-10  Katsumi Yamaoka   <yamaoka@jpl.org>
 
-	* pccl-om.el (ccl-cascading-read): New facility.
-
-1998-11-10  Tanaka Akira  <akr@jaist.ac.jp>
-
-	* EMU-ELS (emu-modules): Always install 'pccl.
-
-	* broken.el: Use 19.28 style quasi-quote.
-
-	* pccl.el: - require 'broken.
-	- Does not require 'pccl-20 for XEmacs 20.
-	(ccl-usable): New facility.
-
-1998-11-10  Tanaka Akira  <akr@jaist.ac.jp>
-
-	* README.en, README.ja, pccl-20.el: Note that pccl-20 is not
-	for XEmacs 20.
+	* inv-19.el (next-visible-point): Copied from inv-xemacs.el.
 
 1998-11-08  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
