@@ -1,7 +1,15 @@
 ;;;
-;;; emu-xemacs: Emacs 19 emulation module for XEmacs
+;;; emu-xemacs.el --- Emacs 19 emulation module for XEmacs
 ;;;
-;;; $Id$
+;;; Copyright (C) 1995 Free Software Foundation, Inc.
+;;; Copyright (C) 1995 MORIOKA Tomohiko
+;;;
+;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;;; Version:
+;;;	$Id$
+;;; Keywords: emulation, compatibility, XEmacs
+;;;
+;;; This file is part of tl and tm (Tools for MIME).
 ;;;
 
 (or (fboundp 'face-list)
@@ -16,24 +24,32 @@
 (or (face-differs-from-default-p 'underline)
     (set-face-underline-p 'underline t))
 
-;;; (or (fboundp 'set-text-properties)
-;;;     (defun set-text-properties (start end props &optional buffer)
-;;;       (if (or (null buffer) (bufferp buffer))
-;;;           (if props
-;;;               (while props
-;;;                 (put-text-property 
-;;;                  start end (car props) (nth 1 props) buffer)
-;;;                 (setq props (nthcdr 2 props)))
-;;;             (remove-text-properties start end ())
-;;;             )))
-;;;     )
-;;; 
-;;; (defalias 'make-overlay 'make-extent)
-;;; (defalias 'overlay-put 'set-extent-property)
-;;; (defalias 'overlay-buffer 'extent-buffer)
-;;; 
-;;; (defun move-overlay (extent start end &optional buffer)
-;;;   (set-extent-endpoints extent start end)
-;;;   )
+(or (fboundp 'tl:set-text-properties)
+    (defun tl:set-text-properties (start end props &optional buffer)
+      (if (or (null buffer) (bufferp buffer))
+	  (if props
+	      (while props
+		(put-text-property 
+		 start end (car props) (nth 1 props) buffer)
+		(setq props (nthcdr 2 props)))
+	    (remove-text-properties start end ())
+	    )))
+    )
+
+(defun tl:add-text-properties (start end properties)
+  (add-text-properties start end
+		       (append properties (list 'highlight t))
+		       )
+  )
+
+(defalias 'tl:make-overlay 'make-extent)
+(defalias 'tl:overlay-put 'set-extent-property)
+(defalias 'tl:overlay-buffer 'extent-buffer)
+
+(defun tl:move-overlay (extent start end &optional buffer)
+  (set-extent-endpoints extent start end)
+  )
+
+(defvar mouse-button-2 'button2)
 
 (provide 'emu-xemacs)

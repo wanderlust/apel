@@ -1,7 +1,15 @@
 ;;;
-;;; emu-nemacs: Mule 2 emulation module for NEmacs
+;;; emu-nemacs.el --- Mule 2 emulation module for NEmacs
 ;;;
-;;; $Id$
+;;; Copyright (C) 1995 Free Software Foundation, Inc.
+;;; Copyright (C) 1994,1995 MORIOKA Tomohiko
+;;;
+;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;;; Version:
+;;;	$Id$
+;;; Keywords: emulation, compatibility, NEmacs, Mule
+;;;
+;;; This file is part of tl and tm (Tools for MIME).
 ;;;
 
 (require 'emu-18)
@@ -61,6 +69,12 @@ else returns nil. [Mule compatible function in tm-nemacs]"
       lc-ascii
     lc-jp))
 
+(setq tl:available-face-attribute-alist
+      '(
+	;;(bold      . inversed-region)
+	(italic    . underlined-region)
+	(underline . underlined-region)
+	))
 
 ;; by YAMATE Keiichirou 1994/10/28
 (defun attribute-add-narrow-attribute (attr from to)
@@ -101,5 +115,21 @@ else returns nil. [Mule compatible function in tm-nemacs]"
       (setcdr (nthcdr posfrom attr-value)
 	      (nthcdr posto attr-value)))))
 
+(defalias 'tl:make-overlay 'cons)
+
+(defun tl:overlay-put (overlay prop value)
+  (let ((ret (and (eq prop 'face)
+		  (assq value tl:available-face-attribute-alist)
+		  )))
+    (if ret
+	(attribute-add-narrow-attribute (cdr ret)
+					(car overlay)(cdr overlay))
+      )))
+
+(defun tl:add-text-properties (start end properties &optional object)) 
+
+
+;;; @ end
+;;;
 
 (provide 'emu-nemacs)

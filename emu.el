@@ -1,17 +1,21 @@
 ;;;
-;;; emu: Emulation module for each Emacs variants
+;;; emu.el --- Emulation module for each Emacs variants
 ;;;
-;;; $Id$
+;;; Copyright (C) 1995 Free Software Foundation, Inc.
+;;; Copyright (C) 1995 MORIOKA Tomohiko
+;;;
+;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;;; Version:
+;;;	$Id$
+;;; Keywords: emulation, compatibility, NEmacs, Mule, XEmacs
+;;;
+;;; This file is part of tl and tm (Tools for MIME).
 ;;;
 
 (cond ((boundp 'MULE)  (require 'emu-mule))
       ((boundp 'NEMACS)(require 'emu-nemacs))
       (t               (require 'emu-orig))
       )
-
-(if (string-match "XEmacs\\|Lucid" emacs-version)
-    (require 'emu-xemacs)
-  )
 
 
 ;;; @ Emacs 19.29 emulation

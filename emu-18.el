@@ -1,7 +1,15 @@
 ;;;
-;;; emu-18: Emacs 19.* emulation module for Emacs 18.*
+;;; emu-18.el --- Emacs 19.* emulation module for Emacs 18.*
 ;;;
-;;; $Id$
+;;; Copyright (C) 1995 Free Software Foundation, Inc.
+;;; Copyright (C) 1994,1995 MORIOKA Tomohiko
+;;;
+;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;;; Version:
+;;;	$Id$
+;;; Keywords: emulation, compatibility
+;;;
+;;; This file is part of tl and tm (Tools for MIME).
 ;;;
 
 ;; This function is imported from AUC TeX.
@@ -93,5 +101,7 @@ to create parent directories if they don't exist.
 	))
     (make-directory-internal dir)
     ))
+
+(defvar mouse-button-2 nil)
 
 (provide 'emu-18)

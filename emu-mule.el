@@ -1,7 +1,15 @@
 ;;;
-;;; emu-mule: Mule 2.* emulation module for Mule
+;;; emu-mule.el --- Mule 2.* emulation module for Mule
 ;;;
-;;; $Id$
+;;; Copyright (C) 1995 Free Software Foundation, Inc.
+;;; Copyright (C) 1994,1995 MORIOKA Tomohiko
+;;;
+;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;;; Version:
+;;;	$Id$
+;;; Keywords: emulation, compatibility, Mule
+;;;
+;;; This file is part of tl and tm (Tools for MIME).
 ;;;
 
 (defun some-element (pred seq)
@@ -30,6 +38,7 @@ whose return value applied function PRED is not nil.
   )
 
 (cond ((>= emacs-major-version 19)
+       (require 'emu-19)
        (defun fontset-pixel-size (fontset)
 	 (elt
 	  (get-font-info
@@ -41,6 +50,12 @@ whose return value applied function PRED is not nil.
 	    (cdr (get-fontset-info fontset))
 	    )) 5))
        )
-      (t (require 'emu-18)))
+      (t
+       (require 'emu-18)
+       (defun tl:make-overlay (beg end &optional buffer type))
+       (defun tl:overlay-put (overlay prop value))
+       (defun tl:add-text-properties (start end properties &optional object))
+       ))
+
 
 (provide 'emu-mule)
