@@ -1,3 +1,29 @@
+Sat Nov 16 08:38:57 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.13 was released.
+
+Fri Nov 15 12:10:41 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mk-tl: add "../emu" to load-path.
+
+	* TL-ELS (tl-modules): emu modules were moved to ../emu/.
+
+	* install.el (install-detect-elisp-directory): New optional
+ 	argument `allow-version-specific'.
+
+Thu Nov  7 20:09:49 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* bitmap.el (charset-bitmap): Renamed from `lc-bitmap'.
+
+	* bitmap.el: Function `fontset-height' was renamed to
+ 	`fontset-pixel-height' in Emacs/mule.
+
+	* emu-e20.el (fontset-pixel-height): Renamed from
+ 	`fontset-height'.
+
+	* emu-e20.el (fontset-height): fixed.
+
+
 Thu Oct 24 07:56:18 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.12 was released.

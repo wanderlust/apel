@@ -148,7 +148,8 @@
       "site-lisp"
     "local.lisp"))
 
-(defun install-detect-elisp-directory (&optional prefix elisp-prefix)
+(defun install-detect-elisp-directory (&optional prefix elisp-prefix
+						 allow-version-specific)
   (or prefix
       (setq prefix install-prefix)
       )
@@ -165,11 +166,13 @@
 		      (expand-file-name (concat ".*/" elisp-prefix) prefix)
 		      "$")
 	      dir)
-	     (or (string-match (format "%d\\.%d"
-				       emacs-major-version
-				       emacs-minor-version) dir)
+	     (if (or allow-version-specific
+		     (not (string-match (format "%d\\.%d"
+						emacs-major-version
+						emacs-minor-version) dir))
+		     )
 		 (throw 'tag dir)
-		 ))
+	       ))
 	 (setq rest (cdr rest))
 	 )))
    (expand-file-name (concat
