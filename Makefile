@@ -15,24 +15,17 @@ FLAGS   = -batch -q -no-site-file -l APEL-MK
 PREFIX = NONE
 LISPDIR = NONE
 PACKAGEDIR = NONE
-VERSION_SPECIFIC_LISPDIR = NONE
 
 
 elc:
 	$(EMACS) $(FLAGS) -f compile-apel
 
 install:
-	$(EMACS) $(FLAGS) -f install-apel $(PREFIX) $(LISPDIR) \
-		$(VERSION_SPECIFIC_LISPDIR)
+	$(EMACS) $(FLAGS) -f install-apel $(PREFIX) $(LISPDIR)
 
 
 install-package:
 	$(XEMACS) $(FLAGS) -f install-apel-package $(PACKAGEDIR)
-
-
-what-where:
-	$(EMACS) $(FLAGS) -f what-where-apel $(PREFIX) $(LISPDIR) \
-		$(VERSION_SPECIFIC_LISPDIR)
 
 
 clean:

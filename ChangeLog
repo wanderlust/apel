@@ -1,28 +1,3 @@
-1998-10-12  Katsumi Yamaoka   <yamaoka@jpl.org>
-
-	* README.en: Add explanations about
-	`LISPDIR', `VERSION_SPECIFIC_LISPDIR' and `what-where'.
-
-	* Makefile (what-where): New target.
-	(install): Add new arg `VERSION_SPECIFIC_LISPDIR'.
-
-	* APEL-MK (what-where-apel): New function.
- 	(config-apel): Refer to `VERSION_SPECIFIC_LISPDIR'.
-
-	* APEL-CFG (VERSION_SPECIFIC_LISPDIR): New variable.
-
-1998-10-12  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* README.en (load-path): Modify for Emacs 20.3.
-
-1998-10-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* APEL-CFG (EMU_PREFIX): Use "emu" for Emacs 20.3 or later.
-
-	* EMU-ELS: Don't install pccl in anything older than XEmacs 21
-	with MULE.
-
-
 1998-10-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 9.2 was released.
