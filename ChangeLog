@@ -1,3 +1,12 @@
+1999-09-21  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* EMU-ELS (pces-modules): Add `pces-xfc' if the feature `mule' is
+	provided even though the feature `file-coding' is not provided.
+
+	* pces.el: Require `pces-xfc' if the feature `mule' is provided
+	even though the feature `file-coding' is not provided.
+
+
 1999-09-13  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* APEL: Version 9.22 released.
