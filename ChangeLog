@@ -1,17 +1,3 @@
-1998-09-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* APEL: Version 9.0 was released.
-
-	* Delete EMU-CFG and EMU-MK because they have been not used.
-
-1998-09-22  Tanaka Akira      <akr@jaist.ac.jp>
-
-	* README.en (What's APEL?): Add notice for broken.el.
-
-1998-09-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* README.en (What's APEL?): Modify for latest structure.
-
 1998-09-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* mcs-xm.el (charsets-mime-charset-alist): Comment out invalid
