@@ -181,7 +181,7 @@
        (,@ body))))
 
 (defmacro as-binary-input-file (&rest body)
-  (` (let (kanji-flag)
+  (` (let (kanji-flag default-kanji-flag)
        (,@ body))))
 
 (defmacro as-binary-output-file (&rest body)
@@ -239,16 +239,36 @@ It converts line-break code from CRLF to LF. [emu-nemacs.el]"
 (defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but it does not code conversion
 except for line-break code. [emu-nemacs.el]"
-  (or (get-file-buffer filename)
+  (let ((buf (get-file-buffer filename))
+	cur)
+    (if buf
+	(prog1
+	    buf
+	  (or nowarn
+	      (verify-visited-file-modtime buf)
+	      (cond ((not (file-exists-p filename))
+		     (error "File %s no longer exists!" filename))
+		    ((yes-or-no-p
+		      (if (buffer-modified-p buf)
+    "File has changed since last visited or saved.  Flush your changes? "
+  "File has changed since last visited or saved.  Read from disk? "))
+		     (setq cur (current-buffer))
+		     (set-buffer buf)
+		     (revert-buffer t t)
+		     (save-excursion
+		       (goto-char (point-min))
+		       (while (search-forward "\r\n" nil t)
+			 (replace-match "\n")))
+		     (set-buffer-modified-p nil)
+		     (set-buffer cur)))))
       (save-excursion
 	(prog1
 	    (set-buffer
-	     (as-binary-input-file
-	      (find-file-noselect filename nowarn)))
+	     (find-file-noselect-as-binary filename nowarn rawfile))
 	  (while (search-forward "\r\n" nil t)
 	    (replace-match "\n"))
 	  (goto-char (point-min))
-	  (set-buffer-modified-p nil)))))
+	  (set-buffer-modified-p nil))))))
 
 (defalias 'find-file-noselect-as-raw-text-CRLF
   'find-file-noselect-as-raw-text)
@@ -309,8 +329,8 @@ applied to `kanji-fileio-code'. [emu-nemacs.el]"
   (coding-system filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
 be applied to `kanji-fileio-code'. [emu-nemacs.el]"
-  (let ((kanji-fileio-code coding-system)
-	kanji-expected-code)
+  (let ((default-kanji-fileio-code coding-system)
+	kanji-fileio-code kanji-expected-code)
     (find-file-noselect filename nowarn)))
 
 (defun save-buffer-as-coding-system (coding-system &optional args)

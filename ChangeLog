@@ -1,3 +1,15 @@
+1999-02-26  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poem-nemacs.el (find-file-noselect-as-coding-system): Bind
+	`default-kanji-fileio-code' to specified coding system instead of
+	the use of `kanji-fileio-code'; bind `kanji-fileio-code' to nil.
+	(find-file-noselect-as-raw-text): Revert buffer if the file is
+	newer than the buffer.
+	(as-binary-input-file): Bind `default-kanji-flag' to nil.
+
+	* poem-20.el (find-file-noselect-as-binary): Bug fix - use
+	`coding-system-for-read' instead of `coding-system-for-write'.
+
 1999-02-25  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poem-om.el (find-file-noselect-as-raw-text-CRLF): New function.
