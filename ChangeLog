@@ -1,3 +1,12 @@
+2000-02-07  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe-18.el (mod): Define as an alias for `%'.
+	(overlayp, move-overlay, delete-overlay, overlay-start,
+	overlay-end, overlay-buffer, overlay-properties, overlays-at,
+	overlays-in, next-overlay-change, previous-overlay-change,
+	overlay-lists, overlay-recenter, overlay-get):
+	Define as null function.
+
 2000-02-05  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* mcs-20.el (mime-charset-coding-system-alist): Add
@@ -2536,7 +2545,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
