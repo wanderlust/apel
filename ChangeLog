@@ -5,6 +5,7 @@
 	(delete-directory): New function.
 	(write-region): Ditto.
 
+
 2003-06-06  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* APEL: Version 10.5 released.
