@@ -155,12 +155,19 @@ find-file-hooks, etc.
 	(encode-coding-string string cs)
       string)))
 
-(defsubst decode-mime-charset-string (string charset)
+;; (defsubst decode-mime-charset-string (string charset)
+;;   "Decode the STRING as MIME CHARSET."
+;;   (let ((cs (mime-charset-to-coding-system charset)))
+;;     (if cs
+;;         (decode-coding-string string cs)
+;;       string)))
+(defun decode-mime-charset-string (string charset)
   "Decode the STRING as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(decode-coding-string string cs)
-      string)))
+  (with-temp-buffer
+    (insert string)
+    (decode-mime-charset-region (point-min)(point-max) charset)
+    (buffer-string)
+    ))
 
 
 (defvar charsets-mime-charset-alist
