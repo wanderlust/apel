@@ -1,6 +1,6 @@
 ;;; emu-19.el --- emu API implementation for Emacs 19.*
 
-;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version: $Id$
@@ -25,11 +25,17 @@
 
 ;;; Code:
 
-;;; @ text property
+;;; @ face
 ;;;
 
-(defalias 'tl:set-text-properties 'set-text-properties)
-(defalias 'tl:add-text-properties 'add-text-properties)
+(defun-maybe find-face (face)
+  (car (memq face (face-list)))
+  )
+
+
+;;; @ overlay
+;;;
+
 (defalias 'tl:make-overlay 'make-overlay)
 (defalias 'tl:overlay-put 'overlay-put)
 (defalias 'tl:overlay-buffer 'overlay-buffer)

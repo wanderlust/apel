@@ -1,6 +1,6 @@
 ;;; emu-18.el --- emu API implementation for Emacs 18.*
 
-;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version: $Id$
@@ -160,6 +160,11 @@ Associates the function with the current load file, if any.
 	     ))
 	 )))
 
+(defmacro-maybe defsubst (name arglist &rest body)
+  "Define an inline function.  The syntax is just like that of `defun'."
+  (cons 'defun (cons name (cons arglist body)))
+  )
+
 
 ;;; @ file
 ;;;
@@ -268,13 +273,16 @@ With optional non-nil ALL, force redisplay of all mode-lines.
   (set-buffer-modified-p (buffer-modified-p)))
 
 
+;;; @ overlay
+;;;
+
+(defun tl:overlay-buffer (overlay))
+
+
 ;;; @ text property
 ;;;
 
-(defun tl:set-text-properties (start end properties &optional object))
-(defun tl:add-text-properties (start end properties &optional object)) 
 (defun remove-text-properties (start end properties &optional object))
-(defun tl:overlay-buffer (overlay))
 
 
 ;;; @@ visible/invisible

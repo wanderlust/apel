@@ -36,7 +36,19 @@
 	       ))
 	 )))
 
+(defmacro defmacro-maybe (name &rest everything-else)
+  (or (and (fboundp name)
+	   (not (get name 'defmacro-maybe))
+	   )
+      (` (or (fboundp (quote (, name)))
+	     (progn
+	       (defmacro (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defmacro-maybe t)
+	       ))
+	 )))
+
 (put 'defun-maybe 'lisp-indent-function 'defun)
+(put 'defmacro-maybe 'lisp-indent-function 'defun)
 
 
 (or (boundp 'emacs-major-version)
@@ -122,17 +134,18 @@ and `default-mime-charset'. [emu.el]"
 	  default-mime-charset)))
 
 
-;;; @ EMACS 19.29 emulation
+;;; @ Emacs 19.29 emulation
 ;;;
 
 (defvar path-separator ":"
   "Character used to separate concatenated paths.")
 
-(defun-maybe buffer-substring-no-properties (beg end)
-  "Return the text from BEG to END, without text properties, as a string.
-\[emu.el; EMACS 19.29 emulating function]"
-  (let ((string (buffer-substring beg end)))
-    (tl:set-text-properties 0 (length string) nil string)
+(defun-maybe buffer-substring-no-properties (start end)
+  "Return the characters of part of the buffer, without the text properties.
+The two arguments START and END are character positions;
+they can be in either order. [Emacs 19.29 emulating function]"
+  (let ((string (buffer-substring start end)))
+    (set-text-properties 0 (length string) nil string)
     string))
 
 (defun-maybe match-string (num &optional string)
@@ -141,7 +154,7 @@ NUM specifies which parenthesized expression in the last regexp.
  Value is nil if NUMth pair didn't match, or there were less than NUM pairs.
 Zero means the entire text matched by the whole regexp or whole string.
 STRING should be given if the last search was by `string-match' on STRING.
-\[emu.el; EMACS 19.29 emulating function]"
+\[Emacs 19.29 emulating function]"
   (if (match-beginning num)
       (if string
 	  (substring string (match-beginning num) (match-end num))
@@ -163,20 +176,20 @@ See `read-from-minibuffer' for details of HISTORY argument."
 	)
       ))
 
+
+;;; @ Emacs 19.30 emulation
+;;;
+
 ;; This function was imported Emacs 19.30.
 (defun-maybe add-to-list (list-var element)
   "Add to the value of LIST-VAR the element ELEMENT if it isn't there yet.
 If you want to use `add-to-list' on a variable that is not defined
 until a certain package is loaded, you should put the call to `add-to-list'
 into a hook function that will be run only after loading the package.
-\[emu.el; EMACS 19.30 emulating function]"
+\[Emacs 19.30 emulating function]"
   (or (member element (symbol-value list-var))
       (set list-var (cons element (symbol-value list-var)))
       ))
-
-
-;;; @ EMACS 19.30 emulation
-;;;
 
 (cond ((fboundp 'insert-file-contents-literally)
        )
@@ -188,7 +201,7 @@ A buffer may be modified in several ways after reading into the buffer due
 to advanced Emacs features, such as file-name-handlers, format decoding,
 find-file-hooks, etc.
   This function ensures that none of these modifications will take place.
-\[emu.el; Emacs 19.30 emulating function]"
+\[Emacs 19.30 emulating function]"
 	 (let (file-name-handler-alist)
 	   (insert-file-contents filename visit beg end replace)
 	   ))
@@ -198,29 +211,27 @@ find-file-hooks, etc.
        ))
 
 
-;;; @ EMACS 19.31 emulation
+;;; @ Emacs 19.31 emulation
 ;;;
 
 (defun-maybe buffer-live-p (object)
   "Return non-nil if OBJECT is a buffer which has not been killed.
 Value is nil if OBJECT is not a buffer or if it has been killed.
-\[emu.el; EMACS 19.31 emulating function]"
+\[Emacs 19.31 emulating function]"
   (and object
        (get-buffer object)
        (buffer-name (get-buffer object))
        ))
 
-(or (fboundp 'save-selected-window)
-    ;; This function was imported Emacs 19.33.
-    (defmacro save-selected-window (&rest body)
-      "Execute BODY, then select the window that was selected before BODY.
-\[emu.el; EMACS 19.31 emulating function]"
-      (list 'let
-	    '((save-selected-window-window (selected-window)))
-	    (list 'unwind-protect
-		  (cons 'progn body)
-		  (list 'select-window 'save-selected-window-window)))) 
-    )
+;; This macro was imported Emacs 19.33.
+(defmacro-maybe save-selected-window (&rest body)
+  "Execute BODY, then select the window that was selected before BODY.
+\[Emacs 19.31 emulating function]"
+  (list 'let
+	'((save-selected-window-window (selected-window)))
+	(list 'unwind-protect
+	      (cons 'progn body)
+	      (list 'select-window 'save-selected-window-window))))
 
 
 ;;; @ XEmacs emulation
@@ -228,7 +239,7 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
 
 (defun-maybe functionp (obj)
   "Returns t if OBJ is a function, nil otherwise.
-\[emu.el; XEmacs emulating function]"
+\[XEmacs emulating function]"
   (or (subrp obj)
       (byte-code-function-p obj)
       (and (symbolp obj)(fboundp obj))

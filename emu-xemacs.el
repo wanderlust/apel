@@ -1,14 +1,14 @@
 ;;; emu-xemacs.el --- emu API implementation for XEmacs
 
 ;; Copyright (C) 1995 Free Software Foundation, Inc.
-;; Copyright (C) 1995,1996 MORIOKA Tomohiko
+;; Copyright (C) 1995,1996,1997 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version:
 ;;	$Id$
 ;; Keywords: emulation, compatibility, XEmacs
 
-;; This file is part of emu.
+;; This file is part of XEmacs.
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -27,7 +27,7 @@
 
 ;;; Code:
 
-;;; @ text property
+;;; @ face
 ;;;
 
 (or (fboundp 'face-list)
@@ -42,23 +42,9 @@
 (or (face-differs-from-default-p 'underline)
     (set-face-underline-p 'underline t))
 
-(or (fboundp 'tl:set-text-properties)
-    (defun tl:set-text-properties (start end props &optional buffer)
-      (if (or (null buffer) (bufferp buffer))
-	  (if props
-	      (while props
-		(put-text-property 
-		 start end (car props) (nth 1 props) buffer)
-		(setq props (nthcdr 2 props)))
-	    (remove-text-properties start end ())
-	    )))
-    )
 
-(defun tl:add-text-properties (start end properties &optional object)
-  (add-text-properties start end
-		       (append properties (list 'highlight t))
-		       object)
-  )
+;;; @ overlay
+;;;
 
 (defalias 'tl:make-overlay 'make-extent)
 (defalias 'tl:overlay-put 'set-extent-property)

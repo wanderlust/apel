@@ -23,6 +23,10 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;; This module requires XEmacs 20.1 b6 or later with mule.
+
 ;;; Code:
 
 (require 'cyrillic)
@@ -33,27 +37,22 @@
 ;;;
 
 (defconst *noconv* 'no-conversion)
-(defconst *ctext*  'ctext)
-(defconst *hz*     'hz)
-(defconst *big5*   'big5)
-(defconst *euc-kr* 'euc-kr)
-(defconst *koi8*   'koi8)
 
 (defalias 'set-buffer-file-coding-system 'set-file-coding-system)
 
 (defmacro as-binary-process (&rest body)
   `(let (selective-display	; Disable ^M to nl translation.
-	 (file-coding-system 'no-conversion)
+	 (coding-system-for-write 'no-conversion)
 	 process-input-coding-system
 	 process-output-coding-system)
      ,@body))
 
 (defmacro as-binary-input-file (&rest body)
-  `(let ((file-coding-system-for-read 'no-conversion))
+  `(let ((coding-system-for-read 'no-conversion))
      ,@body))
 
 (defmacro as-binary-output-file (&rest body)
-  `(let ((file-coding-system 'no-conversion))
+  `(let ((coding-system-for-write 'no-conversion))
      ,@body))
 
 
@@ -67,7 +66,7 @@ A buffer may be modified in several ways after reading into the buffer due
 to advanced Emacs features, such as file-name-handlers, format decoding,
 find-file-hooks, etc.
   This function ensures that none of these modifications will take place."
-  (let ((file-coding-system-for-read 'no-conversion))
+  (let ((coding-system-for-read 'no-conversion))
     (insert-file-contents-literally filename visit beg end replace)
     ))
 

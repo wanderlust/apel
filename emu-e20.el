@@ -148,8 +148,6 @@ find-file-hooks, etc.
   '((x-ctext		. ctext)
     (gb2312		. cn-gb-2312)
     (iso-2022-jp-2	. iso-2022-ss2-7)
-    (iso-2022-int-1	. iso-2022-int)
-    (shift_jis		. sjis)
     ))
 
 (defun mime-charset-to-coding-system (charset &optional lbt)
