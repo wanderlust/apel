@@ -1,5 +1,10 @@
 1998-06-09  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* emu-xemacs.el: Use nil as variable of `condition-case' to avoid
+	byte-compiler warning.
+
+1998-06-09  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu.el (when): New macro.
 
 1998-06-09  Katsumi Yamaoka   <yamaoka@jpl.org>
