@@ -1,3 +1,21 @@
+2000-12-22  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* timezone.el (timezone-time-from-absolute): Use `%' instead of `mod'.
+
+2000-12-21  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poe-18.el (numberp, mod): Removed.
+
+2000-12-21  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* mcharset.el (default-mime-charset-for-write): Require `pces' for
+	`find-coding-system'.
+
+2000-12-21  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* poe-18.el (minor-mode-alist): Removed.
+	(minor-mode-overriding-map-alist): Move to poe.el.
+
 2000-12-20  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* APEL-MK (install-apel): Add new optional argument `just-print'.
@@ -2758,7 +2776,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
