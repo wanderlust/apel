@@ -71,6 +71,8 @@
       (list lc-ltn1)
     ))
 
+(defalias 'find-non-ascii-charset-string 'find-charset-string)
+
 (defun find-charset-region (start end)
   "Return a list of charsets in the region between START and END.
 \[emu-e19.el; Mule emulating function]"
@@ -82,6 +84,8 @@
 	  ))
       (list lc-ltn1)
     ))
+
+(defalias 'find-non-ascii-charset-region 'find-charset-region)
 
 ;;; @@ for old MULE emulation
 ;;;

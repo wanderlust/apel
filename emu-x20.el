@@ -41,13 +41,16 @@
 
 (defalias 'charset-description 'charset-doc-string)
 
-(defun find-charset-string (string)
+(defalias 'find-charset-string 'charsets-in-string)
+(defalias 'find-charset-region 'charsets-in-region)
+
+(defun find-non-ascii-charset-string (string)
   "Return a list of charsets in the STRING except ascii.
 \[emu-x20.el; Mule emulating function]"
   (delq 'ascii (charsets-in-string string))
   )
 
-(defun find-charset-region (start end)
+(defun find-non-ascii-charset-region (start end)
   "Return a list of charsets except ascii
 in the region between START and END.
 \[emu-x20.el; Mule emulating function]"

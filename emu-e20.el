@@ -1,10 +1,10 @@
-;;; emu-e20.el --- emu API implementation for mule merged EMACS
+;;; emu-e20.el --- emu API implementation for mule merged Emacs
 
 ;; Copyright (C) 1996 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version: $Id$
-;; Keywords: emulation, compatibility, MULE
+;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of tl (Tiny Library).
 
@@ -30,23 +30,38 @@
 
 (require 'emu-19)
 
+(defun fontset-height (fontset)
+  (let* ((info (fontset-info fontset))
+	 (height (aref info 1))
+	 )
+    (if (> height 0)
+	height
+      (let ((str
+	     (car (aref (aref info 2) 0))
+	     ))
+	(if (string-match "--\\([0-9]+\\)-\\*-\\*-\\*-\\*-\\*-ISO8859-1" str)
+	    (string-to-number
+	     (substring str (match-beginning 1)(match-end 1))
+	     )
+	  0)))))
+
 
 ;;; @ character set
 ;;;
 
 (defalias 'charset-columns 'charset-width)
 
-(defun find-charset-string (string)
+(defun find-non-ascii-charset-string (string)
   "Return a list of charsets in the STRING except ascii.
-\[emu-e20.el; MULE emulating function]"
-  (delq charset-ascii (find-charset-in-string string))
+\[emu-e20.el; Mule emulating function]"
+  (delq charset-ascii (find-charset-string string))
   )
 
-(defun find-charset-region (start end)
+(defun find-non-ascii-charset-region (start end)
   "Return a list of charsets except ascii
 in the region between START and END.
-\[emu-e20.el; MULE emulating function]"
-  (delq charset-ascii (find-charset-in-string (buffer-substring start end)))
+\[emu-e20.el; Mule emulating function]"
+  (delq charset-ascii (find-charset-string (buffer-substring start end)))
   )
 
 
@@ -57,7 +72,7 @@ in the region between START and END.
 
 (defmacro as-binary-process (&rest body)
   `(let (selective-display	; Disable ^M to nl translation.
-	 ;; for mule merged EMACS
+	 ;; for mule merged Emacs
 	 (default-process-coding-system 'no-conversion)
 	 )
      ,@ body))
@@ -155,7 +170,7 @@ in the region between START and END.
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END. [emu-e20.el]"
   (charsets-to-mime-charset
-   (find-charset-in-string (buffer-substring start end))
+   (find-charset-string (buffer-substring start end))
    ))
 
 (defun encode-mime-charset-region (start end charset)
@@ -205,7 +220,7 @@ in the region between START and END.
   "Return string of category mnemonics for CHAR in TABLE.
 CHAR can be any multilingual character
 TABLE defaults to the current buffer's category table.
-\[emu-e20.el; MULE emulating function]"
+\[emu-e20.el; Mule emulating function]"
   (category-set-mnemonics (char-category-set character))
   )
 
@@ -219,7 +234,7 @@ TABLE defaults to the current buffer's category table.
 
 (defun string-to-char-list (string)
   "Return a list of which elements are characters in the STRING.
-\[emu-e20.el; MULE 2.3 emulating function]"
+\[emu-e20.el; Mule 2.3 emulating function]"
   (let* ((len (length string))
 	 (i 0)
 	 l chr)
@@ -234,14 +249,14 @@ TABLE defaults to the current buffer's category table.
 (defalias 'string-to-int-list 'string-to-char-list)
 
 (or (fboundp 'truncate-string)
-(defun truncate-string (str width &optional start-column)
-  "Truncate STR to fit in WIDTH columns.
+(defun truncate-string (string width &optional start-column)
+  "Truncate STRING to fit in WIDTH columns.
 Optional non-nil arg START-COLUMN specifies the starting column.
 \[emu-e20.el; MULE 2.3 emulating function]"
   (or start-column
       (setq start-column 0))
-  (let ((max-width (string-width str))
-	(len (length str))
+  (let ((max-width (string-width string))
+	(len (length string))
 	(from 0)
 	(column 0)
 	to-prev to ch b)
@@ -250,7 +265,7 @@ Optional non-nil arg START-COLUMN specifies the starting column.
     (if (>= start-column width)
 	""
       (while (< column start-column)
-	(setq ch (aref str from)
+	(setq ch (aref string from)
 	      column (+ column (char-width ch))
 	      from (if (= (setq b (charset-bytes ch)) 0)
 		       (1+ from)
@@ -260,8 +275,9 @@ Optional non-nil arg START-COLUMN specifies the starting column.
       (if (< width max-width)
 	  (progn
 	    (setq to from)
-	    (while (<= column width)
-	      (setq ch (aref str to)
+	    (while (and (<= column width)
+			(< to len))
+	      (setq ch (aref string to)
 		    column (+ column (char-width ch))
 		    to-prev to
 		    to (if (= (setq b (charset-bytes ch)) 0)
@@ -270,7 +286,7 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 			 ))
 	      )
 	    (setq to to-prev)))
-      (substring str from to))))
+      (substring string from to))))
 ;;;
   )
 

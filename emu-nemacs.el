@@ -66,6 +66,8 @@
       (list lc-jp)
     ))
 
+(defalias 'find-non-ascii-charset-string 'find-charset-string)
+
 (defun find-charset-region (start end)
   "Return a list of charsets in the region between START and END.
 \[emu-nemacs.el; Mule emulating function]"
@@ -77,6 +79,8 @@
 	  ))
       (list lc-jp)
     ))
+
+(defalias 'find-non-ascii-charset-region 'find-charset-region)
 
 (defun check-ASCII-string (str)
   (let ((i 0)
