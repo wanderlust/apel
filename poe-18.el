@@ -143,11 +143,10 @@ If NEW is a string, that is the `use instead' message."
 (defun make-directory-internal (dirname)
   "Create a directory. One argument, a file name string.
 \[poe-18.el; EMACS 19 emulating function]"
-  (if (file-exists-p dirname)
-      (error "Creating directory: %s is already exist" dirname)
-    (if (not (= (call-process "mkdir" nil nil nil dirname) 0))
-	(error "Creating directory: no such file or directory, %s" dirname)
-      )))
+ (let ((dir (expand-file-name dirname)))
+   (if (file-exists-p dir)
+      (error "Creating directory: %s is already exist" dir)
+     (call-process "mkdir" nil nil nil dir))))
 
 (defun make-directory (dir &optional parents)
   "Create the directory DIR and any nonexistent parent dirs.
