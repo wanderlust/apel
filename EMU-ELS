@@ -25,7 +25,8 @@
 	      )
 	     (running-mule-merged-emacs
 	      ;; for Emacs 20.1 or later
-	      (cons (if (= (length "あ") 1)
+	      (cons (if (and (fboundp 'set-buffer-multibyte)
+			     (subrp (symbol-function 'set-buffer-multibyte)))
 			'emu-e20_3 ; for Emacs 20.3
 		      'emu-e20_2 ; for Emacs 20.1 and 20.2
 		      )
