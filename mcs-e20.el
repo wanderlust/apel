@@ -1,8 +1,8 @@
 ;;; mcs-e20.el --- MIME charset implementation for Emacs 20.1 and 20.2
 
-;; Copyright (C) 1996,1997,1998 Free Software Foundation, Inc.
+;; Copyright (C) 1996,1997,1998,1999 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -28,7 +28,10 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'static))
+(eval-when-compile
+  (require 'static)
+  (require 'poem)
+  )
 
 (defsubst encode-mime-charset-region (start end charset &optional lbt)
   "Encode the text between START and END as MIME CHARSET."
@@ -155,15 +158,19 @@ Return nil if corresponding MIME-charset is not found."
       dest)
     ))
 
-(static-when (string= (decode-coding-string "\e.A\eN!" 'ctext) "\eN!")
-  (make-coding-system
-   'x-ctext 2 ?x
-   "Compound text based generic encoding for decoding unknown messages."
-   '((ascii t) (latin-iso8859-1 t) t t
-     nil ascii-eol ascii-cntl nil locking-shift single-shift nil nil nil
-     init-bol nil nil)
-   '((safe-charsets . t)
-     (mime-charset . x-ctext))))
+(static-when (or (string= (decode-coding-string "\e.A\eN!" 'ctext) "\eN!")
+		 (find-coding-system 'x-ctext))
+  (require 'poem)
+  (or (find-coding-system 'x-ctext)
+      (make-coding-system
+       'x-ctext 2 ?x
+       "Compound text based generic encoding for decoding unknown messages."
+       '((ascii t) (latin-iso8859-1 t) t t
+	 nil ascii-eol ascii-cntl nil locking-shift single-shift nil nil nil
+	 init-bol nil nil)
+       '((safe-charsets . t)
+	 (mime-charset . x-ctext)))
+      ))
 
 
 ;;; @ end
