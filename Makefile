@@ -27,7 +27,7 @@ TLDIR19 = $(HOME)/lib/emacs19/lisp
 FILES	= tl/README.eng tl/Makefile tl/Makefile.bc tl/loadpath \
 	tl/*.el tl/doc/*.texi
 
-TARFILE = tl-6.6.tar
+TARFILE = tl-6.6.1.tar
 
 
 nemacs:

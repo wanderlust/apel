@@ -55,4 +55,43 @@ Associates the function with the current load file, if any.
   (fset SYM (symbol-function NEWDEF))
   NEWDEF)
 
+(defun make-directory-internal (dirname)
+  "Create a directory. One argument, a file name string.
+\[emu-18 Emacs 19 emulating function]"
+  (if (file-exists-p dirname)
+      (error "Creating directory: %s is already exist" dirname)
+    (if (not (= (call-process "mkdir" nil nil nil dirname) 0))
+	(error "Creating directory: no such file or directory, %s" dirname)
+      )))
+
+(defun make-directory (dir &optional parents)
+  "Create the directory DIR and any nonexistent parent dirs.
+The second (optional) argument PARENTS says whether
+to create parent directories if they don't exist.
+\[emu-18 Emacs 19 emulating function]"
+  (let ((len (length dir))
+	(p 0) p1 path)
+    (catch 'tag
+      (while (and (< p len) (string-match "[^/]*/?" dir p))
+	(setq p1 (match-end 0))
+	(if (= p1 len)
+	    (throw 'tag nil)
+	  )
+	(setq path (substring dir 0 p1))
+	(if (not (file-directory-p path))
+	    (cond ((file-exists-p path)
+		   (error "Creating directory: %s is not directory" path)
+		   )
+		  ((null parents)
+		   (error "Creating directory: %s is not exist" path)
+		   )
+		  (t
+		   (make-directory-internal path)
+		   ))
+	  )
+	(setq p p1)
+	))
+    (make-directory-internal dir)
+    ))
+
 (provide 'emu-18)
