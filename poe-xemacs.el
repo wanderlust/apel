@@ -25,6 +25,20 @@
 
 ;;; Code:
 
+;;; @ color
+;;;
+
+(defun-maybe set-cursor-color (color-name)
+  "Set the text cursor color of the selected frame to COLOR.
+When called interactively, prompt for the name of the color to use.
+To get the frame's current cursor color, use `frame-parameters'."
+  (interactive "sColor: ")
+  (set-frame-property (selected-frame) 'cursor-color
+                      (if (color-instance-p color-name)
+                          color-name
+                        (make-color-instance color-name))))
+
+
 ;;; @ face
 ;;;
 

@@ -143,7 +143,7 @@
 ;;; @ Emacs 19.29 emulation
 ;;;
 
-(defvar path-separator ":"
+(defvar-maybe path-separator ":"
   "Character used to separate concatenated paths.")
 
 (defun-maybe buffer-substring-no-properties (start end)
@@ -182,19 +182,30 @@ See `read-from-minibuffer' for details of HISTORY argument."
 	(si:read-string prompt initial-input))
       ))
 
+(defun-maybe rassoc (key list)
+  "Return non-nil if KEY is `equal' to the cdr of an element of LIST.
+The value is actually the element of LIST whose cdr equals KEY."
+  (catch 'found
+    (while list
+      (if (equal (cdr (car list)) key)
+	  (throw 'found (car list))
+	)
+      (setq list (cdr list)))
+    ))
+
 (defmacro-maybe make-local-hook (hook))
 
 ;; They are not Emacs features
 
 (defmacro-maybe add-local-hook (hook function &optional append)
   (if (fboundp 'make-local-hook)
-      (list 'add-hook hook function append 'local)
+      (list 'add-hook hook function append t)
     (list 'add-hook hook function append)
     ))
 
-(defmacro remove-local-hook (hook function)
+(defmacro-maybe remove-local-hook (hook function)
   (if (fboundp 'make-local-hook)
-      (list 'remove-hook hook function 'local)
+      (list 'remove-hook hook function t)
     (list 'remove-hook hook function)
     ))
 
