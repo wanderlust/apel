@@ -368,8 +368,6 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
 	      (cons 'progn body)
 	      (list 'select-window 'save-selected-window-window))))
 
-(autoload (function filename-maybe-truncate-by-size) "filename")
-
 (defun-maybe-cond convert-standard-filename (filename)
   "Convert a standard file's name to something suitable for the current OS.
 This function's standard definition is trivial; it just returns the argument.
@@ -379,6 +377,7 @@ Under `windows-nt' or `ms-dos', it refers `filename-replacement-alist' and
 `filename-limit-length' for the basic filename and each parent directory name.
 \[Emacs 19.31 emulating function]"
   ((memq system-type '(windows-nt ms-dos))
+   (require 'filename)
    (let* ((names (split-string filename "/"))
 	  (drive-name (car names))
 	  (filter (function (lambda (string)
