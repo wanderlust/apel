@@ -29,7 +29,6 @@
 ;;; Code:
 
 (require 'emu-e19)
-(require 'emu-e20_2)
 
 (defun fontset-pixel-size (fontset)
   (let* ((info (fontset-info fontset))
@@ -43,6 +42,12 @@
 	   )
 	  (t 0)
 	  )))
+
+(if (and (fboundp 'set-buffer-multibyte)
+	 (subrp (symbol-function 'set-buffer-multibyte)))
+    (require 'emu-e20_3) ; for Emacs 20.3
+  (require 'emu-e20_2) ; for Emacs 20.1 and 20.2
+  )
 
 
 ;;; @ character set
