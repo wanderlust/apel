@@ -1,6 +1,6 @@
 ;;; product.el --- Functions for product version information.
 
-;; Copyright (C) 1999 Shuhei KOBAYASHI
+;; Copyright (C) 1999 Free Software Foundation, Inc.
 ;; Copyright (C) 1999 Keiichi Suzuki
 
 ;; Author: Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
