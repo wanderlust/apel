@@ -103,7 +103,9 @@
 ;;; @ to coding-system
 ;;;
 
-(require 'cyrillic)
+(condition-case nil
+    (require 'cyrillic)
+  (error nil))
 
 (defvar mime-charset-coding-system-alist
   '((iso-8859-1      . *ctext*)
