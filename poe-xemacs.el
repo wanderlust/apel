@@ -147,13 +147,15 @@ Note that it allows neither a string nor a time in the Emacs style
 		    (set-itimer-function
 		     itimer
 		     (lambda (itimer function &rest args)
+		       (set-itimer-restart itimer nil)
 		       (delete-itimer itimer)
 		       (apply function args)))
 		    (set-itimer-function-arguments
 		     itimer
 		     (append (list itimer function) args)))))
 	      1e-9 (if time (max time 1e-9) 1e-9)
-	      nil t itimers repeat function args)))))
+	      nil t itimers repeat function args))
+      (setq ad-return-value (car itimers)))))
 
 
 ;;; @ to avoid bug of XEmacs 19.14
