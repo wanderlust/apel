@@ -1,3 +1,7 @@
+1999-05-17  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe-18.el (eval-when-compile, eval-and-compile): Reverted.
+
 1999-05-16  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* pcustom.el (toplevel): Require 'poe.
