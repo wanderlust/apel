@@ -50,6 +50,10 @@
 	* README.en (Version specific information): New section.
 	(Bug reports): Updated description of APEL mailing-lists.
 
+	* pcustom.el [old custom]: Refer to it.
+
+	* tinycustom.el: checkdoc.
+
 1999-11-11  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* localhook.el, pcustom.el: checkdoc.
