@@ -21,24 +21,36 @@
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; along with this program; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Code:
 
-(require 'broken)
+;; If old compiler is used under v18, `eval-when-compile' and
+;; `static-if' are expanded (and evaluated) at *load-time*.
+(eval-when-compile (require 'static))
 
-(broken-facility new-custom
-  "New custom library not found; we use tinycustom for emulation."
-  (condition-case nil
-      (and (require 'custom)
-	   (fboundp 'custom-declare-variable))
-    (error nil)))
-
-(if-broken new-custom
-    (require 'tinycustom)
-  (require 'custom))
+;; XXX: needs better abstraction.
+(static-if (condition-case nil
+	       ;; compile-time check.
+	       ;; "new custom" requires widget library.
+	       (and (require 'widget)
+		    (require 'custom)
+		    (fboundp 'custom-declare-variable))
+	     (error nil))
+    ;; you have "new custom". no load-time check.
+    (require 'custom)
+  ;; your custom is "old custom", or you don't have custom library.
+  (or (condition-case nil
+	  ;; load-time check.
+	  ;; "new custom" requires widget library.
+	  (and (require 'widget)
+	       (require 'custom)
+	       (fboundp 'custom-declare-variable))
+	(error nil))
+      ;; load emulation version.
+      (require 'tinycustom)))
 
 (provide 'pcustom)
 
