@@ -26,23 +26,27 @@
 
 (put 'static-if 'lisp-indent-function 2)
 (defmacro static-if (cond then &rest else)
+  "`if' expression but COND is evaluated at compile-time."
   (if (eval cond)
       then
     (` (progn  (,@ else)))))
 
 (put 'static-when 'lisp-indent-function 1)
 (defmacro static-when (cond &rest body)
+  "`when' expression but COND is evaluated at compile-time."
   (if (eval cond)
       (` (progn (,@ body)))))
 
 (put 'static-unless 'lisp-indent-function 1)
 (defmacro static-unless (cond &rest body)
+  "`unless' expression but COND is evaluated at compile-time."
   (if (eval cond)
       nil
     (` (progn (,@ body)))))
 
 (put 'static-condition-case 'lisp-indent-function 2)
 (defmacro static-condition-case (var bodyform &rest handlers)
+  "`condition-case' expression but BODYFORM is evaluated at compile-time."
   (eval (` (condition-case (, var)
 	       (list (quote quote) (, bodyform))
 	     (,@ (mapcar

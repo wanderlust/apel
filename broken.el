@@ -50,7 +50,6 @@
   )
 
 (put 'broken-facility 'lisp-indent-function 1)
-
 (defmacro broken-facility (facility &optional docstring assertion no-notice)
   "Declare that FACILITY emulation is broken if ASSERTION is nil.
 ASSERTION is evaluated statically.
