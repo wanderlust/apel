@@ -1,6 +1,6 @@
-;;; emu-e20.el --- emu API implementation for Emacs/mule (delta)
+;;; emu-e20.el --- emu API implementation for Emacs/mule (19.34.91)
 
-;; Copyright (C) 1996 Free Software Foundation, Inc.
+;; Copyright (C) 1996,1997 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version: $Id$
@@ -31,42 +31,35 @@
 (require 'emu-19)
 
 (defun fontset-pixel-size (fontset)
-  (require 'cl)
   (let* ((info (fontset-info fontset))
 	 (height (aref info 1))
 	 )
-    (if (> height 0)
-	height
-      (let ((str (car (find-if (function identity) (aref info 2)))))
-	(if (string-match "--\\([0-9]+\\)-\\*-\\*-\\*-\\*-\\*-ISO8859-1" str)
-	    (string-to-number
-	     (substring str (match-beginning 1)(match-end 1))
-	     )
-	  0)))))
+    (cond ((> height 0) height)
+	  ((string-match "-\\([0-9]+\\)-" fontset)
+	   (string-to-number
+	    (substring fontset (match-beginning 1)(match-end 1))
+	    )
+	   )
+	  (t 0)
+	  )))
 
 
 ;;; @ character set
 ;;;
 
-(defalias 'charset-columns 'charset-width)
-
-(defun charset-iso-class (charset)
-  "Return ISO-class of CHARSET.
-\(0/CLASS94, 1/CLASS96, 2/CLASS94x94, 3/CLASS96x96) [emu-e20.el]"
-  (aref (charset-info charset) 5)
-  )
+;; (defalias 'charset-columns 'charset-width)
 
 (defun find-non-ascii-charset-string (string)
   "Return a list of charsets in the STRING except ascii.
 \[emu-e20.el; Mule emulating function]"
-  (delq charset-ascii (find-charset-string string))
+  (delq 'ascii (find-charset-string string))
   )
 
 (defun find-non-ascii-charset-region (start end)
   "Return a list of charsets except ascii
 in the region between START and END.
 \[emu-e20.el; Mule emulating function]"
-  (delq charset-ascii (find-charset-string (buffer-substring start end)))
+  (delq 'ascii (find-charset-string (buffer-substring start end)))
   )
 
 
@@ -94,65 +87,41 @@ in the region between START and END.
 ;;;
 
 (defvar charsets-mime-charset-alist
-  (list
-   (cons (list charset-ascii)				'us-ascii)
-   (cons (list charset-ascii charset-latin-iso8859-1)	'iso-8859-1)
-   (cons (list charset-ascii charset-latin-iso8859-2)	'iso-8859-2)
-   (cons (list charset-ascii charset-latin-iso8859-3)	'iso-8859-3)
-   (cons (list charset-ascii charset-latin-iso8859-4)	'iso-8859-4)
-;;;(cons (list charset-ascii
-;;;            charset-cyrillic-iso8859-5)		'iso-8859-5)
-   (cons (list charset-ascii
-	       charset-cyrillic-iso8859-5)		'koi8-r)
-   (cons (list charset-ascii charset-arabic-iso8859-6)	'iso-8859-6)
-   (cons (list charset-ascii charset-greek-iso8859-7)	'iso-8859-7)
-   (cons (list charset-ascii charset-hebrew-iso8859-8)	'iso-8859-8)
-   (cons (list charset-ascii charset-latin-iso8859-9)	'iso-8859-9)
-   (cons (list charset-ascii
-	       charset-latin-jisx0201
-	       charset-japanese-jisx0208-1978
-	       charset-japanese-jisx0208)		'iso-2022-jp)
-   (cons (list charset-ascii charset-korean-ksc5601)	'euc-kr)
-   (cons (list charset-ascii charset-chinese-gb2312)	'cn-gb-2312)
-   (cons (list charset-ascii
-	       charset-chinese-big5-1
-	       charset-chinese-big5-2)			'cn-big5)
-   (cons (list charset-ascii charset-latin-iso8859-1
-	       charset-greek-iso8859-7
-	       charset-latin-jisx0201
-	       charset-japanese-jisx0208-1978
-	       charset-chinese-gb2312
-	       charset-japanese-jisx0208
-	       charset-korean-ksc5601
-	       charset-japanese-jisx0212)		'iso-2022-jp-2)
-   (cons (list charset-ascii charset-latin-iso8859-1
-	       charset-greek-iso8859-7
-	       charset-latin-jisx0201
-	       charset-japanese-jisx0208-1978
-	       charset-chinese-gb2312
-	       charset-japanese-jisx0208
-	       charset-korean-ksc5601
-	       charset-japanese-jisx0212
-	       charset-chinese-cns11643-1
-	       charset-chinese-cns11643-2)		'iso-2022-int-1)
-   (cons (list charset-ascii charset-latin-iso8859-1
-	       charset-latin-iso8859-2
-	       charset-cyrillic-iso8859-5
-	       charset-greek-iso8859-7
-	       charset-latin-jisx0201
-	       charset-japanese-jisx0208-1978
-	       charset-chinese-gb2312
-	       charset-japanese-jisx0208
-	       charset-korean-ksc5601
-	       charset-japanese-jisx0212
-	       charset-chinese-cns11643-1
-	       charset-chinese-cns11643-2
-	       charset-chinese-cns11643-3
-	       charset-chinese-cns11643-4
-	       charset-chinese-cns11643-5
-	       charset-chinese-cns11643-6
-	       charset-chinese-cns11643-7)		'iso-2022-int-1)
-   ))
+  '(((ascii)						. us-ascii)
+    ((ascii latin-iso8859-1)				. iso-8859-1)
+    ((ascii latin-iso8859-2)				. iso-8859-2)
+    ((ascii latin-iso8859-3)				. iso-8859-3)
+    ((ascii latin-iso8859-4)				. iso-8859-4)
+;;; ((ascii cyrillic-iso8859-5)				. iso-8859-5)
+    ((ascii cyrillic-iso8859-5)				. koi8-r)
+    ((ascii arabic-iso8859-6)				. iso-8859-6)
+    ((ascii greek-iso8859-7)				. iso-8859-7)
+    ((ascii hebrew-iso8859-8)				. iso-8859-8)
+    ((ascii latin-iso8859-9)				. iso-8859-9)
+    ((ascii latin-jisx0201
+	    japanese-jisx0208-1978 japanese-jisx0208)	. iso-2022-jp)
+    ((ascii korean-ksc5601)				. euc-kr)
+    ((ascii chinese-gb2312)				. cn-gb-2312)
+    ((ascii chinese-big5-1 chinese-big5-2)		. cn-big5)
+    ((ascii latin-iso8859-1 greek-iso8859-7
+	    latin-jisx0201 japanese-jisx0208-1978
+	    chinese-gb2312 japanese-jisx0208
+	    korean-ksc5601 japanese-jisx0212)		. iso-2022-jp-2)
+    ((ascii latin-iso8859-1 greek-iso8859-7
+	    latin-jisx0201 japanese-jisx0208-1978
+	    chinese-gb2312 japanese-jisx0208
+	    korean-ksc5601 japanese-jisx0212
+	    chinese-cns11643-1 chinese-cns11643-2)	. iso-2022-int-1)
+    ((ascii latin-iso8859-1 latin-iso8859-2
+	    cyrillic-iso8859-5 greek-iso8859-7
+	    latin-jisx0201 japanese-jisx0208-1978
+	    chinese-gb2312 japanese-jisx0208
+	    korean-ksc5601 japanese-jisx0212
+	    chinese-cns11643-1 chinese-cns11643-2
+	    chinese-cns11643-3 chinese-cns11643-4
+	    chinese-cns11643-5 chinese-cns11643-6
+	    chinese-cns11643-7)				. iso-2022-int-1)
+    ))
 
 (defvar default-mime-charset 'x-ctext)
 
@@ -244,7 +213,7 @@ TABLE defaults to the current buffer's category table.
 
 (defalias 'string-columns 'string-width)
 
-(defalias 'sset 'string-embed-string)
+(defalias 'sset 'store-substring)
 
 (defun string-to-char-list (string)
   "Return a list of which elements are characters in the STRING.
@@ -266,29 +235,29 @@ TABLE defaults to the current buffer's category table.
 ;;; @ regulation
 ;;;
 
-(defun regulate-latin-char (chr)
-  (cond ((and (<= ?Ａ chr)(<= chr ?Ｚ))
-	 (+ (- chr ?Ａ) ?A)
-	 )
-	((and (<= ?ａ chr)(<= chr ?ｚ))
-	 (+ (- chr ?ａ) ?a)
-	 )
-	((eq chr ?．) ?.)
-	((eq chr ?，) ?,)
-	(t chr)
-	))
+;; (defun regulate-latin-char (chr)
+;;   (cond ((and (<= ?Ａ chr)(<= chr ?Ｚ))
+;;          (+ (- chr ?Ａ) ?A)
+;;          )
+;;         ((and (<= ?ａ chr)(<= chr ?ｚ))
+;;          (+ (- chr ?ａ) ?a)
+;;          )
+;;         ((eq chr ?．) ?.)
+;;         ((eq chr ?，) ?,)
+;;         (t chr)
+;;         ))
 
-(defun regulate-latin-string (str)
-  (let ((len (length str))
-	(i 0)
-	chr (dest ""))
-    (while (< i len)
-      (setq chr (sref str i))
-      (setq dest (concat dest
-			 (char-to-string (regulate-latin-char chr))))
-      (setq i (+ i (char-bytes chr)))
-      )
-    dest))
+;; (defun regulate-latin-string (str)
+;;   (let ((len (length str))
+;;         (i 0)
+;;         chr (dest ""))
+;;     (while (< i len)
+;;       (setq chr (sref str i))
+;;       (setq dest (concat dest
+;;                          (char-to-string (regulate-latin-char chr))))
+;;       (setq i (+ i (char-bytes chr)))
+;;       )
+;;     dest))
 
 
 ;;; @ end
