@@ -60,6 +60,7 @@
 		      (` ((, (car h)) (quote (progn (,@ (cdr h))))))))
 		  handlers))))))
 
+(put 'static-defconst 'lisp-indent-function 'defun)
 (defmacro static-defconst (symbol initvalue &optional docstring)
   "`defconst' expression but INITVALUE is evaluated at compile-time.
 
