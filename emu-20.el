@@ -78,11 +78,10 @@ This constant is defined to emulate old MULE anything older than MULE
 	     (iso-2022-jp-2 . iso-2022-7bit-ss2)
 	     (x-ctext       . ctext)
 	     ))
-	  (css (coding-system-list))
 	  dest)
       (while rest
 	(let ((pair (car rest)))
-	  (or (memq (car pair) css)
+	  (or (find-coding-system (car pair))
 	      (setq dest (cons pair dest))
 	      ))
 	(setq rest (cdr rest))
@@ -103,10 +102,11 @@ used as line break code type of coding-system."
     (if ret
 	(setq charset (cdr ret))
       ))
-  (if (memq charset (coding-system-list))
-      (if lbt
-	  (intern (concat (symbol-name charset) "-" (symbol-name lbt)))
-	charset)))
+  (if lbt
+      (setq charset (intern (format "%s-%s" charset lbt)))
+    )
+  (if (find-coding-system charset)
+      charset))
 
 (defsubst encode-mime-charset-region (start end charset)
   "Encode the text between START and END as MIME CHARSET."

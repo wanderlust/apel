@@ -44,8 +44,6 @@
 	  (t 0)
 	  )))
 
-(require 'emu-20)
-
 
 ;;; @ character set
 ;;;
@@ -66,6 +64,11 @@ in the region between START and END."
 
 ;;; @ coding system
 ;;;
+
+(defsubst-maybe find-coding-system (obj)
+  "Return OBJ if it is a coding-system."
+  (if (coding-system-p obj)
+      obj))
 
 (defalias 'set-process-input-coding-system 'set-process-coding-system)
 
@@ -156,6 +159,8 @@ TABLE defaults to the current buffer's category table."
 
 ;;; @ end
 ;;;
+
+(require 'emu-20)
 
 (provide 'emu-e20)
 

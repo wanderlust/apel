@@ -36,6 +36,17 @@
 	       ))
 	 )))
 
+(defmacro defsubst-maybe (name &rest everything-else)
+  (or (and (fboundp name)
+	   (not (get name 'defsubst-maybe))
+	   )
+      (` (or (fboundp (quote (, name)))
+	     (progn
+	       (defsubst (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defsubst-maybe t)
+	       ))
+	 )))
+
 (defmacro defmacro-maybe (name &rest everything-else)
   (or (and (fboundp name)
 	   (not (get name 'defmacro-maybe))
@@ -48,6 +59,7 @@
 	 )))
 
 (put 'defun-maybe 'lisp-indent-function 'defun)
+(put 'defsubst-maybe 'lisp-indent-function 'defun)
 (put 'defmacro-maybe 'lisp-indent-function 'defun)
 
 (defmacro defconst-maybe (name &rest everything-else)

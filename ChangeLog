@@ -1,3 +1,30 @@
+1997-09-09  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 3.4.2 was released.
+
+	* README.en (What's APEL?): Add emu-20.el.
+
+1997-09-07  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-20.el (mime-charset-to-coding-system): Use defsubst again;
+	modify implementation.
+
+	* emu-20.el (mime-charset-to-coding-system): Use
+	`find-coding-system'.
+
+	* emu-20.el (mime-charset-coding-system-alist): Use
+	`find-coding-system'.
+
+	* emu-e20.el (find-coding-system): New inline function.
+
+	* emu.el (defsubst-maybe): New macro.
+
+1997-09-03  MORIOKA Tomohiko  <morioka@mousai>
+
+	* emu-20.el (mime-charset-to-coding-system): Use `defun' instead
+ 	of `defsubst'.
+
+
 1997-09-02  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 3.4.1 was released.
