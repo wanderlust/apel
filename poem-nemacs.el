@@ -112,7 +112,9 @@
 (defun decode-coding-string (string coding-system)
   "Decode the STRING which is encoded in CODING-SYSTEM.
 \[emu-nemacs.el; EMACS 20 emulating function]"
-  (let ((code (cdr (assq coding-system coding-system-kanji-code-alist))))
+  (let ((code (if (integerp coding-system)
+		  coding-system
+		(cdr (assq coding-system coding-system-kanji-code-alist)))))
     (if (eq code 3)
 	string
       (convert-string-kanji-code string code 3)
@@ -121,7 +123,9 @@
 (defun encode-coding-string (string coding-system)
   "Encode the STRING to CODING-SYSTEM.
 \[emu-nemacs.el; EMACS 20 emulating function]"
-  (let ((code (cdr (assq coding-system coding-system-kanji-code-alist))))
+  (let ((code (if (integerp coding-system)
+		  coding-system
+		(cdr (assq coding-system coding-system-kanji-code-alist)))))
     (if (eq code 3)
 	string
       (convert-string-kanji-code string 3 code)
@@ -130,7 +134,9 @@
 (defun decode-coding-region (start end coding-system)
   "Decode the text between START and END which is encoded in CODING-SYSTEM.
 \[emu-nemacs.el; EMACS 20 emulating function]"
-  (let ((code (cdr (assq coding-system coding-system-kanji-code-alist))))
+  (let ((code (if (integerp coding-system)
+		  coding-system
+		(cdr (assq coding-system coding-system-kanji-code-alist)))))
     (save-excursion
       (save-restriction
 	(narrow-to-region start end)
@@ -140,7 +146,9 @@
 (defun encode-coding-region (start end coding-system)
   "Encode the text between START and END to CODING-SYSTEM.
 \[emu-nemacs.el; EMACS 20 emulating function]"
-  (let ((code (cdr (assq coding-system coding-system-kanji-code-alist))))
+  (let ((code (if (integerp coding-system)
+		  coding-system
+		(cdr (assq coding-system coding-system-kanji-code-alist)))))
     (save-excursion
       (save-restriction
 	(narrow-to-region start end)

@@ -1,8 +1,31 @@
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
-	* EMU-ELS: New implementation.
+	* poe.el (unless): New macro.
 
-	* mcharset.el, poem.el: Fix typo.
+	* emu.el: Define tl:overlay obsolete aliases for all emacsen.
+
+	* poem-nemacs.el (decode-coding-string): Regard integer as
+	coding-system.
+	(encode-coding-string): Likewise.
+	(decode-coding-region): Likewise.
+	(encode-coding-region): Likewise.
+
+	* poe-18.el (set-text-properties): New function.
+
+	* install.el (install-detect-elisp-directory): Fix problem on
+	Nemacs.
+
+1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poem-ltn1.el (set-buffer-multibyte): Use `defun-maybe' instead
+	of `defmacro-maybe'.
+
+	* poem-e20_2.el (set-buffer-multibyte): Use `defun-maybe' instead
+	of `defsubst-maybe'.
+
+1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* EMU-ELS: New implementation.
 
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 

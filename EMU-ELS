@@ -50,7 +50,8 @@
 	       (t
 		(setq poem-modules (cons 'poem-om poem-modules)
 		      mcs-modules (cons 'mcs-om mcs-modules)
-		      pccl-modules (cons (pccl-om pccl-modules)))
+		      pccl-modules (cons 'pccl-om pccl-modules)
+		      emu-modules (cons 'emu-mule emu-modules))
 		))
 	 )
 	((boundp 'NEMACS)
