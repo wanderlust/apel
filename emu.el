@@ -102,13 +102,14 @@
 
 (cond (running-xemacs
        ;; for XEmacs
+       (require 'emu-xemacs)
        (cond ((featurep 'mule)
 	      ;; for XEmacs with MULE
+	      (require 'emu-20)
 	      (require 'emu-x20)
 	      )
 	     (t
 	      ;; for XEmacs without MULE
-	      (require 'emu-xemacs)
 	      (require 'emu-latin1)
 	      ))
        )
