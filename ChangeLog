@@ -1,16 +1,11 @@
-2000-12-20  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
-
-	* poe-18.el (set-frame-height): Typo fixed.
-	(read-from-minibuffer): Do not run `minibuffer-setup-hook' and
-	`minibuffer-exit-hook'.
-	(minibuffer-setup-hook): Comment out.
-	(minibuffer-exit-hook): Ditto.
-
 2000-12-19  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
-	* make.bat: Do not echo.
-
 	* poe-18.el (set-frame-heigth): Bug fixed.
+
+2000-12-17  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* APEL-MK (install-just-print-p): Move to install.el.
+	(install-update-package-files): Ditto.
 
 2000-12-16  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
