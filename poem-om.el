@@ -283,16 +283,6 @@ code conversion will not take place."
    ;; Returns list absolute file name and length of data inserted.
    (insert-file-contents filename visit beg end replace)))
 
-(defun write-region-as-binary (start end filename
-				     &optional append visit lockname)
-  "Like `write-region', q.v., but don't code conversion."
-  (write-region-as-coding-system 'binary
-				 start end filename append visit lockname))
-
-(defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but don't code and format conversion."
-  (find-file-noselect-as-coding-system 'binary filename nowarn rawfile))
-
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)
   "Like `insert-file-contents', q.v., but don't code and format conversion.
@@ -304,22 +294,32 @@ code."
   (insert-file-contents-as-coding-system 'raw-text
 					 filename visit beg end replace))
 
+(defun write-region-as-binary (start end filename
+				     &optional append visit lockname)
+  "Like `write-region', q.v., but don't code conversion."
+  (write-region-as-coding-system 'binary
+				 start end filename append visit lockname))
+
 (defun write-region-as-raw-text-CRLF (start end filename
 					    &optional append visit lockname)
   "Like `write-region', q.v., but don't code conversion."
   (write-region-as-coding-system 'raw-text-dos
 				 start end filename append visit lockname))
 
-(defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but it does not code and format
-conversion except for line-break code."
-  (find-file-noselect-as-coding-system 'raw-text filename nowarn rawfile))
-
 (defun open-network-stream-as-binary (name buffer host service)
   "Like `open-network-stream', q.v., but don't code conversion."
   (let ((process (open-network-stream name buffer host service)))
     (set-process-coding-system process *noconv* *noconv*)
     process))
+
+(defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but don't code and format conversion."
+  (find-file-noselect-as-coding-system 'binary filename nowarn rawfile))
+
+(defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but it does not code and format
+conversion except for line-break code."
+  (find-file-noselect-as-coding-system 'raw-text filename nowarn rawfile))
 
 
 ;;; @ buffer representation
