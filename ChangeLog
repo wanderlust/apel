@@ -1,3 +1,12 @@
+1999-05-21  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* README.en: Add description of localhook.el.
+	
+	* README.ja: Ditto.
+
+	* Makefile (GOMI): New variable.
+	(clean): Use `RM' and `GOMI'.
+
 1999-05-21  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* mcs-20.el (detect-mime-charset-region): Use
