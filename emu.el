@@ -223,7 +223,8 @@ find-file-hooks, etc.
        (autoload 'enriched-decode "tinyrich")
        ))
 
-(if (or (< emacs-major-version 20)
+(if (or (and (eq emacs-major-version 19)
+	     (>= emacs-minor-version (if (featurep 'xemacs) 14 29)))
 	(and (eq emacs-major-version 20)
 	     (< emacs-minor-version (if (featurep 'xemacs) 3 1))))
     (eval-after-load "enriched"
