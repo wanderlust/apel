@@ -1,3 +1,8 @@
+1999-08-25  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* APEL-CFG: Don't provide `emu'; add the latest path of "custom"
+	to `load-path'.
+
 1999-08-25  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* install.el: Don't require `emu'.
