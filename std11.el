@@ -236,7 +236,7 @@ If BOUNDARY is not nil, it is used as message header separator.
      (if (and (eq (aref string 0) ?\")
 	      (eq (aref string max) ?\")
 	      )
-	 (substring str 1 max)
+	 (substring string 1 max)
        string)
      )))
 
