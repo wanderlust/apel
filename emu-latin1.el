@@ -248,6 +248,11 @@ find-file-hooks, etc.
   "Return number of columns a CHAR occupies when displayed."
   1)
 
+(defun split-char (character)
+  "Return list of charset and one or two position-codes of CHARACTER."
+  (cons (char-charset character) character)
+  )
+
 (defalias 'char-length 'char-bytes)
 
 (defmacro char-next-index (char index)

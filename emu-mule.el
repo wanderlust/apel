@@ -361,6 +361,18 @@ but the contents viewed as characters do change.
 
 (defalias 'char-charset 'char-leading-char)
 
+(defun split-char (character)
+  "Return list of charset and one or two position-codes of CHARACTER."
+  (let ((len (char-bytes character))
+	(i 0)
+	dest)
+    (while (< i len)
+      (setq dest (cons (char-component character i) dest)
+	    i (1+ i))
+      )
+    (cons (char-charset character) dest)
+    ))
+
 (defmacro char-next-index (char index)
   "Return index of character succeeding CHAR whose index is INDEX."
   (` (+ (, index) (char-bytes (, char)))))
