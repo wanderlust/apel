@@ -179,7 +179,6 @@ If BOUNDARY is not nil, it is used as message header separator.
 
 (provide 'std11)
 
-(autoload 'std11-analyze-spaces		"std11-parse")
-(autoload 'std11-analyze-special	"std11-parse")
+(autoload 'std11-lexical-analyze "std11-parse")
 
 ;;; std11.el ends here
