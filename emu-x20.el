@@ -113,6 +113,8 @@ find-file-hooks, etc.
     ((ascii latin-iso8859-9)				. iso-8859-9)
     ((ascii latin-jisx0201
 	    japanese-jisx0208-1978 japanese-jisx0208)	. iso-2022-jp)
+    ((ascii latin-jisx0201
+	    katakana-jisx0201 japanese-jisx0208)	. shift_jis)
     ((ascii korean-ksc5601)				. euc-kr)
     ((ascii chinese-gb2312)				. cn-gb-2312)
     ((ascii chinese-big5-1 chinese-big5-2)		. cn-big5)
