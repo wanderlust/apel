@@ -27,6 +27,7 @@
 
 ;;; Code:
 
+(require 'poe)
 ;; If old compiler is used under v18, `eval-when-compile' and
 ;; `static-if' are expanded (and evaluated) at *load-time*.
 (eval-when-compile (require 'static))
@@ -41,7 +42,8 @@
 	     (error nil))
     ;; you have "new custom". no load-time check.
     (require 'custom)
-  ;; your custom is "old custom", or you don't have custom library.
+  ;; your custom is "old custom", or you don't have custom library
+  ;; at compile-time.
   (or (condition-case nil
 	  ;; load-time check.
 	  ;; "new custom" requires widget library.
