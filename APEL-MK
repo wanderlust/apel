@@ -109,8 +109,11 @@
       (setq APEL_DIR (expand-file-name APEL_PREFIX LISPDIR)))
   (or EMU_DIR
       (setq EMU_DIR (expand-file-name EMU_PREFIX VERSION_SPECIFIC_LISPDIR)))
-  (princ (format "\nLISPDIR=%s\n" LISPDIR))
-  (princ (format "VERSION_SPECIFIC_LISPDIR=%s\n" VERSION_SPECIFIC_LISPDIR)))
+  (princ (format "
+LISPDIR=%s
+VERSION_SPECIFIC_LISPDIR=%s
+"
+		 LISPDIR VERSION_SPECIFIC_LISPDIR)))
 
 (defun compile-apel ()
   (config-apel)
@@ -120,8 +123,9 @@
 
 (defun install-apel (&optional just-print)
   (config-apel)
-  (or just-print
-      (setq just-print (install-just-print-p)))
+  ;; `just-print' will be non-nil if `install-apel' is called by
+  (or just-print				; "make what-where", or
+      (setq just-print (install-just-print-p)))	; "make -n install".
   (install-elisp-modules emu-modules	"." EMU_DIR  just-print)
   (install-elisp-modules apel-modules	"." APEL_DIR just-print))
 
@@ -167,7 +171,10 @@
 		    (setq dirs (cdr dirs)))
 		  dir))))
   (if PACKAGEDIR
-      (princ (format "\nPACKAGEDIR=%s\n" PACKAGEDIR))
+      (princ (format "
+PACKAGEDIR=%s
+"
+		     PACKAGEDIR))
     (error "XEmacs package system is not available")))
 
 (defun compile-apel-package ()
@@ -186,23 +193,6 @@
     (install-update-package-files "apel" dir just-print)))
 
 (defun what-where-apel ()
-  (install-apel 'just-print)
-  ;; (config-apel)
-;;;   (princ (format "
-;;; The files that belong to the EMU modules:
-;;;   %s
-;;;   -> %s
-
-;;; The files that belong to the APEL modules:
-;;;   %s
-;;;   -> %s
-
-;;; Do `make elc', `make install', `make package', or `make install-package'.
-;;; "
-;;; 		 (mapconcat (function symbol-name) emu-modules ", ")
-;;; 		 EMU_DIR
-;;; 		 (mapconcat (function symbol-name) apel-modules ", ")
-;;; 		 APEL_DIR))
-  )
+  (install-apel 'just-print))
 
 ;;; APEL-MK ends here
