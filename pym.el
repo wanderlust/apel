@@ -288,6 +288,7 @@ Both SYMBOL and SPEC are unevaluated. The SPEC can be 0, t, a symbol
 
 ;;; End.
 
-(provide 'pym)
+(require 'product)
+(product-provide (provide 'pym) (require 'apel-ver))
 
 ;;; pym.el ends here
