@@ -5,7 +5,7 @@
 ;;; Copyright (C) 1995,1996 MORIOKA Tomohiko
 ;;;
 ;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;;; modified by Shuhei KOBAYASHI <shuhei@cmpt01.phys.tohoku.ac.jp>
+;;; modified by KOBAYASHI Shuhei <shuhei-k@jaist.ac.jp>
 ;;; Version:
 ;;;	$Id$
 ;;; Keywords: emulation, compatibility, NEmacs, Mule, XEmacs
@@ -33,8 +33,13 @@
 
 (defvar running-emacs-18 (<= emacs-major-version 18))
 (defvar running-xemacs (string-match "XEmacs" emacs-version))
+(defvar running-xemacs-19 (and running-xemacs
+			       (= emacs-major-version 19)))
 (defvar running-xemacs-20 (and running-xemacs
-			       (>= emacs-major-version 20)))
+			       (= emacs-major-version 20)))
+(defvar running-xemacs-19_14-or-later
+  (or (and running-xemacs-19 (>= emacs-minor-version 14))
+      (>= emacs-major-version 20)))
 (defvar running-emacs-19 (and (not running-xemacs)
 			      (= emacs-major-version 19)))
 (defvar running-emacs-19_29-or-later
@@ -102,6 +107,28 @@
 (or (fboundp 'int-char)
     (fset 'int-char (symbol-function 'identity))
     )
+
+
+;;; @ for text/richtext and text/enriched
+;;;
+
+(cond ((or running-emacs-19_29-or-later running-xemacs-19_14-or-later)
+       ;; have enriched.el
+       (autoload 'richtext-decode "richtext")
+       (or (assq 'text/richtext format-alist)
+	   (setq format-alist
+		 (cons
+		  (cons 'text/richtext
+			'("Extended MIME text/richtext format."
+			  "Content-[Tt]ype:[ \t]*text/richtext"
+			  richtext-decode richtext-encode t enriched-mode))
+		  format-alist)))
+       )
+      (t
+       ;; don't have enriched.el
+       (autoload 'richtext-decode "tinyrich")
+       (autoload 'enriched-decode "tinyrich")
+       ))
 
 
 ;;; @ end

@@ -27,6 +27,13 @@
 ;;;
 ;;; Code:
 
+(defvar xemacs-beta-version
+  (if (string-match "(beta\\([0-9]+\\))" emacs-version)
+      (string-to-number
+       (substring emacs-version (match-beginning 1)(match-end 1))
+       )))
+
+
 ;;; @ character set
 ;;;
 
@@ -75,8 +82,13 @@ in the region between START and END.
 
 (defconst *noconv* 'noconv)
 (defconst *ctext*  'ctext)
+(defconst *hz*     'hz)
+(defconst *big5*   'big5)
+(defconst *euc-kr* 'euc-kr)
+(defconst *koi8*   nil)
 
-(defvar code-converter-is-broken (string-match "(beta17)" emacs-version))
+(defvar code-converter-is-broken
+  (and xemacs-beta-version (<= xemacs-beta-version 18)))
 
 (if code-converter-is-broken
 (progn

@@ -1,3 +1,34 @@
+Tue May  7 18:16:38 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.22.2 was released.
+
+	* emu-x20.el (*hz*, *big5*, *euc-kr*, *koi8*): New constant.
+
+Tue May  7 17:50:26 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (running-xemacs-19): Definition was changed.
+	(running-xemacs-20): Definition was changed.
+
+Tue May  7 17:15:31 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-els: bitmap.el must be regarded as Mule depended module.
+
+Tue May  7 16:40:44 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (xemacs-beta-version): New variable.
+	(code-converter-is-broken): Use variable `xemacs-beta-version'.
+
+Tue May  7 07:00:50 1996  Shuhei KOBAYASHI  <shuhei-k@jaist.ac.jp>
+
+	* emu.el, mu-bbdb.el, mu-cite.el: KOBAYASHI Shuhei's address was
+ 	changed.
+
+Tue May  7 06:29:59 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (running-xemacs-19_14-or-later): New variable.
+	setting for text/enriched and text/richtext.
+
+
 Mon Apr 29 06:30:47 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.22.1 was released.
