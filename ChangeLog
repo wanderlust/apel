@@ -1,3 +1,15 @@
+2000-02-18   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* EMU-ELS (emu-modules): Add 'image-stpl; require bitmap when
+	compiling; check `error' instead of `file-error'.
+
+	* pimage.el: Require image-stpl instead of tinyimage when face
+	stipple pixmap is usable.
+
+	* image-stpl.el: New file.
+
+	* image-bm.el: Don't require bitmap when compiling.
+
 2000-02-17   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
 
 	* EMU-ELS (emu-modules): Add 'pimage.
