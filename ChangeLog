@@ -1,3 +1,16 @@
+Wed Feb 14 13:00:02 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.11.1 was released.
+
+Mon Feb 12 07:34:30 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-misc.el (add-path): Document string was fixed.
+
+Mon Feb 12 07:27:03 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-misc.el (file-installed-p): new function
+
+
 Sat Feb  2 17:08:20 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.11 was released.
