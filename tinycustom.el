@@ -78,9 +78,9 @@ The following KEYWORDs are defined:
 
 SPEC should be an alist of the form ((DISPLAY ATTS)...).
 
-ATTS is of the form (KEY TYPE SET GET) where KEY is a symbol of
-`:foreground', `:background', `:bold', `:italic' or `:underline'.
-The other KEYs are ignored.
+ATTS is of the form (KEY VALUE) where KEY is a symbol of `:foreground',
+`:background', `:bold', `:italic' or `:underline'.  The other KEYs are
+ignored.
 
 The ATTS of the first entry in SPEC where the DISPLAY matches the
 frame should take effect in that frame.  DISPLAY can either be the
