@@ -1,3 +1,7 @@
+1999-09-13  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* APEL: Version 9.22 released.
+
 1999-09-12  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
 
 	* poe.el (defmacro-maybe-cond): Add edebug spec.
@@ -2063,7 +2067,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
