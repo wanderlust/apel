@@ -39,13 +39,14 @@
 
 (defcustom mime-charset-coding-system-alist
   (let ((rest
-	 '((us-ascii      . raw-text)
+	 `((us-ascii      . raw-text)
 	   (gb2312	  . cn-gb-2312)
 	   (cn-gb	  . cn-gb-2312)
 	   (iso-2022-jp-2 . iso-2022-7bit-ss2)
 	   (tis-620	  . tis620)
 	   (windows-874	  . tis620)
-	   (x-ctext       . ctext)
+	   ,@(unless (coding-system-p 'x-ctext)
+	       '((x-ctext . ctext)))
 	   (unknown       . undecided)
 	   (x-unknown     . undecided)
 	   ))

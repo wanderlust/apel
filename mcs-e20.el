@@ -28,6 +28,8 @@
 
 ;;; Code:
 
+(eval-when-compile (require 'static))
+
 (defsubst encode-mime-charset-region (start end charset &optional lbt)
   "Encode the text between START and END as MIME CHARSET."
   (let (cs)
@@ -152,6 +154,16 @@ Return nil if corresponding MIME-charset is not found."
 	(setq rest (cdr rest)))
       dest)
     ))
+
+(static-when (string= (decode-coding-string "\e.A\eN!" 'ctext) "\eN!")
+  (make-coding-system
+   'x-ctext 2 ?f
+   "ISO 2022 based generic encoding for decoding unknown messages."
+   '((ascii t) (latin-iso8859-1 t) t t
+     shoft ascii-eol ascii-cntl seven locking-shift single-shift nil nil nil
+     init-bol nil nil)
+   '((safe-charsets . t))))
+
 
 ;;; @ end
 ;;;
