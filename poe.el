@@ -29,6 +29,8 @@
 
 ;;; Code:
 
+(provide 'poe)
+
 (defmacro defun-maybe (name &rest everything-else)
   (or (and (fboundp name)
 	   (not (get name 'defun-maybe)))
@@ -576,7 +578,5 @@ If the event isn't a keypress, this returns nil.
 
 ;;; @ end
 ;;;
-
-(provide 'poe)
 
 ;;; poe.el ends here
