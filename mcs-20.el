@@ -92,7 +92,8 @@ is specified, it is used as line break code type of coding-system."
     (if (find-coding-system cs)
 	cs
       (if mime-charset-to-coding-system-default-method
-	  (funcall mime-charset-to-coding-system-default-method charset lbt cs)
+	  (funcall mime-charset-to-coding-system-default-method
+		   charset lbt cs)
 	))))
 
 (defvar widget-mime-charset-prompt-value-history nil
