@@ -92,7 +92,7 @@ When called interactively, prompt for the name of the color to use."
 			  (,function ,@args))
 		       time repeat))
      (defun-maybe run-at-time (time repeat function &rest args)
-       "Emulating function run as `run-at-time'.
+       "Function emulating the function of the same name of Emacs.
 TIME should be nil meaning now, or a number of seconds from now.
 Return an itimer object which can be used in either `delete-itimer'
 or `cancel-timer'."
@@ -148,41 +148,41 @@ or `cancel-timer'."
 	(error nil))))
 
 (when-broken run-at-time-tick-tock
-  (defadvice run-at-time (around make-it-punctual
-				 (time repeat function &rest args)
-				 activate)
-    "This function was redefined to be made punctual by APEL.
-Note that it allows neither a string nor a time in the Emacs style
-\(a list of integers) as the first argument TIME."
-    (let ((itimers (list nil)))
-      (setcar
-       itimers
-       (apply #'start-itimer "run-at-time"
-	      (lambda (itimers repeat function &rest args)
-		(let ((itimer (car itimers)))
-		  (if repeat
-		      (progn
-			(set-itimer-function
-			 itimer
-			 (lambda (itimer repeat function &rest args)
-			   (set-itimer-restart itimer repeat)
-			   (set-itimer-function itimer function)
-			   (set-itimer-function-arguments itimer args)
-			   (apply function args)))
-			(set-itimer-function-arguments
-			 itimer
-			 (append (list itimer repeat function) args)))
-		    (set-itimer-function
-		     itimer
-		     (lambda (itimer function &rest args)
-		       (delete-itimer itimer)
-		       (apply function args)))
-		    (set-itimer-function-arguments
-		     itimer
-		     (append (list itimer function) args)))))
-	      1e-9 (if time (max time 1e-9) 1e-9)
-	      nil t itimers repeat function args))
-      (setq ad-return-value (car itimers)))))
+  (defalias 'run-at-time
+    (lambda (time repeat function &rest args)
+      "Function emulating the function of the same name of Emacs.
+It works correctly for TIME even if there is a bug in the XEmacs core.
+TIME should be nil meaning now, or a number of seconds from now.
+Return an itimer object which can be used in either `delete-itimer'
+or `cancel-timer'."
+      (let ((itimers (list nil)))
+	(setcar
+	 itimers
+	 (apply #'start-itimer "fixed-run-at-time"
+		(lambda (itimers repeat function &rest args)
+		  (let ((itimer (car itimers)))
+		    (if repeat
+			(progn
+			  (set-itimer-function
+			   itimer
+			   (lambda (itimer repeat function &rest args)
+			     (set-itimer-restart itimer repeat)
+			     (set-itimer-function itimer function)
+			     (set-itimer-function-arguments itimer args)
+			     (apply function args)))
+			  (set-itimer-function-arguments
+			   itimer
+			   (append (list itimer repeat function) args)))
+		      (set-itimer-function
+		       itimer
+		       (lambda (itimer function &rest args)
+			 (delete-itimer itimer)
+			 (apply function args)))
+		      (set-itimer-function-arguments
+		       itimer
+		       (append (list itimer function) args)))))
+		1e-9 (if time (max time 1e-9) 1e-9)
+		nil t itimers repeat function args))))))
 
 
 ;;; @ to avoid bug of XEmacs 19.14
