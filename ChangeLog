@@ -1,3 +1,17 @@
+Mon Dec 16 13:42:44 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.15 was released.
+
+	* TL-ELS (tl-modules): Add filename.el.
+
+	* filename.el: New module.
+
+	* tl-str.el: Variable `filename-special-char-range' variable
+ 	`filename-space-char-range' were abolished.
+
+	Function `replace-as-filename' was moved to filename.el.
+
+
 Wed Dec  4 04:56:28 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.14 was released.
