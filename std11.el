@@ -220,6 +220,28 @@ If BOUNDARY is not nil, it is used as message header separator.
 	      )
 	    )))))
 
+(defun std11-full-name-string (address)
+  (cond ((eq (car address) 'group)
+	 (mapconcat (function
+		     (lambda (token)
+		       (cdr token)
+		       ))
+		    (nth 1 address) "")
+	 )
+	((eq (car address) 'mailbox)
+	 (let ((addr (nth 1 address))
+	       (comment (nth 2 address))
+	       phrase)
+	   (if (eq (car addr) 'phrase-route-addr)
+	       (setq phrase (mapconcat (function
+					(lambda (token)
+					  (cdr token)
+					  ))
+				       (nth 1 addr) ""))
+	     )
+	   (or phrase comment)
+	   ))))
+
 
 ;;; @ end
 ;;;
