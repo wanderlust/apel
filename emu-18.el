@@ -27,6 +27,12 @@
 ;;;
 ;;; Code:
 
+;;; @ for EMACS 18.55
+;;;
+
+(defvar buffer-undo-list)
+
+
 ;;; @ hook
 ;;;
 

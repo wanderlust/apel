@@ -1,3 +1,90 @@
+Thu Aug  1 06:43:54 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.43.2 was released.
+
+	* tl-els: x-face-mule.el was added for MULE.
+
+	* x-face-mule.el: Function `bitmap-decode-x-face' was renamed to
+ 	`x-face-decode-message-header'.
+
+	* x-face-mule.el: Variable `bitmap-uncompface-program' was renamed
+ 	to `uncompface-program'.
+
+	* bitmap.el: X-Face features were split into x-face-mule.el.
+
+	* x-face-mule.el: Initial revision
+
+Thu Aug  1 06:20:16 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* bitmap.el: Function `bitmap-show-xbm-file' was renamed to
+ 	`bitmap-insert-xbm-file'.
+
+	* bitmap.el: Function `bitmap-show-xbm-buffer' was renamed to
+ 	`bitmap-insert-xbm-buffer'.
+
+	* smiley-mule.el (smiley-buffer, smiley-region): New
+ 	implementation.
+
+	* smiley-mule.el (smiley-face-bitmap-alist): Renamed from variable
+ 	`smiley-face-bitmap-alist'; key part was changed to normal string
+ 	from regexp.
+
+Wed Jul 31 04:41:17 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* smiley-mule.el: Variable `smiley-weep-bitmap' was renamed to
+ 	`smiley-bitmap-for-weep'.
+
+	* smiley-mule.el: Variable `smiley-ase3-bitmap' was renamed to
+ 	`smiley-bitmap-for-ase3'.
+
+	* smiley-mule.el: Variable `smiley-ase2-bitmap' was renamed to
+ 	`smiley-bitmap-for-ase2'.
+
+	* smiley-mule.el: Variable `smiley-ase-bitmap' was renamed to
+ 	`smiley-bitmap-for-ase'.
+
+	* smiley-mule.el: Variable `smiley-winking-bitmap' was renamed to
+ 	`smiley-bitmap-for-winking'.
+
+	* smiley-mule.el: Variable `smiley-smile-bitmap' was renamed to
+ 	`smiley-bitmap-for-smile'.
+
+Mon Jul 29 20:47:32 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-els: latex-math-symbol.el was added for all mule variants.
+
+	* latex-math-symbol.el: New module for mule.
+
+Mon Jul 29 20:20:18 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-els: smiley-mule.el was added.
+
+	* smiley-mule.el: New module for MULE.
+
+Fri Jul 26 20:04:15 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* bitmap.el (bitmap-read-xbm-file): New function.
+
+Fri Jul 26 19:40:29 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* bitmap.el: Function `bitmap-show-xbm' was renamed to
+ 	`bitmap-show-xbm-buffer'.
+
+	* bitmap.el (bitmap-show-xbm-file): New function; renamed from
+ 	`bitmap-read-xbm'.
+
+	* bitmap.el (bitmap-show-xbm): New implementation; use function
+ 	`bitmap-read-xbm-buffer' and `bitmap-decode-xbm'.
+
+	* bitmap.el (bitmap-read-xbm-buffer): New function.
+
+	* bitmap.el (bitmap-decode-xbm): New function.
+
+Fri Jul 26 12:08:55 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-18.el (buffer-undo-list): New variable for EMACS 18.55.
+
+
 Tue Jul 23 14:58:47 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.43.1 was released.
