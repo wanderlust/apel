@@ -1,3 +1,8 @@
+2002-03-04  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* pym.el: Add a note that `def*-maybe' might not provide functions
+	or variables at run-time.
+
 2001-12-05  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* tinycustom.el (custom-declare-face): New function.

@@ -27,12 +27,15 @@
 
 ;; This module provides `def*-maybe' macros for conditional definition.
 ;;
-;; Many APEL modules use these macros to provide emulation version of
-;; Emacs builtins (both C primitives and lisp subroutines) for backward
-;; compatibility.  While compilation time, if `def*-maybe' find that
-;; functions/variables being defined is already provided by Emacs used
-;; for compilation, it does not leave the definitions in compiled code
-;; and resulting .elc will be highly specialized for your environment.
+;; Many APEL modules use these macros to provide the emulating version
+;; of the Emacs builtins (both C primitives and lisp subroutines) for
+;; backward compatibility.  While compilation time, if `def*-maybe'
+;; find that functions/variables being defined is already provided by
+;; Emacs used for compilation, it does not leave the definitions in
+;; compiled code and resulting .elc files will be highly specialized
+;; for your environment.  Lisp programmers should be aware that these
+;; macros will never provide functions or variables at run-time if they
+;; are defined for some reason (or by accident) at compilation time.
 
 ;; For `find-function' lovers, the following definitions may work with
 ;; `def*-maybe'.
