@@ -49,7 +49,7 @@
   (point)
   )
 
-(defun std11-find-field-body (name &optional boundary)
+(defun std11-field-body (name &optional boundary)
   "Return body of field NAME.
 If BOUNDARY is not nil, it is used as message header separator.
 \[std11.el]"
@@ -62,7 +62,7 @@ If BOUNDARY is not nil, it is used as message header separator.
 	    (buffer-substring-no-properties (match-end 0) (std11-field-end))
 	  )))))
 
-(defun std11-find-field-bodies (field-names &optional default-value boundary)
+(defun std11-field-bodies (field-names &optional default-value boundary)
   "Return list of each field-bodies of FIELD-NAMES of the message header
 in current buffer. If BOUNDARY is not nil, it is used as message
 header separator. [std11.el]"
