@@ -26,10 +26,6 @@
 
 (require 'poe)
 
-(eval-and-compile
-  (unless (fboundp 'open-network-stream)
-    (require 'tcp)))
-
 (cond ((featurep 'mule)
        (cond ((featurep 'xemacs)
 	      (require 'poem-xm)
