@@ -223,6 +223,8 @@ find-file-hooks, etc.
   "Decode the STRING as MIME CHARSET."
   string)
 
+(defalias 'write-region-as-mime-charset 'write-region)
+
 
 ;;; @ character
 ;;;
