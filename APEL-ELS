@@ -3,6 +3,7 @@
 ;;; $Id$
 ;;;
 
-(setq apel-modules '(alist atype file-detect filename install))
+(setq apel-modules '(alist atype file-detect filename install
+			   std11 std11-parse))
 
 ;;; APEL-ELS ends here
