@@ -145,31 +145,27 @@ except for line-break code."
 ;;; @ with code-conversion
 ;;;
 
-(defun insert-file-contents-as-specified-coding-system (filename &rest args)
-  "Like `insert-file-contents', q.v., but code convert by the specified
-coding-system. ARGS the optional arguments are passed to
-`insert-file-contents' except for the last element. The last element of
-ARGS must be a coding-system."
+(defun insert-file-contents-as-coding-system
+  (coding-system filename &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
+be applied to `coding-system-for-read'."
   (let ((flag enable-multibyte-characters)
-	(coding-system-for-read (car (reverse args)))
+	(coding-system-for-read coding-system)
 	format-alist)
     (prog1
-	(apply 'insert-file-contents filename
-	       (nreverse (cdr (nreverse args))))
+	(insert-file-contents filename visit beg end replace)
       (set-buffer-multibyte flag))))
 
-(defun find-file-noselect-as-specified-coding-system (filename &optional args)
-  "Like `find-file-noselect', q.v., but code convert by the specified
-coding-system. ARGS the optional arguments are passed to `find-file-noselect'
-except for the last element. The last element of ARGS must be a
-coding-system."
+(defun find-file-noselect-as-coding-system
+  (coding-system filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
+be applied to `coding-system-for-read'."
   (let ((flag enable-multibyte-characters)
-	(coding-system-for-read (car (reverse args)))
+	(coding-system-for-read coding-system)
 	format-alist)
     (save-current-buffer
       (prog1
-	  (set-buffer (apply' find-file-noselect filename
-			      (nreverse (cdr (nreverse args)))))
+	  (set-buffer (find-file-noselect filename nowarn rawfile))
 	(set-buffer-multibyte flag)))))
 
 
