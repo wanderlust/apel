@@ -1,12 +1,12 @@
-;;; emu-nemacs.el --- Mule 2 emulation module for NEmacs
+;;; emu-nemacs.el --- emu API implementation for NEmacs
 
-;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version: $Id$
 ;; Keywords: emulation, compatibility, NEmacs, mule
 
-;; This file is part of tl (Tiny Library).
+;; This file is part of emu.
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -171,6 +171,11 @@
        )))
 
 (defmacro as-binary-input-file (&rest body)
+  (` (let (kanji-flag)
+       (,@ body)
+       )))
+
+(defmacro as-binary-output-file (&rest body)
   (` (let (kanji-flag)
        (,@ body)
        )))

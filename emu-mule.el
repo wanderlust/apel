@@ -1,12 +1,12 @@
 ;;; emu-mule.el --- emu module for Mule 1.* and Mule 2.*
 
-;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version: $Id$
 ;; Keywords: emulation, compatibility, Mule
 
-;; This file is part of tl (Tiny Library).
+;; This file is part of emu.
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -110,6 +110,13 @@
 (defmacro as-binary-input-file (&rest body)
   (` (let (mc-flag
 	   (file-coding-system-for-read *noconv*)
+	   )
+       (,@ body)
+       )))
+
+(defmacro as-binary-output-file (&rest body)
+  (` (let (mc-flag
+	   (file-coding-system *noconv*)
 	   )
        (,@ body)
        )))

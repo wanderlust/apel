@@ -1,4 +1,4 @@
-;;; emu-e20.el --- emu API implementation for Emacs/mule (19.34.91)
+;;; emu-e20.el --- emu API implementation for Emacs/mule (19.34.91-delta)
 
 ;; Copyright (C) 1996,1997 Free Software Foundation, Inc.
 
@@ -80,6 +80,10 @@ in the region between START and END.
   `(let ((coding-system-for-read 'no-conversion))
      ,@body))
 
+(defmacro as-binary-output-file (&rest body)
+  `(let ((coding-system-for-write 'no-conversion))
+     ,@body))
+
 (defalias 'set-process-input-coding-system 'set-process-coding-system)
 
 
@@ -126,14 +130,11 @@ in the region between START and END.
 (defvar default-mime-charset 'x-ctext)
 
 (defvar mime-charset-coding-system-alist
-  '((x-ctext		. coding-system-ctext)
-    (hz-gb-2312		. coding-system-hz)
-    (cn-gb-2312		. coding-system-euc-china)
-    (gb2312		. coding-system-euc-china)
-    (cn-big5		. coding-system-big5)
-    (iso-2022-jp-2	. coding-system-iso-2022-ss2-7)
-    (iso-2022-int-1	. coding-system-iso-2022-int)
-    (shift_jis		. coding-system-sjis)
+  '((x-ctext		. ctext)
+    (gb2312		. cn-gb-2312)
+    (iso-2022-jp-2	. iso-2022-ss2-7)
+    (iso-2022-int-1	. iso-2022-int)
+    (shift_jis		. sjis)
     ))
 
 (defun mime-charset-to-coding-system (charset &optional lbt)
@@ -142,10 +143,8 @@ in the region between START and END.
     )
   (let ((cs
 	 (or (cdr (assq charset mime-charset-coding-system-alist))
-	     (let ((cs (intern (concat "coding-system-"
-				       (symbol-name charset)))))
-	       (and (coding-system-p cs) cs)
-	       ))))
+	     (and (coding-system-p charset) charset)
+	     )))
     (if lbt
 	(intern (concat (symbol-name cs) "-" (symbol-name lbt)))
       cs)))
@@ -230,34 +229,6 @@ TABLE defaults to the current buffer's category table.
     ))
 
 (defalias 'string-to-int-list 'string-to-char-list)
-
-
-;;; @ regulation
-;;;
-
-;; (defun regulate-latin-char (chr)
-;;   (cond ((and (<= ?Ａ chr)(<= chr ?Ｚ))
-;;          (+ (- chr ?Ａ) ?A)
-;;          )
-;;         ((and (<= ?ａ chr)(<= chr ?ｚ))
-;;          (+ (- chr ?ａ) ?a)
-;;          )
-;;         ((eq chr ?．) ?.)
-;;         ((eq chr ?，) ?,)
-;;         (t chr)
-;;         ))
-
-;; (defun regulate-latin-string (str)
-;;   (let ((len (length str))
-;;         (i 0)
-;;         chr (dest ""))
-;;     (while (< i len)
-;;       (setq chr (sref str i))
-;;       (setq dest (concat dest
-;;                          (char-to-string (regulate-latin-char chr))))
-;;       (setq i (+ i (char-bytes chr)))
-;;       )
-;;     dest))
 
 
 ;;; @ end

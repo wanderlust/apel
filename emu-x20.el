@@ -57,6 +57,10 @@
   `(let ((file-coding-system-for-read 'no-conversion))
      ,@body))
 
+(defmacro as-binary-output-file (&rest body)
+  `(let ((file-coding-system 'no-conversion))
+     ,@body))
+
 
 ;;; @ MIME charset
 ;;;

@@ -1,6 +1,6 @@
 ;;; emu-e19.el --- emu module for Emacs 19 and XEmacs 19
 
-;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version: $Id$
@@ -131,6 +131,11 @@
        )))
 
 (defmacro as-binary-input-file (&rest body)
+  (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
+       (,@ body)
+       )))
+
+(defmacro as-binary-output-file (&rest body)
   (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
        (,@ body)
        )))
