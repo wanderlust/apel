@@ -3,7 +3,7 @@
 	* mcs-xm.el: Use `unless' instead `static-unless' to share *.elc
 	between UTF-2000 and non-UTF-2000.
 
-1999-09-24  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+1999-09-24  Mikio Nakajima    <minakaji@osaka.email.ne.jp>
 
 	* pces-om.el (find-coding-system): New inline function.
 	<cf. [tm-ja:5238]>
