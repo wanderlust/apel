@@ -274,6 +274,16 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
 	      (list 'select-window 'save-selected-window-window))))
 
 
+;;; @ Emacs 20.3 emulation
+;;;
+
+(defmacro-maybe string-as-multibyte (string)
+  "Return a multibyte string with the same individual bytes as STRING.
+If STRING is multibyte, the result is STRING itself.
+\[Emacs 20.3 emulating macro]"
+  string)
+
+
 ;;; @ XEmacs emulation
 ;;;
 
