@@ -1,3 +1,48 @@
+1999-06-04  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* EMU-ELS (pces-modules): New variable.
+
+	* poem.el: Require pces.el.
+
+	* pces.el: New module.
+
+	* poem-xfc.el: Deleted.
+
+	* pces-xfc.el: New module.
+
+	* pces-nemacs.el: New module.
+
+	* poem-nemacs.el: Split off features about coding-system to
+	pces-nemacs.el.
+
+	* pces-om.el: New module.
+
+	* poem-om.el: Split off features about coding-system to
+	pces-om.el.
+
+	* pces-raw.el: New module.
+
+	* poem-ltn1.el: Split off features about coding-system to
+	pces-raw.el.
+
+	* pces-xm.el: New module.
+
+	* poem-xm.el: Split off features about coding-system to
+	pces-xm.el.
+
+	* pces-e20_2.el: New module.
+
+	* poem-e20_2.el: Split off features about coding-system to
+	pces-e20_2.el.
+
+	* pces-e20.el: New module.
+
+	* poem-e20.el (find-coding-system): Moved to pces-e20.el.
+	(set-process-input-coding-system): Likewise.
+	- Don't require `poem-20'.
+
+	* pces-20.el: New module [renamed from poem-20.el].
+
 1999-05-31  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* calist.el (calist-field-match-method): Fix problem when
