@@ -49,7 +49,7 @@ tar:
 	sh -c 'cvs tag -RF apel-`echo $(VERSION) \
 				| sed s/\\\\./_/ | sed s/\\\\./_/`; \
 	cd /tmp; \
-	cvs -d :ext:morioka@chamonix.jaist.ac.jp:/hare/cvs/root \
+	cvs -d :pserver:morioka@chamonix.jaist.ac.jp:/hare/cvs/root \
 		export -d apel-$(VERSION) \
 		-r apel-`echo $(VERSION) | tr . _` apel'
 	cd /tmp; $(RM) apel-$(VERSION)/ftp.in ; \
