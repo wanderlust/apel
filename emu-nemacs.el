@@ -86,6 +86,21 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
     (reverse dest)
     ))
 
+(defun find-charset-string (str)
+  (if (string-match "[\200-\377]" str)
+      (list lc-jp)
+    ))
+
+(defun find-charset-region (start end)
+  (if (save-excursion
+	(save-restriction
+	  (narrow-to-region start end)
+	  (goto-char start)
+	  (re-search-forward "[\200-\377]" nil t)
+	  ))
+      (list lc-jp)
+    ))
+
 (defun check-ASCII-string (str)
   (let ((i 0)
 	len)
