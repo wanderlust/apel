@@ -1,3 +1,8 @@
+1999-12-22  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe.el (string-to-int): Commented out an alias for
+	`string-to-number'.
+
 1999-12-13  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poe-18.el: Fix open parenthesis.

@@ -213,7 +213,9 @@ See `read-from-minibuffer' for details of HISTORY argument."
 	 (if (fboundp 'string-to-number)
 	     (fset 'si:string-to-number (symbol-function 'string-to-number))
 	   (fset 'si:string-to-number (symbol-function 'string-to-int))
-	   (defalias 'string-to-int 'string-to-number))
+	   ;; XXX: In v18, this causes infinite loop while bytecompiling.
+	   ;; (defalias 'string-to-int 'string-to-number)
+	   )
 	 (put 'string-to-number 'defun-maybe t)
 	 (defun string-to-number (string &optional base)
 	   "\
