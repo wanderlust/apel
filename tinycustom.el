@@ -66,7 +66,7 @@ FACE does not need to be quoted.
 This is a nop defface only for emulating purpose."
     nil ) )
 
-(defmacro-maybe define-widget (name class doc)
+(defmacro-maybe define-widget (name class doc &rest args)
   "Define a new widget type named NAME from CLASS.
 The third argument DOC is a documentation string for the widget.
 
