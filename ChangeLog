@@ -1,4 +1,4 @@
-1998-10-27  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+1998-10-27  Mikio Nakajima    <minakaji@osaka.email.ne.jp>
 
 	* poem-om.el (char-before): Redefine to change `POS' to optional
 	argument.
