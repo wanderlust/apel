@@ -63,15 +63,16 @@ it is simply using a different list.
 Therefore, write `(setq foo (delete element foo))'
 to be sure of changing the value of `foo'.
 \[poe-18.el; EMACS 19 emulating function]"
-  (if (equal elt (car list))
-      (cdr list)
-    (let ((rest list)
-	  (rrest (cdr list)))
-      (while (and rrest (not (equal elt (car rrest))))
-	(setq rest rrest
-	      rrest (cdr rrest)))
-      (setcdr rest (cdr rrest))
-      list)))
+  (if list
+      (if (equal elt (car list))
+	  (cdr list)
+	(let ((rest list)
+	      (rrest (cdr list)))
+	  (while (and rrest (not (equal elt (car rrest))))
+	    (setq rest rrest
+		  rrest (cdr rrest)))
+	  (setcdr rest (cdr rrest))
+	  list))))
 
 (defun member (elt list)
   "Return non-nil if ELT is an element of LIST.  Comparison done with EQUAL.
