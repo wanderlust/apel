@@ -217,12 +217,12 @@ find-file-hooks, etc.
     (with-temp-buffer
       (insert-buffer-substring the-buf start end)
       (goto-char (point-min))
-      (while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
+      (while (re-search-forward "\\([^\r]\\)\n" nil t)
 	(replace-match "\\1\r\n")
 	)
-      (let ((file-coding-system *noconv*))
-	(write-region (point-min)(point-max) filename append visit)
-	))))
+      (write-region-as-binary (point-min)(point-max)
+			      filename append visit lockname)
+      )))
 
 
 ;;; @ MIME charset
