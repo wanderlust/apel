@@ -277,6 +277,11 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
 ;;; @ Emacs 20.1 emulation
 ;;;
 
+;; This macro was imported Emacs 20.2.
+(defmacro-maybe when (cond &rest body)
+  "(when COND BODY...): if COND yields non-nil, do BODY, else return nil."
+  (list 'if cond (cons 'progn body)))
+
 (defmacro-maybe save-current-buffer (&rest body)
   "Save the current buffer; execute BODY; restore the current buffer.
 Executes BODY just like `progn'."
