@@ -32,9 +32,6 @@
 ;; Modified 4 October 1999 by Yuuichi Teranishi so that it will
 ;; work with old GNUS 3.14.4 under version 18 of Emacs.
 
-;; Modified 5 October 1999 by Yuuichi Teranishi to fix y2k problem
-;; of timezone-parse-date function.
-
 ;;; Code:
 
 (defvar timezone-world-timezones
@@ -507,6 +504,10 @@ With optional DIVISOR, return the largest integer no greater than ARG/DIVISOR."
 	(- (/ (- divisor 1 n) divisor))
       (/ n divisor))))
 
+;;; @ End.
+;;;
+
+(require 'product)
 (product-provide (provide 'timezone) (require 'apel-ver))
 
 ;;; timezone.el ends here
