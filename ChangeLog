@@ -1,3 +1,34 @@
+1998-10-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poem.el, poem-20.el, poem-e20_3.el, poem-e20.el, poem-xm.el: Add
+	setting of byte-compile-dynamic.
+
+	* poem-xm.el (string-to-int-list): Use `defun-maybe'.
+
+	* poem.el (string-as-unibyte): Use `defsubst-maybe' instead of
+	`defmacro-maybe'.
+	(string-as-multibyte): Likewise.
+	(char-int): Use `defalias-maybe'.
+	(int-char): Likewise.
+	(char-or-char-int-p): Likewise.
+
+1998-10-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poe.el, poe-xemacs.el: Add setting of byte-compile-dynamic.
+
+1998-10-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poe-18.el (data-directory): Use `defvar-maybe'.
+	(buffer-undo-list): Likewise.
+
+	* poe-xemacs.el (face-list): Use `defalias-maybe'.
+	(line-beginning-position): Likewise.
+	(line-end-position): Likewise.
+
+	* poe.el (defalias-maybe): New macro.
+
+	* poe-xemacs.el (dired-other-frame): Use `defun-maybe'.
+
 1998-10-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* poe.el (defvar-maybe): New macro.
