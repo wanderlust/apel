@@ -1,4 +1,4 @@
-1999-03-11  morioka  <morioka@akebono>
+1999-03-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* mcs-e20.el (charsets-mime-charset-alist): Add setting for
 	`tis-620'.
