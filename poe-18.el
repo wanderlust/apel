@@ -1,6 +1,6 @@
 ;;; poe-18.el --- poe API implementation for Emacs 18.*
 
-;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997,1998,1999 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: emulation, compatibility
