@@ -363,12 +363,11 @@ but the contents viewed as characters do change.
 
 (defun split-char (character)
   "Return list of charset and one or two position-codes of CHARACTER."
-  (let ((len (char-bytes character))
-	(i 0)
+  (let ((p (1- (char-bytes character)))
 	dest)
-    (while (< i len)
-      (setq dest (cons (char-component character i) dest)
-	    i (1+ i))
+    (while (>= p 1)
+      (setq dest (cons (- (char-component character p) 128) dest)
+	    p (1- p))
       )
     (cons (char-charset character) dest)
     ))
