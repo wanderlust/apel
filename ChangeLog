@@ -1,3 +1,8 @@
+2001-09-09   Daiki Ueno  <ueno@unixuser.org>
+
+	* pccl.el (transform-make-coding-system-args): Follow old backquote
+	style.
+
 2001-07-20  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
 	* install.el (install-file, install-elisp-module): Set file modes
