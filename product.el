@@ -1,9 +1,10 @@
 ;;; product.el --- Functions for product version information.
 
 ;; Copyright (C) 1999 Shuhei KOBAYASHI
+;; Copyright (C) 1999 Keiichi Suzuki
 
 ;; Author: Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
-;;         Keiichi Suzuki <keiichi@nanap.org>
+;;	Keiichi Suzuki <keiichi@nanap.org>
 ;; Keywords: compatibility, User-Agent
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -32,7 +33,7 @@
 ;; and adopted to News Article Format draft [USEFOR].
 ;;
 ;; [RFC 1945] Hypertext Transfer Protocol -- HTTP/1.0.
-;;  T. Berners-Lee, R. Fielding & H. Frystyk. May 1996. 
+;;  T. Berners-Lee, R. Fielding & H. Frystyk. May 1996.
 ;;
 ;; [RFC 2616] Hypertext Transfer Protocol -- HTTP/1.1.
 ;;  R. Fielding, J. Gettys, J. Mogul, H. Frystyk, L. Masinter, P. Leach,
@@ -49,9 +50,9 @@
 
 (defun product-define (name &optional family version code-name)
   "Define a product as a set of NAME, FAMILY, VERSION, and CODE-NAME.
-NAME is a string. Optional 2nd argument FAMILY is a string of
-family product name. Optional 3rd argument VERSION is a list of
-numbers. Optional 4th argument CODE-NAME is a string."
+NAME is a string.  Optional 2nd argument FAMILY is a string of
+family product name.  Optional 3rd argument VERSION is a list of
+numbers.  Optional 4th argument CODE-NAME is a string."
   (and family
        (product-add-to-family family name))
   (set (intern name product-obarray)
@@ -83,7 +84,7 @@ numbers. Optional 4th argument CODE-NAME is a string."
   "Set name of PRODUCT to NAME."
   (aset product 0 name))
 (defun product-set-family (product family)
-  "Set family name of PRODUCT to NAME."
+  "Set family name of PRODUCT to FAMILY."
   (aset product 1 family))
 (defun product-set-version (product version)
   "Set version of PRODUCT to VERSION."
@@ -110,7 +111,7 @@ numbers. Optional 4th argument CODE-NAME is a string."
 	  (or (member product-name dest)
 	      (product-set-family-products
 	       family-product (cons product-name dest))))
-      (error "Family product `%s' is not defined." family))))
+      (error "Family product `%s' is not defined" family))))
 
 (defun product-remove-from-family (family product-name)
   "Remove PRODUCT-NAME from FAMILY product."
@@ -119,10 +120,10 @@ numbers. Optional 4th argument CODE-NAME is a string."
 	(product-set-family-products
 	 family-product
 	 (delete product-name (product-family-products family-product)))
-      (error "Family product `%s' is not defined." family))))
+      (error "Family product `%s' is not defined" family))))
 
 (defun product-add-checkers (product &rest checkers)
-  "Add CHEKCERS to checker functions list of PRODUCT.
+  "Add CHECKERS to checker functions list of PRODUCT.
 If a checker is `ignore' will be ignored all checkers after this."
   (setq product (product-find product))
   (or product-ignore-checkers
@@ -136,7 +137,7 @@ If a checker is `ignore' will be ignored all checkers after this."
 	(product-set-checkers product dest))))
 
 (defun product-remove-checkers (product &rest checkers)
-  "Remove CHEKCERS from checker functions list of PRODUCT."
+  "Remove CHECKERS from checker functions list of PRODUCT."
   (setq product (product-find product))
   (let ((dest (product-checkers product)))
     (while checkers
@@ -190,7 +191,7 @@ all checkers."
    ((vectorp product)
     product)
    (t
-    (error "Invalid product %s." product))))
+    (error "Invalid product %s" product))))
 
 (put 'product-provide 'lisp-indent-function 1)
 (defmacro product-provide (feature-def product-def)
@@ -256,9 +257,9 @@ If optional argument VERBOSE is non-nil, then return string of
   (if v1 (if v2 (- (car v1) (car v2)) 1) (if v2 -1 0)))
 
 (defun product-version>= (product require-version)
-  (setq product (product-find product))
-  (let ((product-version (product-version product)))
-    (>= (product-version-compare product-version require-version) 0)))
+  (>= (product-version-compare (product-version (product-find product))
+			       require-version)
+      0))
 
 (defun product-list-products ()
   "List all products information."
@@ -289,4 +290,4 @@ If optional argument VERBOSE is non-nil, then return string of
 ;(product-define "Emacs" "Meadow" '(20 4) system-configuration)
 ;(product-provide 'emacs "Emacs")
 
-;;; product.el ends here.
+;;; product.el ends here
