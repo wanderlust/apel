@@ -52,6 +52,13 @@ This is a defcustom only for emulating purpose.
 Its effect is just as same as that of defvar."
   (` (defvar (, symbol) (, value) (, doc))))
     
+(defvar-maybe frame-background-mode nil
+  "*The brightness of the background.
+Set this to the symbol dark if your background color is dark, light if
+your background is light, or nil (default) if you want Emacs to
+examine the brightness for you.  However, the old Emacsen might not
+examine the brightness, so you should set this value definitely.")
+
 (defmacro-maybe-cond defface (face spec doc &rest args)
   "Declare FACE as a customizable face that defaults to SPEC.
 FACE does not need to be quoted.  [custom emulating macro]"
