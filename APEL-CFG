@@ -1,7 +1,8 @@
 ;;; -*-Emacs-Lisp-*-
-;;;
-;;; APEL-CFG: installation setting about APEL.
-;;;
+
+;; APEL-CFG: installation setting about APEL.
+
+;;; Code:
 
 (defvar default-load-path load-path)
 (setq load-path (cons (expand-file-name ".") load-path))
