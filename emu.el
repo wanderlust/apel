@@ -24,56 +24,8 @@
 
 ;;; Code:
 
-(defmacro defun-maybe (name &rest everything-else)
-  (or (and (fboundp name)
-	   (not (get name 'defun-maybe))
-	   )
-      (` (or (fboundp (quote (, name)))
-	     (progn
-	       (defun (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defun-maybe t)
-	       ))
-	 )))
+(require 'poe)
 
-(defmacro defsubst-maybe (name &rest everything-else)
-  (or (and (fboundp name)
-	   (not (get name 'defsubst-maybe))
-	   )
-      (` (or (fboundp (quote (, name)))
-	     (progn
-	       (defsubst (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defsubst-maybe t)
-	       ))
-	 )))
-
-(defmacro defmacro-maybe (name &rest everything-else)
-  (or (and (fboundp name)
-	   (not (get name 'defmacro-maybe))
-	   )
-      (` (or (fboundp (quote (, name)))
-	     (progn
-	       (defmacro (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defmacro-maybe t)
-	       ))
-	 )))
-
-(put 'defun-maybe 'lisp-indent-function 'defun)
-(put 'defsubst-maybe 'lisp-indent-function 'defun)
-(put 'defmacro-maybe 'lisp-indent-function 'defun)
-
-(defmacro defconst-maybe (name &rest everything-else)
-  (or (and (boundp name)
-	   (not (get name 'defconst-maybe))
-	   )
-      (` (or (boundp (quote (, name)))
-	     (progn
-	       (defconst (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defconst-maybe t)
-	       ))
-	 )))
-
-
-(defconst-maybe emacs-major-version (string-to-int emacs-version))
 (defconst-maybe emacs-minor-version
   (string-to-int
    (substring emacs-version
@@ -102,7 +54,33 @@
 
 (cond (running-xemacs
        ;; for XEmacs
-       (require 'emu-xemacs)
+       (defvar mouse-button-1 'button1)
+       (defvar mouse-button-2 'button2)
+       (defvar mouse-button-3 'button3)
+       )
+      ((>= emacs-major-version 19)
+       ;; for tm-7.106
+       (defalias 'tl:make-overlay 'make-overlay)
+       (defalias 'tl:overlay-put 'overlay-put)
+       (defalias 'tl:overlay-buffer 'overlay-buffer)
+       
+       (make-obsolete 'tl:make-overlay 'make-overlay)
+       (make-obsolete 'tl:overlay-put 'overlay-put)
+       (make-obsolete 'tl:overlay-buffer 'overlay-buffer)
+       
+       ;; mouse
+       (defvar mouse-button-1 [mouse-1])
+       (defvar mouse-button-2 [mouse-2])
+       (defvar mouse-button-3 [down-mouse-3])
+       )
+      (t
+       ;; mouse
+       (defvar mouse-button-1 nil)
+       (defvar mouse-button-2 nil)
+       (defvar mouse-button-3 nil)
+       ))
+
+(cond (running-xemacs
        (if (featurep 'mule)
 	   ;; for XEmacs with MULE
 	   (require 'emu-x20)
@@ -123,7 +101,6 @@
        )
       (t
        ;; for Emacs 19
-       (require 'emu-e19)
        (require 'emu-latin1)
        ))
 

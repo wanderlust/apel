@@ -1,14 +1,12 @@
-;;; emu-xemacs.el --- emu API implementation for XEmacs
+;;; poe-xemacs.el --- poe API implementation for XEmacs
 
 ;; Copyright (C) 1995 Free Software Foundation, Inc.
 ;; Copyright (C) 1995,1996,1997 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version:
-;;	$Id$
 ;; Keywords: emulation, compatibility, XEmacs
 
-;; This file is part of XEmacs.
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -31,13 +29,11 @@
 ;;;
 
 (or (fboundp 'face-list)
-    (defalias 'face-list 'list-faces)
-    )
+    (defalias 'face-list 'list-faces))
 
 (or (memq 'underline (face-list))
     (and (fboundp 'make-face)
-	 (make-face 'underline)
-	 ))
+	 (make-face 'underline)))
 
 (or (face-differs-from-default-p 'underline)
     (set-face-underline-p 'underline t))
@@ -97,14 +93,6 @@
 	(point-max))))
 
 
-;;; @ mouse
-;;;
-
-(defvar mouse-button-1 'button1)
-(defvar mouse-button-2 'button2)
-(defvar mouse-button-3 'button3)
-
-
 ;;; @ dired
 ;;;
 
@@ -120,7 +108,7 @@
 ;;;
 
 (defmacro char-list-to-string (char-list)
-  "Convert list of character CHAR-LIST to string. [emu-xemacs.el]"
+  "Convert list of character CHAR-LIST to string. [poe-xemacs.el]"
   `(mapconcat #'char-to-string ,char-list ""))
 
 
@@ -132,7 +120,7 @@
     ;; This function was imported from Emacs 19.33.
     (defun file-relative-name (filename &optional directory)
       "Convert FILENAME to be relative to DIRECTORY
-(default: default-directory). [emu-xemacs.el]"
+(default: default-directory). [poe-xemacs.el]"
       (setq filename (expand-file-name filename)
 	    directory (file-name-as-directory
 		       (expand-file-name
@@ -149,6 +137,6 @@
 ;;; @ end
 ;;;
 
-(provide 'emu-xemacs)
+(provide 'poe-xemacs)
 
-;;; emu-xemacs.el ends here
+;;; poe-xemacs.el ends here

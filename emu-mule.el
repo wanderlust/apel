@@ -28,9 +28,9 @@
 ;;; @ version specific features
 ;;;
 
+(require 'poe)
+
 (cond (running-emacs-19
-       (require 'emu-e19)
-       
        ;; Suggested by SASAKI Osamu <osamu@shuugr.bekkoame.or.jp>
        ;; (cf. [os2-emacs-ja:78])
        (defun fontset-pixel-size (fontset)
@@ -49,7 +49,6 @@
 	       ))))
        )
       (running-emacs-18
-       (require 'emu-18)
        (defun make-overlay (beg end &optional buffer type))
        (defun overlay-put (overlay prop value))
        ))

@@ -5,19 +5,18 @@
 ;;; Code:
 
 (setq emu-modules
-      (cons
-       'emu
-       (if (or running-emacs-19_29-or-later
-	       running-xemacs-19_14-or-later)
-	   '(richtext)
-	 '(tinyrich)
-	 )))
+      (append '(poe emu)
+	      (if (or running-emacs-19_29-or-later
+		      running-xemacs-19_14-or-later)
+		  '(richtext)
+		'(tinyrich)
+		)))
 
 (setq emu-modules
       (nconc
        (cond (running-xemacs
 	      ;; for XEmacs
-	      (cons 'emu-xemacs
+	      (cons 'poe-xemacs
 		    (if (featurep 'mule)
 			'(emu-20 emu-x20) ; for XEmacs with MULE
 		      '(emu-latin1) ; for XEmacs without MULE
@@ -30,22 +29,22 @@
 			'emu-e20_3 ; for Emacs 20.3
 		      'emu-e20_2 ; for Emacs 20.1 and 20.2
 		      )
-		    '(emu-20 emu-e19 emu-e20))
+		    '(emu-20 poe-19 emu-e20))
 	      )
 	     ((boundp 'MULE)
 	      ;; for MULE 1.* and MULE 2.*
 	      (cons 'emu-mule
 		    (if running-emacs-18
-			'(emu-18 env)
-		      '(emu-e19)))
+			'(poe-18 env)
+		      '(poe-19)))
 	      )
 	     ((boundp 'NEMACS)
 	      ;; for NEmacs
-	      '(emu-18 emu-nemacs)
+	      '(poe-18 emu-nemacs)
 	      )
 	     (t
 	      ;; for Emacs 19.34
-	      '(emu-e19 emu-latin1)
+	      '(poe-19 emu-latin1)
 	      ))
        emu-modules))
 

@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(require 'emu-e19)
+(require 'poe)
 
 (defun fontset-pixel-size (fontset)
   (let* ((info (fontset-info fontset))

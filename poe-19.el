@@ -1,11 +1,11 @@
-;;; emu-e19.el --- emu API implementation for Emacs 19.*
+;;; poe-19.el --- poe API implementation for Emacs 19.*
 
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: emulation, compatibility
 
-;; This file is part of emu.
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -30,18 +30,6 @@
 (defun-maybe find-face (face)
   (car (memq face (face-list)))
   )
-
-
-;;; @ for tm-7.106
-;;;
-
-(defalias 'tl:make-overlay 'make-overlay)
-(defalias 'tl:overlay-put 'overlay-put)
-(defalias 'tl:overlay-buffer 'overlay-buffer)
-
-(make-obsolete 'tl:make-overlay 'make-overlay)
-(make-obsolete 'tl:overlay-put 'overlay-put)
-(make-obsolete 'tl:overlay-buffer 'overlay-buffer)
 
 
 ;;; @ visible/invisible
@@ -78,14 +66,6 @@
     (point)))
 
 
-;;; @ mouse
-;;;
-
-(defvar mouse-button-1 [mouse-1])
-(defvar mouse-button-2 [mouse-2])
-(defvar mouse-button-3 [down-mouse-3])
-
-
 ;;; @ string
 ;;;
 
@@ -99,6 +79,6 @@
 ;;; @ end
 ;;;
 
-(provide 'emu-e19)
+(provide 'poe-19)
 
-;;; emu-e19.el ends here
+;;; poe-19.el ends here

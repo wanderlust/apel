@@ -24,7 +24,7 @@
 
 ;;; Code:
 
-(require 'emu-18)
+(require 'poe)
 
 
 ;;; @ character set
