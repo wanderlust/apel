@@ -2,7 +2,7 @@
 # $Id$
 #
 
-VERSION = 4.1
+VERSION = 4.2
 
 TAR	= tar
 RM	= /bin/rm -f
@@ -11,7 +11,8 @@ CP	= /bin/cp -p
 EMACS	= emacs
 FLAGS   = -batch -q -no-site-file -l APEL-MK
 
-PREFIX =
+PREFIX = NONE
+LISPDIR = NONE
 
 EMU_FILES =	EMU-ELS *.el
 
@@ -22,7 +23,7 @@ elc:
 	$(EMACS) $(FLAGS) -f compile-apel
 
 install:
-	$(EMACS) $(FLAGS) -f install-apel $(PREFIX)
+	$(EMACS) $(FLAGS) -f install-apel $(PREFIX) $(LISPDIR)
 
 
 clean:

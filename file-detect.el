@@ -25,7 +25,10 @@
 
 ;;; Code:
 
-(defvar default-load-path load-path)
+(defvar default-load-path load-path
+  "*Base of `load-path'.
+It is used as default value of target path to search file or
+subdirectory under load-path.")
 
 ;;;###autoload
 (defun add-path (path &rest options)
