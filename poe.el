@@ -27,11 +27,6 @@
 ;; This modules does not includes MULE related features.
 ;; MULE related features are supported by `poem'.
 
-;; Note to developers:
-;; 
-;; In this file, `eval-when-compile' and `eval-and-compile' does not work
-;; for v18.  If you really need them, require 'poe-18 at outermost level.
-
 ;;; Code:
 
 (provide 'poe)
