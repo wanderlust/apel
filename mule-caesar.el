@@ -1,9 +1,8 @@
 ;;; mule-caesar.el --- ROT 13-47 Caesar rotation utility
 
-;; Copyright (C) 1997 Free Software Foundation, Inc.
+;; Copyright (C) 1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: ROT 13-47, caesar, mail, news, text/x-rot13-47
 
 ;; This file is part of APEL (A Portable Emacs Library).
