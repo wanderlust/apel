@@ -1,3 +1,10 @@
+1999-02-21  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* install.el (install-file): New optional argument JUST-PRINT.
+	(install-files): Likewise.
+	(install-elisp-module): Likewise.
+	(install-elisp-modules): Likewise.
+
 1999-02-18  Keiichi Suzuki  <kei-suzu@mail.wbs.ne.jp>
 
 	* mcs-e20.el (coding-system-get): New function.
@@ -1362,7 +1369,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
