@@ -39,7 +39,7 @@
        (require 'mcs-ltn1)))
 
 (defcustom default-mime-charset-for-write
-  (if (and (require 'pces) ; for find-coding-system
+  (if (and (fboundp 'find-coding-system)
 	   (find-coding-system 'utf-8))
       'utf-8
     default-mime-charset)
