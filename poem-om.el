@@ -224,6 +224,77 @@ find-file-hooks, etc.
 				filename append visit))))
   ))
 
+(defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but don't code and format conversion."
+  (as-binary-input-file (find-file-noselect filename nowarn rawfile)))
+
+(defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but it does not code and format conversion
+except for line-break code."
+  (let ((buffer (get-file-buffer filename)))
+    (save-current-buffer
+      (prog1
+	  (set-buffer (find-file-noselect-as-binary filename nowarn rawfile))
+	(unless buffer
+	  (while (re-search-forward "\r$" nil t)
+	    (replace-match ""))
+	  (goto-char (point-min))
+	  (set-buffer-modified-p nil))))))
+
+(defun open-network-stream-as-binary (name buffer host service)
+  "Like `open-network-stream', q.v., but don't code conversion."
+  (let ((process (open-network-stream name buffer host service)))
+    (set-process-coding-system process *noconv* *noconv*)
+    process))
+
+
+;;; @ with code-conversion
+;;;
+
+(defun insert-file-contents-as-specified-coding-system (filename &rest args)
+  "Like `insert-file-contents', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to
+`insert-file-contents' except for the last element. The last element of
+ARGS must be a coding-system."
+  (let ((file-coding-system-for-read (car (reverse args))))
+    (apply 'insert-file-contents filename (nreverse (cdr (nreverse args))))))
+
+(cond
+ (running-emacs-19_29-or-later
+  ;; for MULE 2.3 based on Emacs 19.34.
+  (defun write-region-as-specified-coding-system (start end filename
+							&rest args)
+    "Like `write-region', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to `write-region'
+except for the last element. The last element of ARGS must be a
+coding-system."
+    (let ((file-coding-system (car (reverse args)))
+	  jka-compr-compression-info-list jam-zcat-filename-list)
+      (apply 'write-region start end filename
+	     (nreverse (cdr (nreverse args))))))
+  )
+ (t
+  ;; for MULE 2.3 based on Emacs 19.28.
+  (defun write-region-as-specified-coding-system (start end filename
+							&rest args)
+    "Like `write-region', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to `write-region'
+except for the last element. The last element of ARGS must be a
+coding-system."
+    (let ((code (car (reverse args)))
+	  (args (nreverse (cdr (nreverse args))))
+	  jka-compr-compression-info-list jam-zcat-filename-list)
+      (write-region start end filename (car args) (car (cdr args)) code)))
+  ))
+
+(defun find-file-noselect-as-specified-coding-system (filename &optional args)
+  "Like `find-file-noselect', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to `find-file-noselect'
+except for the last element. The last element of ARGS must be a
+coding-system."
+  (let ((file-coding-system-for-read (car (reverse args))))
+    (apply' find-file-noselect filename (nreverse (cdr (nreverse args))))))
+
 
 ;;; @ buffer representation
 ;;;

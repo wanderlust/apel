@@ -1,3 +1,40 @@
+1998-12-09  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poem-20.el, poem-e20_2.el, poem-ltn1.el, poem-nemacs.el, poem-om.el
+	(find-file-noselect-as-binary): New function.
+	(find-file-noselect-as-raw-text): New function.
+	(find-file-noselect-as-specified-coding-system): New function.
+
+	* poem-nemacs.el (insert-file-contents-as-binary): Call
+	`insert-file-contents' with only two args - FILENAME and VISIT.
+	(insert-file-contents-as-raw-text): Likewise.
+	(insert-file-contents-as-specified-coding-system): Likewise.
+
+1998-12-09  Yuuichi Teranishi <teranisi@gohome.org>
+
+	* poe-18.el (make-directory-internal): Rewrite.
+
+1998-12-08  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poem-20.el (write-region-as-binary): Bind
+	`jam-zcat-filename-list' with nil.
+	* poem-xm.el (insert-file-contents-as-binary): Likewise.
+
+	* poem.el: Require `tcp' if the function `open-network-stream'
+	does not exist.
+
+1998-12-04  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poem-20.el, poem-ltn1.el, poem-nemacs.el, poem-om.el
+	(open-network-stream-as-binary): New function.
+
+	* poem-e20_2.el (insert-file-contents-as-specified-coding-system):
+	New function.
+
+	* poem-20.el, poem-ltn1.el, poem-nemacs.el, poem-om.el
+	(write-region-as-specified-coding-system): New function.
+	(insert-file-contents-as-specified-coding-system): New function.
+
 1998-12-01  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* poem-xm.el: If coding-system `iso-2022-jp-dos' unifies JIS X

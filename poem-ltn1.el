@@ -156,6 +156,45 @@ code conversion will not take place."
 
 (defalias 'insert-file-contents-as-raw-text 'insert-file-contents)
 
+(defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but don't code and format conversion."
+  (let ((emx-binary-mode t))
+    (find-file-noselect filename nowarn rawfile)))
+
+(defalias find-file-noselect-as-raw-text 'find-file-noselect)
+
+(defun open-network-stream-as-binary (name buffer host service)
+  "Like `open-network-stream', q.v., but don't code conversion."
+  (let ((emx-binary-mode t))
+    (open-network-stream name buffer host service)))
+
+
+;;; @ with code-conversion (but actually it might be not done)
+;;;
+
+(defun insert-file-contents-as-specified-coding-system (filename &rest args)
+  "Like `insert-file-contents', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to
+`insert-file-contents' except for the last element. The last element of
+ARGS must be a coding-system."
+  (apply 'insert-file-contents filename (nreverse (cdr (nreverse args)))))
+
+(defun write-region-as-specified-coding-system (start end filename
+						      &rest args)
+  "Like `write-region', q.v., but code convert by the specified coding-system.
+ARGS the optional arguments are passed to `write-region' except for the last
+element. The last element of ARGS must be a coding-system."
+  (let (jka-compr-compression-info-list jam-zcat-filename-list)
+    (apply 'write-region start end filename
+	   (nreverse (cdr (nreverse args))))))
+
+(defun find-file-noselect-as-specified-coding-system (filename &optional args)
+  "Like `find-file-noselect', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to `find-file-noselect'
+except for the last element. The last element of ARGS must be a
+coding-system."
+  (apply' find-file-noselect filename (nreverse (cdr (nreverse args)))))
+
 
 ;;; @ character
 ;;;
