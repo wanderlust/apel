@@ -53,7 +53,7 @@
 
 (defun install-just-print-p ()
   (let ((flag (getenv "MAKEFLAGS"))
-	case-fold-search)
+	(case-fold-search nil))
     (princ (format "%s\n" flag))
     (if flag
 	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag))))
@@ -96,21 +96,27 @@
   ;; Override PREFIX, LISPDIR, and VERSION_SPECIFIC_LISPDIR with
   ;; command-line options.
   (let (prefix lisp-dir version-specific-lisp-dir)
-    (and (setq prefix (prog1
-			  ;; Avoid using `pop'.
-			  ;; (pop command-line-args-left)
-			  (car command-line-args-left)
-			(setq command-line-args-left
-			      (cdr command-line-args-left))))
+    (and (setq prefix
+	       ;; Avoid using `pop'.
+	       ;; (pop command-line-args-left)
+	       (prog1
+		   (car command-line-args-left)
+		 (setq command-line-args-left
+		       (cdr command-line-args-left))))
 	 (or (string-equal "NONE" prefix)
 	     (setq PREFIX prefix)))
-    (and (setq lisp-dir (prog1
-			    (car command-line-args-left)
-			  (setq command-line-args-left
-				(cdr command-line-args-left))))
+    (and (setq lisp-dir
+	       ;; Avoid using `pop'.
+	       ;; (pop command-line-args-left)
+	       (prog1
+		   (car command-line-args-left)
+		 (setq command-line-args-left
+		       (cdr command-line-args-left))))
 	 (or (string-equal "NONE" lisp-dir)
 	     (setq LISPDIR lisp-dir)))
     (and (setq version-specific-lisp-dir
+	       ;; Avoid using `pop'.
+	       ;; (pop command-line-args-left)
 	       (prog1
 		   (car command-line-args-left)
 		 (setq command-line-args-left
@@ -124,7 +130,6 @@
   (require 'path-util)
   (require 'install)
 
-  ;; We use `module-installed-p' in "EMU-ELS".
   ;; Import `apel-modules'.
   (load-file "APEL-ELS")
   ;; Import `emu-modules' and `emu-modules-to-compile'.
@@ -164,10 +169,13 @@
   (load-file "APEL-CFG")
   ;; Override PACKAGEDIR with command-line option.
   (let (package-dir)
-    (and (setq package-dir (prog1
-			       (car command-line-args-left)
-			     (setq command-line-args-left
-				   (cdr command-line-args-left))))
+    (and (setq package-dir
+	       ;; Avoid using `pop'.
+	       ;; (pop command-line-args-left)
+	       (prog1
+		   (car command-line-args-left)
+		 (setq command-line-args-left
+		       (cdr command-line-args-left))))
 	 (or (string= "NONE" package-dir)
 	     (setq PACKAGEDIR package-dir))))
   ;; Load some APEL modules from this directory.
@@ -177,7 +185,6 @@
   (require 'path-util)
   (require 'install)
 
-  ;; We use `module-installed-p' in "EMU-ELS".
   ;; Import `apel-modules'.
   (load-file "APEL-ELS")
   ;; Import `emu-modules' and `emu-modules-to-compile'.

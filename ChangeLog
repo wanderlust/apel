@@ -1,9 +1,11 @@
 1999-12-12  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
+	* APEL-MK: Modified comments.
+
 	* poe.el: Modified comments.
 
-	* pym.el (defalias-maybe): Don't update `current-load-list'.
-	Modified comments.
+	* pym.el: Modified comments.
+	(defalias-maybe): Don't update `current-load-list'.
 
 1999-12-06  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
