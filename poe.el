@@ -86,6 +86,16 @@
        (provide 'xemacs)
        (require 'poe-xemacs)
        )
+      ((>= emacs-major-version 20)
+       (require 'poe-19)
+       (cond ((fboundp 'string)
+	      ;; Emacs 20.3 or later
+	      )
+	     ((fboundp 'concat-chars)
+	      ;; Emacs 20.1 or later
+	      (defalias 'string 'concat-chars)
+	      ))
+       )
       ((>= emacs-major-version 19)
        (require 'poe-19)
        )
@@ -338,7 +348,12 @@ This function does not move point."
     (end-of-line)
     (point)))
 
+(defun-maybe string (&rest chars)
+  "Concatenate all the argument characters and make the result a string."
+  (mapconcat (function char-to-string) chars "")
+  )
 
+    
 ;;; @ XEmacs emulation
 ;;;
 
