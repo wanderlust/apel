@@ -26,8 +26,6 @@
 
 ;;; Code:
 
-(require 'poem)
-
 (eval-when-compile (require 'ccl))
 (require 'broken)
 
@@ -82,19 +80,19 @@ If CCL-PROG is symbol, it is dereferenced.
 
 (broken-facility ccl-execute-eof-block-on-encoding-null
   "Emacs forgets executing CCL_EOF_BLOCK with encoding on empty input."
-  (equal (encode-coding-string "" 'test-ccl-eof-block-cs) "[EOF]"))
+  (equal (code-convert-string "" *internal* 'test-ccl-eof-block-cs) "[EOF]"))
 
 (broken-facility ccl-execute-eof-block-on-encoding-some
   "Emacs forgets executing CCL_EOF_BLOCK with encoding on non-empty input."
-  (equal (encode-coding-string "a" 'test-ccl-eof-block-cs) "a[EOF]"))
+  (equal (code-convert-string "a" *internal* 'test-ccl-eof-block-cs) "a[EOF]"))
 
 (broken-facility ccl-execute-eof-block-on-decoding-null
   "Emacs forgets executing CCL_EOF_BLOCK with decoding on empty input."
-  (equal (decode-coding-string "" 'test-ccl-eof-block-cs) "[EOF]"))
+  (equal (code-convert-string "" 'test-ccl-eof-block-cs *internal*) "[EOF]"))
 
 (broken-facility ccl-execute-eof-block-on-decoding-some
   "Emacs forgets executing CCL_EOF_BLOCK with decoding on non-empty input."
-  (equal (decode-coding-string "a" 'test-ccl-eof-block-cs) "a[EOF]"))
+  (equal (code-convert-string "a" 'test-ccl-eof-block-cs *internal*) "a[EOF]"))
 
 (broken-facility ccl-execute-eof-block-on-encoding
   "Emacs may forget executing CCL_EOF_BLOCK with encoding."
