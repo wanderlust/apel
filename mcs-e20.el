@@ -177,8 +177,6 @@ Return nil if corresponding MIME-charset is not found."
 ;;; @ end
 ;;;
 
-(require 'mcs-20)
-
 (require 'product)
 (product-provide (provide 'mcs-e20) (require 'apel-ver))
 

@@ -450,7 +450,7 @@ resolution finer than a second."
 ;;; @@ Floating point numbers.
 ;;;
 
-(defalias 'numberp 'integerp)
+(defalias-maybe 'numberp 'integerp)
 
 (defun abs (arg)
   "Return the absolute value of ARG."
@@ -465,7 +465,7 @@ With optional DIVISOR, return the largest integer no greater than ARG/DIVISOR."
       (- (/ (- divisor 1 arg) divisor))
     (/ arg divisor)))
 
-(defalias 'mod '%)
+(defalias-maybe 'mod '%)
 
 ;;; @ Basic lisp subroutines.
 ;;;
@@ -526,10 +526,10 @@ poe-18.el provides this as dummy for a compatibility.")
   "List of events to be read as the command input.
 poe-18.el provides this as dummy for a compatibility.")
 
-(defvar-maybe minibuffer-setup-hook nil
-  "Normal hook run just after entry to minibuffer.")
-(defvar-maybe minibuffer-exit-hook nil
-  "Normal hook run just after exit from minibuffer.")
+;; (defvar-maybe minibuffer-setup-hook nil
+;;   "Normal hook run just after entry to minibuffer.")
+;; (defvar-maybe minibuffer-exit-hook nil
+;;   "Normal hook run just after exit from minibuffer.")
 
 (defvar-maybe minor-mode-map-alist nil
   "Alist of keymaps to use for minor modes.
@@ -593,17 +593,7 @@ If fourth arg READ is non-nil, then interpret the result as a lisp object
   and return that object:
   in other words, do `(car (read-from-string INPUT-STRING))'
 Fifth arg HIST is ignored in this implementatin."
-	(with-current-buffer
-	    (get-buffer-create
-	     (format " *Minibuf-%d*" (minibuffer-depth)))
-	  (run-hooks 'minibuffer-setup-hook))
-	(si:read-from-minibuffer prompt initial-contents keymap read)
-	(with-current-buffer
-	    (get-buffer-create
-	     (format " *Minibuf-%d*" (minibuffer-depth)))
-	  (condition-case nil
-	      (run-hooks 'minibuffer-exit-hook)
-	    (error))))))
+	(si:read-from-minibuffer prompt initial-contents keymap read))))
 
 ;; Add optional argument `frame'.
 (or (fboundp 'si:get-buffer-window)
@@ -638,7 +628,7 @@ Optional third argunemt ALL-FRAMES is ignored in this implementation."
 (defun buffer-disable-undo (&optional buffer)
   "Make BUFFER stop keeping undo information.
 No argument or nil as argument means do this for the current buffer."
-  (buffer-flush-undo (or buffer (current-buffer))))
+   (buffer-flush-undo (or buffer (current-buffer))))
 
 
 ;;; @@ Frame (Emacs 18 cannot make frame)
