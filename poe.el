@@ -1,4 +1,4 @@
-;;; poe.el --- Emulation module for each Emacs variants
+;;; poe.el --- Portable Outfit for Emacsen; -*-byte-compile-dynamic: t;-*-
 
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
@@ -22,23 +22,16 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
-;;; Code:
+;;; Commentary:
 
-(defmacro defvar-maybe (name &rest everything-else)
-  (or (and (boundp name)
-	   (not (get name 'defvar-maybe))
-	   )
-      (` (or (boundp (quote (, name)))
-	     (progn
-	       (defvar (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defvar-maybe t)
-	       ))
-	 )))
+;; This modules does not includes MULE related features.  MULE related
+;; features are supported by `poem'.
+
+;;; Code:
 
 (defmacro defun-maybe (name &rest everything-else)
   (or (and (fboundp name)
-	   (not (get name 'defun-maybe))
-	   )
+	   (not (get name 'defun-maybe)))
       (` (or (fboundp (quote (, name)))
 	     (progn
 	       (defun (, name) (,@ everything-else))
@@ -48,8 +41,7 @@
 
 (defmacro defsubst-maybe (name &rest everything-else)
   (or (and (fboundp name)
-	   (not (get name 'defsubst-maybe))
-	   )
+	   (not (get name 'defsubst-maybe)))
       (` (or (fboundp (quote (, name)))
 	     (progn
 	       (defsubst (, name) (,@ everything-else))
@@ -59,8 +51,7 @@
 
 (defmacro defmacro-maybe (name &rest everything-else)
   (or (and (fboundp name)
-	   (not (get name 'defmacro-maybe))
-	   )
+	   (not (get name 'defmacro-maybe)))
       (` (or (fboundp (quote (, name)))
 	     (progn
 	       (defmacro (, name) (,@ everything-else))
@@ -68,9 +59,30 @@
 	       ))
 	 )))
 
+(defmacro defalias-maybe (symbol definition)
+  (setq symbol (eval symbol))
+  (or (and (fboundp symbol)
+	   (not (get symbol 'defalias-maybe)))
+      (` (or (fboundp (quote (, symbol)))
+	     (progn
+	       (defalias (quote (, symbol)) (, definition))
+	       (put (quote (, symbol)) 'defalias-maybe t)
+	       ))
+	 )))
+
 (put 'defun-maybe 'lisp-indent-function 'defun)
 (put 'defsubst-maybe 'lisp-indent-function 'defun)
 (put 'defmacro-maybe 'lisp-indent-function 'defun)
+
+(defmacro defvar-maybe (name &rest everything-else)
+  (or (and (boundp name)
+	   (not (get name 'defvar-maybe)))
+      (` (or (boundp (quote (, name)))
+	     (progn
+	       (defvar (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defvar-maybe t)
+	       ))
+	 )))
 
 (defmacro defconst-maybe (name &rest everything-else)
   (or (and (boundp name)

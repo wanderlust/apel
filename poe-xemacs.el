@@ -1,7 +1,7 @@
-;;; poe-xemacs.el --- poe API implementation for XEmacs
+;;; poe-xemacs.el --- poe submodule for XEmacs -*-byte-compile-dynamic: t;-*-
 
 ;; Copyright (C) 1995 Free Software Foundation, Inc.
-;; Copyright (C) 1995,1996,1997 MORIOKA Tomohiko
+;; Copyright (C) 1995,1996,1997,1998 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: emulation, compatibility, XEmacs
@@ -28,8 +28,7 @@
 ;;; @ face
 ;;;
 
-(or (fboundp 'face-list)
-    (defalias 'face-list 'list-faces))
+(defalias-maybe 'face-list 'list-faces)
 
 (or (memq 'underline (face-list))
     (and (fboundp 'make-face)
@@ -56,12 +55,11 @@
 ;;; @ dired
 ;;;
 
-(or (fboundp 'dired-other-frame)
-    (defun dired-other-frame (dirname &optional switches)
-      "\"Edit\" directory DIRNAME.  Like `dired' but makes a new frame."
-      (interactive (dired-read-dir-and-switches "in other frame "))
-      (switch-to-buffer-other-frame (dired-noselect dirname switches)))
-    )
+(defun-maybe dired-other-frame (dirname &optional switches)
+  "\"Edit\" directory DIRNAME.  Like `dired' but makes a new frame."
+  (interactive (dired-read-dir-and-switches "in other frame "))
+  (switch-to-buffer-other-frame (dired-noselect dirname switches))
+  )
 
 
 ;;; @ to avoid bug of XEmacs 19.14
@@ -89,11 +87,9 @@
 ;;; @ Emacs 20.3 emulation
 ;;;
 
-(or (fboundp 'line-beginning-position)
-    (defalias 'line-beginning-position 'point-at-bol))
+(defalias-maybe 'line-beginning-position 'point-at-bol)
 
-(or (fboundp 'line-end-position)
-    (defalias 'line-end-position 'point-at-eol))
+(defalias-maybe 'line-end-position 'point-at-eol)
 
 
 ;;; @ end
