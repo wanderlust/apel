@@ -29,7 +29,7 @@
 ;; (custom.el bundled with v19 is old; does not have following macros.)
 ;;
 ;; DEFCUSTOM below has the same effect as the original DEFVAR has.
-;; DEFFACE below interprets almost all arguments.
+;; DEFFACE below interprets almost of all arguments.
 ;; DEFGROUP and DEFINE-WIDGET below are just nop macro.
 
 ;;; Code:
