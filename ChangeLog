@@ -1,8 +1,14 @@
+2000-03-08  Akihiro Arisawa  <ari@atesoft.advantest.co.jp>
+
+	* poe.el (format-time-string): Fix problem when `format' contains "%d"
+	or "%D".
+
 2000-03-04   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
 
 	* poe.el (remassq,remassoc,remrassoc): Rewrite.
 	(remrassq): New function.
 
+
 2000-03-01  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* APEL: Version 10.2 released.

@@ -1268,13 +1268,13 @@ Not fully compatible especially when invalid format is specified."
 		  "")
 		 ;; the day of month, zero-padded
 		 ((eq cur-char ?d)	
-		  (substring time-string 8 10))
+		  (format "%02d" (string-to-int (substring time-string 8 10))))
 		 ;; a synonym for `%m/%d/%y'
 		 ((eq cur-char ?D)
-		  (format "%02d/%s/%s"
+		  (format "%02d/%02d/%s"
 			  (cddr (assoc (substring time-string 4 7)
 				       format-time-month-list))
-			  (substring time-string 8 10)
+			  (string-to-int (substring time-string 8 10))
 			  (substring time-string -2)))
 		 ;; the day of month, blank-padded
 		 ((eq cur-char ?e)
