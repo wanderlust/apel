@@ -3,6 +3,7 @@
 ;; Copyright (C) 1995,1996,1997,1998 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;;         Katsumi Yamaoka <yamaoka@jpl.org>
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of emu.
