@@ -2,6 +2,9 @@
 
 	* APEL: Version 8.2 was released.
 
+	* README.en (What's APEL?): Remove description about std11.el and
+	std11-parse.el.
+
 	* install.el (install-detect-elisp-directory): Modify regexp to
  	allow trailing `/'.
 
