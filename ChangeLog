@@ -1,5 +1,10 @@
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* mcharset.el, emu.el: Move function `charsets-to-mime-charset'
+	from emu.el to mcharset.el.
+
+1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu.el, emu-x20.el, emu-nemacs.el, emu-mule.el, emu-latin1.el,
 	emu-e20.el:
 	  - Move `insert-binary-file-contents' from emu-e20.el,
