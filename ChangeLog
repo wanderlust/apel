@@ -1,3 +1,10 @@
+1999-05-16  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poem-om.el (insert-binary-file-contents-literally): Removed,
+	since provided by emu.el.
+	(char-before, char-after): Use `fboundp', not `boundp'.
+	Use error-conditions directly.
+
 1999-05-15  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* poe.el (path-separator): Doc sync with 20.3.
