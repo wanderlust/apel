@@ -26,48 +26,23 @@
 
 (require 'broken)
 
-;; The condition for non-XEmacs mule t may be wrong.
-;; But I don't know exact version which introduce CCL on mule.
+(if (featurep 'mule)
+    (if (featurep 'xemacs)
+        (if (>= emacs-major-version 21)
+            ;; for XEmacs-21-mule
+            (require 'pccl-20))
+      (if (>= emacs-major-version 20)
+          ;; for Emacs 20
+          (require 'pccl-20)
+        ;; for MULE 1.* and 2.*
+        (require 'pccl-om))))
+
 (broken-facility ccl-usable
   "Emacs has CCL."
   (and (featurep 'mule)
        (if (featurep 'xemacs)
            (>= emacs-major-version 21)
          t)))
-
-(unless-broken ccl-usable
-  (require 'ccl)
-  (require 'advice)
-
-  (if (featurep 'mule)
-      (if (featurep 'xemacs)
-          (if (>= emacs-major-version 21)
-              ;; for XEmacs-21-mule
-              (require 'pccl-20))
-        (if (>= emacs-major-version 20)
-            ;; for Emacs 20
-            (require 'pccl-20)
-          ;; for MULE 1.* and 2.*
-          (require 'pccl-om))))
-
-  (defadvice define-ccl-program
-    (before accept-long-ccl-program activate)
-    "When CCL-PROGRAM is too long, internal buffer is extended automaticaly."
-    (let ((try-ccl-compile t)
-          (prog (eval (ad-get-arg 1))))
-      (ad-set-arg 1 (` '(, prog)))
-      (while try-ccl-compile
-        (setq try-ccl-compile nil)
-        (condition-case sig
-            (ccl-compile prog)
-          (args-out-of-range
-           (if (and (eq (car (cdr sig)) ccl-program-vector)
-                    (= (car (cdr (cdr sig))) (length ccl-program-vector)))
-               (setq ccl-program-vector
-                     (make-vector (* 2 (length ccl-program-vector)) 0)
-                     try-ccl-compile t)
-             (signal (car sig) (cdr sig))))))))
-  )
 
 
 ;;; @ end
