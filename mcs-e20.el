@@ -66,7 +66,7 @@
 
 
 (defvar charsets-mime-charset-alist
-  '(((ascii)						. us-ascii)
+  `(((ascii)						. us-ascii)
     ((ascii latin-iso8859-1)				. iso-8859-1)
     ((ascii latin-iso8859-2)				. iso-8859-2)
     ((ascii latin-iso8859-3)				. iso-8859-3)
@@ -77,6 +77,10 @@
     ((ascii greek-iso8859-7)				. iso-8859-7)
     ((ascii hebrew-iso8859-8)				. iso-8859-8)
     ((ascii latin-iso8859-9)				. iso-8859-9)
+    ,(if (find-coding-system 'iso-8859-14)
+	 '((ascii latin-iso8859-14)			. iso-8859-14))
+    ,(if (find-coding-system 'iso-8859-15)
+	 '((ascii latin-iso8859-15)			. iso-8859-15))
     ((ascii latin-jisx0201
 	    japanese-jisx0208-1978 japanese-jisx0208)	. iso-2022-jp)
     ((ascii latin-jisx0201
