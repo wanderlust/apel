@@ -53,15 +53,6 @@
        (defvar mouse-button-3 'button3)
        )
       ((>= emacs-major-version 19)
-       ;; for tm-7.106
-       (defalias 'tl:make-overlay 'make-overlay)
-       (defalias 'tl:overlay-put 'overlay-put)
-       (defalias 'tl:overlay-buffer 'overlay-buffer)
-       
-       (make-obsolete 'tl:make-overlay 'make-overlay)
-       (make-obsolete 'tl:overlay-put 'overlay-put)
-       (make-obsolete 'tl:overlay-buffer 'overlay-buffer)
-       
        ;; mouse
        (defvar mouse-button-1 [mouse-1])
        (defvar mouse-button-2 [mouse-2])
@@ -73,6 +64,20 @@
        (defvar mouse-button-2 nil)
        (defvar mouse-button-3 nil)
        ))
+
+;; for tm-7.106
+(unless (fboundp 'tl:make-overlay)
+  (defalias 'tl:make-overlay 'make-overlay)
+  (make-obsolete 'tl:make-overlay 'make-overlay)
+  )
+(unless (fboundp 'tl:overlay-put)
+  (defalias 'tl:overlay-put 'overlay-put)
+  (make-obsolete 'tl:overlay-put 'overlay-put)
+  )
+(unless (fboundp 'tl:overlay-put)
+  (defalias 'tl:overlay-buffer 'overlay-buffer)
+  (make-obsolete 'tl:overlay-buffer 'overlay-buffer)
+  )
 
 (require 'poem)
 (require 'mcharset)
