@@ -285,7 +285,16 @@ Executes BODY just like `progn'."
 	   (progn (,@ body))
 	 (set-buffer orig-buffer)))))
 
-;; This macro was imported XEmacs 21.
+;; This macro was imported Emacs 20.2.
+(defmacro-maybe with-current-buffer (buffer &rest body)
+  "Execute the forms in BODY with BUFFER as the current buffer.
+The value returned is the value of the last form in BODY.
+See also `with-temp-buffer'."
+  (` (save-current-buffer
+       (set-buffer (, buffer))
+       (,@ body))))
+
+;; This macro was imported Emacs 20.2.
 (defmacro-maybe with-temp-buffer (&rest forms)
   "Create a temporary buffer, and evaluate FORMS there like `progn'.
 See also `with-temp-file' and `with-output-to-string'."
@@ -297,15 +306,6 @@ See also `with-temp-file' and `with-output-to-string'."
 	       (,@ forms))
 	   (and (buffer-name (, temp-buffer))
 		(kill-buffer (, temp-buffer))))))))
-
-;; This macro was imported XEmacs 21.
-(defmacro-maybe with-current-buffer (buffer &rest body)
-  "Execute the forms in BODY with BUFFER as the current buffer.
-The value returned is the value of the last form in BODY.
-See also `with-temp-buffer'."
-  (` (save-current-buffer
-       (set-buffer (, buffer))
-       (,@ body))))
 
 ;; This function was imported from XEmacs 21.
 (defun-maybe split-string (string &optional pattern)
