@@ -154,6 +154,16 @@ to create parent directories if they don't exist.
     ))
 
 
+;;; @ mark
+;;;
+
+(or (fboundp 'si:mark)
+    (fset 'si:mark (symbol-function 'mark)))
+(defun mark (&optional force)
+  (si:mark)
+  )
+
+
 ;;; @ mouse
 ;;;
 
