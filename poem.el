@@ -66,6 +66,13 @@ If STRING is multibyte, the result is STRING itself.
 \[Emacs 20.3 emulating macro]"
   string)
 
+(defun-maybe charset-after (&optional pos)
+  "Return charset of a character in current buffer at position POS.
+If POS is nil, it defauls to the current point.
+If POS is out of range, the value is nil.
+\[Emacs 20.3 emulating function]"
+  (char-charset (char-after pos))
+  )
 
 ;;; @ XEmacs-mule emulation
 ;;;
