@@ -1,3 +1,8 @@
+2002-04-25  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* poem-xm.el (string-to-char-list): Remove.  It is restored in
+	XEmacs CVS.
+
 2002-04-15  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* poem-xm.el (char-length): New function.
