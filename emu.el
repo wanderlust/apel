@@ -82,6 +82,10 @@
 (require 'poem)
 (require 'mcharset)
 
+(defsubst char-list-to-string (char-list)
+  "Convert list of character CHAR-LIST to string."
+  (apply (function string) char-list))
+
 (cond ((featurep 'mule)
        (cond ((featurep 'xemacs) ; for XEmacs with MULE
 	      ;; old Mule emulating aliases
