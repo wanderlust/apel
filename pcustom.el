@@ -1,7 +1,7 @@
 ;;; pcustom.el -- a portable custom.el.
 
+;; Copyright (C) 1999 Free Software Foundation, Inc.
 ;; Copyright (C) 1999 Mikio Nakajima <minakaji@osaka.email.ne.jp>
-;; Copyright (C) 1999 Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
 
 ;; Author: Mikio Nakajima <minakaji@osaka.email.ne.jp>
 ;;	Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
