@@ -1,4 +1,4 @@
-;;; poem-e20.el --- poem implementation for XEmacs-mule
+;;; poem-e20.el --- poem submodule for Emacs 20; -*-byte-compile-dynamic: t;-*-
 
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 
