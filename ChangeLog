@@ -1,3 +1,11 @@
+1999-03-11  morioka  <morioka@akebono>
+
+	* mcs-e20.el (charsets-mime-charset-alist): Add setting for
+	`tis-620'.
+
+	* mcs-20.el (mime-charset-coding-system-alist): Add `tis-620' and
+	`windows-874'.
+
 1999-03-08  SL Baur  <steve@xemacs.org>
 
 	* poem-ltn1.el (find-file-noselect-as-raw-text): Quote.
