@@ -287,12 +287,14 @@ See `read-from-minibuffer' for details of HISTORY argument."
 (defun-maybe rassoc (key list)
   "Return non-nil if KEY is `equal' to the cdr of an element of LIST.
 The value is actually the element of LIST whose cdr equals KEY.
+Elements of LIST that are not conses are ignored.
 \[Emacs 19.29 emulating function]"
   (catch 'found
     (while list
-      (if (equal (cdr (car list)) key)
-	  (throw 'found (car list)))
-      (setq list (cdr list)))))
+      (cond ((not (consp (car list))))
+	    ((equal (cdr (car list)) key)
+	     (throw 'found (car list)) ))
+      (setq list (cdr list)) )))
 
 ;; imported from emacs-19.34/lisp/files.el.
 (defun-maybe file-name-sans-extension (filename)
