@@ -1,5 +1,11 @@
 1999-08-25  MORIOKA Tomohiko  <tomo@m17n.org>
 
+	* install.el: Don't require `emu'.
+	(emacs-major-version): New variable [for old emacsen].
+	(emacs-minor-version): New variable [for old emacsen].
+
+1999-08-25  MORIOKA Tomohiko  <tomo@m17n.org>
+
 	* poe-18.el (inline): New implementation using `defmacro'.
 
 
