@@ -450,7 +450,7 @@ resolution finer than a second."
 ;;; @@ Floating point numbers.
 ;;;
 
-(defalias-maybe 'numberp 'integerp)
+(defalias 'numberp 'integerp)
 
 (defun abs (arg)
   "Return the absolute value of ARG."
@@ -465,7 +465,7 @@ With optional DIVISOR, return the largest integer no greater than ARG/DIVISOR."
       (- (/ (- divisor 1 arg) divisor))
     (/ arg divisor)))
 
-(defalias-maybe 'mod '%)
+(defalias 'mod '%)
 
 ;;; @ Basic lisp subroutines.
 ;;;
@@ -628,7 +628,7 @@ Optional third argunemt ALL-FRAMES is ignored in this implementation."
 (defun buffer-disable-undo (&optional buffer)
   "Make BUFFER stop keeping undo information.
 No argument or nil as argument means do this for the current buffer."
-   (buffer-flush-undo (or buffer (current-buffer))))
+  (buffer-flush-undo (or buffer (current-buffer))))
 
 
 ;;; @@ Frame (Emacs 18 cannot make frame)
