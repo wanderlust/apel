@@ -20,7 +20,7 @@
 
 (defvar mouse-button-1 [mouse-1])
 (defvar mouse-button-2 [mouse-2])
-(defvar mouse-button-3 [mouse-3])
+(defvar mouse-button-3 [down-mouse-3])
 
 
 ;;; @ end
