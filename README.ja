@@ -320,18 +320,26 @@ filename
   に送ってください。
 
 
+Anonymous FTP
+=============
+
+  最新の APEL のリリースは以下の場所から取得できます:
+
+    ftp://ftp.etl.go.jp/pub/mule/apel/
+
+
 CVS
 ===
 
-  Development of APEL uses CVS.  So latest developing version is
-  available at CVS.
+  APEL の開発は CVS を使っています。最新の開発バージョンを CVS で
+  取得できます。
 
-(0) cvs login
+(0) cvs login (一回目だけ)
 
     % cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
 	login
 
-    CVS password: [CR] # NULL string
+    CVS password: [CR] # 空文字列
 
 (1) checkout
 
@@ -339,9 +347,9 @@ CVS
 	checkout apel
 
 
-  If you would like to join CVS based development, please send mail to
+  CVS に基づいた開発に参加したいときは、
 
 	cvs@chamonix.jaist.ac.jp
 
-  with your account name and UNIX /etc/passwd style crypted password.
-  We hope you will join the open development.
+  にアカウント名と、UNIX の /etc/passwd 様式で暗号化されたパスワードを
+  送ってください。開かれた開発に参加してくださることを期待します。

@@ -308,13 +308,21 @@ Bug reports
 	tm-ja-help@chamonix.jaist.ac.jp	(Japanese)
 
 
+Anonymous FTP
+=============
+
+  Latest release of APEL can be obtained from:
+
+    ftp://ftp.etl.go.jp/pub/mule/apel/
+
+
 CVS
 ===
 
   Development of APEL uses CVS.  So latest developing version is
   available at CVS.
 
-(0) cvs login
+(0) cvs login (first time only)
 
     % cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
 	login
