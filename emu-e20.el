@@ -152,10 +152,6 @@ If CCL-PROG is symbol, it is dereferenced.
 ;;; @ end
 ;;;
 
-(defalias 'insert-binary-file-contents-literally
-  'insert-file-contents-literally)
-
-
 (provide 'emu-e20)
 
 ;;; emu-e20.el ends here
