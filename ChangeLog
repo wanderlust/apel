@@ -1,3 +1,17 @@
+1997-09-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 3.4.3 was released.
+
+	* README.en: Modify for Emacs 20.
+
+1997-09-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* std11-parse.el (std11-special-char-list): New constant; abolish
+	`std11-special-chars'.
+	(std11-atom-regexp): Use it.
+	(std11-analyze-special): Use it; Don't use `find'.
+
+
 1997-09-09  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 3.4.2 was released.
