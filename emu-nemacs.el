@@ -50,7 +50,7 @@
   (get charset 'charset-registry)
   )
 
-(defun charset-columns (charset)
+(defun charset-width (charset)
   "Return number of columns a CHARSET occupies when displayed.
 \[emu-nemacs.el]"
   (if (eq charset 'ascii)
