@@ -20,8 +20,8 @@
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with This program; see the file COPYING.  If not, write to
-;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Code:
@@ -102,7 +102,7 @@ it is searched from all of load-path instead of default-load-path.
 	))))
 
 (defun file-installed-p (file &optional paths)
-  "Return t if FILE exists in PATHS.
+  "Return absolute-path of FILE if FILE exists in PATHS.
 If PATHS is omitted, `load-path' is used. [file-detect.el]"
   (if (null paths)
       (setq paths load-path)

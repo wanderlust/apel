@@ -1,3 +1,8 @@
+1997-03-03  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* file-detect.el (file-installed-p): Fixed DOC-string.
+
+
 1997-02-06  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.17 was released.
