@@ -1,3 +1,7 @@
+1998-12-15  Tanaka Akira  <akr@jaist.ac.jp>
+
+	* pccl-20.el: Do not require 'poem.
+
 1998-12-14  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poem-20.el, poem-e20_2.el, poem-ltn1.el, poem-nemacs.el, poem-om.el
