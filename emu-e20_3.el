@@ -24,7 +24,7 @@
 
 ;;; Commentary:
 
-;;    This module requires Emacs 20.0.91 or later.
+;;    This module requires Emacs 20.2.91 or later.
 
 ;;; Code:
 
