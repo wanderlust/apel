@@ -148,12 +148,13 @@
 ;;; @ detect install path
 ;;;
 
+;; install to shared directory (maybe "/usr/local")
 (defvar install-prefix
   (if (or running-emacs-18 running-xemacs
-	  (string= system-configuration-options "NT")) ; for Meadow
+	  (and (boundp 'system-configuration-options) ; 19.29 or later
+	       (string= system-configuration-options "NT"))) ; for Meadow
       (expand-file-name "../../.." exec-directory)
-    (expand-file-name "../../../.." data-directory)
-    )) ; install to shared directory (maybe "/usr/local")
+    (expand-file-name "../../../.." data-directory)))
 
 (defvar install-elisp-prefix
   (if (>= emacs-major-version 19)
