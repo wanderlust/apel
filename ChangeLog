@@ -1,5 +1,12 @@
 1998-04-09  MORIOKA Tomohiko  <morioka@ks-pc0.jaist.ac.jp>
 
+	* emu-e19.el, emu-e20.el: Use 'make-obsolete for 'string-columns.
+
+	* emu-e19.el, emu-nemacs.el, emu-x20.el: Abolish obsolete alias
+	`char-leading-char'.
+
+1998-04-09  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu-e20.el, emu-mule.el, emu-nemacs.el, emu-e19.el: Abolish
 	obsolete alias `char-columns'.
 
@@ -28,7 +35,7 @@
 	(charsets-mime-charset-alist): New initial value.
 	(char-charset): New implementation.
 
-1998-04-09  MORIOKA Tomohiko  <morioka@mousai.jaist.ac.jp>
+1998-04-09  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-e20.el, emu-x20.el, emu-e19.el, emu-mule.el, emu-nemacs.el
 	(char-next-index): New macro.
