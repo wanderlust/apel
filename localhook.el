@@ -60,7 +60,8 @@
 
 ;;; Code:
 
-(require 'poe)
+(provide 'localhook)			; beware of circular dependency.
+(require 'poe)				; this file is loaded from poe.el.
 
 ;;; These two functions are not complete, but work enough for our purpose.
 ;;
@@ -308,7 +309,5 @@ not `make-local-variable'."
 
 ;;; @ End.
 ;;;
-
-(provide 'localhook)
 
 ;;; localhook.el ends here.
