@@ -1,5 +1,12 @@
 1998-05-07  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* APEL: Version 8.10 was released.
+
+	* README.en (What's APEL?): Delete description about atype.el; add
+	description about calist.el.
+
+1998-05-07  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* calist.el (ctree-add-calist-with-default): fixed.
 
 
