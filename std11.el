@@ -38,6 +38,17 @@
 (defconst std11-next-field-head-regexp
   (concat "\n" std11-field-name-regexp ":"))
 
+(defun std11-field-end ()
+  "Move to end of field and return this point. [std11.el]"
+  (if (re-search-forward std11-next-field-head-regexp nil t)
+      (goto-char (match-beginning 0))
+    (if (re-search-forward "^$" nil t)
+	(goto-char (1- (match-beginning 0)))
+      (end-of-line)
+      ))
+  (point)
+  )
+
 (defun std11-find-field-body (name &optional boundary)
   "Return body of field NAME.
 If BOUNDARY is not nil, it is used as message header separator.
@@ -50,35 +61,6 @@ If BOUNDARY is not nil, it is used as message header separator.
 	(if (re-search-forward (concat "^" name ":[ \t]*") nil t)
 	    (buffer-substring-no-properties (match-end 0) (std11-field-end))
 	  )))))
-
-(defun std11-field-end ()
-  "Move to end of field and return this point. [std11.el]"
-  (if (re-search-forward std11-next-field-head-regexp nil t)
-      (goto-char (match-beginning 0))
-    (if (re-search-forward "^$" nil t)
-	(goto-char (1- (match-beginning 0)))
-      (end-of-line)
-      ))
-  (point)
-  )
-
-(defun std11-field-names (&optional boundary)
-  "Return list of all field-names of the message header in current buffer.
-If BOUNDARY is not nil, it is used as message header separator.
-\[std11.el]"
-  (save-excursion
-    (save-restriction
-      (std11-narrow-to-header boundary)
-      (goto-char (point-min))
-      (let (dest name)
-	(while (re-search-forward std11-field-head-regexp nil t)
-	  (setq name (buffer-substring-no-properties
-		      (match-beginning 0)(1- (match-end 0))))
-	  (or (member name dest)
-	      (setq dest (cons name dest))
-	      )
-	  )
-	dest))))
 
 (defun std11-find-field-bodies (field-names &optional default-value boundary)
   "Return list of each field-bodies of FIELD-NAMES of the message header
@@ -172,6 +154,24 @@ If BOUNDARY is not nil, it is used as message header separator.
 	      ))
 	  header)
 	))))
+
+(defun std11-header-field-names (&optional boundary)
+  "Return list of all field-names of the message header in current buffer.
+If BOUNDARY is not nil, it is used as message header separator.
+\[std11.el]"
+  (save-excursion
+    (save-restriction
+      (std11-narrow-to-header boundary)
+      (goto-char (point-min))
+      (let (dest name)
+	(while (re-search-forward std11-field-head-regexp nil t)
+	  (setq name (buffer-substring-no-properties
+		      (match-beginning 0)(1- (match-end 0))))
+	  (or (member name dest)
+	      (setq dest (cons name dest))
+	      )
+	  )
+	dest))))
 
 
 ;;; @ end
