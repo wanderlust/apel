@@ -24,26 +24,7 @@
 
 ;;; Code:
 
-;; avoid bug of XEmacs
-(or (integerp (cdr (split-char ?a)))
-    (defun split-char (char)
-      "Return list of charset and one or two position-codes of CHAR."
-      (let ((charset (char-charset char)))
-	(if (eq charset 'ascii)
-	    (list charset (char-int char))
-	  (let ((i 0)
-		(len (charset-dimension charset))
-		(code (if (integerp char)
-			  char
-			(char-int char)))
-		dest)
-	    (while (< i len)
-	      (setq dest (cons (logand code 127) dest)
-		    code (lsh code -7)
-		    i (1+ i)))
-	    (cons charset dest)
-	    ))))
-    )
+(require 'emu)
 
 (defun mule-caesar-region (start end &optional stride-ascii)
   "Caesar rotation of current region.
