@@ -137,27 +137,6 @@ It must be symbol."
   :group 'i18n
   :type 'mime-charset)
 
-(defcustom default-mime-charset-for-write
-  (if (find-coding-system 'utf-8)
-      'utf-8
-    default-mime-charset)
-  "Default value of MIME-charset for encoding.
-It may be used when suitable MIME-charset is not found.
-It must be symbol."
-  :group 'i18n
-  :type 'mime-charset)
-
-(defcustom default-mime-charset-detect-method-for-write
-  nil
-  "Function called when suitable MIME-charset is not found to encode.
-It must be nil or function.
-If it is nil, variable `default-mime-charset-for-write' is used.
-If it is a function, interface must be (TYPE CHARSETS &rest ARGS).
-CHARSETS is list of charset.
-If TYPE is 'region, ARGS has START and END."
-  :group 'i18n
-  :type '(choice function (const nil)))
-
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END."
   (let ((charsets (find-charset-region start end)))
