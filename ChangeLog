@@ -1,3 +1,26 @@
+Wed Mar  6 00:24:08 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.15 was released.
+
+	* mu-cite.el: MINOURA Makoto's E-mail address was
+ 	changed. (cf. [tm-ja:1649])
+
+Wed Mar  6 00:07:55 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-els: add mu-replace.el.
+
+	* mu-replace.el: New file.
+
+Tue Mar  5 23:33:14 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-str.el (replace-char-by-char): New function.
+
+	* tl-str.el (replace-space-with-underline): Function
+	`replace-space-with-underline' was moved from tm-edit.el.
+
+	* tl-list.el (cons-if): New function.
+
+
 Mon Mar  4 14:31:31 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.14 was released.
