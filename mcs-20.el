@@ -41,7 +41,6 @@
   `,(let ((rest
 	   '((us-ascii      . raw-text)
 	     (gb2312	    . cn-gb-2312)
-	     (cn-gb	    . cn-gb-2312)
 	     (iso-2022-jp-2 . iso-2022-7bit-ss2)
 	     (x-ctext       . ctext)
 	     (unknown       . undecided)
