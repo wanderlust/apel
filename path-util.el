@@ -24,7 +24,9 @@
 
 ;;; Code:
 
-(condition-case nil
+(eval-when-compile (require 'static))
+
+(static-condition-case nil
     (directory-files "." nil nil t)
   (file-error nil);; unreadable directory.
   (wrong-number-of-arguments
