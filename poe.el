@@ -204,6 +204,12 @@ See also the function `defconst'."
 ;;; `eval-when-compile' is defined in "poe-18" under v18 with old compiler.
 (eval-when-compile (require 'static))
 
+;; `file-coding' was appeared in the spring of 1998, just before XEmacs
+;; 21.0.  Therefore it is not provided in XEmacs with MULE versions 20.4
+;; or earlier.
+(if (and (featurep 'xemacs) (featurep 'mule))
+    (provide 'file-coding))
+
 ;; imported from emacs-20.3/lisp/emacs-lisp/edebug.el.
 ;; `def-edebug-spec' is an autoloaded macro in v19 and later.
 (defmacro-maybe def-edebug-spec (symbol spec)
