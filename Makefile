@@ -21,13 +21,13 @@ MULE2	= mule2
 TLDIR18 = /usr/local/lib/emacs/local.lisp
 TLDIR19 = /usr/local/lib/mule/site-lisp
 
-# TLDIR18 = $(HOME)/lib/emacs18/lisp
-# TLDIR19 = $(HOME)/lib/emacs19/lisp
+#TLDIR18 = $(HOME)/lib/emacs18/lisp
+#TLDIR19 = $(HOME)/lib/emacs19/lisp
 
 FILES	= tl/README.eng tl/Makefile tl/Makefile.bc tl/loadpath \
 	tl/*.el tl/doc/*.texi
 
-TARFILE = tl5.2.0.tar
+TARFILE = tl6.0.tar
 
 
 nemacs:
