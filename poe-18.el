@@ -135,6 +135,52 @@ Associates the function with the current load file, if any."
 ;;; @ Compilation Features
 ;;;
 
+;;; emulate all functions and macros of emacs-20.3/lisp/byte-run.el.
+;;; (note: jwz's original compiler and XEmacs compiler have some more
+;;;  macros; they are "nuked" by rms in FSF version.)
+
+(put 'inline 'lisp-indent-hook 0)
+(defalias-maybe 'inline 'progn)
+
+(put 'defsubst 'lisp-indent-hook 'defun)
+(put 'defsubst 'edebug-form-spec 'defun)
+(defmacro-maybe defsubst (name arglist &rest body)
+  "Define an inline function.  The syntax is just like that of `defun'.
+
+This emulating macro does not support function inlining because old \(v18\)
+compiler does not support inlining feature.
+\[poe-18.el; EMACS 19 emulating macro]"
+  (cons 'defun (cons name (cons arglist body))))
+
+(defun-maybe make-obsolete (fn new)
+  "Make the byte-compiler warn that FUNCTION is obsolete.
+The warning will say that NEW should be used instead.
+If NEW is a string, that is the `use instead' message.
+
+This emulating function does nothing because old \(v18\) compiler does not
+support this feature.
+\[poe-18.el; EMACS 19 emulating function]"
+  (interactive "aMake function obsolete: \nxObsoletion replacement: ")
+  fn)
+
+(defun-maybe make-obsolete-variable (var new)
+  "Make the byte-compiler warn that VARIABLE is obsolete,
+and NEW should be used instead.  If NEW is a string, then that is the
+`use instead' message.
+
+This emulating function does nothing because old \(v18\) compiler does not
+support this feature.
+\[poe-18.el; EMACS 19 emulating function]"
+  (interactive "vMake variable obsolete: \nxObsoletion replacement: ")
+  var)
+
+(put 'dont-compile 'lisp-indent-hook 0)
+(defmacro-maybe dont-compile (&rest body)
+  "Like `progn', but the body always runs interpreted \(not compiled\).
+If you think you need this, you're probably making a mistake somewhere.
+\[poe-18.el; EMACS 19 emulating macro]"
+  (list 'eval (list 'quote (if (cdr body) (cons 'progn body) (car body)))))
+
 (put 'eval-when-compile 'lisp-indent-hook 0)
 (defmacro-maybe eval-when-compile (&rest body)
   "Like progn, but evaluates the body at compile-time.
@@ -158,27 +204,6 @@ Top-level macros are expanded at load-time.
            (eq (car-safe form) 'eval-and-compile))
       (eval (cons 'progn body)))
   (cons 'progn body))
-
-(put 'defsubst 'lisp-indent-hook 'defun)
-(put 'defsubst 'edebug-form-spec 'defun)
-(defmacro-maybe defsubst (name arglist &rest body)
-  "Define an inline function.  The syntax is just like that of `defun'.
-
-This emulating macro does not support function inlining because old (v18)
-compiler does not support inlining feature.
-\[poe-18.el; EMACS 19 emulating macro]"
-  (cons 'defun (cons name (cons arglist body))))
-
-(defun-maybe make-obsolete (fn new)
-  "Make the byte-compiler warn that FUNCTION is obsolete.
-The warning will say that NEW should be used instead.
-If NEW is a string, that is the `use instead' message.
-
-This emulating function does nothing because old (v18) compiler does not
-support this feature.
-\[poe-18.el; EMACS 19 emulating function]"
-  (interactive "aMake function obsolete: \nxObsoletion replacement: ")
-  fn)
 
 
 ;;; @ text property
