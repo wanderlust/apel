@@ -1,9 +1,11 @@
 ;;; poe-18.el --- poe API implementation for Emacs 18.*
 
 ;; Copyright (C) 1995,1996,1997,1998,1999 Free Software Foundation, Inc.
+;; Copyright (C) 1999 Yuuichi Teranishi
 
 ;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;;	Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
+;;	Yuuichi Teranishi <teranisi@gohome.org>
 ;; Keywords: emulation, compatibility
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -30,13 +32,15 @@
 ;; If old (v18) compiler is used, top-level macros are expanded at
 ;; *load-time*, not compile-time. Therefore,
 ;;
-;; (1) you cannot use macros defined with `defmacro-maybe' within function
+;; (1) Definitions with `*-maybe' won't be compiled.
+;;
+;; (2) you cannot use macros defined with `defmacro-maybe' within function
 ;;     definitions in the same file.
 ;;     (`defmacro-maybe' is evaluated at load-time, therefore byte-compiler
 ;;      treats such use of macros as (unknown) functions and compiles them
 ;;      into function calls, which will cause errors at run-time.)
 ;;
-;; (2) `eval-when-compile' and `eval-and-compile' are evaluated at
+;; (3) `eval-when-compile' and `eval-and-compile' are evaluated at
 ;;     load-time if used at top-level.
 
 ;;; Code:
@@ -67,10 +71,11 @@ Associates the function with the current load file, if any."
 		 (throw 'tag t))
 	     (setq rest (cdr rest)))))))
 
-;;; emulate all functions and macros of emacs-20.3/lisp/byte-run.el.
+;;; Emulate all functions and macros of emacs-20.3/lisp/byte-run.el.
 ;;; (note: jwz's original compiler and XEmacs compiler have some more
 ;;;  macros; they are "nuked" by rms in FSF version.)
 
+;; Use `*-maybe' here because new byte-compiler may be installed.
 (put 'inline 'lisp-indent-hook 0)
 (defmacro-maybe inline (&rest body)
   "Eval BODY forms sequentially and return value of last one.
@@ -131,6 +136,214 @@ of the limitation of old \(v18\) compiler."
   (cons 'progn body))
 
 
+;;; @ C primitives emulation.
+;;;
+
+(defun member (elt list)
+  "Return non-nil if ELT is an element of LIST.  Comparison done with EQUAL.
+The value is actually the tail of LIST whose car is ELT."
+  (while (and list (not (equal elt (car list))))
+    (setq list (cdr list)))
+  list)
+
+(defun delete (elt list)
+  "Delete by side effect any occurrences of ELT as a member of LIST.
+The modified LIST is returned.  Comparison is done with `equal'.
+If the first member of LIST is ELT, deleting it is not a side effect;
+it is simply using a different list.
+Therefore, write `(setq foo (delete element foo))'
+to be sure of changing the value of `foo'."
+  (if list
+      (if (equal elt (car list))
+	  (cdr list)
+	(let ((rest list)
+	      (rrest (cdr list)))
+	  (while (and rrest (not (equal elt (car rrest))))
+	    (setq rest rrest
+		  rrest (cdr rrest)))
+	  (setcdr rest (cdr rrest))
+	  list))))
+
+(defun default-boundp (symbol)
+  "Return t if SYMBOL has a non-void default value.
+This is the value that is seen in buffers that do not have their own values
+for this variable."
+  (condition-case error
+      (progn
+	(default-value symbol)
+	t)
+    (void-variable nil)))
+
+;;; @@ current-time.
+;;;
+
+(or (fboundp 'si:current-time-string)
+    (fset 'si:current-time-string (symbol-function 'current-time-string)))
+(defun current-time-string (&optional specified-time)
+  "Return the current time, as a human-readable string.
+Programs can use this function to decode a time,
+since the number of columns in each field is fixed.
+The format is `Sun Sep 16 01:03:52 1973'.
+If an argument is given, it specifies a time to format
+instead of the current time.  The argument should have the form:
+  (HIGH . LOW)
+or the form:
+  (HIGH LOW . IGNORED).
+Thus, you can use times obtained from `current-time'
+and from `file-attributes'."
+  (if (null specified-time)
+      (si:current-time-string)
+    (or (consp specified-time)
+	(error "Wrong type argument %s" specified-time))
+    (let ((high (car specified-time))
+	  (low  (cdr specified-time))
+	  (mdays '(31 28 31 30 31 30 31 31 30 31 30 31))
+	  (mnames '("Jan" "Feb" "Mar" "Apr" "May" "Jun" 
+		    "Jul" "Aug" "Sep" "Oct" "Nov" "Dec"))
+	  (wnames '("Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat"))
+	  days dd yyyy mm HH MM SS)
+      (if (consp low)
+	  (setq low (car low)))
+      (or (integerp high)
+	  (error "Wrong type argument %s" high))
+      (or (integerp low)
+	  (error "Wrong type argument %s" low))
+      (setq low (+ low 32400))
+      (while (> low 65535)
+	(setq high (1+ high)
+	      low (- low 65536)))
+      (setq yyyy 1970)
+      (while (or (> high 481)
+		 (and (= high 481)
+		      (>= low 13184)))
+	(if (and (> high 0)
+		 (< low 13184))
+	    (setq high (1- high)
+		  low  (+ 65536 low)))
+	(setq high (- high 481)
+	      low  (- low 13184))
+	(if (and (zerop (% yyyy 4))
+		 (or (not (zerop (% yyyy 100)))
+		     (zerop (% yyyy 400))))
+	    (progn
+	      (if (and (> high 0) 
+		       (< low 20864))
+		  (setq high (1- high)
+			low  (+ 65536 low)))
+	      (setq high (- high 1)
+		    low (- low 20864))))
+	(setq yyyy (1+ yyyy)))
+      (setq dd 1)
+      (while (or (> high 1)
+		 (and (= high 1)
+		      (>= low 20864)))
+	(if (and (> high 0)
+		 (< low 20864))
+	    (setq high (1- high)
+		  low  (+ 65536 low)))
+	(setq high (- high 1)
+	      low  (- low 20864)
+	      dd (1+ dd)))
+      (setq days dd)
+      (if (= high 1)
+	  (setq low (+ 65536 low)))
+      (setq mm 0)
+      (setq uru (and (zerop (% yyyy 4))
+		     (or (not (zerop (% yyyy 100)))
+			 (zerop (% yyyy 400)))))
+      (while (> (- dd (nth mm mdays)) 0)
+	(if (and (eq mm 1) uru)
+	    (setq dd (- dd 29))
+	  (setq dd (- dd (nth mm mdays))))
+	(setq mm (1+ mm)))
+      (setq HH (/ low 3600)
+	    low (% low 3600)
+	    MM (/ low 60)
+	    SS (% low 60))
+      (format "%s %s %2d %02d:%02d:%02d %4d"
+	      (nth (% (+ days
+			 (- (+ (* (1- yyyy) 365) (/ (1- yyyy) 400) 
+			       (/ (1- yyyy) 4)) (/ (1- yyyy) 100))) 7)
+		   wnames)
+	      (nth mm mnames)
+	      dd HH MM SS yyyy))))
+
+(defun current-time ()
+  "Return the current time, as the number of seconds since 1970-01-01 00:00:00.
+The time is returned as a list of three integers.  The first has the
+most significant 16 bits of the seconds, while the second has the
+least significant 16 bits.  The third integer gives the microsecond
+count.
+
+The microsecond count is zero on systems that do not provide
+resolution finer than a second."
+  (let* ((str (current-time-string))
+	 (yyyy (string-to-int (substring str 20 24)))
+	 (mm (length (member (substring str 4 7)
+			     '("Dec" "Nov" "Oct" "Sep" "Aug" "Jul"
+			       "Jun" "May" "Apr" "Mar" "Feb" "Jan"))))
+	 (dd (string-to-int (substring str 8 10)))
+	 (HH (string-to-int (substring str 11 13)))
+	 (MM (string-to-int (substring str 14 16)))
+	 (SS (string-to-int (substring str 17 19)))
+	 dn ct1 ct2 i1 i2
+	 year uru)
+    (setq ct1 0 ct2 0 i1 0 i2 0)
+    (setq year (- yyyy 1970))
+    (while (> year 0)
+      (setq year (1- year)
+	    ct1 (+ ct1 481)
+	    ct2 (+ ct2 13184))
+      (while (> ct2 65535)
+	(setq ct1 (1+ ct1)
+	      ct2 (- ct2 65536))))
+    (setq uru (- (+ (- (/ yyyy 4) (/ yyyy 100)) 
+		    (/ yyyy 400)) 477))
+    (while (> uru 0)
+      (setq uru (1- uru)
+	    i1 (1+ i1)
+	    i2 (+ i2 20864))
+      (if (> i2 65535)
+	  (setq i1 (1+ i1)
+		i2 (- i2 65536))))
+    (setq ct1 (+ ct1 i1)
+	  ct2 (+ ct2 i2))
+    (while (> ct2 65535)
+      (setq ct1 (1+ ct1)
+	    ct2 (- ct2 65536)))
+    (setq dn (+ dd (* 31 (1- mm))))
+    (if (> mm 2)
+	(setq dn (+ (- dn (/ (+ 23 (* 4 mm)) 10))
+		    (if (and (zerop (% yyyy 4))
+			     (or (not (zerop (% yyyy 100)))
+				 (zerop (% yyyy 400))))
+			1 0))))
+    (setq dn (1- dn)
+	  i1 0 
+	  i2 0)
+    (while (> dn 0)
+      (setq dn (1- dn)
+	    i1 (1+ i1)
+	    i2 (+ i2 20864))
+      (if (> i2 65535)
+	  (setq i1 (1+ i1)
+		i2 (- i2 65536))))
+    (setq ct1 (+ (+ (+ ct1 i1) (/ ct2 65536)) 
+		 (/ (+ (* HH 3600) (* MM 60) SS)
+		    65536))
+	  ct2 (+ (+ i2 (% ct2 65536))
+		 (% (+ (* HH 3600) (* MM 60) SS)
+		    65536)))
+    (while (< (- ct2 32400) 0)
+      (setq ct1 (1- ct1)
+	    ct2 (+ ct2 65536)))
+    (setq ct2 (- ct2 32400))
+    (while (> ct2 65535)
+      (setq ct1 (1+ ct1)
+	    ct2 (- ct2 65536)))
+    (list ct1 ct2 0)))
+
+
 ;;; @ Basic lisp subroutines.
 ;;;
 
@@ -153,41 +366,6 @@ BODY should be a list of lisp expressions."
   ;; depend on backquote.el.
   (list 'function (cons 'lambda cdr)))
 
-(defun delete (elt list)
-  "Delete by side effect any occurrences of ELT as a member of LIST.
-The modified LIST is returned.  Comparison is done with `equal'.
-If the first member of LIST is ELT, deleting it is not a side effect;
-it is simply using a different list.
-Therefore, write `(setq foo (delete element foo))'
-to be sure of changing the value of `foo'."
-  (if list
-      (if (equal elt (car list))
-	  (cdr list)
-	(let ((rest list)
-	      (rrest (cdr list)))
-	  (while (and rrest (not (equal elt (car rrest))))
-	    (setq rest rrest
-		  rrest (cdr rrest)))
-	  (setcdr rest (cdr rrest))
-	  list))))
-
-(defun member (elt list)
-  "Return non-nil if ELT is an element of LIST.  Comparison done with EQUAL.
-The value is actually the tail of LIST whose car is ELT."
-  (while (and list (not (equal elt (car list))))
-    (setq list (cdr list)))
-  list)
-
-(defun default-boundp (symbol)
-  "Return t if SYMBOL has a non-void default value.
-This is the value that is seen in buffers that do not have their own values
-for this variable."
-  (condition-case error
-      (progn
-	(default-value symbol)
-	t)
-    (void-variable nil)))
-
 (defun force-mode-line-update (&optional all)
   "Force the mode-line of the current buffer to be redisplayed.
 With optional non-nil ALL, force redisplay of all mode-lines."
@@ -200,17 +378,18 @@ With optional non-nil ALL, force redisplay of all mode-lines."
 ;;; @ Basic editing commands.
 ;;;
 
-(defvar-maybe buffer-undo-list nil)
+;; 18.55 does not have this variable.
+(defvar buffer-undo-list nil)
 
 (defalias 'buffer-disable-undo 'buffer-flush-undo)
 
-(defun-maybe generate-new-buffer-name (name &optional ignore)
+(defun generate-new-buffer-name (name &optional ignore)
   "Return a string that is the name of no existing buffer based on NAME.
 If there is no live buffer named NAME, then return NAME.
 Otherwise modify name by appending `<NUMBER>', incrementing NUMBER
 until an unused name is found, and then return that name.
 Optional second argument IGNORE specifies a name that is okay to use
-\(if it is in the sequence to be tried)
+\(if it is in the sequence to be tried\)
 even if a buffer with that name exists."
   (if (get-buffer name)
       (let ((n 2) new)
@@ -239,9 +418,9 @@ This function works by modifying `process-environment'."
 ;;; @ File input and output commands.
 ;;;
 
-(defvar-maybe data-directory exec-directory)
+(defvar data-directory exec-directory)
 
-;; `call-process' does not return exit status.
+;; In 18.55, `call-process' does not return exit status.
 (defun file-executable-p (filename)
   "Return t if FILENAME can be executed by you.
 For a directory, this means you can access files in that directory."
