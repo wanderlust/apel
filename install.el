@@ -25,8 +25,52 @@
 
 ;;; Code:
 
-(require 'poe)				; make-directory (for v18)
+;; for historical reason, we do (require 'emu) in this file.
+;; but you should do (require 'emu) explicitly if you use functions and/or
+;; variables defined in emu module.
+(require 'emu)
 (require 'path-util)			; default-load-path
+
+;; verbatim copy of `defun-maybe' from poe.el, and
+;; `make-directory-internal' and `make-directory' from poe-18.el
+(defmacro defun-maybe (name &rest everything-else)
+  "Define NAME as a function if NAME is not defined.
+See also the function `defun'."
+  (or (and (fboundp name)
+	   (not (get name 'defun-maybe)))
+      (` (or (fboundp (quote (, name)))
+	     (prog1
+		 (defun (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defun-maybe t))))))
+
+(defun-maybe make-directory-internal (dirname)
+  "Create a directory. One argument, a file name string."
+  (let ((dir (expand-file-name dirname)))
+    (if (file-exists-p dir)
+	(error "Creating directory: %s is already exist" dir)
+      (call-process "mkdir" nil nil nil dir))))
+
+(defun-maybe make-directory (dir &optional parents)
+  "Create the directory DIR and any nonexistent parent dirs.
+The second (optional) argument PARENTS says whether
+to create parent directories if they don't exist."
+  (let ((len (length dir))
+	(p 0) p1 path)
+    (catch 'tag
+      (while (and (< p len) (string-match "[^/]*/?" dir p))
+	(setq p1 (match-end 0))
+	(if (= p1 len)
+	    (throw 'tag nil))
+	(setq path (substring dir 0 p1))
+	(if (not (file-directory-p path))
+	    (cond ((file-exists-p path)
+		   (error "Creating directory: %s is not directory" path))
+		  ((null parents)
+		   (error "Creating directory: %s is not exist" path))
+		  (t
+		   (make-directory-internal path))))
+	(setq p p1)))
+    (make-directory-internal dir)))
 
 
 ;;; @ compile Emacs Lisp files
