@@ -1,3 +1,13 @@
+1999-05-08  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* APEL: Version 9.18 released.
+
+1999-05-08  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* mcs-e20.el: Fix checking code about coding-system `x-ctext'
+	[cf. <tm-ja:4389> by akr]
+
+
 1999-05-07  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* APEL: Version 9.17 released.
