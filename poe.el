@@ -75,7 +75,6 @@
    (or (fboundp 'si:require)
        (progn
 	 (fset 'si:require (symbol-function 'require))
-	 (put 'require 'defun-maybe t)
 	 (defun require (feature &optional filename noerror)
 	   "\
 If feature FEATURE is not loaded, load it from FILENAME.
@@ -90,7 +89,10 @@ Normally the return value is FEATURE."
 	       (condition-case nil
 		   (si:require feature filename)
 		 (file-error))
-	     (si:require feature filename)))))))
+	     (si:require feature filename)))
+	 ;; for `load-history'.
+	 (setq current-load-list (cons 'require current-load-list))
+	 (put 'require 'defun-maybe t)))))
 
 ;; Emacs 19.29 and later: (plist-get PLIST PROP)
 ;; (defun-maybe plist-get (plist prop)
