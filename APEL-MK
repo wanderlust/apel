@@ -24,9 +24,6 @@
     ))
 
 (defun compile-apel ()
-  ;;(add-to-list 'load-path (expand-file-name "../emu"))
-  ;;(add-to-list 'load-path ".")
-  ;;(require 'install)
   (config-apel)
   (load "EMU-ELS")
   (load-file "APEL-ELS")
@@ -36,7 +33,6 @@
 
 (defun install-apel ()
   (compile-apel)
-  ;;(config-apel)
   (install-elisp-modules emu-modules	"."	EMU_DIR)
   (install-elisp-modules apel-modules	"."	APEL_DIR)
   )
