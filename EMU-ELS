@@ -20,6 +20,7 @@
    ;; '(product)
 
    ;; poe modules; poe modules depend on static.
+   '(pym)
    (cond
     ;; XEmacs.
     ((featurep 'xemacs)
