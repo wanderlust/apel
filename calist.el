@@ -84,6 +84,37 @@
 		    ret-alist))))
 	))))
 
+(defun ctree-match-calist-all (rule-tree alist)
+  "Return matched condition-alist if ALIST matches RULE-TREE."
+  (if (null rule-tree)
+      (list alist)
+    (let ((type (car rule-tree))
+	  (choices (cdr rule-tree))
+	  default dest)
+      (while choices
+	(let* ((choice (car choices))
+	       (choice-value (car choice)))
+	  (if (eq choice-value t)
+	      (setq default choice)
+	    (let ((ret-alist (calist-field-match alist type (car choice))))
+	      (if ret-alist
+		  (if (cdr choice)
+		      (setq dest
+			    (append
+			     (ctree-match-calist-all (cdr choice) ret-alist)
+			     dest))
+		    (setq dest (cons ret-alist dest))
+		    )))))
+	(setq choices (cdr choices)))
+      (or dest
+	  (if default
+	      (let ((ret-alist (calist-field-match alist type t)))
+		(if ret-alist
+		    (if (cdr default)
+			(ctree-match-calist-all (cdr default) ret-alist)
+		      (list ret-alist)
+		      ))))))))
+
 (defun calist-to-ctree (calist)
   "Convert condition-alist CALIST to condition-tree."
   (if calist
