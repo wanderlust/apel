@@ -1,4 +1,4 @@
-1999-05-07  MORIOKA Tomohiko  <tomo@etl.go.jp>
+1999-05-07  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* poe-18.el (eval-when-compile): New macro.
 
@@ -8,7 +8,7 @@
 	`condition-case'; use `defun-maybe' instead of `defun'.
 	(remove-hook): Likewise.
 
-1999-04-22  MORIOKA Tomohiko  <tomo@etl.go.jp>
+1999-04-22  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* poe.el (caar): New function.
 
@@ -33,7 +33,7 @@
 
 	* broken.el: New implementation using `static'.
 
-1999-04-09  MORIOKA Tomohiko  <tomo@etl.go.jp>
+1999-04-09  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* EMU-ELS (poem-modules): Add `poem-xfc' if file-coding feature is
 	available in a XEmacs-without-MULE.
@@ -45,7 +45,7 @@
 	* poem-xfc.el: new file for file coding based XEmacs.
 
 
-1999-04-08  MORIOKA Tomohiko  <tomo@etl.go.jp>
+1999-04-08  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* APEL: Version 9.16 released.
 
