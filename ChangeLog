@@ -1,5 +1,10 @@
 1998-06-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* mule-caesar.el: Move `split-char' check and repair code to
+	emu-x20.el; require 'emu.
+
+1998-06-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu-nemacs.el, emu-mule.el (set-buffer-multibyte): New function.
 
 	* emu-latin1.el, emu-x20.el (set-buffer-multibyte): New macro.
