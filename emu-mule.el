@@ -45,8 +45,8 @@
 		       (string-to-number
 			(substring
 			 pat (1+ (match-beginning 0)) (1- (match-end 0))))
-		     0)))
-	     )))
+		     0))
+	       ))))
        )
       (running-emacs-18
        (require 'emu-18)
@@ -82,37 +82,39 @@
 (defun encode-coding-region (start end coding-system)
   "Encode the text between START and END to CODING-SYSTEM.
 \[EMACS 20 emulating function]"
-  (code-convert-region start end *internal* coding-system)
-  )
+  ;; If `coding-system' is nil, do nothing.
+  (code-convert-region start end *internal* coding-system))
 
 (defun decode-coding-region (start end coding-system)
   "Decode the text between START and END which is encoded in CODING-SYSTEM.
 \[EMACS 20 emulating function]"
-  (code-convert-region start end coding-system *internal*)
-  )
+  ;; If `coding-system' is nil, do nothing.
+  (code-convert-region start end coding-system *internal*))
 
+;; XXX: Should we support optional NOCOPY argument? (only in Emacs 20.x)
 (defun encode-coding-string (str coding-system)
   "Encode the STRING to CODING-SYSTEM.
 \[EMACS 20 emulating function]"
-  (code-convert-string str *internal* coding-system)
-  )
+  (if coding-system
+      (code-convert-string str *internal* coding-system)
+    ;;(code-convert-string str *internal* nil) returns nil instead of str.
+    str)
 
+;; XXX: Should we support optional NOCOPY argument? (only in Emacs 20.x)
 (defun decode-coding-string (str coding-system)
   "Decode the string STR which is encoded in CODING-SYSTEM.
 \[EMACS 20 emulating function]"
-  (let ((len (length str))
-	ret)
-    (while (and
-	    (< 0 len)
-	    (null
-	     (setq ret
-		   (code-convert-string (substring str 0 len)
-					coding-system *internal*))
-	     ))
-      (setq len (1- len))
-      )
-    (concat ret (substring str len))
-    ))
+  (if coding-system
+      (let ((len (length str))
+	    ret)
+	(while (and (< 0 len)
+		    (null (setq ret
+				(code-convert-string
+				 (substring str 0 len)
+				 coding-system *internal*))))
+	  (setq len (1- len)))
+	(concat ret (substring str len)))
+    str)
 
 (defalias 'detect-coding-region 'code-detect-region)
 
@@ -124,22 +126,19 @@
 	   mc-flag	
 	   (default-process-coding-system (cons *noconv* *noconv*))
 	   program-coding-system-alist)
-       (,@ body)
-       )))
+       (,@ body))))
 
 (defmacro as-binary-input-file (&rest body)
   (` (let (mc-flag
 	   (file-coding-system-for-read *noconv*)
 	   )
-       (,@ body)
-       )))
+       (,@ body))))
 
 (defmacro as-binary-output-file (&rest body)
   (` (let (mc-flag
 	   (file-coding-system *noconv*)
 	   )
-       (,@ body)
-       )))
+       (,@ body))))
 
 (defalias 'set-process-input-coding-system 'set-process-coding-system)
 
@@ -155,10 +154,9 @@ automatic uncompression, etc.
 
 Namely this function ensures that only format decoding and character
 code conversion will not take place."
-  (let (mc-flag
-	(file-coding-system-for-read *noconv*))
-    (insert-file-contents filename visit beg end replace)
-    ))
+  (as-binary-input-file
+   ;; Returns list absolute file name and length of data inserted.
+   (insert-file-contents filename visit beg end replace)))
 
 (defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
 (make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
@@ -173,11 +171,13 @@ code."
   (save-excursion
     (save-restriction
       (narrow-to-region (point)(point))
-      (insert-file-contents-as-binary filename visit beg end replace)
-      (goto-char (point-min))
-      (while (re-search-forward "\r$" nil t)
-	(replace-match "")
-	))))
+      (let ((return-val
+	     ;; Returns list absolute file name and length of data inserted.
+	     (insert-file-contents-as-binary filename visit beg end replace)))
+	(goto-char (point-min))
+	(while (re-search-forward "\r$" nil t)
+	  (replace-match ""))
+	(list (car return-val) (buffer-size))))))
 
 (defun insert-binary-file-contents-literally (filename
 					      &optional visit beg end replace)
@@ -186,43 +186,51 @@ A buffer may be modified in several ways after reading into the buffer due
 to advanced Emacs features, such as file-name-handlers, format decoding,
 find-file-hooks, etc.
   This function ensures that none of these modifications will take place."
-  (let (mc-flag
-	(file-coding-system *noconv*))
-    (insert-file-contents-literally filename visit beg end replace)
-    ))
+  (as-binary-input-file
+   ;; Returns list absolute file name and length of data inserted.
+   (insert-file-contents-literally filename visit beg end replace)))
 
-(if running-emacs-19_29-or-later
-    ;; for MULE 2.3 based on Emacs 19.34.
-    (defun write-region-as-binary (start end filename
-					 &optional append visit lockname)
-      "Like `write-region', q.v., but don't code conversion."
-      (let (mc-flag
-	    (file-coding-system *noconv*))
-	(write-region start end filename append visit lockname)
-	))
+(cond
+ (running-emacs-19_29-or-later
+  ;; for MULE 2.3 based on Emacs 19.34.
+  (defun write-region-as-binary (start end filename
+				       &optional append visit lockname)
+    "Like `write-region', q.v., but don't code conversion."
+    (as-binary-output-file
+     (write-region start end filename append visit lockname)))
+
+  (defun write-region-as-raw-text-CRLF (start end filename
+					      &optional append visit lockname)
+    "Like `write-region', q.v., but don't code conversion."
+    (let ((the-buf (current-buffer)))
+      (with-temp-buffer
+	(insert-buffer-substring the-buf start end)
+	(goto-char (point-min))
+	(while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
+	  (replace-match "\\1\r\n"))
+	(write-region-as-binary (point-min)(point-max)
+				filename append visit lockname))))
+  )
+ (t
   ;; for MULE 2.3 based on Emacs 19.28.
   (defun write-region-as-binary (start end filename
 				       &optional append visit lockname)
     "Like `write-region', q.v., but don't code conversion."
-    (let (mc-flag
-	  (file-coding-system *noconv*))
-      (write-region start end filename append visit)
-      ))
-  )
+    (as-binary-output-file
+     (write-region start end filename append visit)))
 
-(defun write-region-as-raw-text-CRLF (start end filename
-					    &optional append visit lockname)
-  "Like `write-region', q.v., but don't code conversion."
-  (let ((the-buf (current-buffer)))
-    (with-temp-buffer
-      (insert-buffer-substring the-buf start end)
-      (goto-char (point-min))
-      (while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
-	(replace-match "\\1\r\n")
-	)
-      (write-region-as-binary (point-min)(point-max)
-			      filename append visit lockname)
-      )))
+  (defun write-region-as-raw-text-CRLF (start end filename
+					      &optional append visit lockname)
+    "Like `write-region', q.v., but don't code conversion."
+    (let ((the-buf (current-buffer)))
+      (with-temp-buffer
+	(insert-buffer-substring the-buf start end)
+	(goto-char (point-min))
+	(while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
+	  (replace-match "\\1\r\n"))
+	(write-region-as-binary (point-min)(point-max)
+				filename append visit))))
+  ))
 
 
 ;;; @ MIME charset
@@ -256,13 +264,27 @@ find-file-hooks, etc.
 	(decode-coding-string string cs)
       string)))
 
-(defun write-region-as-mime-charset (charset start end filename)
-  "Like `write-region', q.v., but code-convert by MIME CHARSET."
-  (let ((file-coding-system
-	 (or (mime-charset-to-coding-system charset)
-	     *noconv*)))
-    (write-region start end filename append visit)
-    ))
+(cond
+ (running-emacs-19_29-or-later
+  ;; for MULE 2.3 based on Emacs 19.34.
+  (defun write-region-as-mime-charset (charset start end filename
+					       &optional append visit lockname)
+    "Like `write-region', q.v., but code-convert by MIME CHARSET."
+    (let ((file-coding-system
+	   (or (mime-charset-to-coding-system charset)
+	       *noconv*)))
+      (write-region start end filename append visit lockname)))
+  )
+ (t
+  ;; for MULE 2.3 based on Emacs 19.28.
+  (defun write-region-as-mime-charset (charset start end filename
+					       &optional append visit lockname)
+    "Like `write-region', q.v., but code-convert by MIME CHARSET."
+    (let ((file-coding-system
+	   (or (mime-charset-to-coding-system charset)
+	       *noconv*)))
+      (write-region start end filename append visit)))
+  ))
 
 
 ;;; @@ to coding-system
@@ -279,23 +301,22 @@ find-file-hooks, etc.
     (x-shiftjis      . *sjis*)
     ))
 
-(defun mime-charset-to-coding-system (charset &optional lbt)
+(defsubst mime-charset-to-coding-system (charset &optional lbt)
   (if (stringp charset)
       (setq charset (intern (downcase charset)))
     )
-  (let ((cs
-	 (or (cdr (assq charset mime-charset-coding-system-alist))
-	     (let ((cs (intern (concat "*" (symbol-name charset) "*"))))
-	       (and (coding-system-p cs) cs)
-	       ))))
-    (if (or (null lbt)
-	    (null cs))
-	cs
-      (intern (format "%s%s" cs (cond ((eq lbt 'CRLF) 'dos)
-				      ((eq lbt 'LF) 'unix)
-				      ((eq lbt 'CR) 'mac)
-				      (t lbt))))
-      )))
+  (setq charset (or (cdr (assq charset mime-charset-coding-system-alist))
+		    (intern (concat "*" (symbol-name charset) "*"))))
+  (if lbt
+      (setq charset (intern (format "%s%s" charset
+				    (cond ((eq lbt 'CRLF) 'dos)
+					  ((eq lbt 'LF) 'unix)
+					  ((eq lbt 'CR) 'mac)
+					  (t lbt)))))
+    )
+  (if (coding-system-p charset)
+      charset
+    ))
 
 
 ;;; @@ detection
@@ -384,10 +405,8 @@ but the contents viewed as characters do change.
 	dest)
     (while (>= p 1)
       (setq dest (cons (- (char-component character p) 128) dest)
-	    p (1- p))
-      )
-    (cons (char-charset character) dest)
-    ))
+	    p (1- p)))
+    (cons (char-charset character) dest)))
 
 (defmacro char-next-index (char index)
   "Return index of character succeeding CHAR whose index is INDEX."
@@ -409,38 +428,38 @@ but the contents viewed as characters do change.
 (defalias 'string-to-int-list 'string-to-char-list)
 
 (or (fboundp 'truncate-string)
-;;; Imported from Mule-2.3
-(defun truncate-string (str width &optional start-column)
-  "Truncate STR to fit in WIDTH columns.
+    ;; Imported from Mule-2.3
+    (defun truncate-string (str width &optional start-column)
+      "\
+Truncate STR to fit in WIDTH columns.
 Optional non-nil arg START-COLUMN specifies the starting column.
 \[emu-mule.el; Mule 2.3 emulating function]"
-  (or start-column
-      (setq start-column 0))
-  (let ((max-width (string-width str))
-	(len (length str))
-	(from 0)
-	(column 0)
-	to-prev to ch)
-    (if (>= width max-width)
-	(setq width max-width))
-    (if (>= start-column width)
-	""
-      (while (< column start-column)
-	(setq ch (aref str from)
-	      column (+ column (char-width ch))
-	      from (+ from (char-bytes ch))))
-      (if (< width max-width)
-	  (progn
-	    (setq to from)
-	    (while (<= column width)
-	      (setq ch (aref str to)
-		    column (+ column (char-width ch))
-		    to-prev to
-		    to (+ to (char-bytes ch))))
-	    (setq to to-prev)))
-      (substring str from to))))
-;;;
-  )
+      (or start-column
+	  (setq start-column 0))
+      (let ((max-width (string-width str))
+	    (len (length str))
+	    (from 0)
+	    (column 0)
+	    to-prev to ch)
+	(if (>= width max-width)
+	    (setq width max-width))
+	(if (>= start-column width)
+	    ""
+	  (while (< column start-column)
+	    (setq ch (aref str from)
+		  column (+ column (char-width ch))
+		  from (+ from (char-bytes ch))))
+	  (if (< width max-width)
+	      (progn
+		(setq to from)
+		(while (<= column width)
+		  (setq ch (aref str to)
+			column (+ column (char-width ch))
+			to-prev to
+			to (+ to (char-bytes ch))))
+		(setq to to-prev)))
+	  (substring str from to))))
+    )
 
 (defalias 'looking-at-as-unibyte 'looking-at)
 
@@ -450,15 +469,12 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 
 (defun regulate-latin-char (chr)
   (cond ((and (<= ?Ａ chr)(<= chr ?Ｚ))
-	 (+ (- chr ?Ａ) ?A)
-	 )
+	 (+ (- chr ?Ａ) ?A))
 	((and (<= ?ａ chr)(<= chr ?ｚ))
-	 (+ (- chr ?ａ) ?a)
-	 )
+	 (+ (- chr ?ａ) ?a))
 	((eq chr ?．) ?.)
 	((eq chr ?，) ?,)
-	(t chr)
-	))
+	(t chr)))
 
 (defun regulate-latin-string (str)
   (let ((len (length str))
@@ -468,9 +484,76 @@ Optional non-nil arg START-COLUMN specifies the starting column.
       (setq chr (sref str i))
       (setq dest (concat dest
 			 (char-to-string (regulate-latin-char chr))))
-      (setq i (+ i (char-bytes chr)))
-      )
+      (setq i (+ i (char-bytes chr))))
     dest))
+
+
+;;; @ CCL
+;;;
+(require 'ccl)
+
+(defconst ccl-use-symbol-as-program nil
+  "t if CCL related builtins accept symbol as CCL program.
+(20.2 with ExCCL, 20.3 or later)
+Otherwise nil (20.2 without ExCCL or former).
+
+Because emu provides functions accepting symbol as CCL program,
+user programs should not refer this variable.")
+
+(defun make-ccl-coding-system
+  (coding-system mnemonic doc-string decoder encoder)
+  "Define a new CODING-SYSTEM (symbol) by CCL programs
+DECODER (symbol) and ENCODER (symbol)."
+  (setq decoder (symbol-value decoder)
+	encoder (symbol-value encoder))
+  (make-coding-system coding-system 4 mnemonic doc-string
+		      nil ; Mule takes one more optional argument: EOL-TYPE.
+		      (cons decoder encoder)))
+
+(eval-when-compile
+  (define-ccl-program test-ccl-eof-block
+    '(1
+      (read r0)
+      (write "[EOF]")))
+
+  (make-ccl-coding-system
+   'test-ccl-eof-block-cs ?T "CCL_EOF_BLOCK tester"
+   'test-ccl-eof-block 'test-ccl-eof-block)
+  )
+
+(defconst ccl-encoder-eof-block-is-broken
+  (eval-when-compile
+    (not (equal (encode-coding-string "" 'test-ccl-eof-block-cs)
+		"[EOF]")))
+  "t if CCL_EOF_BLOCK is not executed when coding system encounts EOF on
+encoding.")
+
+(defconst ccl-decoder-eof-block-is-broken
+  (eval-when-compile
+    (not (equal (decode-coding-string "" 'test-ccl-eof-block-cs)
+		"[EOF]")))
+  "t if CCL_EOF_BLOCK is not executed when coding system encounts EOF on
+decoding.")
+
+(defconst ccl-eof-block-is-broken
+  (or ccl-encoder-eof-block-is-broken
+      ccl-decoder-eof-block-is-broken))
+
+(defun ccl-execute (ccl-prog reg)
+  "Execute CCL-PROG with registers initialized by REGISTERS.
+If CCL-PROG is symbol, it is dereferenced.
+\[Emacs 20.3 emulating function]"
+  (exec-ccl
+   (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
+   reg))
+
+(defun ccl-execute-on-string (ccl-prog status string &optional contin)
+  "Execute CCL-PROG with initial STATUS on STRING.
+If CCL-PROG is symbol, it is dereferenced.
+\[Emacs 20.3 emulating function]"
+  (exec-ccl-string
+   (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
+   string status))
 
 
 ;;; @ end
