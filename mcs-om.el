@@ -26,13 +26,44 @@
 
 (require 'poem)
 
+(condition-case nil
+    (require 'cyrillic)
+  (error nil))
+
+(defvar mime-charset-coding-system-alist
+  '((iso-8859-1      . *ctext*)
+    (x-ctext         . *ctext*)
+    (gb2312          . *euc-china*)
+    (koi8-r          . *koi8*)
+    (iso-2022-jp-2   . *iso-2022-ss2-7*)
+    (x-iso-2022-jp-2 . *iso-2022-ss2-7*)
+    (shift_jis       . *sjis*)
+    (x-shiftjis      . *sjis*)))
+
+(defsubst mime-charset-to-coding-system (charset &optional lbt)
+  "Return coding-system corresponding with CHARSET.
+CHARSET is a symbol whose name is MIME charset.
+If optional argument LBT (`CRLF', `LF', `CR', `unix', `dos' or `mac')
+is specified, it is used as line break code type of coding-system."
+  (if (stringp charset)
+      (setq charset (intern (downcase charset))))
+  (setq charset (or (cdr (assq charset mime-charset-coding-system-alist))
+		    (intern (concat "*" (symbol-name charset) "*"))))
+  (if lbt
+      (setq charset (intern (format "%s%s" charset
+				    (cond ((eq lbt 'CRLF) 'dos)
+					  ((eq lbt 'LF) 'unix)
+					  ((eq lbt 'CR) 'mac)
+					  (t lbt))))))
+  (if (coding-system-p charset)
+      charset))
+
 (defsubst lbt-to-string (lbt)
   (cdr (assq lbt '((nil . nil)
 		   (CRLF . "\r\n")
 		   (CR . "\r")
 		   (dos . "\r\n")
-		   (mac . "\r"))))
-  )
+		   (mac . "\r")))))
 
 (defun encode-mime-charset-region (start end charset &optional lbt)
   "Encode the text between START and END as MIME CHARSET."
@@ -124,46 +155,6 @@
 	       *noconv*)))
       (write-region start end filename append visit)))
   ))
-
-
-;;; @ to coding-system
-;;;
-
-(condition-case nil
-    (require 'cyrillic)
-  (error nil))
-
-(defvar mime-charset-coding-system-alist
-  '((iso-8859-1      . *ctext*)
-    (x-ctext         . *ctext*)
-    (gb2312          . *euc-china*)
-    (koi8-r          . *koi8*)
-    (iso-2022-jp-2   . *iso-2022-ss2-7*)
-    (x-iso-2022-jp-2 . *iso-2022-ss2-7*)
-    (shift_jis       . *sjis*)
-    (x-shiftjis      . *sjis*)
-    ))
-
-(defsubst mime-charset-to-coding-system (charset &optional lbt)
-  "Return coding-system corresponding with CHARSET.
-CHARSET is a symbol whose name is MIME charset.
-If optional argument LBT (`CRLF', `LF', `CR', `unix', `dos' or `mac')
-is specified, it is used as line break code type of coding-system."
-  (if (stringp charset)
-      (setq charset (intern (downcase charset)))
-    )
-  (setq charset (or (cdr (assq charset mime-charset-coding-system-alist))
-		    (intern (concat "*" (symbol-name charset) "*"))))
-  (if lbt
-      (setq charset (intern (format "%s%s" charset
-				    (cond ((eq lbt 'CRLF) 'dos)
-					  ((eq lbt 'LF) 'unix)
-					  ((eq lbt 'CR) 'mac)
-					  (t lbt)))))
-    )
-  (if (coding-system-p charset)
-      charset
-    ))
 
 
 ;;; @ detection

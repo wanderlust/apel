@@ -1,5 +1,8 @@
 2002-08-01  Katsumi Yamaoka  <yamaoka@jpl.org>
 
+	* mcs-om.el (mime-charset-coding-system-alist): Move forward.
+	(mime-charset-to-coding-system): Move forward.
+
 	* pym.el (def*-maybe-enable-compile-time-hack): Bind it when
 	compiling.  Suggested by Shuhei KOBAYASHI.
 	(defun-when-void): Modify the arglist to follow the XEmacs style.
