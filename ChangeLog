@@ -7,7 +7,7 @@
 
 1998-11-17  Kazuhiro Ohta  <ohta@ele.cst.nihon-u.ac.jp>
 
-	* README.en, README.ja: add-latest-path: Fix typo.
+	* README.en, README.ja (add-latest-path): Fix typo.
 
 
 1998-11-14  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
