@@ -48,7 +48,7 @@ clean:
 
 tar:
 	cvs commit
-	sh -c 'cvs tag -RF apel-`echo $(VERSION) \
+	sh -c 'cvs tag -R apel-`echo $(VERSION) \
 				| sed s/\\\\./_/ | sed s/\\\\./_/`; \
 	cd /tmp; \
 	cvs -d :pserver:morioka@cvs.m17n.org:/cvs/root \
