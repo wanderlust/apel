@@ -1,3 +1,10 @@
+1998-04-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 8.4 was released.
+
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+ 	indexing (Emacs 20.3 or later).
+
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-x20.el, emu-e20.el (charsets-mime-charset-alist): Add
