@@ -17,6 +17,10 @@
 			    '(richtext)
 			  '(tinyrich))))
 
+(setq emu-modules-to-compile nil)
+
+(setq emu-modules-not-to-compile nil)
+
 (setq pcustom-modules (if (and (module-installed-p 'custom)
 			       ;; new custom requires widget.
 			       (module-installed-p 'widget))
@@ -75,9 +79,11 @@
   (cond ((featurep 'mule)
 	 (cond ((featurep 'xemacs)
 		(setq poem-modules (cons 'poem-xm poem-modules)
-		      mcs-modules (cons 'mcs-xm (cons 'mcs-20 mcs-modules)))
-		(if (null (featurep 'utf-2000))
-		    (setq mcs-modules (cons 'mcs-xmu mcs-modules)))
+		      mcs-modules (append '(mcs-xmu mcs-xm mcs-20)
+					  mcs-modules))
+		(if (featurep 'utf-2000)
+		    (setq emu-modules-not-to-compile
+			  (cons 'mcs-xmu emu-modules-not-to-compile)))
 		(if (>= emacs-major-version 21)
 		    (setq pccl-modules (cons 'pccl-20 pccl-modules))
 		  ))
@@ -119,5 +125,15 @@
   (setq emu-modules (cons 'broken emu-modules))
   (setq emu-modules (cons 'static emu-modules))
   )
+
+(let ((modules emu-modules)
+      module)
+  (while modules
+    (setq module (car modules)
+	  modules (cdr modules))
+    (if (memq module emu-modules-not-to-compile)
+	nil
+      (setq emu-modules-to-compile (nconc emu-modules-to-compile
+					  (list module))))))
 
 ;;; EMU-ELS ends here
