@@ -162,14 +162,20 @@
     (x-shiftjis      . *sjis*)
     ))
 
-(defun mime-charset-to-coding-system (charset)
+(defun mime-charset-to-coding-system (charset &optional lbt)
   (if (stringp charset)
       (setq charset (intern (downcase charset)))
     )
-  (or (cdr (assq charset mime-charset-coding-system-alist))
-      (let ((cs (intern (concat "*" (symbol-name charset) "*"))))
-	(and (coding-system-p cs) cs)
-	)))
+  (let ((cs
+	 (or (cdr (assq charset mime-charset-coding-system-alist))
+	     (let ((cs (intern (concat "*" (symbol-name charset) "*"))))
+	       (and (coding-system-p cs) cs)
+	       ))))
+    (if (or (null lbt)
+	    (null cs))
+	cs
+      (intern (concat (symbol-name cs) (symbol-name lbt)))
+      )))
 
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END.

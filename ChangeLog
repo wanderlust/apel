@@ -1,3 +1,37 @@
+Thu Oct 24 04:08:58 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.11 was released.
+
+Wed Oct 23 06:37:13 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (charsets-mime-charset-alist): modified for
+ 	mule-19.33-delta.
+
+	* char-table.el (char-table-1): fixed typo.
+
+Tue Oct 22 22:18:27 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (mime-charset-to-coding-system): New optional
+ 	argument for line-break-type.
+
+Mon Oct 21 02:02:16 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* sinfo.el: for sinfo 6.1.
+
+Sun Oct 20 00:13:58 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (mime-charset-to-coding-system):
+	New optional argument `lbt'.
+
+Sat Oct 19 15:11:49 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* sinfo.el (sinfo-to-texi): fixed.
+
+	* sinfo.el: for sinfo 6.0.
+
+	* emu-x20.el: Header was modified.
+
+
 Wed Oct 16 00:12:13 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.10 was released.
