@@ -1,5 +1,10 @@
 1998-03-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* calist.el (ctree-match-calist): Prefer normal choice than
+	default choice.
+
+1998-03-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu-x20.el (mime-charset-decoder-alist): New variable.
 	(decode-mime-charset-region-default): New function.
 	(mime-iso646-character-unification-alist): New variable.
