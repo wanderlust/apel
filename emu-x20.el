@@ -115,7 +115,7 @@ find-file-hooks, etc.
   :group 'i18n
   :type 'face)
 
-(defcustom mime-character-unification-limit-size 10000
+(defcustom mime-character-unification-limit-size 2048
   "*Limit size to unify characters."
   :group 'i18n
   :type 'integer)
