@@ -1,3 +1,9 @@
+1999-02-15  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* mcs-om.el (TopLevel): Don't refer to
+	`running-emacs-19_29-or-later', use `emacs-major-version' and
+	`emacs-minor-version' instead.
+
 1999-02-14  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* poe.el (file-name-sans-extension): New function <copied from
