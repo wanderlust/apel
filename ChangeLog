@@ -1,3 +1,12 @@
+1999-08-27  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* APEL-CFG: Require `poe' before `install' for picking up the
+	macro `eval-when-compile'.
+
+	* path-util.el (directory-files): Use `static-condition-case'
+	instead of `condition-case'.
+	(TopLevel): Require `static' with `eval-when-compile'.
+
 1999-08-26  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* path-util.el (directory-files): Emulate as Emacs 19 or later to
