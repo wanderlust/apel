@@ -1,3 +1,7 @@
+2000-01-12  OKAZAKI Tetsurou  <okazaki@be.to>
+
+	* EMU-ELS (emu-modules): Add `pccl' even if `mule' is not provided.
+
 2000-01-05  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* Makefile, README.en, README.ja: Update for the new CVS server.
