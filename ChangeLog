@@ -1,3 +1,8 @@
+1999-09-02  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* poe.el: Delete autoload setting for `filename'.
+	(convert-standard-filename): Require `filename'.
+
 1999-09-02  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poe.el (convert-standard-filename): Rearrange.
@@ -6,7 +11,7 @@
 
 	* poe.el (convert-standard-filename): New function.
 
-1999-08-27  MORIOKA Tomohiko  <morioka@m17n.org>
+1999-08-27  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* install.el (emacs-major-version): Deleted.
 	(emacs-minor-version): Deleted.
