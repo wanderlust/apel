@@ -1,3 +1,7 @@
+1998-04-28  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 8.6 was released.
+
 1998-04-27  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-20.el (mime-charset-coding-system-alist): Use 'raw-text for
@@ -51,7 +55,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
