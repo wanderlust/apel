@@ -1,18 +1,3 @@
-1998-10-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* inv-xemacs.el, invisible.el, poe-19.el, poe-xemacs.el, emu.el,
-	inv-18.el, inv-19.el, EMU-ELS: Separate invisible features from
-	poe to invisible.
-
-1998-10-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* poe.el (eval-and-compile): New macro.
-	Enclose redefinition of `read-string' by `eval-and-compile'.
-
-1998-10-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* poe.el (string): New function.
-
 1998-10-19  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu.el (char-list-to-string): New function.
