@@ -3,18 +3,6 @@
 ;;; $Id$
 ;;;
 
-(setq load-path (append
-		 (mapcar (function
-			  (lambda (path)
-			    (expand-file-name path (getenv "PWD"))
-			    ))
-			 '("." "../emu")
-			 )
-		 load-path))
-
-(require 'install)
-
-
 ;;; @ Please specify prefix of install directory.
 ;;;
 
