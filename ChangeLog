@@ -1,3 +1,17 @@
+1998-08-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el: Define coding-system `raw-text-unix' and
+	`raw-text-mac' if they are not found.
+	Redefine coding-system `euc-kr' if `euc-kr-dos' is not found.
+	(decode-mime-charset-region-default): Add new argument `lbt'.
+	(decode-mime-charset-region-with-iso646-unification): Likewise.
+	(decode-mime-charset-region-for-hz): Likewise.
+	(decode-mime-charset-region): Likewise.
+	(decode-mime-charset-string): Likewise.
+
+	* emu-20.el (mime-charset-to-coding-system): Regard `CRLF', `LF',
+	`CR' as line break code type.
+
 1998-08-07  MORIOKA Tomohiko  <morioka@yo.rim.or.jp>
 
 	* emu-x20.el: Define coding-system `raw-text-dos' if it is not
