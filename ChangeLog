@@ -1,3 +1,10 @@
+Thu Oct 24 07:56:18 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.12 was released.
+
+	* emu-18.el (data-directory): New variable.
+
+
 Thu Oct 24 04:08:58 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.11 was released.

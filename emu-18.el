@@ -32,6 +32,8 @@ VARIABLE should be a string.  VALUE is optional; if not provided or is
 This function works by modifying `process-environment'."
   t)
 
+(defvar data-directory exec-directory)
+
 
 ;;; @ for EMACS 18.55
 ;;;
