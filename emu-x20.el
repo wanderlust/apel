@@ -66,6 +66,19 @@
 
 (defalias 'charset-description 'charset-doc-string)
 
+(defun find-charset-string (string)
+  "Return a list of charsets in the STRING except ascii.
+\[emu-x20.el; Mule emulating function]"
+  (delq 'ascii (charsets-in-string string))
+  )
+
+(defun find-charset-region (start end)
+  "Return a list of charsets except ascii
+in the region between START and END.
+\[emu-x20.el; Mule emulating function]"
+  (delq 'ascii (charsets-in-region start end))
+  )
+
 ;;; @@ for Mule emulation
 ;;;
 
@@ -196,19 +209,6 @@ Optional non-nil arg START-COLUMN specifies the starting column.
   (or start-column
       (setq start-column 0))
   (substring str start-column width)
-  )
-
-(defun find-charset-string (string)
-  "Return a list of charsets in the STRING except ascii.
-\[emu-x20.el; Mule emulating function]"
-  (delq 'ascii (charsets-in-string string))
-  )
-
-(defun find-charset-region (start end)
-  "Return a list of charsets except ascii
-in the region between START and END.
-\[emu-x20.el; Mule emulating function]"
-  (delq 'ascii (charsets-in-region start end))
   )
 
 

@@ -19,9 +19,9 @@ TLDIR19 = $(HOME)/lib/emacs19/lisp
 
 FILES	= tl/README.en tl/Makefile tl/mk-tl tl/tl-els \
 		tl/*.el tl/*.bdf \
-		tl/doc/*.texi tl/ChangeLog
+		tl/doc/*.ol tl/doc/*.tex tl/doc/*.texi tl/ChangeLog
 
-TARFILE = tl-7.27.tar
+TARFILE = tl-7.29.tar
 
 
 elc:

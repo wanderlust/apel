@@ -1,3 +1,18 @@
+Tue May 28 06:48:04 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.29 was released.
+
+	* mu-comment.el (comment-sexp): Unused local variable `p' was
+ 	abolished.
+
+Tue May 28 06:30:51 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e19.el, emu-nemacs.el (charset-description): New function.
+	(charset-registry): New function.
+	(charset-columns): New function.
+	(charset-direction): New function.
+
+
 Mon May 27 14:04:12 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.27.1 was released.

@@ -37,6 +37,62 @@
 (defconst charset-ascii 0 "Character set of ASCII")
 (defconst charset-jisx0208 146 "Character set of JIS X0208-1983")
 
+(defun charset-description (charset)
+  "Return description of CHARSET. [emu-nemacs.el]"
+  (if (< charset 128)
+      (documentation-property 'charset-ascii 'variable-documentation)
+    (documentation-property 'charset-jisx0208 'variable-documentation)
+    ))
+
+(defun charset-registry (charset)
+  "Return registry name of CHARSET. [emu-nemacs.el]"
+  (if (< charset 128)
+      "ASCII"
+    "JISX0208.1983"))
+
+(defun charset-columns (charset)
+  "Return number of columns a CHARSET occupies when displayed.
+\[emu-nemacs.el]"
+  (if (< charset 128)
+      1
+    2))
+
+(defun charset-direction (charset)
+  "Return the direction of a character of CHARSET by
+  0 (left-to-right) or 1 (right-to-left). [emu-nemacs.el]"
+  0)
+
+(defun find-charset-string (str)
+  "Return a list of charsets in the string.
+\[emu-nemacs.el; Mule emulating function]"
+  (if (string-match "[\200-\377]" str)
+      (list lc-jp)
+    ))
+
+(defun find-charset-region (start end)
+  "Return a list of charsets in the region between START and END.
+\[emu-nemacs.el; Mule emulating function]"
+  (if (save-excursion
+	(save-restriction
+	  (narrow-to-region start end)
+	  (goto-char start)
+	  (re-search-forward "[\200-\377]" nil t)
+	  ))
+      (list lc-jp)
+    ))
+
+(defun check-ASCII-string (str)
+  (let ((i 0)
+	len)
+    (setq len (length str))
+    (catch 'label
+      (while (< i len)
+	(if (>= (elt str i) 128)
+	    (throw 'label nil))
+	(setq i (+ i 1))
+	)
+      str)))
+
 ;;; @@ for Mule emulation
 ;;;
 
@@ -177,37 +233,6 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
     ))
 
 (fset 'string-to-int-list (symbol-function 'string-to-char-list))
-
-(defun find-charset-string (str)
-  "Return a list of leading-chars in the string.
-\[emu-nemacs.el; Mule emulating function]"
-  (if (string-match "[\200-\377]" str)
-      (list lc-jp)
-    ))
-
-(defun find-charset-region (start end)
-  "Return a list of leading-chars in the region between START and END.
-\[emu-nemacs.el; Mule emulating function]"
-  (if (save-excursion
-	(save-restriction
-	  (narrow-to-region start end)
-	  (goto-char start)
-	  (re-search-forward "[\200-\377]" nil t)
-	  ))
-      (list lc-jp)
-    ))
-
-(defun check-ASCII-string (str)
-  (let ((i 0)
-	len)
-    (setq len (length str))
-    (catch 'label
-      (while (< i len)
-	(if (>= (elt str i) 128)
-	    (throw 'label nil))
-	(setq i (+ i 1))
-	)
-      str)))
 
 ;;; Imported from Mule-2.3
 (defun truncate-string (str width &optional start-column)
