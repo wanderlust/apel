@@ -272,6 +272,8 @@ Optional non-nil arg START-COLUMN specifies the starting column.
   (substring str start-column width)
   )
 
+(defalias 'looking-at-as-unibyte 'looking-at)
+
 ;;; @@ obsoleted aliases
 ;;;
 ;;; You should not use them.

@@ -28,10 +28,6 @@
 
 ;;; Code:
 
-;; (require 'emu-xemacs)
-;; (require 'emu-20)
-
-
 (and (coding-system-property 'iso-2022-jp 'input-charset-conversion)
      (copy-coding-system 'iso-2022-7bit 'iso-2022-jp))
 
@@ -240,6 +236,8 @@ TABLE defaults to the current buffer's category table."
 (defun string-to-int-list (str)
   (mapcar #'char-int str)
   )
+
+(defalias 'looking-at-as-unibyte 'looking-at)
 
 
 ;;; @ end

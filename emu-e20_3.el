@@ -51,6 +51,8 @@
 
 (defalias 'string-to-int-list 'string-to-char-list)
 
+(defalias 'looking-at-as-unibyte 'looking-at)
+
 
 ;;; @ end
 ;;;

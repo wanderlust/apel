@@ -378,6 +378,8 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 ;;;
   )
 
+(defalias 'looking-at-as-unibyte 'looking-at)
+
 
 ;;; @ regulation
 ;;;

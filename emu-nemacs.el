@@ -412,6 +412,8 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 	    (setq to to-prev)))
       (substring str from to))))
 
+(defalias 'looking-at-as-unibyte 'looking-at)
+
 ;;; @@ obsoleted aliases
 ;;;
 ;;; You should not use them.
