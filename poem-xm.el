@@ -64,13 +64,6 @@
        mnemonic "ISO7/SS2"
        eol-type nil)))
 
-(or (find-coding-system 'gb2312-dos)
-    (copy-coding-system 'cn-gb-2312-dos 'gb2312-dos))
-(or (find-coding-system 'gb2312-mac)
-    (copy-coding-system 'cn-gb-2312-mac 'gb2312-mac))
-(or (find-coding-system 'gb2312-unix)
-    (copy-coding-system 'cn-gb-2312-unix 'gb2312-unix))
-
 (or (find-coding-system 'euc-kr-dos)
     (make-coding-system
      'euc-kr 'iso2022
