@@ -160,6 +160,25 @@ find-file-hooks, etc.
     (insert-file-contents filename visit beg end replace)
     ))
 
+(if running-emacs-19_29-or-later
+    ;; for MULE 2.3 based on Emacs 19.34.
+    (defun write-region-as-binary (start end filename
+					 &optional append visit lockname)
+      "Like `write-region', q.v., but don't code conversion."
+      (let (mc-flag
+	    (file-coding-system *noconv*))
+	(write-region start end filename append visit lockname)
+	))
+  ;; for MULE 2.3 based on Emacs 19.28.
+  (defun write-region-as-binary (start end filename
+				       &optional append visit lockname)
+    "Like `write-region', q.v., but don't code conversion."
+    (let (mc-flag
+	  (file-coding-system *noconv*))
+      (write-region start end filename append visit)
+      ))
+  )
+
 
 ;;; @ MIME charset
 ;;;
