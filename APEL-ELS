@@ -3,6 +3,6 @@
 ;;; $Id$
 ;;;
 
-(setq apel-modules '(alist atype file-detect))
+(setq apel-modules '(alist atype file-detect filename))
 
 ;;; APEL-ELS ends here
