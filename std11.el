@@ -305,13 +305,28 @@ represents addr-spec of RFC 822. [std11.el]"
 	       (comment (nth 2 address))
 	       phrase)
 	   (if (eq (car addr) 'phrase-route-addr)
-	       (setq phrase (mapconcat (function
-					(lambda (token)
-					  (cdr token)
-					  ))
-				       (nth 1 addr) ""))
+	       (setq phrase
+		     (mapconcat
+		      (function
+		       (lambda (token)
+			 (let ((type (car token)))
+			   (cond ((eq type 'quoted-string)
+				  (std11-strip-quoted-pair (cdr token))
+				  )
+				 ((eq type 'comment)
+				  (concat
+				   "("
+				   (std11-strip-quoted-pair (cdr token))
+				   ")")
+				  )
+				 (t
+				  (cdr token)
+				  )))))
+		      (nth 1 addr) ""))
 	     )
-	   (or phrase comment)
+	   (cond ((> (length phrase) 0) phrase)
+		 (comment (std11-strip-quoted-pair comment))
+		 )
 	   ))))
 
 
