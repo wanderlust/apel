@@ -1,3 +1,7 @@
+1998-06-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 8.16 was released.
+
 1998-06-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-x20.el (set-buffer-multibyte): Use `defsubst-maybe' instead
