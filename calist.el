@@ -1,8 +1,10 @@
 ;;; calist.el --- Condition functions
 
-;; Copyright (C) 1998 MORIOKA Tomohiko.
+;; Copyright (C) 1998 Free Software Foundation, Inc.
+;; Copyright (C) 1999 Electrotechnical Laboratory, JAPAN.
+;; Licensed to the Free Software Foundation.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: condition, alist, tree
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -26,7 +28,28 @@
 
 (eval-when-compile (require 'cl))
 
-(defvar calist-field-match-method-obarray [nil])
+(require 'alist)
+
+(defvar calist-package-alist nil)
+(defvar calist-field-match-method-obarray nil)
+
+(defun make-calist-package (name)
+  "Create a new calist-package."
+  (let ((p (make-vector 7 0)))
+    (set-alist 'calist-package-alist name p)
+    p))
+
+(defun find-calist-package (name)
+  "Return a calist-package by NAME."
+  (cdr (assq name calist-package-alist)))
+
+(defun in-calist-package (name)
+  "Set the current calist-package to a new or existing calist-package."
+  (setq calist-field-match-method-obarray
+	(or (find-calist-package name)
+	    (make-calist-package name))))
+
+(in-calist-package 'standard)
 
 (defun define-calist-field-match-method (field-type function)
   "Set field-match-method for FIELD-TYPE to FUNCTION."
@@ -43,13 +66,13 @@
 	  ((equal (cdr s-field) field-value)
 	   calist))))
 
+(define-calist-field-match-method t #'calist-default-field-match-method)
+
 (defsubst calist-field-match-method (field-type)
-  (condition-case nil
-      (symbol-function
-       (intern-soft
-	(symbol-name field-type) calist-field-match-method-obarray))
-    (error (symbol-function 'calist-default-field-match-method))
-    ))
+  (symbol-function
+   (or (intern-soft
+	(symbol-name field-type) calist-field-match-method-obarray)
+       (intern-soft "t" calist-field-match-method-obarray))))
 
 (defsubst calist-field-match (calist field-type field-value)
   (funcall (calist-field-match-method field-type)
