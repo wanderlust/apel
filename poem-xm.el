@@ -1,8 +1,8 @@
 ;;; poem-xm.el --- poem module for XEmacs-mule; -*-byte-compile-dynamic: t;-*-
 
-;; Copyright (C) 1998 Free Software Foundation, Inc.
+;; Copyright (C) 1998,1999 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -26,110 +26,6 @@
 
 (eval-when-compile
   (require 'poe))
-(require 'poem-20)
-
-
-;;; @ fix coding-system definition
-;;;
-
-;; It seems not bug, but I can not permit it...
-(and (coding-system-property 'iso-2022-jp 'input-charset-conversion)
-     (copy-coding-system 'iso-2022-7bit 'iso-2022-jp))
-
-(and (coding-system-property 'iso-2022-jp-dos 'input-charset-conversion)
-     (copy-coding-system 'iso-2022-7bit-dos 'iso-2022-jp-dos))
-
-;; Redefine if -{dos|mac|unix} is not found.
-(or (find-coding-system 'raw-text-dos)
-    (copy-coding-system 'no-conversion-dos 'raw-text-dos))
-(or (find-coding-system 'raw-text-mac)
-    (copy-coding-system 'no-conversion-mac 'raw-text-mac))
-(or (find-coding-system 'raw-text-unix)
-    (copy-coding-system 'no-conversion-unix 'raw-text-unix))
-
-(or (find-coding-system 'ctext-dos)
-    (make-coding-system
-     'ctext 'iso2022
-     "Coding-system used in X as Compound Text Encoding."
-     '(charset-g0 ascii charset-g1 latin-iso8859-1
-		  eol-type nil
-		  mnemonic "CText")))
-
-(or (find-coding-system 'iso-2022-jp-2-dos)
-    (make-coding-system
-     'iso-2022-jp-2 'iso2022
-     "ISO-2022 coding system using SS2 for 96-charset in 7-bit code."
-     '(charset-g0 ascii
-       charset-g2 t ;; unspecified but can be used later.
-       seven t
-       short t
-       mnemonic "ISO7/SS2"
-       eol-type nil)))
-
-(or (find-coding-system 'gb2312-dos)
-    (copy-coding-system 'cn-gb-2312-dos 'gb2312-dos))
-(or (find-coding-system 'gb2312-mac)
-    (copy-coding-system 'cn-gb-2312-mac 'gb2312-mac))
-(or (find-coding-system 'gb2312-unix)
-    (copy-coding-system 'cn-gb-2312-unix 'gb2312-unix))
-
-(or (find-coding-system 'euc-kr-dos)
-    (make-coding-system
-     'euc-kr 'iso2022
-     "Coding-system of Korean EUC (Extended Unix Code)."
-     '(charset-g0 ascii charset-g1 korean-ksc5601
-		  mnemonic "ko/EUC"
-		  eol-type nil)))
-
-;; (when (= (function-max-args 'coding-system-list) 0)
-;;   (or (fboundp 'coding-system-list-internal)
-;;       (fset 'coding-system-list-internal
-;;             (symbol-function 'coding-system-list)))
-;;   (defun coding-system-list (&optional base-only)
-;;     "Return a list of all existing coding systems.
-;; If optional arg BASE-ONLY is non-nil, only base coding systems are listed."
-;;     (if base-only
-;;         (let (dest
-;;               (rest (coding-system-list-internal))
-;;               cs)
-;;           (while rest
-;;             (setq cs (coding-system-name (coding-system-base (pop rest))))
-;;             (or (memq cs dest)
-;;                 (push cs dest))
-;;             )
-;;           dest)
-;;       (coding-system-list-internal)))
-;;   )
-
-
-;;; @ without code-conversion
-;;;
-
-(defun insert-file-contents-as-binary (filename
-				       &optional visit beg end replace)
-  "Like `insert-file-contents', but only reads in the file literally.
-A buffer may be modified in several ways after reading into the buffer,
-to Emacs features such as format decoding, character code
-conversion, find-file-hooks, automatic uncompression, etc.
-
-This function ensures that none of these modifications will take place."
-  (let ((format-alist nil)
-	(after-insert-file-functions nil)
-	(coding-system-for-read 'binary)
-	(coding-system-for-write 'binary)
-	(jka-compr-compression-info-list nil)
-	(jam-zcat-filename-list nil)
-	(find-buffer-file-type-function
-	 (if (fboundp 'find-buffer-file-type)
-	     (symbol-function 'find-buffer-file-type)
-	   nil)))
-    (unwind-protect
-	(progn
-	  (fset 'find-buffer-file-type (lambda (filename) t))
-	  (insert-file-contents filename visit beg end replace))
-      (if find-buffer-file-type-function
-	  (fset 'find-buffer-file-type find-buffer-file-type-function)
-	(fmakunbound 'find-buffer-file-type)))))
 
 
 ;;; @ buffer representation
