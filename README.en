@@ -39,10 +39,6 @@ What's APEL?
 
 	mule-caesar.el: ROT 13-47-48 Caesar rotation utility
 
-	std11: RFC 822/STD 11 parser and utility
-	    std11.el       --- main module
-	    std11-parse.el --- parser
-
 
 Installation
 ============
