@@ -1,6 +1,6 @@
 ;;; richtext.el -- read and save files in text/richtext format
 
-;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Created: 1995/7/15
@@ -164,11 +164,8 @@ Return value is \(begin end name positive-p), or nil if none was found."
 				  'richtext-next-annotation)
 
 	;; Fill paragraphs
-	(if (or (and file-width		; possible reasons not to fill:
-		     (= file-width (enriched-text-width))) ; correct wd.
-		(null enriched-fill-after-visiting) ; never fill
-		(and (eq 'ask enriched-fill-after-visiting) ; asked & declined
-		     (not (y-or-n-p "Re-fill for current display width? "))))
+	(if (and file-width		; possible reasons not to fill:
+		 (= file-width (enriched-text-width))) ; correct wd.
 	    ;; Minimally, we have to insert indentation and justification.
 	    (enriched-insert-indentation)
 	  (if enriched-verbose (message "Filling paragraphs..."))
