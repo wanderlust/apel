@@ -3,6 +3,11 @@
 ;;; $Id$
 ;;;
 
+(defvar default-load-path load-path)
+(setq load-path (cons (expand-file-name ".") load-path))
+(require 'install)
+
+
 ;;; @ Please specify prefix of install directory.
 ;;;
 
