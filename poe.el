@@ -220,6 +220,19 @@ The value is actually the element of LIST whose cdr equals KEY."
       (setq list (cdr list)))
     ))
 
+(defun-maybe file-name-sans-extension (filename)
+  "Return FILENAME sans final \"extension\".
+The extension, in a file name, is the part that follows the last `.'."
+  (save-match-data
+    (let ((file (file-name-sans-versions (file-name-nondirectory filename)))
+	  directory)
+      (if (string-match "\\.[^.]*\\'" file)
+	  (if (setq directory (file-name-directory filename))
+	      (expand-file-name (substring file 0 (match-beginning 0))
+				directory)
+	    (substring file 0 (match-beginning 0)))
+	filename))))
+
 (defmacro-maybe make-local-hook (hook))
 
 ;; They are not Emacs features
