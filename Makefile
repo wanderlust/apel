@@ -54,7 +54,7 @@ tar:
 	cvs -d :pserver:morioka@cvs.m17n.org:/cvs/root \
 		export -d apel-$(VERSION) \
 		-r apel-`echo $(VERSION) | tr . _` apel'
-	cd /tmp; $(RM) apel-$(VERSION)/ftp.in ; \
+	cd /tmp; $(RM) apel-$(VERSION)/ftp.in apel-$(VERSION)/.cvsignore ; \
 		$(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
 	cd /tmp; $(RM) -r apel-$(VERSION)
 	sed "s/VERSION/$(VERSION)/" < ftp.in > ftp

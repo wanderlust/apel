@@ -1,3 +1,7 @@
+2000-12-15  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* Makefile (tar): Remove .cvsignore.
+
 2000-12-15  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poe-18.el (buffer-disable-undo): Define it as a function to make
