@@ -1,3 +1,8 @@
+2000-07-12  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* alist.el (vassoc): New function [to be compatible with XEmacs
+	21.2.32 or later].
+
 2000-05-25  Tanaka Akira      <akr@m17n.org>
 
 	* README.en, README.ja: Update for CVS via SSH.
@@ -2623,7 +2628,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
