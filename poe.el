@@ -1,4 +1,4 @@
-;;; poe.el --- Emulation module for each Emacs variants
+;;; poe.el --- Emulate latest non-mule features; -*-byte-compile-dynamic: t;-*-
 
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
@@ -26,8 +26,7 @@
 
 (defmacro defun-maybe (name &rest everything-else)
   (or (and (fboundp name)
-	   (not (get name 'defun-maybe))
-	   )
+	   (not (get name 'defun-maybe)))
       (` (or (fboundp (quote (, name)))
 	     (progn
 	       (defun (, name) (,@ everything-else))
@@ -37,8 +36,7 @@
 
 (defmacro defsubst-maybe (name &rest everything-else)
   (or (and (fboundp name)
-	   (not (get name 'defsubst-maybe))
-	   )
+	   (not (get name 'defsubst-maybe)))
       (` (or (fboundp (quote (, name)))
 	     (progn
 	       (defsubst (, name) (,@ everything-else))
@@ -48,8 +46,7 @@
 
 (defmacro defmacro-maybe (name &rest everything-else)
   (or (and (fboundp name)
-	   (not (get name 'defmacro-maybe))
-	   )
+	   (not (get name 'defmacro-maybe)))
       (` (or (fboundp (quote (, name)))
 	     (progn
 	       (defmacro (, name) (,@ everything-else))
@@ -57,9 +54,30 @@
 	       ))
 	 )))
 
+(defmacro defalias-maybe (symbol definition)
+  (setq symbol (eval symbol))
+  (or (and (fboundp symbol)
+	   (not (get symbol 'defalias-maybe)))
+      (` (or (fboundp (quote (, symbol)))
+	     (progn
+	       (defalias (quote (, symbol)) (, definition))
+	       (put (quote (, symbol)) 'defalias-maybe t)
+	       ))
+	 )))
+
 (put 'defun-maybe 'lisp-indent-function 'defun)
 (put 'defsubst-maybe 'lisp-indent-function 'defun)
 (put 'defmacro-maybe 'lisp-indent-function 'defun)
+
+(defmacro defvar-maybe (name &rest everything-else)
+  (or (and (boundp name)
+	   (not (get name 'defvar-maybe)))
+      (` (or (boundp (quote (, name)))
+	     (progn
+	       (defvar (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defvar-maybe t)
+	       ))
+	 )))
 
 (defmacro defconst-maybe (name &rest everything-else)
   (or (and (boundp name)
@@ -163,7 +181,7 @@ See `read-from-minibuffer' for details of HISTORY argument."
 ;;; @ Emacs 19.30 emulation
 ;;;
 
-;; This function was imported Emacs 19.30.
+;; imported from Emacs 19.30.
 (defun-maybe add-to-list (list-var element)
   "Add to the value of LIST-VAR the element ELEMENT if it isn't there yet.
 If you want to use `add-to-list' on a variable that is not defined
@@ -202,7 +220,7 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
        (get-buffer object)
        (buffer-name (get-buffer object))))
 
-;; This macro was imported Emacs 19.33.
+;; imported from Emacs 19.33.
 (defmacro-maybe save-selected-window (&rest body)
   "Execute BODY, then select the window that was selected before BODY.
 \[Emacs 19.31 emulating function]"
@@ -216,12 +234,12 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
 ;;; @ Emacs 20.1 emulation
 ;;;
 
-;; This macro was imported Emacs 20.2.
+;; imported from Emacs 20.2.
 (defmacro-maybe when (cond &rest body)
   "(when COND BODY...): if COND yields non-nil, do BODY, else return nil."
   (list 'if cond (cons 'progn body)))
 
-;; This macro was imported Emacs 20.3.
+;; imported from Emacs 20.3.
 (defmacro-maybe unless (cond &rest body)
   "(unless COND BODY...): if COND yields nil, do BODY, else return nil."
   (cons 'if (cons cond (cons nil body))))
@@ -234,7 +252,7 @@ Executes BODY just like `progn'."
 	   (progn (,@ body))
 	 (set-buffer orig-buffer)))))
 
-;; This macro was imported Emacs 20.2.
+;; imported from Emacs 20.2.
 (defmacro-maybe with-current-buffer (buffer &rest body)
   "Execute the forms in BODY with BUFFER as the current buffer.
 The value returned is the value of the last form in BODY.
@@ -243,7 +261,7 @@ See also `with-temp-buffer'."
        (set-buffer (, buffer))
        (,@ body))))
 
-;; This macro was imported Emacs 20.2.
+;; imported from Emacs 20.2.
 (defmacro-maybe with-temp-file (file &rest forms)
   "Create a new buffer, evaluate FORMS there, and write the buffer to FILE.
 The value of the last form in FORMS is returned, like `progn'.
@@ -263,7 +281,7 @@ See also `with-temp-buffer'."
 	   (and (buffer-name (, temp-buffer))
 		(kill-buffer (, temp-buffer))))))))
 
-;; This macro was imported Emacs 20.2.
+;; imported from Emacs 20.2.
 (defmacro-maybe with-temp-buffer (&rest forms)
   "Create a temporary buffer, and evaluate FORMS there like `progn'.
 See also `with-temp-file' and `with-output-to-string'."
@@ -276,7 +294,7 @@ See also `with-temp-file' and `with-output-to-string'."
 	   (and (buffer-name (, temp-buffer))
 		(kill-buffer (, temp-buffer))))))))
 
-;; This function was imported Emacs 20.3.
+;; imported from Emacs 20.3.
 (defun-maybe last (x &optional n)
   "Return the last link of the list X.  Its car is the last element.
 If X is nil, return nil.
@@ -292,13 +310,13 @@ If N is bigger than the length of X, return X."
       (setq x (cdr x)))
     x))
 
-;; This function was imported Emacs 20.3. (cl function)
+;; imported from Emacs 20.3. (cl function)
 (defun-maybe butlast (x &optional n)
   "Returns a copy of LIST with the last N elements removed."
   (if (and n (<= n 0)) x
     (nbutlast (copy-sequence x) n)))
 
-;; This function was imported Emacs 20.3. (cl function)
+;; imported from Emacs 20.3. (cl function)
 (defun-maybe nbutlast (x &optional n)
   "Modifies LIST to remove the last N elements."
   (let ((m (length x)))
@@ -308,7 +326,7 @@ If N is bigger than the length of X, return X."
 	   (if (> n 0) (setcdr (nthcdr (- (1- m) n) x) nil))
 	   x))))
 
-;; This function was imported from XEmacs 21.
+;; imported from XEmacs 21.
 (defun-maybe split-string (string &optional pattern)
   "Return a list of substrings of STRING which are separated by PATTERN.
 If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
@@ -325,6 +343,17 @@ If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
 
 ;;; @ Emacs 20.3 emulation
 ;;;
+
+;; imported from Emacs 20.3.91.
+(defvar-maybe temporary-file-directory
+  (file-name-as-directory
+   (cond ((memq system-type '(ms-dos windows-nt))
+	  (or (getenv "TEMP") (getenv "TMPDIR") (getenv "TMP") "c:/temp"))
+	 ((memq system-type '(vax-vms axp-vms))
+	  (or (getenv "TMPDIR") (getenv "TMP") (getenv "TEMP") "SYS$SCRATCH:"))
+	 (t
+	  (or (getenv "TMPDIR") (getenv "TMP") (getenv "TEMP") "/tmp"))))
+  "The directory for writing temporary files.")
 
 (defun-maybe line-beginning-position (&optional n)
   "Return the character position of the first character on the current line.

@@ -1,3 +1,17 @@
+1998-10-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poe.el (defvar-maybe): New macro.
+	(temporary-file-directory): New variable.
+
+
+1998-10-23  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 9.5 was released.
+
+1998-10-22  Yoshiki Hayashi   <g740685@komaba.ecc.u-tokyo.ac.jp>
+
+	* README.ja: New file.
+
 1998-10-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* alist.el: Add autoload cookies.
