@@ -268,7 +268,7 @@ Both SYMBOL and SPEC are unevaluated. The SPEC can be 0, t, a symbol
 	   &rest (&rest sexp)))
 
 ;; edebug-spec for `static-*' macros are also defined here.
-(def-edebug-spec static-if if) 
+(def-edebug-spec static-if t) 
 (def-edebug-spec static-when when)
 (def-edebug-spec static-unless unless)
 (def-edebug-spec static-condition-case condition-case)
