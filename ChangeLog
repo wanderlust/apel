@@ -1,3 +1,9 @@
+2000-04-26  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* mcs-xm.el (charsets-mime-charset-alist): Add coded-charset
+	`japanese-jisx0208-1990' to MIME-charset `iso-2022-jp' and
+	`iso-2022-jp-2' in UTF-2000; add new MIME-charset `iso-2022-jp-3'.
+
 2000-11-26  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
 
 	* make.bat: New file.
@@ -2650,7 +2656,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
