@@ -173,6 +173,12 @@
 			    0)
 		      "2000")
 	     (error "timezone.el has Y2K problem. Install fixed version."))
+	 ;; Old parser test.
+	 (if (string=
+	      (aref (timezone-parse-date "Wednesday, 31-Jan-01 09:00:00 GMT")
+		    0)
+	      "0")
+	     (error "timezone.el has old date parser. Install fixed version."))
 	 ;; no problem.
 	 '())
      (error
