@@ -115,21 +115,28 @@ find-file-hooks, etc.
   :group 'i18n
   :type 'face)
 
+(defcustom mime-character-unification-limit-size 10000
+  "*Limit size to unify characters."
+  :group 'i18n
+  :type 'integer)
+
 (defun decode-mime-charset-region-with-iso646-unification (start end charset)
   (decode-mime-charset-region-default start end charset)
-  (save-excursion
-    (let ((rest mime-iso646-character-unification-alist))
-      (while rest
-	(let ((pair (car rest)))
-	  (goto-char (point-min))
-	  (while (search-forward (car pair) nil t)
-	    (let ((str (cdr pair)))
-	      (put-text-property 0 (length str)
-				 'face mime-unified-character-face str)
-	      (replace-match str 'fixed-case 'literal)
-	      )
-	    ))
-	(setq rest (cdr rest))))))
+  (if (<= (- end start) mime-character-unification-limit-size)
+      (save-excursion
+	(let ((rest mime-iso646-character-unification-alist))
+	  (while rest
+	    (let ((pair (car rest)))
+	      (goto-char (point-min))
+	      (while (search-forward (car pair) nil t)
+		(let ((str (cdr pair)))
+		  (put-text-property 0 (length str)
+				     'face mime-unified-character-face str)
+		  (replace-match str 'fixed-case 'literal)
+		  )
+		))
+	    (setq rest (cdr rest)))))
+    ))
 
 (defun decode-mime-charset-region-for-hz (start end charset)
   (decode-hz-region start end))
