@@ -1,8 +1,11 @@
 1998-08-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* emu-latin1.el, emu-nemacs.el (write-region-as-raw-text-CRLF):
+	Fix regexp to canonicalize line break code.
+
 	* emu-mule.el (write-region-as-raw-text-CRLF): Use
 	`write-region-as-binary' to specify `lockname' in MULE 2.3 based
-	on 19.34; modify regexp to canonicalize line break code.
+	on 19.34.
 
 1998-08-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
