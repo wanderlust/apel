@@ -289,6 +289,16 @@ If STRING is multibyte, the result is STRING itself.
 \[Emacs 20.3 emulating macro]"
   string)
 
+(defsubst-maybe set-buffer-multibyte (flag)
+  "Set the multibyte flag of the current buffer to FLAG.
+If FLAG is t, this makes the buffer a multibyte buffer.
+If FLAG is nil, this makes the buffer a single-byte buffer.
+The buffer contents remain unchanged as a sequence of bytes
+but the contents viewed as characters do change.
+\[Emacs 20.3 emulating function]"
+  (setq enable-multibyte-characters flag)
+  )
+
 
 ;;; @ XEmacs emulation
 ;;;
