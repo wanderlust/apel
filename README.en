@@ -31,7 +31,7 @@ What's APEL?
 
 	atype.el: utility for atype
 
-	file-detect.el: load-path or file-detection
+	path-util.el: utility for path management or file detection
 
 	filename.el: utility to make file-name
 
@@ -137,8 +137,8 @@ Function set-modified-alist (SYMBOL MODIFIER)
   Modify a value of a SYMBOL into alist MODIFIER.  The SYMBOL should
   be alist. If it is not bound, its value regard as nil.
 
-file-detect
------------
+path-util
+---------
 
 Function add-path (PATH &rest OPTIONS)
 
