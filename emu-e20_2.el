@@ -45,7 +45,7 @@ but the contents viewed as characters do change."
 
 (defmacro char-next-index (char index)
   "Return index of character succeeding CHAR whose index is INDEX."
-  `(+ index (char-bytes char)))
+  `(+ ,index (char-bytes char)))
 
 
 ;;; @ string
