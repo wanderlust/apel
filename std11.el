@@ -6,7 +6,7 @@
 ;; Keywords: mail, news, RFC 822, STD 11
 ;; Version: $Id$
 
-;; This file is part of tl (Tiny Library).
+;; This file is part of MU (Message Utilities).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -266,6 +266,17 @@ represents addr-spec of RFC 822. [std11.el]"
   "Parse STRING as mail address list. [std11.el]"
   (std11-parse-addresses (std11-lexical-analyze string))
   )
+
+(defun std11-extract-address-components (string)
+  "Extract full name and canonical address from STRING.
+Returns a list of the form (FULL-NAME CANONICAL-ADDRESS).
+If no name can be extracted, FULL-NAME will be nil. [std11.el]"
+  (let* ((structure (car (std11-parse-address-string string)))
+         (phrase  (std11-full-name-string structure))
+         (address (std11-address-string structure))
+         )
+    (list phrase address)
+    ))
 
 (provide 'std11)
 
