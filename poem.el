@@ -1,6 +1,6 @@
 ;;; poem.el --- Emulate latest MULE features; -*-byte-compile-dynamic: t;-*-
 
-;; Copyright (C) 1998 Free Software Foundation, Inc.
+;; Copyright (C) 1998,1999 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: emulation, compatibility, Mule
@@ -24,11 +24,7 @@
 
 ;;; Code:
 
-(require 'poe)
-
-(eval-and-compile
-  (unless (fboundp 'open-network-stream)
-    (require 'tcp)))
+(require 'pces)
 
 (cond ((featurep 'mule)
        (cond ((featurep 'xemacs)
@@ -45,10 +41,6 @@
       ((boundp 'NEMACS)
        ;; for Nemacs and Nepoch
        (require 'poem-nemacs)
-       )
-      ((featurep 'file-coding)
-       ;; file coding xemacs
-       (require 'poem-xfc)
        )
       (t
        (require 'poem-ltn1)
