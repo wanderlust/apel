@@ -1,28 +1,3 @@
-1999-02-04  Katsumi Yamaoka   <yamaoka@jpl.org>
-
-	* poem-20.el, poem-ltn1.el, poem-nemacs.el, poem-om.el
-	(save-buffer-as-binary): New function.
-	(save-buffer-as-raw-text-CRLF): New function.
-	(save-buffer-as-coding-system): New function.
-
-	* poem-om.el (poem-ccl-decode-raw-text): Rewrite again for plural
-	`CR's.
-
-1999-02-04  Katsumi Yamaoka   <yamaoka@jpl.org>
-
-	* poem-om.el (poem-ccl-decode-raw-text): Rewrite for fixing a bug
-	that the last datum will be missed if the input data is not ended
-	with `CRLF'.
-	(poem-ccl-encode-raw-text-CRLF): Use `read-if'.
-
-1999-01-26  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* mcs-20.el (mime-charset-to-coding-system-default-method): New
-	user option.
-	(mime-charset-to-coding-system): Call
-	`mime-charset-to-coding-system-default-method' if suitable
-	coding-system is not found.
-
 1999-01-21  Keiichi Suzuki  <kei-suzu@mail.wbs.ne.jp>
 
 	* mcs-xm.el (encode-mime-charset-region): Add new optional
@@ -1334,7 +1309,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
