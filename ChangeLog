@@ -1,6 +1,19 @@
+1998-10-01  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mcs-e20.el (charsets-mime-charset-alist): Use `gb2312' and
+	`big5' instead of `cn-gb-2312' and `cn-big5'.
+
+	* mcs-xm.el (charsets-mime-charset-alist): Use `gb2312' and `big5'
+	instead of `cn-gb-2312' and `cn-big5'.
+
+	* mcs-20.el (mime-charset-coding-system-alist): Add `cn-gb' to
+	default value.
+
 1998-09-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 9.0 was released.
+
+	* Delete EMU-CFG and EMU-MK because they have not been used.
 
 1998-09-22  Tanaka Akira      <akr@jaist.ac.jp>
 
