@@ -133,36 +133,6 @@ find-file-hooks, etc.
    (insert-file-contents-literally filename visit beg end replace)))
 
 
-;;; @ Emacs 20.3 emulation
-;;;
-
-(defmacro-maybe string-as-unibyte (string)
-  "Return a unibyte string with the same individual bytes as STRING.
-If STRING is unibyte, the result is STRING itself.
-\[Emacs 20.3 emulating macro]"
-  string)
-
-(defmacro-maybe string-as-multibyte (string)
-  "Return a multibyte string with the same individual bytes as STRING.
-If STRING is multibyte, the result is STRING itself.
-\[Emacs 20.3 emulating macro]"
-  string)
-
-
-;;; @ for XEmacs 20
-;;;
-
-(or (fboundp 'char-int)
-    (fset 'char-int (symbol-function 'identity))
-    )
-(or (fboundp 'int-char)
-    (fset 'int-char (symbol-function 'identity))
-    )
-(or (fboundp 'char-or-char-int-p)
-    (fset 'char-or-char-int-p (symbol-function 'integerp))
-    )
-
-
 ;;; @ for text/richtext and text/enriched
 ;;;
 
