@@ -114,6 +114,24 @@
 	      (substring str p))
       )))
 
+(defun std11-lexical-analyze (str)
+  (let (dest ret)
+    (while (not (string-equal str ""))
+      (setq ret
+	    (or (std11-analyze-quoted-string str)
+		(std11-analyze-domain-literal str)
+		(std11-analyze-comment str)
+		(std11-analyze-spaces str)
+		(std11-analyze-special str)
+		(std11-analyze-atom str)
+		'((error) . "")
+		))
+      (setq dest (cons (car ret) dest))
+      (setq str (cdr ret))
+      )
+    (nreverse dest)
+    ))
+
 
 ;;; @ end
 ;;;
