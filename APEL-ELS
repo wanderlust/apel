@@ -4,15 +4,16 @@
 
 ;;; Code:
 
-(setq apel-modules '(alist calist
-			   path-util filename install
- 			   mule-caesar
+(setq apel-modules '(product apel-ver
+			     alist calist
+			     path-util filename install
+			     mule-caesar
+			     
+			     ;; [obsoleted modules] If you would like to
+			     ;; install following, please activate them.
 
-			   ;; [obsoleted modules] If you would like to
-			   ;; install following, please activate them.
-
-			   ;; atype file-detect
-			   ))
+			     ;; atype file-detect
+			     ))
 
 (if (or (< emacs-major-version 19)
 	(and (eq emacs-major-version 19) (< emacs-minor-version 16)))
