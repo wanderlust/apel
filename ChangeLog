@@ -1,30 +1,3 @@
-1998-12-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* install.el (install-detect-elisp-directory): Avoid problem if
-	prefix of an emacs has its version.
-
-
-1998-12-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* APEL: Version 9.12 was released.
-
-1998-12-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* mcs-om.el: Avoid error when cyrillic.el is not found.
-
-1998-12-19  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* poem-xm.el: Define coding-system `gb2312-dos', `gb2312-mac' and
-	`gb2312-unix' if it is not found.
-
-1998-12-18  Katsumi Yamaoka   <yamaoka@jpl.org>
-
-	* poem-om.el (poem-ccl-decode-raw-text): Renamed from
-	`ccl-decode-raw-text'.
-	(poem-ccl-encode-raw-text): Renamed from `ccl-encode-raw-text'.
-	(poem-ccl-encode-raw-text-CRLF): Renamed from
-	`ccl-encode-raw-text-CRLF`.
-
 1998-12-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* poem-om.el (poem-decode-raw-text): New function for MULE 1.

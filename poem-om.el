@@ -49,7 +49,7 @@
 		     0))
 	       ))))
 
-       (define-ccl-program poem-ccl-decode-raw-text
+       (define-ccl-program ccl-decode-raw-text
 	 '(1
 	   ((read r1 r0)
 	    (loop
@@ -67,13 +67,13 @@
 	   (write r1))
 	 "Convert line-break code from CRLF to LF.")
 
-       (define-ccl-program poem-ccl-encode-raw-text
+       (define-ccl-program ccl-encode-raw-text
 	 '(1
 	   ((read r0)
 	    (loop (write-read-repeat r0))))
 	 "Pass through without any conversions.")
 
-       (define-ccl-program poem-ccl-encode-raw-text-CRLF
+       (define-ccl-program ccl-encode-raw-text-CRLF
 	 '(2
 	   ((loop
 	      (read r0)
@@ -87,13 +87,13 @@
 	'raw-text 4 ?=
 	"No conversion"
 	nil
-	(cons poem-ccl-decode-raw-text poem-ccl-encode-raw-text))
+	(cons ccl-decode-raw-text ccl-encode-raw-text))
 
        (make-coding-system
 	'raw-text-dos 4 ?=
 	"No conversion"
 	nil
-	(cons poem-ccl-decode-raw-text poem-ccl-encode-raw-text-CRLF))
+	(cons ccl-decode-raw-text ccl-encode-raw-text-CRLF))
        )
       (t
        (defun poem-decode-raw-text (from to)
