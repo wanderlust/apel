@@ -145,15 +145,6 @@ If STRING is multibyte, the result is STRING itself.
 ;;; @ XEmacs emulation
 ;;;
 
-(defun-maybe functionp (obj)
-  "Returns t if OBJ is a function, nil otherwise.
-\[XEmacs emulating function]"
-  (or (subrp obj)
-      (byte-code-function-p obj)
-      (and (symbolp obj)(fboundp obj))
-      (and (consp obj)(eq (car obj) 'lambda))
-      ))
-
 (defun-maybe point-at-eol (&optional arg buffer)
   "Return the character position of the last character on the current line.
 With argument N not nil or 1, move forward N - 1 lines first.

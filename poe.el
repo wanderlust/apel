@@ -306,6 +306,19 @@ If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
     (nreverse (cons (substring string start) parts))))
 
 
+;;; @ XEmacs emulation
+;;;
+
+(defun-maybe functionp (obj)
+  "Returns t if OBJ is a function, nil otherwise.
+\[XEmacs emulating function]"
+  (or (subrp obj)
+      (byte-code-function-p obj)
+      (and (symbolp obj)(fboundp obj))
+      (and (consp obj)(eq (car obj) 'lambda))
+      ))
+
+
 ;;; @ end
 ;;;
 
