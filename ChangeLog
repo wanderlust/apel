@@ -1,3 +1,7 @@
+2002-11-03  Yoichi NAKAYAMA  <yoichi@eken.phys.nagoya-u.ac.jp>
+
+	* filename.el (filename-filters): Change default value to nil.
+
 2002-10-04  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* APEL: Version 10.4 released.

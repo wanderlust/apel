@@ -58,18 +58,21 @@ For example, (poly-funcall '(car number-to-string) '(100)) returns
   "Alist list of characters vs. string as replacement.
 List of characters represents characters not allowed as file-name.")
 
-(defvar filename-filters
-  (let ((filters '(filename-special-filter
-		   filename-eliminate-top-low-lines
-		   filename-canonicalize-low-lines
-		   filename-maybe-truncate-by-size
-		   filename-eliminate-bottom-low-lines
-		   )))
-    (if (exec-installed-p "kakasi")
-	(cons 'filename-japanese-to-roman-string filters)
-      filters))
-  "List of functions for file-name filter.")
+(defvar filename-filters nil
+  "List of functions for file-name filter.
 
+Example:
+\(setq filename-filters '\(filename-special-filter
+			 filename-eliminate-top-low-lines
+			 filename-canonicalize-low-lines
+			 filename-maybe-truncate-by-size
+			 filename-eliminate-bottom-low-lines\)\)
+
+Moreover, if you want to convert Japanese filename to roman string by kakasi,
+
+\(if \(exec-installed-p \"kakasi\"\)
+    \(setq file-name-filters
+	  \(append '\(filename-japanese-to-roman-string\) filename-filters\)\)\)")
 
 ;;; @ filters
 ;;;
