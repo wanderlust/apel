@@ -1,6 +1,7 @@
 1998-03-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
-	* emu-20.el (insert-binary-file-contents): New function.
+	* emu-nemacs.el, emu-mule.el, emu-e19.el, emu-20.el
+	(insert-binary-file-contents): New function.
 
 1998-03-08  Shuhei KOBAYASHI  <shuhei-k@jaist.ac.jp>
 
