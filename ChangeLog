@@ -1,3 +1,16 @@
+1999-05-21  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* mcharset.el: Require pcustom.
+	(default-mime-charset-for-write): New variable [moved from
+	mcs-20.el].
+	(default-mime-charset-detect-method-for-write): Likewise.
+
+	* mcs-20.el (default-mime-charset-for-write): Abolished [moved to
+	mcharset.el].
+	(default-mime-charset-detect-method-for-write): Likewise.
+
+	* EMU-ELS: Don't install `localhook' for XEmacs.
+
 1999-05-19  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* mcs-20.el (mime-charset-to-coding-system): Don't use `defsubst'
