@@ -55,6 +55,8 @@
 		"")
      ))
 
+(fset 'string-to-int-list 'string-to-char-list)
+
 
 ;;; @ end
 ;;;

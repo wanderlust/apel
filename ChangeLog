@@ -1,3 +1,49 @@
+Thu Apr 25 12:08:33 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.19.3 was released.
+
+Wed Apr 24 15:27:17 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-orig.el (sref): New alias.
+
+	* emu-mule.el (char-charset): New alias.
+
+Wed Apr 24 13:46:56 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el, emu-orig.el: Function `char-leading-char' was
+ 	renamed to `char-charset'; `char-leading-char' became alias of
+ 	function `char-charset'.
+
+	* tl-str.el (replace-char-by-char): abolished.
+
+	* emu-nemacs.el (sref): fixed.
+
+	* emu-nemacs.el (string-to-int-list): moved from emu-18.el.
+
+	* emu-18.el (string-to-int-list): moved to emu-nemacs.el.
+
+	* emu-xemacs.el, emu-19.el (string-to-int-list): fixed to define.
+
+	* emu-18.el (string-to-int-list): fixed.
+
+Wed Apr 24 00:57:07 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-replace.el: defvar for global variables.
+
+	* tl-misc.el (get-latest-path): New implementation.
+
+Wed Apr 24 00:16:45 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-str.el (filename-special-char-range): use function `char-int'
+ 	and `string-to-int-list'.
+
+	* emu-xemacs.el, emu-19.el, emu-18.el (string-to-int-list):
+	New function.
+
+	* emu.el (char-int): New function.
+	(int-char): New function.
+
+
 Sat Apr 20 13:10:42 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.19.2 was released.

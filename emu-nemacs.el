@@ -37,14 +37,15 @@
 (defconst lc-ascii 0)
 (defconst lc-jp  146)
 
-(defun char-leading-char (chr)
-  "Return leading character of CHAR.
-\[emu-nemacs.el; Mule emulating function]"
+(defun char-charset (chr)
+  "Return the character set of char CHR.
+\[emu-nemacs.el; XEmacs 20 emulating function]"
   (if (< chr 128)
       lc-ascii
     lc-jp))
 
-(defalias 'get-lc 'char-leading-char)
+(defalias 'char-leading-char 'char-charset)
+(defalias 'get-lc            'char-charset)
 
 
 ;;; @ coding-system
@@ -74,7 +75,7 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
 
 (defun code-detect-region (start end)
   "Detect coding-system of the text in the region between START and END.
-\[emu-orig.el; Mule emulating function]"
+\[emu-nemacs.el; Mule emulating function]"
   (if (save-excursion
 	(save-restriction
 	  (narrow-to-region start end)
@@ -94,18 +95,27 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
 
 (defun char-bytes (chr)
   "Return number of bytes CHAR will occupy in a buffer.
-\[Mule compatible function in tm-nemacs]"
+\[emu-nemacs.el; Mule emulating function]"
   (if (< chr 128) 1 2))
 
 (defun char-width (chr)
   "Return number of columns CHAR will occupy when displayed.
-\[Mule compatible function in tm-nemacs]"
+\[emu-nemacs.el; Mule emulating function]"
   (if (< chr 128) 1 2))
 
 (defun string-width (str)
   "Return number of columns STRING will occupy.
-\[Mule compatible function in tm-nemacs]"
+\[emu-nemacs.el; Mule emulating function]"
   (length str))
+
+(defun sref (str idx)
+  "Return the character in STR at index IDX.
+\[emu-nemacs.el; Mule emulating function]"
+  (let ((chr (aref str idx)))
+    (if (< chr 128)
+	chr
+      (logior (lsh (aref str (1+ idx)) 8) chr)
+      )))
 
 (defun string-to-char-list (str)
   (let ((i 0)(len (length str)) dest chr)
@@ -120,6 +130,8 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
       )
     (reverse dest)
     ))
+
+(fset 'string-to-int-list (symbol-function 'string-to-char-list))
 
 (defun find-charset-string (str)
   "Return a list of leading-chars in the string.

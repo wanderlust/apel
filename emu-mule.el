@@ -45,6 +45,8 @@ whose return value applied function PRED is not nil.
 ;;; @ leading-character
 ;;;
 
+(defalias 'char-charset 'char-leading-char)
+
 (defun get-lc (chr)
   "Return leading character of CHAR or LEADING-CHARACTER."
   (if (< chr 128)

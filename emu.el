@@ -33,6 +33,8 @@
 
 (defvar running-emacs-18 (<= emacs-major-version 18))
 (defvar running-xemacs (string-match "XEmacs" emacs-version))
+(defvar running-xemacs-20 (and running-xemacs
+			       (>= emacs-major-version 20)))
 (defvar running-emacs-19 (and (not running-xemacs)
 			      (= emacs-major-version 19)))
 (defvar running-emacs-19_29-or-later
@@ -82,6 +84,17 @@
 	  ))
     )
 	
+
+;;; @ for XEmacs 20
+;;;
+
+(or (fboundp 'char-int)
+    (fset 'char-int (symbol-function 'identity))
+    )
+(or (fboundp 'int-char)
+    (fset 'int-char (symbol-function 'identity))
+    )
+
 
 ;;; @ end
 ;;;
