@@ -625,7 +625,7 @@ If NOSORT is dummy for compatibility."
 (defun previous-property-change (position &optional object limit))
 (defun previous-single-property-change (position prop &optional object limit))
 (defun add-text-properties (start end properties &optional object))
-(defun put-text-property (start end property &optional object))
+(defun put-text-property (start end property value &optional object))
 (defun set-text-properties (start end properties &optional object))
 (defun remove-text-properties (start end properties &optional object))
 (defun text-property-any (start end property value &optional object))
