@@ -34,9 +34,6 @@
 (and (coding-system-property 'iso-2022-jp 'input-charset-conversion)
      (copy-coding-system 'iso-2022-7bit 'iso-2022-jp))
 
-(and (coding-system-property 'iso-2022-jp-dos 'input-charset-conversion)
-     (copy-coding-system 'iso-2022-7bit-dos 'iso-2022-jp-dos))
-
 ;; Redefine if -{dos|mac|unix} is not found.
 (or (find-coding-system 'raw-text-dos)
     (copy-coding-system 'no-conversion-dos 'raw-text-dos))

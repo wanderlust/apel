@@ -162,7 +162,7 @@ code conversion will not take place."
 
 (defun char-charset (char)
   "Return the character set of char CHAR."
-  (if (< char 128)
+  (if (< chr 128)
       'ascii
     'latin-iso8859-1))
 
