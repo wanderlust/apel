@@ -1,3 +1,27 @@
+Mon Mar 25 12:00:57 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.19 was released.
+
+Mon Mar 25 10:43:00 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-18.el (force-mode-line-update): New function; imported from
+ 	Emacs 19.30.
+
+Mon Mar 25 10:21:25 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/parse-ascii-token): check token instead of
+ 	(cdr token).
+
+Tue Mar 19 13:21:58 1996  KON-NO Yoichi <itokon@ssel.toshiba.co.jp>
+
+	* mu-cite.el: use `(mark t)' instead of `(mark)'.
+	(cf. [tm-ja:1673])
+
+Fri Mar 15 10:50:41 1996  Shuhei KOBAYASHI <shuhei@cmpt01.phys.tohoku.ac.jp>
+
+	* tl-822.el (rfc822/parse-ascii-token): do nil check for token
+	value (cf. [tm-ja:1671])
+
 Thu Mar 14 16:27:21 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl-str.el: Function `truncate-string' was moved to emu-mule.el.

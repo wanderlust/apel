@@ -200,6 +200,18 @@ to create parent directories if they don't exist.
   )
 
 
+;;; @ mode-line
+;;;
+
+;;; Imported from Emacs 19.30.
+(defun force-mode-line-update (&optional all)
+  "Force the mode-line of the current buffer to be redisplayed.
+With optional non-nil ALL, force redisplay of all mode-lines.
+\[emu-18.el; Emacs 19 emulating function]"
+  (if all (save-excursion (set-buffer (other-buffer))))
+  (set-buffer-modified-p (buffer-modified-p)))
+
+
 ;;; @ text property
 ;;;
 
