@@ -1,5 +1,9 @@
 1998-04-27  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* calist.el (ctree-find-calist): Add optional argument 'all.
+
+1998-04-27  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* calist.el (ctree-find-calist): Renamed from
  	'ctree-match-calist-all.
 
