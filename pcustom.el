@@ -1,7 +1,7 @@
 ;;; pcustom.el -- a portable custom.el.
 
+;; Copyright (C) 1999 Free Software Foundation, Inc.
 ;; Copyright (C) 1999 Mikio Nakajima <minakaji@osaka.email.ne.jp>
-;; Copyright (C) 1999 Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
 
 ;; Author: Mikio Nakajima <minakaji@osaka.email.ne.jp>
 ;;	Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
@@ -33,26 +33,17 @@
 
 (static-if (condition-case nil
 	       ;; compile-time check.
-	       ;; "new custom" requires widget library.
-	       (and (require 'widget)
-		    (require 'custom)
-		    (fboundp 'custom-declare-variable))
-	     (error
-	      (if (null (featurep 'pcustom))
-		  (progn
-		    (message "
-  ** New CUSTOM library is not detected.  If you have that one, e.g. v1.9962,
-  ** please specify the installed path of the new CUSTOM library in the file
-  ** \"subdirs.el\" and rebuild this package.  For example, if you have
-  ** installed it in \"/usr/local/share/emacs/site-lisp/custom/\", put the
-  ** following line in the file \"/usr/local/share/emacs/site-lisp/subdirs.el\".
-  **
-  **   (normal-top-level-add-to-load-path '(\"custom\"))
-  **
-  ** Note that the argument can be a list of subdirectories.
-")
-		    (sleep-for 1)))
-	      nil))
+	       (if (and (require 'custom)
+			(fboundp 'custom-declare-variable))
+		   ;; you have "new custom".
+		   t
+		 ;; you have custom, but it is "old".
+		 (message "\
+  ** \"old custom\" is loaded.  See README if you want to use \"new custom\".")
+		 (sleep-for 1)
+		 nil)
+	     ;; you don't have custom.
+	     (error nil))
     ;; you have "new custom". no load-time check.
     (require 'custom)
   ;; your custom is "old custom",
