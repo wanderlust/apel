@@ -1,3 +1,45 @@
+1998-12-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 9.12 was released.
+
+1998-12-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mcs-om.el: Avoid error when cyrillic.el is not found.
+
+1998-12-19  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poem-xm.el: Define coding-system `gb2312-dos', `gb2312-mac' and
+	`gb2312-unix' if it is not found.
+
+1998-12-18  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poem-om.el (poem-ccl-decode-raw-text): Renamed from
+	`ccl-decode-raw-text'.
+	(poem-ccl-encode-raw-text): Renamed from `ccl-encode-raw-text'.
+	(poem-ccl-encode-raw-text-CRLF): Renamed from
+	`ccl-encode-raw-text-CRLF`.
+
+1998-12-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poem-om.el (poem-decode-raw-text): New function for MULE 1.
+	(poem-encode-raw-text-CRLF): Likewise.
+	(raw-text): New coding-system for MULE 1.
+	(raw-text-dos): Likewise.
+	(insert-file-contents-as-raw-text): Share implementation.
+	(write-region-as-raw-text-CRLF): Likewise.
+	(find-file-noselect-as-raw-text): Likewise.
+
+1998-12-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poem-om.el: Share definition of coding-system `binary'.
+	(write-region-as-binary): Share implementation.
+	(find-file-noselect-as-binary): Likewise.
+
+1998-12-16  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poem-om.el (insert-file-contents-as-binary): Share
+	implementation.
+
 1998-12-16  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poem-om.el (find-file-noselect-as-raw-text): Use
