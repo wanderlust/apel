@@ -1,12 +1,12 @@
 ;;; filename.el --- file name filter
 
-;; Copyright (C) 1996 MORIOKA Tomohiko
+;; Copyright (C) 1996,1997 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version: $Id$
-;; Keywords: string, file name
+;; Keywords: file name, string
 
-;; This file is part of tl (Tiny Library).
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -25,8 +25,16 @@
 
 ;;; Code:
 
-(require 'tl-list)
-(require 'tl-str)
+(require 'emu)
+(require 'cl)
+(require 'file-detect)
+
+(defsubst poly-funcall (functions arg)
+  (while functions
+    (setq arg (funcall (car functions) arg)
+	  functions (cdr functions))
+    )
+  arg)
 
 
 ;;; @ variables
@@ -35,11 +43,11 @@
 (defvar filename-limit-length 21)
 
 (defvar filename-replacement-alist
-  (list
-   (cons (string-to-char-list " \t") "_")
-   (cons (string-to-char-list (expand-char-ranges "!-*,/:;<>?[-^`{-~")) "_")
-   '(filename-control-p . "")
-   ))
+  '(((?\  ?\t) . "_")
+    ((?! ?\" ?# ?$ ?% ?& ?' ?\( ?\) ?* ?/
+	 ?: ?; ?< ?> ?? ?\[ ?\\ ?\] ?` ?{ ?| ?}) . "_")
+    (filename-control-p . "")
+    ))
 
 (defvar filename-filters
   (nconc
@@ -80,14 +88,13 @@
 	)
     (while (< i len)
       (let* ((chr (sref string i))
-	     (ret (ASSOC chr filename-replacement-alist
-			 :test (function
-				(lambda (chr key)
-				  (if (functionp key)
-				      (funcall key chr)
-				    (memq chr key)
-				    )
-				  ))))
+	     (ret (assoc-if (function
+			     (lambda (key)
+			       (if (functionp key)
+				   (funcall key chr)
+				 (memq chr key)
+				 )))
+			    filename-replacement-alist))
 	     )
 	(if ret
 	    (setq dest (concat dest (substring string b i)(cdr ret))

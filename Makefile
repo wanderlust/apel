@@ -2,36 +2,24 @@
 # $Id$
 #
 
-EMACS	= mule
-FLAGS   = -batch -q -no-site-file -l mk-tl
+EMACS	= emacs
+FLAGS   = -batch -q -no-site-file -l APEL-MK
 
+PREFIX =
 
-# Please specfy Emacs Lisp install directory:
-#	TLDIR18 = for Emacs 18.* (NEMACS, NEpoch or MULE 1)
-#	TLDIR19 = for Emacs 19.* (FSF original, XEmacs or MULE 2)
+FILES =	emu/Makefile emu/EMU-MK emu/EMU-CFG emu/EMU-ELS \
+	emu/*.el emu/README.?? \
+	apel/Makefile apel/APEL-MK apel/APEL-CFG apel/APEL-ELS \
+	apel/*.el 
 
-#TLDIR18 = /usr/local/lib/emacs/local.lisp
-#TLDIR19 = /usr/local/lib/mule/site-lisp
-
-TLDIR18 = $(HOME)/lib/emacs18/lisp
-TLDIR19 = $(HOME)/lib/emacs19/lisp
-
-
-FILES	= tl/README.en tl/Makefile tl/mk-tl tl/tl-els \
-		tl/*.el tl/*.bdf \
-		tl/doc/*.ol tl/doc/*.tex tl/doc/*.texi tl/ChangeLog
-
-TARFILE = tl-7.43.1.tar
+TARFILE = apel-0.1.tar
 
 
 elc:
-	$(EMACS) $(FLAGS) -f compile-tl
+	$(EMACS) $(FLAGS) -f compile-apel
 
-install-18:	elc
-	$(EMACS) $(FLAGS) -f install-tl $(TLDIR18)
-
-install-19:	elc
-	$(EMACS) $(FLAGS) -f install-tl $(TLDIR19)
+install:	elc
+	$(EMACS) $(FLAGS) -f install-apel $(PREFIX)
 
 
 clean:
@@ -39,4 +27,4 @@ clean:
 
 
 tar:
-	cd ..; tar cvf $(TARFILE) $(FILES); gzip -9 $(TARFILE)
+	cd ..; tar cvf $(TARFILE) $(FILES); gzip -best $(TARFILE)

@@ -81,23 +81,25 @@ of load-path instead of default-load-path. [file-detect.el]"
   "Return latest directory in default-load-path
 which is matched to regexp PAT.
 If optional argument ALL-PATHS is specified,
-it is searched from all of load-path instead of default-load-path.
-\[file-detect.el]"
+it is searched from all of load-path instead of default-load-path."
   (catch 'tag
     (let ((paths (if all-paths
 		    load-path
 		  default-load-path))
 	  dir)
       (while (setq dir (car paths))
-	(let ((files (sort (directory-files dir t pat t)
-			   (function file-newer-than-file-p)))
-	      file)
-	  (while (setq file (car files))
-	    (if (file-directory-p file)
-		(throw 'tag file)
-	      )
-	    (setq files (cdr files))
-	    ))
+	(if (and (file-exists-p dir)
+		 (file-directory-p dir)
+		 )
+	    (let ((files (sort (directory-files dir t pat t)
+			       (function file-newer-than-file-p)))
+		  file)
+	      (while (setq file (car files))
+		(if (file-directory-p file)
+		    (throw 'tag file)
+		  )
+		(setq files (cdr files))
+		)))
 	(setq paths (cdr paths))
 	))))
 
