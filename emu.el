@@ -100,13 +100,21 @@
   (or (and running-xemacs-19 (>= emacs-minor-version 14))
       running-xemacs-20-or-later))
 
-(cond (running-mule-merged-emacs
+(cond (running-xemacs
+       ;; for XEmacs
+       (cond ((featurep 'mule)
+	      ;; for XEmacs with MULE
+	      (require 'emu-x20)
+	      )
+	     (t
+	      ;; for XEmacs without MULE
+	      (require 'emu-xemacs)
+	      (require 'emu-latin1)
+	      ))
+       )
+      (running-mule-merged-emacs
        ;; for Emacs 20.1 and 20.2
        (require 'emu-e20)
-       )
-      (running-xemacs-with-mule
-       ;; for XEmacs with mule
-       (require 'emu-x20)
        )
       ((boundp 'MULE)
        ;; for MULE 1.* and 2.*
@@ -117,7 +125,8 @@
        (require 'emu-nemacs)
        )
       (t
-       ;; for Emacs 19 and XEmacs without mule
+       ;; for Emacs 19
+       (require 'emu-e19)
        (require 'emu-latin1)
        ))
 
