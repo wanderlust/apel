@@ -29,6 +29,8 @@
 
 (require 'poe)
 
+(eval-when-compile (require 'bitmap))
+
 (defun-maybe image-type-available-p (type)
   "Value is non-nil if image type TYPE is available.
 Image types are symbols like `xbm' or `jpeg'.
@@ -62,7 +64,7 @@ Value is the image created, or nil if images of type TYPE are not supported.
 	      (setq bitmap (concat bitmap "\n"
 				   (bitmap-compose (aref image i)))
 		    i (1+ i)))
-	    (put-text-property 0 (string-width bitmap) 'pimage-bitmap bitmap)
+	    (put-text-property 1 (string-width bitmap) 'pimage-bitmap bitmap)
 	    bitmap)
 	(error nil)))))
 
