@@ -40,6 +40,8 @@
   "Return index of character succeeding CHAR whose index is INDEX."
   `(1+ ,index))
 
+(defalias-maybe 'characterp 'char-valid-p)
+
 
 ;;; @ string
 ;;;
