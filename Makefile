@@ -27,30 +27,30 @@ TLDIR19 = $(HOME)/lib/emacs19/lisp
 FILES	= tl/README.eng tl/Makefile tl/Makefile.bc tl/loadpath \
 	tl/*.el tl/doc/*.texi
 
-TARFILE = tl6.0.tar
+TARFILE = tl-6.5.tar
 
 
 nemacs:
 	make -f Makefile.bc all \
 		EMACS=$(NEMACS) EMACS_TYPE=nemacs \
-		TL18=tl-18.el OPT='-l tl-18.el'
+		EMU18=emu-18.el OPT='-l emu-18.el'
 
 install-nemacs:	nemacs
 	make -f Makefile.bc install \
 		EMACS=$(NEMACS) EMACS_TYPE=nemacs \
-		TL18=tl-18.el OPT='-l tl-18.el' \
+		EMU18=emu-18.el OPT='-l emu-18.el' \
 		TLDIR=$(TLDIR18)
 
 
 mule1:
 	make -f Makefile.bc all \
 		EMACS=$(MULE1) EMACS_TYPE=mule \
-		TL18=tl-18.el OPT='-l tl-18.el'
+		EMU18=emu-18.el OPT='-l emu-18.el'
 
 install-mule1:	mule1
 	make -f Makefile.bc install \
 		EMACS=$(MULE1) EMACS_TYPE=mule \
-		TL18=tl-18.el OPT='-l tl-18.el' \
+		EMU18=emu-18.el OPT='-l emu-18.el' \
 		TLDIR=$(TLDIR18)
 
 
