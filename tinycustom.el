@@ -57,7 +57,7 @@ Its effect is just as same as that of defvar."
 FACE does not need to be quoted.
 \[custom emulating macro]"
       ((fboundp 'make-face)
-       (` (make-face (, face))))
+       (` (make-face (quote (, face)))))
       (t
        ;; do nothing.
        ))
