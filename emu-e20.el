@@ -83,11 +83,11 @@ in the region between START and END."
 	(encode-coding-region start end cs)
       )))
 
-(defsubst decode-mime-charset-region (start end charset)
+(defsubst decode-mime-charset-region (start end charset &optional lbt)
   "Decode the text between START and END as MIME CHARSET."
   (let (cs)
     (if (and enable-multibyte-characters
-	     (setq cs (mime-charset-to-coding-system charset)))
+	     (setq cs (mime-charset-to-coding-system charset lbt)))
 	(decode-coding-region start end cs)
       )))
 
@@ -99,11 +99,11 @@ in the region between START and END."
 	(encode-coding-string string cs)
       string)))
 
-(defsubst decode-mime-charset-string (string charset)
+(defsubst decode-mime-charset-string (string charset &optional lbt)
   "Decode the STRING as MIME CHARSET."
   (let (cs)
     (if (and enable-multibyte-characters
-	     (setq cs (mime-charset-to-coding-system charset)))
+	     (setq cs (mime-charset-to-coding-system charset lbt)))
 	(decode-coding-string string cs)
       string)))
 
