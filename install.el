@@ -1,10 +1,9 @@
 ;;; install.el --- Emacs Lisp package install utility
 
-;; Copyright (C) 1996 Free Software Foundation, Inc.
+;; Copyright (C) 1996,1997,1998,1999 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Created: 1996/08/18
-;; Version: $Id$
 ;; Keywords: install, byte-compile, directory detection
 
 ;; This file is part of APEL (A Portable Emacs Library).
