@@ -30,7 +30,7 @@
 
 (require 'emu-19)
 
-(defun fontset-pixel-height (fontset)
+(defun fontset-pixel-size (fontset)
   (require 'cl)
   (let* ((info (fontset-info fontset))
 	 (height (aref info 1))

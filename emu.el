@@ -4,9 +4,9 @@
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version: $Id$
-;; Keywords: emulation, compatibility, NEmacs, MULE, XEmacs
+;; Keywords: emulation, compatibility, NEmacs, MULE, Emacs/mule, XEmacs
 
-;; This file is part of tl (Tiny Library).
+;; This file is part of emu.
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -24,6 +24,20 @@
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Code:
+
+(defmacro defun-maybe (name &rest everything-else)
+  (or (and (fboundp name)
+	   (not (get name 'defun-maybe))
+	   )
+      (` (or (fboundp (quote (, name)))
+	     (progn
+	       (defun (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defun-maybe t)
+	       ))
+	 )))
+
+(put 'defun-maybe 'lisp-indent-function 'defun)
+
 
 (or (boundp 'emacs-major-version)
     (defconst emacs-major-version (string-to-int emacs-version)))
@@ -130,14 +144,24 @@ and `default-mime-charset'. [emu.el]"
 (defvar path-separator ":"
   "Character used to separate concatenated paths.")
 
-(or (fboundp 'buffer-substring-no-properties)
-    (defun buffer-substring-no-properties (beg end)
-      "Return the text from BEG to END, without text properties, as a string.
+(defun-maybe buffer-substring-no-properties (beg end)
+  "Return the text from BEG to END, without text properties, as a string.
 \[emu.el; EMACS 19.29 emulating function]"
-      (let ((string (buffer-substring beg end)))
-        (tl:set-text-properties 0 (length string) nil string)
-	string))
-    )
+  (let ((string (buffer-substring beg end)))
+    (tl:set-text-properties 0 (length string) nil string)
+    string))
+
+(defun-maybe match-string (num &optional string)
+  "Return string of text matched by last search.
+NUM specifies which parenthesized expression in the last regexp.
+ Value is nil if NUMth pair didn't match, or there were less than NUM pairs.
+Zero means the entire text matched by the whole regexp or whole string.
+STRING should be given if the last search was by `string-match' on STRING.
+\[emu.el; EMACS 19.29 emulating function]"
+  (if (match-beginning num)
+      (if string
+	  (substring string (match-beginning num) (match-end num))
+	(buffer-substring (match-beginning num) (match-end num)))))
 
 (or running-emacs-19_29-or-later
     running-xemacs
@@ -155,17 +179,16 @@ See `read-from-minibuffer' for details of HISTORY argument."
 	)
       ))
 
-(or (fboundp 'add-to-list)
-    ;; This function was imported Emacs 19.30.
-    (defun add-to-list (list-var element)
-      "Add to the value of LIST-VAR the element ELEMENT if it isn't there yet.
+;; This function was imported Emacs 19.30.
+(defun-maybe add-to-list (list-var element)
+  "Add to the value of LIST-VAR the element ELEMENT if it isn't there yet.
 If you want to use `add-to-list' on a variable that is not defined
 until a certain package is loaded, you should put the call to `add-to-list'
 into a hook function that will be run only after loading the package.
 \[emu.el; EMACS 19.30 emulating function]"
-      (or (member element (symbol-value list-var))
-	  (set list-var (cons element (symbol-value list-var)))))
-    )
+  (or (member element (symbol-value list-var))
+      (set list-var (cons element (symbol-value list-var)))
+      ))
 
 
 ;;; @ EMACS 19.30 emulation
@@ -194,16 +217,14 @@ find-file-hooks, etc.
 ;;; @ EMACS 19.31 emulation
 ;;;
 
-(or (fboundp 'buffer-live-p)
-    (defun buffer-live-p (object)
-      "Return non-nil if OBJECT is a buffer which has not been killed.
+(defun-maybe buffer-live-p (object)
+  "Return non-nil if OBJECT is a buffer which has not been killed.
 Value is nil if OBJECT is not a buffer or if it has been killed.
 \[emu.el; EMACS 19.31 emulating function]"
-      (and object
-	   (get-buffer object)
-	   (buffer-name (get-buffer object))
-	   ))
-    )
+  (and object
+       (get-buffer object)
+       (buffer-name (get-buffer object))
+       ))
 
 (or (fboundp 'save-selected-window)
     ;; This function was imported Emacs 19.33.
@@ -221,17 +242,15 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
 ;;; @ XEmacs emulation
 ;;;
 
-(or (fboundp 'functionp)
-    (defun functionp (obj)
-      "Returns t if OBJ is a function, nil otherwise.
+(defun-maybe functionp (obj)
+  "Returns t if OBJ is a function, nil otherwise.
 \[emu.el; XEmacs emulating function]"
-      (or (subrp obj)
-	  (byte-code-function-p obj)
-	  (and (symbolp obj)(fboundp obj))
-	  (and (consp obj)(eq (car obj) 'lambda))
-	  ))
-    )
-	
+  (or (subrp obj)
+      (byte-code-function-p obj)
+      (and (symbolp obj)(fboundp obj))
+      (and (consp obj)(eq (car obj) 'lambda))
+      ))
+
 
 ;;; @ for XEmacs 20
 ;;;

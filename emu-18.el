@@ -1,4 +1,4 @@
-;;; emu-18.el --- EMACS 19.* emulation module for EMACS 18.*
+;;; emu-18.el --- emu API implementation for Emacs 18.*
 
 ;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
 
@@ -6,7 +6,7 @@
 ;; Version: $Id$
 ;; Keywords: emulation, compatibility
 
-;; This file is part of tl (Tiny Library).
+;; This file is part of emu.
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
