@@ -6,7 +6,7 @@
 
 ;;; Code:
 
-;;; Standard configuration variables.
+;;; Configuration variables.
 
 ;; These two variables will be generated from other variables below.
 (defvar APEL_DIR nil)
@@ -14,6 +14,7 @@
 
 ;; Install to "apel" subdirectory.
 (defvar APEL_PREFIX "apel")
+;; Install to "emu" subdirectory if emacs supports some features.
 (defvar EMU_PREFIX
   (if (or (featurep 'xemacs)
 	  (fboundp 'normal-top-level-add-subdirs-to-load-path))
@@ -25,14 +26,14 @@
     ;; (setq EMU_PREFIX "emu")
     ""))
 
-;; Detect site-lisp directories.
+;; We can load APEL modules safely;-)
 (defvar default-load-path load-path)
 (setq load-path (cons (expand-file-name ".") load-path))
 (require 'poe)
 (require 'path-util)
 (require 'install)
 
-;; override everything you want.
+;; Override everything you want.
 (load-file "APEL-CFG")
 
 ;; The following four variables will be overrided by command line options.
@@ -98,7 +99,7 @@
     (byte-compile-file (expand-file-name "custom-load.el" dir)))))
 
 
-;;; Tools for Configure, Compile, and Install.
+;;; Configure, Compile, and Install.
 
 (defun config-apel ()
   (let (prefix lisp-dir version-specific-lisp-dir)

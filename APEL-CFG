@@ -10,7 +10,8 @@
 
 ;; If you use "new custom" but do not use "subdirs.el" to add "custom"
 ;; to your load-path, uncomment and edit this.
-;; (add-latest-path "custom")
+;; (setq load-path
+;;       (cons "/usr/local/share/emacs/19.34/site-lisp/custom" load-path))
 
 
 ;;; Install to home directory.
