@@ -20,7 +20,7 @@
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with this program; see the file COPYING.  If not, write to
+;; along with GNU Emacs; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
@@ -61,7 +61,7 @@
     (if (file-exists-p src-file)
 	(let ((full-path (expand-file-name file dest)))
 	  (if (and (file-exists-p full-path) overwrite)
-	      (set-file-modes full-path install-overwritten-file-modes)
+              (delete-file full-path)
 	    )
 	  (copy-file src-file full-path t t)
 	  (if move
@@ -102,7 +102,7 @@
       (if (file-exists-p src-file)
 	  (let ((full-path (expand-file-name el-file dest)))
 	    (if (file-exists-p full-path)
-		(set-file-modes full-path install-overwritten-file-modes)
+                (delete-file full-path)
 	      )
 	    (copy-file src-file full-path t t)
 	    (princ (format "%s -> %s\n" el-file dest))
@@ -110,6 +110,9 @@
       (setq src-file (expand-file-name elc-file src))
       (if (file-exists-p src-file)
 	  (let ((full-path (expand-file-name elc-file dest)))
+            (if (file-exists-p full-path)
+                (delete-file full-path)
+              )
 	    (copy-file src-file full-path t t)
 	    (catch 'tag
 	      (while (file-exists-p src-file)

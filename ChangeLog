@@ -1,3 +1,22 @@
+Wed Dec  4 04:56:28 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.14 was released.
+
+Tue Nov 26 19:55:55 1996  Shuhei KOBAYASHI  <shuhei-k@jaist.ac.jp>
+
+	* install.el (install-file): Delete old file instead of chmod.
+	(install-elisp-module): Ditto.
+
+Tue Nov 26 12:02:00 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* TL-ELS (tl-modules): bitmap.el, x-face-mule.el and
+ 	smiley-mule.el were moved to ../bitmap-mule/.
+
+Mon Nov 18 15:03:58 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* TL-ELS: sinfo.el was moved to ../sinfo/.
+
+
 Sat Nov 16 08:38:57 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.13 was released.
