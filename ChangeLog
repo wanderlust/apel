@@ -1,5 +1,8 @@
 1998-10-01  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* mcs-e20.el (charsets-mime-charset-alist): Use `gb2312' and
+	`big5' instead of `cn-gb-2312' and `cn-big5'.
+
 	* mcs-xm.el (charsets-mime-charset-alist): Use `gb2312' and `big5'
 	instead of `cn-gb-2312' and `cn-big5'.
 
