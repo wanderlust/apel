@@ -94,10 +94,6 @@
 	"No conversion"
 	nil
 	(cons ccl-decode-raw-text ccl-encode-raw-text-CRLF))
-
-       (make-coding-system
-	'binary nil ?=
-	"No conversion")
        ))
 
 
@@ -217,6 +213,8 @@ be applied to `file-coding-system-for-read'."
 ;;; @ without code-conversion
 ;;;
 
+(make-coding-system 'binary nil ?= "No conversion")
+
 (defmacro as-binary-process (&rest body)
   (` (let (selective-display	; Disable ^M to nl translation.
 	   ;; Mule
@@ -262,6 +260,16 @@ code conversion will not take place."
    ;; Returns list absolute file name and length of data inserted.
    (insert-file-contents filename visit beg end replace)))
 
+(defun write-region-as-binary (start end filename
+				     &optional append visit lockname)
+  "Like `write-region', q.v., but don't code conversion."
+  (write-region-as-coding-system 'binary
+				 start end filename append visit lockname))
+
+(defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but don't code and format conversion."
+  (find-file-noselect-as-coding-system 'binary filename nowarn rawfile))
+
 (cond
  ((>= emacs-major-version 19)
   ;; for MULE 2.*.
@@ -276,22 +284,11 @@ code."
     (insert-file-contents-as-coding-system 'raw-text
 					   filename visit beg end replace))
 
-  (defun write-region-as-binary (start end filename
-				       &optional append visit lockname)
-    "Like `write-region', q.v., but don't code conversion."
-    (write-region-as-coding-system 'binary
-				   start end filename append visit lockname))
-
   (defun write-region-as-raw-text-CRLF (start end filename
 					      &optional append visit lockname)
     "Like `write-region', q.v., but don't code conversion."
     (write-region-as-coding-system 'raw-text-dos
 				   start end filename append visit lockname))
-
-  (defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
-    "Like `find-file-noselect', q.v., but don't code and format conversion."
-    (find-file-noselect-as-coding-system 'binary
-					 filename nowarn rawfile))
 
   (defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
     "Like `find-file-noselect', q.v., but it does not code and format
@@ -320,12 +317,6 @@ code."
 	    (replace-match ""))
 	  (list (car return-val) (buffer-size))))))
 
-  (defun write-region-as-binary (start end filename
-				       &optional append visit lockname)
-    "Like `write-region', q.v., but don't code conversion."
-    (as-binary-output-file
-     (write-region start end filename append visit)))
-
   (defun write-region-as-raw-text-CRLF (start end filename
 					      &optional append visit lockname)
     "Like `write-region', q.v., but don't code conversion."
@@ -337,10 +328,6 @@ code."
 	  (replace-match "\\1\r\n"))
 	(write-region-as-binary (point-min)(point-max)
 				filename append visit))))
-
-  (defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
-    "Like `find-file-noselect', q.v., but don't code and format conversion."
-    (as-binary-input-file (find-file-noselect filename nowarn)))
 
   (defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
     "Like `find-file-noselect', q.v., but it does not code and format
