@@ -1,3 +1,14 @@
+1999-09-09  MORIOKA Tomohiko  <tomo@m17n.org>
+
+	* mcs-xm.el (mime-charset-decoder-alist): Don't use
+	`decode-mime-charset-region-with-iso646-unification' if running
+	XEmacs-UTF-2000.
+	(mime-iso646-character-unification-alist): Don't define if running
+	XEmacs-UTF-2000.
+	(mime-unified-character-face): Likewise.
+	(mime-character-unification-limit-size): Likewise.
+	(decode-mime-charset-region-with-iso646-unification): Likewise.
+
 1999-09-09  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* tinycustom.el (defface): Allow `type' in SPEC; enrich doc string.
