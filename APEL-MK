@@ -23,14 +23,16 @@
   (add-to-list 'load-path (expand-file-name "../emu"))
   (add-to-list 'load-path ".")
   (require 'install)
+  (load "EMU-ELS")
   (load-file "APEL-ELS")
+  (compile-elisp-modules emu-modules	".")
   (compile-elisp-modules apel-modules	".")
   )
 
 (defun install-apel ()
   (compile-apel)
   (config-apel)
-  (compile-elisp-modules apel-modules	".")
+  (install-elisp-modules emu-modules	"."	EMU_DIR)
   (install-elisp-modules apel-modules	"."	APEL_DIR)
   )
 
