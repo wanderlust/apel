@@ -1,3 +1,7 @@
+2000-01-21  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* APEL: Version 10.1 released.
+
 2000-01-19  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* poe.el (require): Handle `file-error' only.
