@@ -85,7 +85,9 @@
 	))))
 
 (defun ctree-find-calist (rule-tree alist &optional all)
-  "Return list of condition-alist which matches ALIST in RULE-TREE."
+  "Return list of condition-alist which matches ALIST in RULE-TREE.
+If optional argument ALL is specified, default rules are not ignored
+even if other rules are matched for ALIST."
   (if (null rule-tree)
       (list alist)
     (let ((type (car rule-tree))
