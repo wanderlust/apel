@@ -104,7 +104,7 @@
 	string))))
 
 (cond
- (running-emacs-19_29-or-later
+ ((and (>= emacs-major-version 19) (>= emacs-minor-version 29))
   ;; for MULE 2.3 based on Emacs 19.34.
   (defun write-region-as-mime-charset (charset start end filename
 					       &optional append visit lockname)
