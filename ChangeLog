@@ -1,5 +1,15 @@
 1998-03-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* emu-x20.el (mime-charset-decoder-alist): New variable.
+	(decode-mime-charset-region-default): New function.
+	(mime-iso646-character-unification-alist): New variable.
+	(mime-unified-character-face): New variable.
+	(decode-mime-charset-region-with-iso646-unification): New
+ 	function.
+	(decode-mime-charset-region): Use 'mime-charset-decoder-alist.
+
+1998-03-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu-20.el (mime-charset-coding-system-alist): Use 'defcustom.
 
 1998-03-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
