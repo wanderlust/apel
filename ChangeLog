@@ -1,3 +1,7 @@
+1998-11-06  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poe.el (combine-after-change-calls): fixed.
+
 1998-10-31  Mikio Nakajima    <minakaji@osaka.email.ne.jp>
 
 	* poe.el (combine-after-change-calls): New macro.
