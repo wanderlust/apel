@@ -1,3 +1,10 @@
+1999-05-24  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poem-om.el (char-before, char-after): Moved to poe.el.
+
+	* poe.el (char-before, char-after): Moved from poem-om.el.
+	Add definition for non-Mule.
+
 1999-05-24  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* poe.el (def-edebug-spec): New macro.
