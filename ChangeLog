@@ -1,7 +1,8 @@
 1999-06-25  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poem-xm.el (split-char): Don't redefine if the `car' of the `cdr'
-	of the return value of the original `split-char' with the arg `?a'.
+	of the return value of the original `split-char' with the arg `?a'
+	is an integer.
 
 1999-06-23  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
