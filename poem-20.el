@@ -90,7 +90,7 @@ from CRLF to LF."
 
 (defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but don't code and format conversion."
-  (let ((coding-system-for-write 'binary)
+  (let ((coding-system-for-read 'binary)
 	format-alist)
     (find-file-noselect filename nowarn rawfile)))
 
