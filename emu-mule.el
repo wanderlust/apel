@@ -59,10 +59,11 @@
 ;;; @ character set
 ;;;
 
-(defalias 'charset-description 'char-description)
-(defalias 'charset-registry    'char-registry)
-(defalias 'charset-columns     'char-width)
-(defalias 'charset-direction   'char-direction)
+(defalias 'charset-bytes	'char-bytes)
+(defalias 'charset-description	'char-description)
+(defalias 'charset-registry	'char-registry)
+(defalias 'charset-columns	'char-width)
+(defalias 'charset-direction	'char-direction)
 
 
 ;;; @ coding system
@@ -97,6 +98,13 @@
 	   mc-flag	
 	   (default-process-coding-system (cons *noconv* *noconv*))
 	   program-coding-system-alist)
+       (,@ body)
+       )))
+
+(defmacro as-binary-input-file (&rest body)
+  (` (let (mc-flag
+	   (file-coding-system-for-read *noconv*)
+	   )
        (,@ body)
        )))
 

@@ -36,6 +36,19 @@
 
 (defalias 'charset-columns 'charset-width)
 
+(defun find-charset-string (string)
+  "Return a list of charsets in the STRING except ascii.
+\[emu-e20.el; MULE emulating function]"
+  (delq charset-ascii (find-charset-in-string string))
+  )
+
+(defun find-charset-region (start end)
+  "Return a list of charsets except ascii
+in the region between START and END.
+\[emu-e20.el; MULE emulating function]"
+  (delq charset-ascii (find-charset-in-string (buffer-substring start end)))
+  )
+
 
 ;;; @ coding system
 ;;;
@@ -43,12 +56,15 @@
 (defconst *noconv* 'no-conversion)
 
 (defmacro as-binary-process (&rest body)
-  (` (let (selective-display	; Disable ^M to nl translation.
-	   ;; Mule merged EMACS
-	   default-process-coding-system
-	   program-coding-system-alist)
-       (,@ body)
-       )))
+  `(let (selective-display	; Disable ^M to nl translation.
+	 ;; for mule merged EMACS
+	 (default-process-coding-system 'no-conversion)
+	 )
+     ,@ body))
+
+(defmacro as-binary-input-file (&rest body)
+  `(let ((coding-system-for-read 'no-conversion))
+     ,@body))
 
 (defalias 'set-process-input-coding-system 'set-process-coding-system)
 
@@ -117,10 +133,14 @@
 (defvar default-mime-charset 'x-ctext)
 
 (defvar mime-charset-coding-system-alist
-  '((x-ctext         . coding-system-ctext)
-    (gb2312          . coding-system-euc-china)
-    (iso-2022-jp-2   . coding-system-iso-2022-ss2-7)
-    (shift_jis       . coding-system-sjis)
+  '((x-ctext		. coding-system-ctext)
+    (hz-gb-2312		. coding-system-hz)
+    (cn-gb-2312		. coding-system-euc-china)
+    (gb2312		. coding-system-euc-china)
+    (cn-big5		. coding-system-big5)
+    (iso-2022-jp-2	. coding-system-iso-2022-ss2-7)
+    (iso-2022-int-1	. coding-system-iso-2022-int)
+    (shift_jis		. coding-system-sjis)
     ))
 
 (defun mime-charset-to-coding-system (charset)
@@ -175,10 +195,27 @@
 (defalias 'char-columns 'char-width)
 
 
+;;; @@ Mule emulating aliases
+;;;
+;;; You should not use them.
+
+(defalias 'make-character 'make-char)
+
+(defun char-category (character)
+  "Return string of category mnemonics for CHAR in TABLE.
+CHAR can be any multilingual character
+TABLE defaults to the current buffer's category table.
+\[emu-e20.el; MULE emulating function]"
+  (category-set-mnemonics (char-category-set character))
+  )
+
+
 ;;; @ string
 ;;;
 
 (defalias 'string-columns 'string-width)
+
+(defalias 'sset 'string-embed-string)
 
 (defun string-to-char-list (string)
   "Return a list of which elements are characters in the STRING.
@@ -197,7 +234,6 @@
 (defalias 'string-to-int-list 'string-to-char-list)
 
 (or (fboundp 'truncate-string)
-;;; Imported from Mule-2.3
 (defun truncate-string (str width &optional start-column)
   "Truncate STR to fit in WIDTH columns.
 Optional non-nil arg START-COLUMN specifies the starting column.
@@ -208,7 +244,7 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 	(len (length str))
 	(from 0)
 	(column 0)
-	to-prev to ch)
+	to-prev to ch b)
     (if (>= width max-width)
 	(setq width max-width))
     (if (>= start-column width)
@@ -216,7 +252,11 @@ Optional non-nil arg START-COLUMN specifies the starting column.
       (while (< column start-column)
 	(setq ch (aref str from)
 	      column (+ column (char-width ch))
-	      from (+ from (char-bytes ch))))
+	      from (if (= (setq b (charset-bytes ch)) 0)
+		       (1+ from)
+		     (+ from b)
+		     ))
+	)
       (if (< width max-width)
 	  (progn
 	    (setq to from)
@@ -224,7 +264,11 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 	      (setq ch (aref str to)
 		    column (+ column (char-width ch))
 		    to-prev to
-		    to (+ to (char-bytes ch))))
+		    to (if (= (setq b (charset-bytes ch)) 0)
+			   (1+ to)
+			 (+ to b)
+			 ))
+	      )
 	    (setq to to-prev)))
       (substring str from to))))
 ;;;

@@ -3,8 +3,7 @@
 ;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version:
-;;	$Id$
+;; Version: $Id$
 ;; Keywords: emulation, compatibility, mule, Latin-1
 
 ;; This file is part of tl (Tiny Library).
@@ -100,22 +99,22 @@
 
 (defun decode-coding-string (string coding-system)
   "Decode the STRING which is encoded in CODING-SYSTEM.
-\[emu-e19.el; EMACS 20 emulating function]"
+\[emu-e19.el; Emacs 20 emulating function]"
   string)
 
 (defun encode-coding-string (string coding-system)
   "Encode the STRING as CODING-SYSTEM.
-\[emu-e19.el; EMACS 20 emulating function]"
+\[emu-e19.el; Emacs 20 emulating function]"
   string)
 
 (defun decode-coding-region (start end coding-system)
   "Decode the text between START and END which is encoded in CODING-SYSTEM.
-\[emu-e19.el; EMACS 20 emulating function]"
+\[emu-e19.el; Emacs 20 emulating function]"
   0)
 
 (defun encode-coding-region (start end coding-system)
   "Encode the text between START and END to CODING-SYSTEM.
-\[emu-e19.el; EMACS 20 emulating function]"
+\[emu-e19.el; Emacs 20 emulating function]"
   0)
 
 (defun code-detect-region (beg end)
@@ -128,6 +127,11 @@ between START and END. [emu-e19.el; Mule emulating function]"
 
 (defmacro as-binary-process (&rest body)
   (` (let (selective-display)	; Disable ^M to nl translation.
+       (,@ body)
+       )))
+
+(defmacro as-binary-input-file (&rest body)
+  (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
        (,@ body)
        )))
 
@@ -214,7 +218,7 @@ else returns nil. [emu-e19.el; old MULE emulating function]"
 
 (defun char-columns (character)
   "Return number of columns a CHARACTER occupies when displayed.
-\[emu-nemacs.el]"
+\[emu-e19.el]"
   1)
 
 ;;; @@ for old MULE emulation

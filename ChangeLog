@@ -1,3 +1,103 @@
+Mon Sep 23 12:36:01 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.6 was released.
+
+	* tl-atype.el (set-atype): new option `ignore'.
+
+	* tl-atype.el (set-atype): option `replaced-by' was abolished.
+
+Sat Sep 21 20:52:12 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (mime-charset-coding-system-alist): Add `cn-big5'.
+
+Sat Sep 21 16:29:25 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-18.el: add autoload setting for function `setenv'.
+
+Sat Sep 21 16:23:41 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* TL-ELS (tl-modules): add `env' if `running-emacs-18' is not nil.
+
+Sat Sep 21 16:16:40 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-18.el (parse-colon-path): New function.
+
+Sat Sep 21 16:08:35 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (path-separator): New variable.
+
+	* emu-e20.el (mime-charset-coding-system-alist): add
+ 	`iso-2022-int-1'.
+
+Fri Sep 20 07:21:42 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (mime-charset-coding-system-alist): Add `hz-gb-2312'
+ 	and `cn-gb-2312'.
+
+Thu Sep 19 16:30:19 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (insert-file-contents-literally): New alias for anything
+ 	older than Emacs 19.29. (cf. [os2-emacs-ja:427])
+
+
+Wed Sep 18 13:40:26 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.5 was released.
+
+	* emu-nemacs.el, emu-e19.el (as-binary-input-file): New macro.
+
+Wed Sep 18 12:48:09 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (sset): changed to alias of `string-embed-string'.
+
+Wed Sep 18 08:55:56 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el, emu-mule.el (as-binary-input-file): New macro.
+
+Wed Sep 18 07:39:22 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (truncate-string): `char-bytes' returns 1 for charset
+ 	and `charset-bytes' returns 0 for character.
+
+Tue Sep 17 08:41:36 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (as-binary-process): Use Common Lisp like quote.
+
+	* emu-e20.el (as-binary-input-file): New macro.
+
+	* emu-e20.el (as-binary-process): set
+ 	`default-process-coding-system' to `no-conversion'.
+
+	* TL-ELS (tl-modules): Add bitmap, x-face-mule and smiley-mule if
+ 	running mule merged EMACS.
+
+	* bitmap.el: modified to support mule merged EMACS.
+
+	* emu-e20.el (sset): New function.
+
+	* emu-e20.el (make-character): New alias.
+
+	* cless.el (define-cless-alias): New function.
+
+Mon Sep 16 11:55:08 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (charset-bytes): New alias.
+
+	* emu-e20.el (char-category): New function.
+
+Mon Sep 16 09:22:42 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (find-charset-string): New function.
+
+Mon Sep 16 09:01:33 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (find-charset-region): New function.
+
+Sun Sep 15 10:53:59 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* TL-ELS (tl-modules): add genjis for mule merged EMACS.
+
+
 Sun Sep 15 08:04:02 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.4 was released.

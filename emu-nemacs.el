@@ -169,6 +169,11 @@
        (,@ body)
        )))
 
+(defmacro as-binary-input-file (&rest body)
+  (` (let (kanji-flag)
+       (,@ body)
+       )))
+
 ;;; @@ for old MULE emulation
 ;;;
 

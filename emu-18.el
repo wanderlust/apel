@@ -19,11 +19,19 @@
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with this program; see the file COPYING.  If not, write to
-;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Code:
+
+(autoload 'setenv "env"
+  "Set the value of the environment variable named VARIABLE to VALUE.
+VARIABLE should be a string.  VALUE is optional; if not provided or is
+`nil', the environment variable VARIABLE will be removed.  
+This function works by modifying `process-environment'."
+  t)
+
 
 ;;; @ for EMACS 18.55
 ;;;
@@ -151,7 +159,7 @@ Associates the function with the current load file, if any.
 	 )))
 
 
-;;; @ directory
+;;; @ file
 ;;;
 
 (defun make-directory-internal (dirname)
@@ -192,6 +200,23 @@ to create parent directories if they don't exist.
 	))
     (make-directory-internal dir)
     ))
+
+;; Imported from files.el of EMACS 19.33.
+(defun parse-colon-path (cd-path)
+  "Explode a colon-separated list of paths into a string list."
+  (and cd-path
+       (let (cd-prefix cd-list (cd-start 0) cd-colon)
+	 (setq cd-path (concat cd-path path-separator))
+	 (while (setq cd-colon (string-match path-separator cd-path cd-start))
+	   (setq cd-list
+		 (nconc cd-list
+			(list (if (= cd-start cd-colon)
+				   nil
+				(substitute-in-file-name
+				 (file-name-as-directory
+				  (substring cd-path cd-start cd-colon)))))))
+	   (setq cd-start (+ cd-colon 1)))
+	 cd-list)))
 
 ;; Imported from files.el of EMACS 19.33.
 (defun file-relative-name (filename &optional directory)

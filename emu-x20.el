@@ -98,6 +98,10 @@ in the region between START and END.
 	 process-output-coding-system)
      ,@body))
 
+(defmacro as-binary-input-file (&rest body)
+  `(let ((file-coding-system-for-read 'noconv))
+     ,@body))
+
 
 ;;; @ MIME charset
 ;;;

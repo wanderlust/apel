@@ -19,8 +19,8 @@
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with this program; see the file COPYING.  If not, write to
-;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Code:
@@ -111,6 +111,9 @@ and `default-mime-charset'. [emu.el]"
 ;;; @ EMACS 19.29 emulation
 ;;;
 
+(defvar path-separator ":"
+  "Character used to separate concatenated paths.")
+
 (or (fboundp 'buffer-substring-no-properties)
     (defun buffer-substring-no-properties (beg end)
       "Return the text from BEG to END, without text properties, as a string.
@@ -146,6 +149,14 @@ into a hook function that will be run only after loading the package.
 \[emu.el; EMACS 19.30 emulating function]"
       (or (member element (symbol-value list-var))
 	  (set list-var (cons element (symbol-value list-var)))))
+    )
+
+
+;;; @ EMACS 19.30 emulation
+;;;
+
+(or (fboundp 'insert-file-contents-literally)
+    (defalias 'insert-file-contents-literally 'insert-file-contents)
     )
 
 
