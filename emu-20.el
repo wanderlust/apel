@@ -53,7 +53,7 @@
 (defun write-region-as-binary (start end filename
 				     &optional append visit lockname)
   "Like `write-region', q.v., but don't code conversion."
-  (let ((coding-system-for-read 'binary))
+  (let ((coding-system-for-write 'binary))
     (write-region start end filename append visit lockname)
     ))
 
