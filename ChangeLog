@@ -1,6 +1,8 @@
 1999-11-02  Katsumi Yamaoka   <yamaoka@jpl.org>
 
-	* poe-18.el (file-executable-p): New function.
+	* poe-18.el (add-text-properties, get-text-property): Define as
+	null function.
+	(file-executable-p): New function.
 
 
 1999-10-22  Katsumi Yamaoka   <yamaoka@jpl.org>

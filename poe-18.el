@@ -215,6 +215,10 @@ of the limitation of old \(v18\) compiler.
 
 (defun remove-text-properties (start end properties &optional object))
 
+(defun get-text-property (position prop &optional object))
+
+(defun add-text-properties (start end properties &optional object))
+
 
 ;;; @ file
 ;;;
