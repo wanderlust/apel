@@ -13,7 +13,8 @@
 	      (cons 'poe-xemacs
 		    (if (featurep 'mule)
 			;; for XEmacs with MULE
-			'(poem-20 poem-xm mcs-20 mcs-xm emu-20 emu-x20)
+			'(poem-20 poem-xm mcs-20 mcs-xm pccl pccl-20
+				  emu-20 emu-x20)
 		      ;; for XEmacs without MULE
 		      '(poem-ltn1 mcs-ltn1)
 		      ))
@@ -25,11 +26,12 @@
 			'poem-e20_3 ; for Emacs 20.3
 		      'poem-e20_2 ; for Emacs 20.1 and 20.2
 		      )
-		    '(poe-19 poem-20 poem-e20 mcs-20 mcs-e20 emu-20 emu-e20))
+		    '(poe-19 poem-20 poem-e20 mcs-20 mcs-e20 pccl pccl-20
+			     emu-20 emu-e20))
 	      )
 	     ((boundp 'MULE)
 	      ;; for MULE 1.* and MULE 2.*
-	      (append '(poem-om mcs-om emu-mule)
+	      (append '(poem-om mcs-om emu-mule pccl pccl-om)
 		      (if running-emacs-18
 			  '(poe-18 env)
 			'(poe-19)))

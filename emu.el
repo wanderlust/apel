@@ -78,18 +78,32 @@
 (require 'mcharset)
 
 (cond ((featurep 'mule)
-       (cond ((featurep 'xemacs)
-	      ;; for XEmacs with MULE
-	      (require 'emu-x20)
+       (cond ((featurep 'xemacs) ; for XEmacs with MULE
+	      ;; old Mule emulating aliases
+
+	      ;;(defalias 'char-leading-char 'char-charset)
+
+	      (defun char-category (character)
+		"Return string of category mnemonics for CHAR in TABLE.
+CHAR can be any multilingual character
+TABLE defaults to the current buffer's category table."
+		(mapconcat (lambda (chr)
+			     (char-to-string (int-char chr)))
+			   (char-category-list character)
+			   ""))
 	      )
-	     ((>= emacs-major-version 20)
-	      ;; for Emacs 20
-	      (require 'emu-e20)
+	     ((>= emacs-major-version 20) ; for Emacs 20
 	      (defalias 'insert-binary-file-contents-literally
 		'insert-file-contents-literally)
+	      
+	      ;; old Mule emulating aliases
+	      (defun char-category (character)
+		"Return string of category mnemonics for CHAR in TABLE.
+CHAR can be any multilingual character
+TABLE defaults to the current buffer's category table."
+		(category-set-mnemonics (char-category-set character)))
 	      )
-	     (t
-	      ;; for MULE 1.* and 2.*
+	     (t ; for MULE 1.* and 2.*
 	      (require 'emu-mule)
 	      ))
        )

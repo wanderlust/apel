@@ -1,11 +1,12 @@
-;;; emu-e20.el --- emu API implementation for Emacs 20.1 and 20.2
+;;; pccl-20.el --- Portable CCL utility for Emacs 20 and XEmacs-mule
 
-;; Copyright (C) 1996,1997,1998 Free Software Foundation, Inc.
+;; Copyright (C) 1998 Free Software Foundation, Inc.
+;; Copyright (C) 1998 Tanaka Akira
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Author: Tanaka Akira  <akr@jaist.ac.jp>
 ;; Keywords: emulation, compatibility, Mule
 
-;; This file is part of emu.
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -22,31 +23,10 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
-;;; Commentary:
-
-;;    This module requires Emacs 20.1 and 20.2.
-
 ;;; Code:
 
 (require 'poem)
 
-
-;;; @ character
-;;;
-
-;;; @@ Mule emulating aliases
-;;;
-;;; You should not use them.
-
-(defun char-category (character)
-  "Return string of category mnemonics for CHAR in TABLE.
-CHAR can be any multilingual character
-TABLE defaults to the current buffer's category table."
-  (category-set-mnemonics (char-category-set character)))
-
-
-;;; @ CCL
-;;;
 (eval-when-compile (require 'ccl))
 
 (eval-when-compile
@@ -78,17 +58,24 @@ user programs should not refer this variable.")
   (defconst ccl-use-symbol-as-program
     (eval-when-compile ccl-use-symbol-as-program))
 
-  (defun make-ccl-coding-system
-    (coding-system mnemonic doc-string decoder encoder)
-    "\
+  (if (featurep 'xemacs)
+      (defun make-ccl-coding-system (name mnemonic doc-string decoder encoder)
+	(make-coding-system
+	 name 'ccl doc-string
+	 (list 'mnemonic (char-to-string mnemonic)
+	       'decode (symbol-value decoder)
+	       'encode (symbol-value encoder))))
+    (defun make-ccl-coding-system
+      (coding-system mnemonic doc-string decoder encoder)
+      "\
 Define a new CODING-SYSTEM (symbol) by CCL programs
 DECODER (symbol) and ENCODER (symbol)."
-    (unless ccl-use-symbol-as-program
-      (setq decoder (symbol-value decoder))
-      (setq encoder (symbol-value encoder)))
-    (make-coding-system coding-system 4 mnemonic doc-string
-			(cons decoder encoder)))
-  )
+      (unless ccl-use-symbol-as-program
+	(setq decoder (symbol-value decoder))
+	(setq encoder (symbol-value encoder)))
+      (make-coding-system coding-system 4 mnemonic doc-string
+			  (cons decoder encoder)))
+    ))
 
 (eval-when-compile
   (define-ccl-program test-ccl-eof-block
@@ -152,6 +139,6 @@ If CCL-PROG is symbol, it is dereferenced.
 ;;; @ end
 ;;;
 
-(provide 'emu-e20)
+(provide 'pccl-20)
 
-;;; emu-e20.el ends here
+;;; pccl-20.el ends here
