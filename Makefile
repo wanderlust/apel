@@ -18,7 +18,6 @@ PACKAGEDIR = NONE
 
 
 elc:
-	-rm emu*.elc
 	$(EMACS) $(FLAGS) -f compile-apel
 
 install:

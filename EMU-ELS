@@ -66,6 +66,7 @@
   (setq emu-modules (append poe-modules poem-modules
 			    mcs-modules pccl-modules
 			    emu-modules))
+  (setq emu-modules (cons 'broken emu-modules))
   )
 
 ;;; EMU-ELS ends here
