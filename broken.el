@@ -1,4 +1,4 @@
-;;; broken.el --- Emacs broken facility infomation registry.
+;;; broken.el --- Emacs broken facility information registry.
 
 ;; Copyright (C) 1998, 1999 Tanaka Akira <akr@jaist.ac.jp>
 
@@ -56,7 +56,7 @@ ASSERTION is evaluated statically.
 
 FACILITY must be symbol.
 
-If ASSERTION is not ommited and evaluated to nil and NO-NOTICE is nil,
+If ASSERTION is not omitted and evaluated to nil and NO-NOTICE is nil,
 it is noticed."
   (` (static-if (, assertion)
 	 (eval-and-compile

@@ -3,7 +3,7 @@
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Keywords: emulation, compatibility, NEmacs, MULE, Emacs/mule, XEmacs
+;; Keywords: emulation, compatibility, Nemacs, MULE, Emacs/mule, XEmacs
 
 ;; This file is part of emu.
 
@@ -98,7 +98,12 @@
 CHAR can be any multilingual character
 TABLE defaults to the current buffer's category table."
 		(mapconcat (lambda (chr)
-			     (char-to-string (int-char chr)))
+			     (if (integerp chr)
+				 (char-to-string (int-char chr))
+			       (char-to-string chr)))
+			   ;; `char-category-list' returns a list of
+			   ;; characters in XEmacs 21.2.25 and later,
+			   ;; otherwise integers.
 			   (char-category-list character)
 			   ""))
 	      )
@@ -118,7 +123,7 @@ TABLE defaults to the current buffer's category table."
 	      ))
        )
       ((boundp 'NEMACS)
-       ;; for NEmacs and NEpoch
+       ;; for Nemacs and Nepoch
 
        ;; old MULE emulation
        (defconst *noconv*    0)
@@ -130,7 +135,7 @@ TABLE defaults to the current buffer's category table."
        
        (defun code-convert-string (str ic oc)
 	 "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
+On successful conversion, returns the result string,
 else returns nil."
 	 (if (not (eq ic oc))
 	     (convert-string-kanji-code str ic oc)
@@ -157,7 +162,7 @@ else returns nil."
        
        (defun code-convert-string (str ic oc)
 	 "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
+On successful conversion, returns the result string,
 else returns nil. [emu-latin1.el; old MULE emulating function]"
 	 str)
 

@@ -50,7 +50,7 @@
 
   (defadvice define-ccl-program
     (before accept-long-ccl-program activate)
-    "When CCL-PROGRAM is too long, internal buffer is extended automaticaly."
+    "When CCL-PROGRAM is too long, internal buffer is extended automatically."
     (let ((try-ccl-compile t)
           (prog (eval (ad-get-arg 1))))
       (ad-set-arg 1 (` '(, prog)))

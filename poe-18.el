@@ -457,15 +457,6 @@ resolution finer than a second."
   "Return the absolute value of ARG."
   (if (< arg 0) (- arg) arg))
 
-(defun floor (arg &optional divisor)
-  "Return the largest integer no grater than ARG.
-With optional DIVISOR, return the largest integer no greater than ARG/DIVISOR."
-  (if (null divisor)
-      (setq divisor 1))
-  (if (< arg 0)
-      (- (/ (- divisor 1 arg) divisor))
-    (/ arg divisor)))
-
 ;;; @ Basic lisp subroutines.
 ;;;
 
@@ -585,7 +576,7 @@ if omitted or nil, the default is `minibuffer-local-map'.
 If fourth arg READ is non-nil, then interpret the result as a lisp object
 and return that object:
 in other words, do `(car (read-from-string INPUT-STRING))'
-Fifth arg HIST is ignored in this implementatin."
+Fifth arg HIST is ignored in this implementation."
 	(si:read-from-minibuffer prompt initial-contents keymap read))))
 
 ;; Add optional argument `frame'.
@@ -594,7 +585,7 @@ Fifth arg HIST is ignored in this implementatin."
       (fset 'si:get-buffer-window (symbol-function 'get-buffer-window))
       (defun get-buffer-window (buffer &optional frame)
 	"Return a window currently displaying BUFFER, or nil if none.
-Optional argunemt FRAME is ignored in this implementation."
+Optional argument FRAME is ignored in this implementation."
 	(si:get-buffer-window buffer))))
 
 (defun walk-windows (proc &optional minibuf all-frames)
@@ -605,7 +596,7 @@ Optional second arg MINIBUF t means count the minibuffer window even
 if not active.  MINIBUF nil or omitted means count the minibuffer iff
 it is active.  MINIBUF neither t nor nil means not to count the
 minibuffer even if it is active.
-Optional third argunemt ALL-FRAMES is ignored in this implementation."
+Optional third argument ALL-FRAMES is ignored in this implementation."
   (if (window-minibuffer-p (selected-window))
       (setq minibuf t))
   (let* ((walk-windows-start (selected-window))
@@ -626,7 +617,7 @@ No argument or nil as argument means do this for the current buffer."
 
 ;;; @@ Frame (Emacs 18 cannot make frame)
 ;;;
-;; The following four are frequently used for manupulating the current frame.
+;; The following four are frequently used for manipulating the current frame.
 ;; frame.el has `screen-width', `screen-height', `set-screen-width' and
 ;; `set-screen-height' for backward compatibility and declare them as obsolete.
 (defun frame-width (&optional frame)

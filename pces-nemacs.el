@@ -101,7 +101,7 @@
 
 (defmacro as-binary-process (&rest body)
   (` (let (selective-display	; Disable ^M to nl translation.
-	   ;; NEmacs
+	   ;; Nemacs
 	   kanji-flag
 	   (default-kanji-process-code 0)
 	   program-kanji-code-alist)

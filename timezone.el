@@ -278,6 +278,15 @@ or an integer of the form +-HHMM, or a time zone name."
  	  (if (< timezone 0) (- minutes) minutes))))
      (t 0)))
 
+(defun timezone-floor (arg &optional divisor)
+  "Return the largest integer no grater than ARG.
+With optional DIVISOR, return the largest integer no greater than ARG/DIVISOR."
+  (if (null divisor)
+      (setq divisor 1))
+  (if (< arg 0)
+      (- (/ (- divisor 1 arg) divisor))
+    (/ arg divisor)))
+
 (defun timezone-time-from-absolute (date seconds)
   "Compute the UTC time equivalent to DATE at time SECONDS after midnight.
 Return a list suitable as an argument to `current-time-zone',
@@ -296,9 +305,9 @@ Gregorian date Sunday, December 31, 1 BC."
 	 (seconds-per-day-3 128)
 	 ;; (seconds (+ seconds (* days seconds-per-day)))
 	 ;; (current-time-arithmetic-base (float 65536))
-         ;; (hi (floor (/ seconds current-time-arithmetic-base)))
+         ;; (hi (timezone-floor (/ seconds current-time-arithmetic-base)))
          ;; (hibase (* hi current-time-arithmetic-base))
-         ;; (lo (floor (- seconds hibase)))
+         ;; (lo (timezone-floor (- seconds hibase)))
 	 (seconds-1 (/ seconds 65536))
 	 (seconds-2 (% (/ seconds 256) 256))
 	 (seconds-3 (% seconds 256))
@@ -409,7 +418,7 @@ If TIMEZONE is nil, use the local time zone."
 	 (diff   (- (timezone-zone-to-minute timezone)
 		    (timezone-zone-to-minute local)))
 	 (minute (+ minute diff))
-	 (hour-fix (floor minute 60)))
+	 (hour-fix (timezone-floor minute 60)))
     (setq hour (+ hour hour-fix))
     (setq minute (- minute (* 60 hour-fix)))
     ;; HOUR may be larger than 24 or smaller than 0.

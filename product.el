@@ -96,7 +96,7 @@ numbers.  Optional 4th argument CODE-NAME is a string."
   "Set code-name of PRODUCT to CODE-NAME."
   (aset product 3 code-name))
 (defun product-set-checkers (product checkers)
-  "Set ckecker functions of PRODUCT to CHECKERS."
+  "Set checker functions of PRODUCT to CHECKERS."
   (aset product 4 checkers))
 (defun product-set-family-products (product products)
   "Set family products of PRODUCT to PRODUCTS."
@@ -135,7 +135,7 @@ PRODUCT-NAME is a string of the product's name."
   "Add checker function(s) to a product.
 PRODUCT is a product structure which returned by `product-define'.
 The rest arguments CHECKERS should be functions.  These functions
-are regist to the product's checkers list, and will be called by
+are registered to the product's checkers list, and will be called by
  `product-run-checkers'.
 If a checker is `ignore' will be ignored all checkers after this."
   (setq product (product-find product))
@@ -205,7 +205,7 @@ FEATURE is a symbol of the feature."
 
 (defun product-find (product)
   "Find product information.
-If PROCUCT is a product structure, then return PRODUCT itself.
+If PRODUCT is a product structure, then return PRODUCT itself.
 If PRODUCT is a string, then find product by name and return a
 product structure.  If PRODUCT is symbol of feature, then return
 the feature's product."

@@ -12,6 +12,34 @@
 	(install-file): Use `install-overwritten-file-modes'.
 	(install-elisp-module): Use `install-file'.
 
+2001-02-23  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* emu.el (char-category for XEmacs): Don't use `int-char' when the
+	function `char-category-list' returns a list of characters.
+
+2001-02-01  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* README.ja: Updated as to MAKEIT.BAT and MAKE1.BAT.
+	* make1.bat: New file.
+	* makeit.bat: Ditto.
+	* make.bat: Removed.
+
+2001-01-18  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* inv-19.el (next-visible-point): Return the value of `point-max'
+	when the position of next `invisible' property change is not found.
+
+2001-01-15  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe-18.el (floor): Removed.
+
+	* timezone.el (timezone-floor): New function.
+	(timezone-fix-time-2): Use `timezone-floor' instead of `floor'.
+
+2000-12-31  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* README.ja: Typo fixed.
+
 
 2000-12-30  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 

@@ -63,7 +63,7 @@
 
 ;; (setq PREFIX "/usr/local")
 
-;; Mule based on Emacs 19.28 and eariler.
+;; Mule based on Emacs 19.28 and earlier.
 ;; (setq LISPDIR "/usr/local/share/mule/site-lisp")
 ;; Mule based on Emacs 19.29 and later.
 ;; (setq LISPDIR "/usr/local/share/emacs/site-lisp")

@@ -38,7 +38,7 @@ directories and it does not exist in `load-path'.
 
 You can use following PATH styles:
 	load-path relative: \"PATH/\"
-			(it is searched from `defaul-load-path')
+			(it is searched from `default-load-path')
 	home directory relative: \"~/PATH/\" \"~USER/PATH/\"
 	absolute path: \"/HOO/BAR/BAZ/\"
 
