@@ -512,10 +512,34 @@ With optional non-nil ALL, force redisplay of all mode-lines."
 ;;;
 
 ;; 18.55 does not have these variables.
-(defvar buffer-undo-list nil)
-(defvar-maybe auto-fill-function nil)
-(defvar-maybe unread-command-event nil)
-(defvar-maybe unread-command-events nil)
+(defvar-maybe buffer-undo-list nil
+  "List of undo entries in current buffer.
+poe-18.el provides this as dummy for a compatibility.")
+
+(defvar-maybe auto-fill-function nil
+  "Function called (if non-nil) to perform auto-fill.
+poe-18.el provides this as dummy for a compatibility.")
+
+(defvar-maybe unread-command-event nil
+  "poe-18.el provides this as dummy for a compatibility.")
+(defvar-maybe unread-command-events nil
+  "List of events to be read as the command input.
+poe-18.el provides this as dummy for a compatibility.")
+
+(defvar-maybe minibuffer-setup-hook nil
+  "Normal hook run just after entry to minibuffer.")
+(defvar-maybe minibuffer-exit-hook nil
+  "Normal hook run just after exit from minibuffer.")
+
+(defvar-maybe minor-mode-map-alist nil
+  "Alist of keymaps to use for minor modes.
+poe-18.el provides this as dummy for a compatibility.")
+(defvar-maybe minor-mode-alist nil
+  "Alist saying how to show minor modes in the mode line.
+poe-18.el provides this as dummy for a compatibility.")
+(defvar-maybe minor-mode-overriding-map-alist nil
+  "Alist of keymaps to use for minor modes, in current major mode.
+poe-18.el provides this as dummy for a compatibility.")
 
 (defalias 'insert-and-inherit 'insert)
 (defalias 'insert-before-markers-and-inherit 'insert-before-markers)
@@ -569,7 +593,17 @@ If fourth arg READ is non-nil, then interpret the result as a lisp object
   and return that object:
   in other words, do `(car (read-from-string INPUT-STRING))'
 Fifth arg HIST is ignored in this implementatin."
-	(si:read-from-minibuffer prompt initial-contents keymap read))))
+	(with-current-buffer
+	    (get-buffer-create
+	     (format " *Minibuf-%d*" (minibuffer-depth)))
+	  (run-hooks 'minibuffer-setup-hook))
+	(si:read-from-minibuffer prompt initial-contents keymap read)
+	(with-current-buffer
+	    (get-buffer-create
+	     (format " *Minibuf-%d*" (minibuffer-depth)))
+	  (condition-case nil
+	      (run-hooks 'minibuffer-exit-hook)
+	    (error))))))
 
 ;; Add optional argument `frame'.
 (or (fboundp 'si:get-buffer-window)
@@ -605,6 +639,34 @@ Optional third argunemt ALL-FRAMES is ignored in this implementation."
   "Make BUFFER stop keeping undo information.
 No argument or nil as argument means do this for the current buffer."
   (buffer-flush-undo (or buffer (current-buffer))))
+
+
+;;; @@ Frame (Emacs 18 cannot make frame)
+;;;
+;; The following four are frequently used for manupulating the current frame.
+;; frame.el has `screen-width', `screen-height', `set-screen-width' and
+;; `set-screen-heigth' for backward compatibility and declare them as obsolete.
+(defun frame-width (&optional frame)
+  "Return number of columns available for display on FRAME.
+If FRAME is omitted, describe the currently selected frame."
+  (screen-width))
+
+(defun frame-height (&optional frame)
+  "Return number of lines available for display on FRAME.
+If FRAME is omitted, describe the currently selected frame."
+  (screen-height))
+
+(defun set-frame-width (frame cols &optional pretend)
+  "Specify that the frame FRAME has COLS columns.
+Optional third arg non-nil means that redisplay should use COLS columns
+but that the idea of the actual width of the frame should not be changed."
+  (set-screen-width cols pretend))
+
+(defun set-frame-heigth (frame cols &optional pretend)
+  "Specify that the frame FRAME has LINES lines.
+Optional third arg non-nil means that redisplay should use LINES lines
+but that the idea of the actual height of the frame should not be changed."
+  (set-screen-heigth cols pretend))
 
 ;;; @@ Environment variables.
 ;;;
