@@ -125,7 +125,23 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
        )
       (t
        ;; for Emacs 19 and XEmacs without MULE
-       (require 'emu-latin1)
+       
+       ;; old MULE emulation
+       (defconst *internal* nil)
+       (defconst *ctext* nil)
+       (defconst *noconv* nil)
+       
+       (defun code-convert-string (str ic oc)
+	 "Convert code in STRING from SOURCE code to TARGET code,
+On successful converion, returns the result string,
+else returns nil. [emu-latin1.el; old MULE emulating function]"
+	 str)
+
+       (defun code-convert-region (beg end ic oc)
+	 "Convert code of the text between BEGIN and END from SOURCE
+to TARGET. On successful conversion returns t,
+else returns nil. [emu-latin1.el; old MULE emulating function]"
+	 t)
        ))
 
 

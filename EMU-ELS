@@ -15,7 +15,7 @@
 			;; for XEmacs with MULE
 			'(poem-20 poem-xm mcs-20 mcs-xm emu-20 emu-x20)
 		      ;; for XEmacs without MULE
-		      '(poem-ltn1 mcs-ltn1 emu-latin1)
+		      '(poem-ltn1 mcs-ltn1)
 		      ))
 	      )
 	     (running-mule-merged-emacs
@@ -40,7 +40,7 @@
 	      )
 	     (t
 	      ;; for Emacs 19.34
-	      '(poe-19 poem-ltn1 mcs-ltn1 emu-latin1)
+	      '(poe-19 poem-ltn1 mcs-ltn1)
 	      ))
        emu-modules))
 
