@@ -87,6 +87,8 @@
       (running-mule-merged-emacs
        ;; for Emacs 20.1 and 20.2
        (require 'emu-e20)
+       (defalias 'insert-binary-file-contents-literally
+	 'insert-file-contents-literally)
        )
       ((boundp 'MULE)
        ;; for MULE 1.* and 2.*
@@ -131,63 +133,6 @@ find-file-hooks, etc.
   (as-binary-input-file
    ;; Returns list absolute file name and length of data inserted.
    (insert-file-contents-literally filename visit beg end replace)))
-
-
-;;; @ MIME charset
-;;;
-
-(defun charsets-to-mime-charset (charsets)
-  "Return MIME charset from list of charset CHARSETS.
-This function refers variable `charsets-mime-charset-alist'
-and `default-mime-charset'."
-  (if charsets
-      (or (catch 'tag
-	    (let ((rest charsets-mime-charset-alist)
-		  cell)
-	      (while (setq cell (car rest))
-		(if (catch 'not-subset
-		      (let ((set1 charsets)
-			    (set2 (car cell))
-			    obj)
-			(while set1
-			  (setq obj (car set1))
-			  (or (memq obj set2)
-			      (throw 'not-subset nil))
-			  (setq set1 (cdr set1)))
-			t))
-		    (throw 'tag (cdr cell)))
-		(setq rest (cdr rest)))))
-	  default-mime-charset)))
-
-
-;;; @ Emacs 20.3 emulation
-;;;
-
-(defmacro-maybe string-as-unibyte (string)
-  "Return a unibyte string with the same individual bytes as STRING.
-If STRING is unibyte, the result is STRING itself.
-\[Emacs 20.3 emulating macro]"
-  string)
-
-(defmacro-maybe string-as-multibyte (string)
-  "Return a multibyte string with the same individual bytes as STRING.
-If STRING is multibyte, the result is STRING itself.
-\[Emacs 20.3 emulating macro]"
-  string)
-
-
-;;; @ for XEmacs 20
-;;;
-
-(or (fboundp 'char-int)
-    (fset 'char-int (symbol-function 'identity))
-    )
-(or (fboundp 'int-char)
-    (fset 'int-char (symbol-function 'identity))
-    )
-(or (fboundp 'char-or-char-int-p)
-    (fset 'char-or-char-int-p (symbol-function 'integerp))
-    )
 
 
 ;;; @ for text/richtext and text/enriched
