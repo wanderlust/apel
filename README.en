@@ -36,6 +36,8 @@ What's APEL?
       pccl-om.el --- for MULE 1.*, 2.*
       pccl-20.el --- for Emacs 20/XEmacs-MULE
 
+    broken.el --- provide information of broken facilities of Emacs.
+
     emu.el --- (emu bundled in tm-7.106 compatibility module; it
 	        required poe, poem and mcharset)
       emu-mule:	for MULE 1.*, 2.*

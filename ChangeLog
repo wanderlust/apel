@@ -1,3 +1,7 @@
+1998-09-22  Tanaka Akira      <akr@jaist.ac.jp>
+
+	* README.en (What's APEL?): Add notice for broken.el.
+
 1998-09-22  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 9.0 was released.
