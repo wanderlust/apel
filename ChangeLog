@@ -1,3 +1,7 @@
+2001-04-29  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe.el (remassoc, remassq, remrassoc, remrassq): Fixed.
+
 2001-03-26  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* EMU-ELS: Add checking whether the native timezone.el has an old
