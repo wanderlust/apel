@@ -54,34 +54,24 @@
     (princ (format "PACKAGEDIR=%s\n" PACKAGEDIR))
     ))
 
-(defun compile-apel-package ()
-  (config-apel-package)
-  (load "EMU-ELS")
-  (load-file "APEL-ELS")
-  
-  (setq autoload-package-name "apel")
-  (add-to-list 'command-line-args-left ".")
-  (batch-update-directory)
-
-  (add-to-list 'command-line-args-left ".")
-  (Custom-make-dependencies)
-
-  (compile-elisp-modules emu-modules	".")
-  (compile-elisp-modules (append apel-modules
-				 '(auto-autoloads custom-load))
-			 ".")
-  )
-
 (defun install-apel-package ()
   (config-apel-package)
   (load "EMU-ELS")
-  (install-elisp-modules (append emu-modules
-				 apel-modules
-				 '(mime auto-autoloads custom-load))
-			 "./"
-			 (expand-file-name APEL_PREFIX
-					   (expand-file-name "lisp"
-							     PACKAGEDIR)))
-  )
+  (let ((dir (expand-file-name APEL_PREFIX
+			       (expand-file-name "lisp"
+						 PACKAGEDIR))))
+    (install-elisp-modules emu-modules	"." dir)
+    (install-elisp-modules apel-modules	"." dir)
+    
+    (setq autoload-package-name "apel")
+    (add-to-list 'command-line-args-left dir)
+    (batch-update-directory)
+
+    (add-to-list 'command-line-args-left dir)
+    (Custom-make-dependencies)
+
+    (byte-compile-file (expand-file-name "auto-autoloads.el" dir))
+    (byte-compile-file (expand-file-name "custom-load.el" dir))
+    ))
 
 ;;; APEL-MK ends here
