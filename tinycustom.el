@@ -4,8 +4,6 @@
 
 ;; Author: Mikio Nakajima <minakaji@osaka.email.ne.jp>
 ;; Maintainer: Mikio Nakajima <minakaji@osaka.email.ne.jp>
-;; Version: $Id$
-;; Last Modified: $Date$
 ;; Keywords: emulating, custom
 
 ;; This file is part of APEL (A Portable Emacs Library).
