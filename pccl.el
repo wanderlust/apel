@@ -3,7 +3,6 @@
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;;         Tanaka Akira <akr@jaist.ac.jp>
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -24,14 +23,6 @@
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Code:
-
-(defun apel-broken-facility (facility)
-  "Declare that FACILITY emulation is broken."
-  (put facility 'poe-broken t))
-
-(defun apel-broken-p (facility)
-  "t if FACILITY emulation is broken."
-  (get facility 'poe-broken))
 
 (if (featurep 'mule)
     (if (>= emacs-major-version 20)
