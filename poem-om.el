@@ -1,6 +1,6 @@
 ;;; poem-om.el --- poem implementation for Mule 1.* and Mule 2.*
 
-;; Copyright (C) 1995-1999 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;;         Katsumi Yamaoka  <yamaoka@jpl.org>
@@ -51,14 +51,20 @@
 
        (define-ccl-program poem-ccl-decode-raw-text
 	 '(1
-	   (loop
-	     (read-if (r0 == ?\x0d)
-		      (read-if (r1 == ?\x0a)
-			       (write r1)
-			       ((write r0)
-				(write r1)))
-		      (write r0))
-	     (repeat)))
+	   ((read r1 r0)
+	    (loop
+	      (r2 = (r1 == ?\x0d))
+	      (r2 &= (r0 == ?\x0a))
+	      (if r2
+		  ((write ?\x0a)
+		   (read r1 r0)
+		   (repeat))
+		((write r1)
+		 (r1 = (r0 + 0))
+		 (read r0)
+		 (repeat)
+		 ))))
+	   (write r1))
 	 "Convert line-break code from CRLF to LF.")
 
        (define-ccl-program poem-ccl-encode-raw-text
@@ -70,9 +76,10 @@
        (define-ccl-program poem-ccl-encode-raw-text-CRLF
 	 '(2
 	   ((loop
-	      (read-if (r0 == ?\x0a)
-		       (write "\x0d\x0a")
-		       (write r0))
+	      (read r0)
+	      (if (r0 == ?\x0a)
+		  (write "\x0d\x0a")
+		(write r0))
 	      (repeat))))
 	 "Convert line-break code from LF to CRLF.")
 

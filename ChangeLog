@@ -1,10 +1,3 @@
-1999-02-04  Katsumi Yamaoka   <yamaoka@jpl.org>
-
-	* poem-om.el (poem-ccl-decode-raw-text): Rewrite for fixing a bug
-	that the last datum will be missed if the input data is not ended
-	with `CRLF'.
-	(poem-ccl-encode-raw-text-CRLF): Use `read-if'.
-
 1998-12-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* install.el (install-detect-elisp-directory): Avoid problem if
@@ -1267,7 +1260,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
