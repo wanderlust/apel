@@ -1,5 +1,10 @@
 1999-11-09  Katsumi Yamaoka   <yamaoka@jpl.org>
 
+	* pcustom.el: Warn if the new custom library is not found at the
+	compile time.
+
+	* APEL-CFG: Don't add the path of "custom" to `load-path'.
+
 	* poe-18.el (file-executable-p): Returns nil if the file does not
 	exist.
 

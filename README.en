@@ -35,6 +35,7 @@ What's APEL?
       mcs-20.el     --- shared module between Emacs 20 and XEmacs-MULE
       mcs-e20.el    --- for Emacs 20
       mcs-xm.el     --- for XEmacs-MULE
+      mcs-xmu.el    --- for XEmacs-MULE to unify ISO646 characters
 
     static.el --- utility for static evaluation
 
@@ -163,6 +164,13 @@ load-path (for Emacs or MULE)
 
   --------------------------------------------------------------------
   (normal-top-level-add-to-load-path '("apel"))
+  --------------------------------------------------------------------
+
+  If you have installed the new CUSTOM library, e.g. custom-1.9962, to
+  specify the path as below before building this package is advised.
+
+  --------------------------------------------------------------------
+  (normal-top-level-add-to-load-path '("custom" "apel"))
   --------------------------------------------------------------------
 
   If you are using Emacs 20.3 or later or XEmacs, there are no need to
@@ -313,7 +321,7 @@ Anonymous FTP
 
   Latest release of APEL can be obtained from:
 
-    ftp://ftp.etl.go.jp/pub/mule/apel/
+    ftp://ftp.m17n.org/pub/mule/apel/
 
 
 CVS

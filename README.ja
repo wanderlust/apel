@@ -35,6 +35,7 @@ APEL とは？
       mcs-20.el     --- Emacs 20 と XEmacs-MULE 用の共有モジュール
       mcs-e20.el    --- Emacs 20 用
       mcs-xm.el     --- XEmacs-MULE 用
+      mcs-xmu.el    --- XEmacs-MULE 用 (ISO646 文字の単一化)
 
     static.el --- 静的評価のためのユーティリティー
 
@@ -158,8 +159,8 @@ APEL とは？
   注意してください。
 
 
-load-path（Emacs と MULE 場合）
-===============================
+load-path（Emacs と MULE の場合）
+================================
 
   もし Emacs もしくは Mule をお使いなら、APEL を install した場所を
   load-path に追加してください。もし初期設定でインストールしたのなら、
@@ -169,6 +170,16 @@ load-path（Emacs と MULE 場合）
 
   --------------------------------------------------------------------
   (normal-top-level-add-to-load-path '("apel"))
+  --------------------------------------------------------------------
+
+  もし新しい CUSTOM, 例えば v1.9962 をお使いなら、make する前にそれが
+  インストールされている場所を同様の方法で指定しておくことをお勧めしま
+  す。
+
+  例:
+
+  --------------------------------------------------------------------
+  (normal-top-level-add-to-load-path '("custom" "apel"))
   --------------------------------------------------------------------
 
   もし Emacs 20.3 以降もしくは XEmacs をお使いなら、load-path を設定す
@@ -325,7 +336,7 @@ Anonymous FTP
 
   最新の APEL のリリースは以下の場所から取得できます:
 
-    ftp://ftp.etl.go.jp/pub/mule/apel/
+    ftp://ftp.m17n.org/pub/mule/apel/
 
 
 CVS
