@@ -163,13 +163,12 @@
   (or
    (catch 'tag
      (let ((rest default-load-path)
+	   (pat (concat "^"
+			(expand-file-name (concat ".*/" elisp-prefix) prefix)
+			"/?$"))
 	   dir)
        (while (setq dir (car rest))
-	 (if (string-match
-	      (` (, (concat "^"
-			    (expand-file-name (concat ".*/" elisp-prefix) prefix)
-			    "/?$")))
-	      dir)
+	 (if (string-match pat dir)
 	     (if (or allow-version-specific
 		     (not (string-match (format "%d\\.%d"
 						emacs-major-version
