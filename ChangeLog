@@ -1,3 +1,8 @@
+2002-07-13  Daiki Ueno  <daiki@xemacs.org>
+
+	* mcs-xm.el (encode-mime-charset-string): Use `defun' instead of
+	`defsubst'
+
 2002-07-10  Adrian Aichner  <adrian@xemacs.org>
 
 	* emu.el: Conditionalise defalias 'tl:overlay-buffer on

@@ -81,7 +81,7 @@
 		       (assq t mime-charset-decoder-alist)))))
     (funcall func start end charset lbt)))
 
-(defsubst encode-mime-charset-string (string charset &optional lbt)
+(defun encode-mime-charset-string (string charset &optional lbt)
   "Encode the STRING as MIME CHARSET."
   (let ((cs (mime-charset-to-coding-system charset lbt)))
     (if cs
