@@ -1,3 +1,7 @@
+2000-05-25  Tanaka Akira      <akr@m17n.org>
+
+	* README.en, README.ja: Update for CVS via SSH.
+
 2000-05-24  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* pces-raw.el (encode-coding-string, decode-coding-string): Return
