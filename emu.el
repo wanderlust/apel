@@ -131,7 +131,7 @@ TABLE defaults to the current buffer's category table."
        (defun code-convert-string (str ic oc)
 	 "Convert code in STRING from SOURCE code to TARGET code,
 On successful converion, returns the result string,
-else returns nil. [emu-nemacs.el; Mule emulating function]"
+else returns nil."
 	 (if (not (eq ic oc))
 	     (convert-string-kanji-code str ic oc)
 	   str))
@@ -139,7 +139,7 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
        (defun code-convert-region (beg end ic oc)
 	 "Convert code of the text between BEGIN and END from SOURCE
 to TARGET. On successful conversion returns t,
-else returns nil. [emu-nemacs.el; Mule emulating function]"
+else returns nil."
 	 (if (/= ic oc)
 	     (save-excursion
 	       (save-restriction
@@ -193,8 +193,7 @@ It is obsolete, so don't use it."))
 A buffer may be modified in several ways after reading into the buffer due
 to advanced Emacs features, such as file-name-handlers, format decoding,
 find-file-hooks, etc.
-  This function ensures that none of these modifications will take place.
-\[emu-nemacs.el]"
+  This function ensures that none of these modifications will take place."
   (as-binary-input-file
    ;; Returns list absolute file name and length of data inserted.
    (insert-file-contents-literally filename visit beg end replace)))
