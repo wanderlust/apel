@@ -235,14 +235,14 @@ The extension, in a file name, is the part that follows the last `.'."
 	    (substring file 0 (match-beginning 0)))
 	filename))))
 
-;; They are not Emacs features
-
+;; It is not Emacs feature.
 (defmacro-maybe add-local-hook (hook function &optional append)
   (if (fboundp 'make-local-hook)
       (list 'add-hook hook function append t)
     (list 'add-hook hook function append)
     ))
 
+;; It is not Emacs feature.
 (defmacro-maybe remove-local-hook (hook function)
   (if (fboundp 'make-local-hook)
       (list 'remove-hook hook function t)
