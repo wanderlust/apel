@@ -101,6 +101,22 @@ Installation
 	/usr/local/share/emacs/20.2/site-lisp/	--- emu
 	/usr/local/share/emacs/site-lisp/apel/	--- APEL
 
+  You can specify the lisp directory for Emacs Lisp programs,
+  for example:
+
+	% make install LISPDIR=~/elisp
+
+  You can also specify the version specific lisp directory where the
+  emu modules will be installed in, for example:
+
+	% make install VERSION_SPECIFIC_LISPDIR=~/elisp
+
+  If you would like to know what files belong to the emu modules or
+  the apel modules, or where they will be installed in, for example,
+  please type the following command.
+
+	% make what-where LISPDIR=~/elisp VERSION_SPECIFIC_LISPDIR=~/elisp
+
   You can specify other optional settings by editing the file
   APEL-CFG.  Please read comments in it.
 
