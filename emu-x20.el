@@ -1,27 +1,26 @@
 ;;; emu-x20.el --- emu API implementation for XEmacs with mule
 
-;; Copyright (C) 1994,1995,1996,1997 MORIOKA Tomohiko
+;; Copyright (C) 1994,1995,1996,1997,1998 MORIOKA Tomohiko
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: emulation, compatibility, Mule, XEmacs
 
-;; This file is part of XEmacs.
+;; This file is part of emu.
 
-;; XEmacs is free software; you can redistribute it and/or modify it
-;; under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 2, or (at your option)
-;; any later version.
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License as
+;; published by the Free Software Foundation; either version 2, or (at
+;; your option) any later version.
 
-;; XEmacs is distributed in the hope that it will be useful, but
+;; This program is distributed in the hope that it will be useful, but
 ;; WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 ;; General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with XEmacs; see the file COPYING.  If not, write to the Free
-;; Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-;; 02111-1307, USA.
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; Boston, MA 02111-1307, USA.
 
 ;;; Commentary:
 
@@ -36,6 +35,37 @@
 (and (coding-system-property 'iso-2022-jp 'input-charset-conversion)
      (copy-coding-system 'iso-2022-7bit 'iso-2022-jp))
 
+
+;;; @ binary access
+;;;
+
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+
+Namely this function ensures that only format decoding and character
+code conversion will not take place."
+  (let ((coding-system-for-read 'binary)
+	format-alist)
+    (insert-file-contents filename visit beg end replace)
+    ))
+
+(define-obsolete-function-alias 'insert-binary-file-contents
+  'insert-file-contents-as-binary)
+
+(defun insert-binary-file-contents-literally (filename
+					      &optional visit beg end replace)
+  "Like `insert-file-contents-literally', q.v., but don't code conversion.
+A buffer may be modified in several ways after reading into the buffer due
+to advanced Emacs features, such as file-name-handlers, format decoding,
+find-file-hooks, etc.
+  This function ensures that none of these modifications will take place."
+  (let ((coding-system-for-read 'binary))
+    (insert-file-contents-literally filename visit beg end replace)
+    ))
+
     
 ;;; @ MIME charset
 ;;;
@@ -47,12 +77,72 @@
 	(encode-coding-region start end cs)
       )))
 
-(defsubst decode-mime-charset-region (start end charset)
-  "Decode the text between START and END as MIME CHARSET."
+(defcustom mime-charset-decoder-alist
+  '((iso-2022-jp . decode-mime-charset-region-with-iso646-unification)
+    (iso-2022-jp-2 . decode-mime-charset-region-with-iso646-unification)
+    (x-ctext . decode-mime-charset-region-with-iso646-unification)
+    (t . decode-mime-charset-region-default))
+  "Alist MIME-charset vs. decoder function."
+  :group 'i18n
+  :type '(repeat (cons mime-charset function)))
+
+(defsubst decode-mime-charset-region-default (start end charset)
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(decode-coding-region start end cs)
       )))
+
+(defcustom mime-iso646-character-unification-alist
+  `,(let (dest
+	  (i 33))
+      (while (< i 92)
+	(setq dest
+	      (cons (cons (char-to-string (make-char 'latin-jisx0201 i))
+			  (format "%c" i))
+		    dest))
+	(setq i (1+ i)))
+      (setq i 93)
+      (while (< i 126)
+	(setq dest
+	      (cons (cons (char-to-string (make-char 'latin-jisx0201 i))
+			  (format "%c" i))
+		    dest))
+	(setq i (1+ i)))
+      (nreverse dest))
+  "Alist unified string vs. canonical string."
+  :group 'i18n
+  :type '(repeat (cons string string)))
+
+(defcustom mime-unified-character-face nil
+  "*Face of unified character."
+  :group 'i18n
+  :type 'face)
+
+(defun decode-mime-charset-region-with-iso646-unification (start end charset)
+  (decode-mime-charset-region-default start end charset)
+  (save-excursion
+    (let ((rest mime-iso646-character-unification-alist))
+      (while rest
+	(let ((pair (car rest)))
+	  (goto-char (point-min))
+	  (while (search-forward (car pair) nil t)
+	    (let ((str (cdr pair)))
+	      (put-text-property 0 (length str)
+				 'face mime-unified-character-face str)
+	      (replace-match str 'fixed-case 'literal)
+	      )
+	    ))
+	(setq rest (cdr rest))))))
+
+(defsubst decode-mime-charset-region (start end charset)
+  "Decode the text between START and END as MIME CHARSET."
+  (if (stringp charset)
+      (setq charset (intern (downcase charset)))
+    )
+  (let ((func (cdr (or (assq charset mime-charset-decoder-alist)
+		       (assq t mime-charset-decoder-alist)))))
+    (funcall func start end charset)
+    ))
 
 (defsubst encode-mime-charset-string (string charset)
   "Encode the STRING as MIME CHARSET."
