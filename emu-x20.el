@@ -34,6 +34,9 @@
 (and (coding-system-property 'iso-2022-jp 'input-charset-conversion)
      (copy-coding-system 'iso-2022-7bit 'iso-2022-jp))
 
+(or (find-coding-system 'raw-text-dos)
+    (copy-coding-system 'no-conversion-dos 'raw-text-dos))
+
 
 ;;; @ without code-conversion
 ;;;
