@@ -26,7 +26,10 @@ install:
 		$(VERSION_SPECIFIC_LISPDIR)	# $(MAKE)
 
 
-install-package:
+package:
+	$(XEMACS) $(FLAGS) -f compile-apel-package $(PACKAGEDIR)
+
+install-package:	package
 	$(XEMACS) $(FLAGS) -f install-apel-package $(PACKAGEDIR) \
 		# $(MAKE)
 
