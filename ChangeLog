@@ -1,3 +1,15 @@
+1999-12-22  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* APEL-ELS, EMU-ELS: product.el, apel-ver.el, time-stamp.el,
+	and timezone.el are version-dependent.
+
+	* product.el (emacs-major-version, emacs-minor-version): Moved
+	from poe.el.
+
+	* poe.el (emacs-major-version, emacs-minor-version): Removed.
+
+	* pym.el: Add product information.
+
 1999-12-22  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* poe.el (string-to-int): Commented out an alias for

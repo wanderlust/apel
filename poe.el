@@ -32,28 +32,12 @@
 
 (require 'pym)
 
+
 ;;; @ Version information.
 ;;;
 
-;; v18 does not have many features we expect,
-;; notably `eval-when-compile' and `eval-and-compile'.
-(static-when (string= (substring emacs-version 0 2) "18")
+(static-when (= emacs-major-version 18)
   (require 'poe-18))
-
-;; Now we can use them!
-(eval-and-compile
-  ;; We must define these two constants at compile-time as well as
-  ;; load-time since they are used for compile-time version checking.
-  (defconst-maybe emacs-major-version
-    (progn (string-match "^[0-9]+" emacs-version)
-	   (string-to-int (substring emacs-version
-				     (match-beginning 0)(match-end 0))))
-    "Major version number of this version of Emacs.")
-  (defconst-maybe emacs-minor-version
-    (progn (string-match "^[0-9]+\\.\\([0-9]+\\)" emacs-version)
-	   (string-to-int (substring emacs-version
-				     (match-beginning 1)(match-end 1))))
-    "Minor version number of this version of Emacs."))
 
 ;; Some ancient version of XEmacs did not provide 'xemacs.
 (static-when (string-match "XEmacs" emacs-version)
@@ -85,7 +69,7 @@
     (progn
       (require 'nofeature "nofile" 'noerror)
       (if (get 'require 'defun-maybe)
-	  (error "")))			; already redefined.
+	  (error "`require' is already redefined")))
   (error
    ;; load-time check.
    (or (fboundp 'si:require)
@@ -204,8 +188,8 @@ See `read-from-minibuffer' for details of HISTORY argument."
     ;; compile-time check.
     (if (= (string-to-number "1e1" 16) 481)
 	(if (get 'string-to-number 'defun-maybe)
-	    (error ""))			; already redefined.
-      (error ""))			; Emacs 20.3 and ealier.
+	    (error "`string-to-number' is already redefined"))
+      (error "`string-to-number' is broken"))
   (error
    ;; load-time check.
    (or (fboundp 'si:string-to-number)
@@ -286,7 +270,7 @@ If the base used is not 10, floating point is not recognized."
     (progn
       (char-before)
       (if (get 'char-before 'defun-maybe)
-	  (error "")))			; already defined.
+	  (error "`char-before' is already defined")))
   (wrong-number-of-arguments            ; Mule.
    ;; load-time check.
    (or (fboundp 'si:char-before)
@@ -351,7 +335,7 @@ If POS is out of range, the value is nil."
     (progn
       (char-after)
       (if (get 'char-after 'defun-maybe)
-	  (error "")))			; already defined.
+	  (error "`char-after' is already redefined")))
   (wrong-number-of-arguments		; v18, v19
    ;; load-time check.
    (or (fboundp 'si:char-after)

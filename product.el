@@ -209,21 +209,21 @@ all checkers."
 	 (product-version (product-version product))
 	 (product-code-name (product-code-name product))
 	 (product-version-string (product-version-string product)))
-    (`  (progn
-	  (, product-def)
-	  (put (, feature) 'product
-	       (let ((product (product-find-by-name (, product-name))))
-		 (product-run-checkers product '(, product-version))
-		 (and (, product-family)
-		      (product-add-to-family (, product-family)
-					     (, product-name)))
-		 (product-add-feature product (, feature))
-		 (if (equal '(, product-version) (product-version product))
-		     product
-		   (vector (, product-name) (, product-family)
-			   '(, product-version) (, product-code-name)
-			   nil nil nil (, product-version-string)))))
-	  (, feature-def)))))
+    (` (progn
+	 (, product-def)
+	 (put (, feature) 'product
+	      (let ((product (product-find-by-name (, product-name))))
+		(product-run-checkers product '(, product-version))
+		(and (, product-family)
+		     (product-add-to-family (, product-family)
+					    (, product-name)))
+		(product-add-feature product (, feature))
+		(if (equal '(, product-version) (product-version product))
+		    product
+		  (vector (, product-name) (, product-family)
+			  '(, product-version) (, product-code-name)
+			  nil nil nil (, product-version-string)))))
+	 (, feature-def)))))
 
 (defun product-string-1 (product &optional verbose)
   "Return information of PRODUCT as a string of \"NAME/VERSION\".
@@ -327,14 +327,30 @@ Return list of version, code-name, and version-string."
 		   temp (substring temp (match-end 0))))))
     (list (nreverse version) code-name version-string)))
 
+
 ;;; @ End.
 ;;;
 
 (provide 'product)			; beware of circular dependency.
 (require 'apel-ver)			; these two files depend on each other.
 (product-provide 'product 'apel-ver)
+
 
 ;;; @ Define emacs versions.
+;;;
+
+(require 'pym)
+
+(defconst-maybe emacs-major-version
+  (progn (string-match "^[0-9]+" emacs-version)
+	 (string-to-int (substring emacs-version
+				   (match-beginning 0)(match-end 0))))
+  "Major version number of this version of Emacs.")
+(defconst-maybe emacs-minor-version
+  (progn (string-match "^[0-9]+\\.\\([0-9]+\\)" emacs-version)
+	 (string-to-int (substring emacs-version
+				   (match-beginning 1)(match-end 1))))
+  "Minor version number of this version of Emacs.")
 
 ;;(or (product-find "emacs")
 ;;    (progn
