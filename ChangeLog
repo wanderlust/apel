@@ -1,3 +1,9 @@
+1999-02-26  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL-MK (install-just-print-p): New function.
+	(install-apel): Use `install-just-print-p'.
+	(install-apel-package): Likewise.
+
 1999-02-26  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poem-nemacs.el (find-file-noselect-as-coding-system): Bind
