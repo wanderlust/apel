@@ -219,6 +219,11 @@ of the limitation of old \(v18\) compiler.
 
 (defun add-text-properties (start end properties &optional object))
 
+(defun put-text-property (start end property value &optional object))
+
+(defun next-property-change (position &optional object limit))
+
+(defun text-properties-at (position &optional object))
 
 ;;; @ file
 ;;;

@@ -1,3 +1,8 @@
+1999-11-08  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe-18.el (put-text-property, next-property-change, 
+	text-properties-at): Define as null function.
+
 1999-11-02  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poe-18.el (add-text-properties, get-text-property): Define as
