@@ -1,3 +1,11 @@
+2000-01-21  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* APEL: Version 10.1 released.
+
+2000-01-19  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe.el (require): Handle `file-error' only.
+
 2000-01-12  OKAZAKI Tetsurou  <okazaki@be.to>
 
 	* EMU-ELS (emu-modules): Add `pccl' even if `mule' is not provided.
@@ -11,6 +19,10 @@
 	* pym.el (static-if, static-when, static-unless,
 	static-condition-case, static-defconst, static-cond): Define
 	edebug-specs.
+
+1999-12-24  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe.el (functionp): Define it before loading "localhook".
 
 
 1999-12-24  Yuuichi Teranishi  <teranisi@gohome.org>
