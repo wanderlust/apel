@@ -1,5 +1,8 @@
 1998-06-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* emu-x20.el: Move `split-char' check and repair code from
+	mule-caesar.el.
+
 	* mule-caesar.el: Move `split-char' check and repair code to
 	emu-x20.el; require 'emu.
 
