@@ -1,5 +1,13 @@
 1999-11-12  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
+	* README.en (Version specific information): New section.
+
+	* pcustom.el [old custom]: Refer to it.
+
+	* tinycustom.el: checkdoc.
+
+1999-11-12  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
 	* APEL-MK: Require 'path-util explicitly.
 
 1999-11-12  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
