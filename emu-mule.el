@@ -317,8 +317,15 @@ It must be symbol.")
 
 (defalias 'char-charset 'char-leading-char)
 
-(defalias 'char-length 'char-bytes)
+(defmacro char-next-index (char index)
+  "Return index of character succeeding CHAR whose index is INDEX."
+  (` (+ index (char-bytes char))))
 
+;;; @@ obsoleted aliases
+;;;
+;;; You should not use them.
+
+(defalias 'char-length 'char-bytes)
 (defalias 'char-columns 'char-width)
 
 

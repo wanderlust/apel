@@ -174,10 +174,9 @@ code conversion will not take place."
 ;;; @ character
 ;;;
 
-(defalias 'char-length 'char-bytes)
-
-(defalias 'char-columns 'char-width)
-
+(defmacro char-next-index (char index)
+  "Return index of character succeeding CHAR whose index is INDEX."
+  `(+ index (char-bytes char)))
 
 ;;; @@ Mule emulating aliases
 ;;;
@@ -189,6 +188,13 @@ CHAR can be any multilingual character
 TABLE defaults to the current buffer's category table."
   (category-set-mnemonics (char-category-set character))
   )
+
+;;; @@ obsoleted aliases
+;;;
+;;; You should not use them.
+
+(defalias 'char-length 'char-bytes)
+(defalias 'char-columns 'char-width)
 
 
 ;;; @ string

@@ -314,7 +314,7 @@ find-file-hooks, etc.
 
 (defun char-charset (chr)
   "Return the character set of char CHR.
-\[emu-nemacs.el; XEmacs 20 emulating function]"
+\[emu-nemacs.el; MULE emulating function]"
   (if (< chr 128)
       charset-ascii
     charset-jisx0208))
@@ -324,21 +324,29 @@ find-file-hooks, etc.
 \[emu-nemacs.el; Mule emulating function]"
   (if (< chr 128) 1 2))
 
-(defalias 'char-length 'char-bytes)
-
-(defun char-columns (character)
-  "Return number of columns a CHARACTER occupies when displayed.
+(defun char-width (char)
+  "Return number of columns a CHAR occupies when displayed.
 \[emu-nemacs.el]"
-  (if (< character 128)
+  (if (< char 128)
       1
     2))
 
-;;; @@ for Mule emulation
+(defmacro char-next-index (char index)
+  "Return index of character succeeding CHAR whose index is INDEX."
+  (` (1+ index)))
+
+;;; @@ Old Mule emulating aliases
 ;;;
+;;; You should not use them.
 
 (defalias 'char-leading-char 'char-charset)
 
-(defalias 'char-width 'char-columns)
+;;; @@ obsoleted aliases
+;;;
+;;; You should not use them.
+
+(defalias 'char-length 'char-bytes)
+(defalias 'char-columns 'char-width)
 
 
 ;;; @ string
