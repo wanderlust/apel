@@ -62,7 +62,6 @@ Value is the image created, or nil if images of type TYPE are not supported.
 	      (setq bitmap (concat bitmap "\n"
 				   (bitmap-compose (aref image i)))
 		    i (1+ i)))
-	    (put-text-property 1 (length bitmap) 'pimage-bitmap bitmap)
 	    bitmap)
 	(error nil)))))
 
@@ -75,7 +74,7 @@ display it in the text area, a value of `left-margin' means
 display it in the left marginal area, a value of `right-margin'
 means display it in the right marginal area.
 \[Emacs 21 emulating function]"
-  (insert image))
+  (put-text-property (point) (progn (insert image)(point)) 'pimage-bitmap))
 
 (defun-maybe remove-images (start end &optional buffer)
   "Remove images between START and END in BUFFER.

@@ -9,6 +9,7 @@
 	* image-stpl.el: New file.
 
 	* image-bm.el: Don't require bitmap when compiling.
+	(create-image): Don't set 'pimage-bitmap property.
 
 	* image-xm.el (insert-image): Set as extent end glyph.
 
