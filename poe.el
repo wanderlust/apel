@@ -471,6 +471,18 @@ as obsolete. [XEmacs emulating function]"
   )
 
 
+;;; @ MULE 2 emulation
+;;;
+
+(defun-maybe cancel-undo-boundary ()
+  "Cancel undo boundary. [MULE 2.3 emulating function]"
+  (if (and (consp buffer-undo-list)
+	   ;; if car is nil.
+	   (null (car buffer-undo-list)) )
+      (setq buffer-undo-list (cdr buffer-undo-list))
+    ))
+
+
 ;;; @ end
 ;;;
 
