@@ -93,11 +93,6 @@ Associates the function with the current load file, if any.
 ;;; @ Compilation Features
 ;;;
 
-(defmacro-maybe defsubst (name arglist &rest body)
-  "Define an inline function.  The syntax is just like that of `defun'."
-  (cons 'defun (cons name (cons arglist body)))
-  )
-
 (defmacro-maybe eval-and-compile (&rest body)
   "Like `progn', but evaluates the body at compile time and at load time."
   ;; Remember, it's magic.
