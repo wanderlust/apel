@@ -23,57 +23,71 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
-;;; Commentary:
-
-;; Thanks for Martin Buchholz <mrb@eng.sun.com>'s suggestion
-
 ;;; Code:
 
-(defun mule-caesar-string (string &optional stride-ascii)
-  "Caesar rotation of STRING, and return the result.
-Optional argument STRIDE-ASCII is rotation-size for Latin alphabet
-\(A-Z and a-z).  For non-ASCII text, ROT47 will be performed in any
-case."
-  (setq stride-ascii
-	(if stride-ascii
-	    (mod stride-ascii 26)
-	  13))
-  (mapconcat (function
-	      (lambda (chr)
-		(if (< chr 128)
-		    (cond ((and (<= ?A chr) (<= chr ?Z))
-			   (setq chr (+ chr stride-ascii))
-			   (if (> chr ?Z)
-			       (setq chr (- chr 26))
-			     ))
-			  ((and (<= ?a chr) (<= chr ?z))
-			   (setq chr (+ chr stride-ascii))
-			   (if (> chr ?z)
-			       (setq chr (- chr 26))
-			     )))
-		  (let ((octet (logand chr 127)))
-		    (if (and (< 32 octet) (< octet 127))
-			(setq chr
-			      (if (< octet 80)
-				  (+ chr 47)
-				(- chr 47)))
-		      )))
-		(char-to-string chr)
-		)) string "")
-  )
+(defun char-to-octet-list (character)
+  "Return list of octets in code table of graphic character set."
+  (let* ((code (char-int character))
+	 (dim (charset-dimension (char-charset code)))
+	 dest)
+    (while (> dim 0)
+      (setq dest (cons (logand code 127) dest)
+	    dim (1- dim)
+	    code (lsh code -7))
+      )
+    dest))
 
 (defun mule-caesar-region (start end &optional stride-ascii)
   "Caesar rotation of current region.
 Optional argument STRIDE-ASCII is rotation-size for Latin alphabet
-\(A-Z and a-z).  For non-ASCII text, ROT47 will be performed in any
-case."
+\(A-Z and a-z).  For non-ASCII text, ROT-N/2 will be performed in any
+case (N=charset-chars; 94 for 94 or 94x94 graphic character set; 96
+for 96 or 96x96 graphic character set)."
   (interactive "r\nP")
+  (setq stride-ascii (if stride-ascii
+			 (mod stride-ascii 26)
+		       13))
   (save-excursion
-    (let ((str (buffer-substring start end)))
-      (delete-region start end)
-      (insert (mule-caesar-string str stride-ascii))
-      )))
-
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char start)
+      (while (< (point)(point-max))
+	(let* ((chr (char-after (point)))
+	       (charset (char-charset chr))
+	       )
+	  (if (eq charset 'ascii)
+	      (cond ((and (<= ?A chr) (<= chr ?Z))
+		     (setq chr (+ chr stride-ascii))
+		     (if (> chr ?Z)
+			 (setq chr (- chr 26))
+		       )
+		     (delete-char 1)
+		     (insert chr)
+		     )
+		    ((and (<= ?a chr) (<= chr ?z))
+		     (setq chr (+ chr stride-ascii))
+		     (if (> chr ?z)
+			 (setq chr (- chr 26))
+		       )
+		     (delete-char 1)
+		     (insert chr)
+		     )
+		    (t
+		     (forward-char)
+		     ))
+	    (let* ((stride (lsh (charset-chars charset) -1))
+		   (ret (mapcar (function
+				 (lambda (octet)
+				   (if (< octet 80)
+				       (+ octet stride)
+				     (- octet stride)
+				     )))
+				(char-to-octet-list chr))))
+	      (delete-char 1)
+	      (insert (make-char (char-charset chr)
+				 (car ret)(car (cdr ret))))
+	      )))))))
+  
 
 (provide 'mule-caesar)
 
