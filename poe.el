@@ -375,6 +375,14 @@ This function does not move point. [XEmacs emulating function]"
       (and (consp obj)(eq (car obj) 'lambda))
       ))
 
+(defsubst-maybe define-obsolete-function-alias (oldfun newfun)
+  "Define OLDFUN as an obsolete alias for function NEWFUN.
+This makes calling OLDFUN equivalent to calling NEWFUN and marks OLDFUN
+as obsolete. [XEmacs emulating function]"
+  (defalias oldfun newfun)
+  (make-obsolete oldfun newfun)
+  )
+
 
 ;;; @ end
 ;;;
