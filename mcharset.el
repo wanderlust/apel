@@ -47,7 +47,7 @@
        ))
 
 
-(defun charsets-to-mime-charset (charsets)
+(defun charsets-to-mime-charset (charsets &optional default)
   "Return MIME charset from list of charset CHARSETS.
 This function refers variable `charsets-mime-charset-alist'
 and `default-mime-charset'."
@@ -68,6 +68,7 @@ and `default-mime-charset'."
 			t))
 		    (throw 'tag (cdr cell)))
 		(setq rest (cdr rest)))))
+	  default
 	  default-mime-charset)))
 
 
