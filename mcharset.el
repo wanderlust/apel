@@ -91,6 +91,24 @@ Return nil if suitable mime-charset is not found."
 	    (setq rest (cdr rest)))
 	  ))))
 
+(defun find-mime-charset-by-charsets (charsets &optional mode &rest args)
+  "Like `charsets-to-mime-charset', but it does not return nil.
+
+When suitable mime-charset is not found and variable
+`default-mime-charset-detect-method-for-write' is not nil,
+`find-mime-charset-by-charsets' calls the variable as function and
+return the return value of the function.
+Interface of the function is (MODE CHARSETS &rest ARGS).
+
+When suitable mime-charset is not found and variable
+`default-mime-charset-detect-method-for-write' is nil,
+variable `default-mime-charset-for-write' is returned."
+  (or (charsets-to-mime-charset charsets)
+      (if default-mime-charset-detect-method-for-write
+	  (apply default-mime-charset-detect-method-for-write
+		 mode charsets args)
+	default-mime-charset-for-write)))
+
 
 ;;; @ end
 ;;;
