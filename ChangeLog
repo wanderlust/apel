@@ -1,3 +1,7 @@
+1999-03-27  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tinycustom.el: Delete RCS keywords.
+
 1999-03-24  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
 
 	* poe.el (make-local-hook): Move to after defining `add-local-hook'
@@ -13,7 +17,7 @@
 	* poem.el (charset-after): New function.
 
 
-1999-03-16  Tomohiko Morioka  <morioka@jaist.ac.jp>
+1999-03-16  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 9.15 released.
 
@@ -1537,7 +1541,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
