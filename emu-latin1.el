@@ -166,6 +166,8 @@ code conversion will not take place."
 (defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
 (make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
 
+(defalias 'insert-file-contents-as-raw-text 'insert-file-contents)
+
 (defun insert-binary-file-contents-literally (filename
 					      &optional visit beg end replace)
   "Like `insert-file-contents-literally', q.v., but don't code conversion.
