@@ -312,6 +312,15 @@ find-file-hooks, etc.
 	(convert-string-kanji-code string cs 3)
       string)))
 
+(defun write-region-as-mime-charset (charset start end filename)
+  "Like `write-region', q.v., but code-convert by MIME CHARSET.
+\[emu-nemacs.el]"
+  (let ((kanji-fileio-code
+	 (or (mime-charset-to-coding-system charset)
+	     *noconv*)))
+    (write-region start end filename)
+    ))
+
 
 ;;; @ character
 ;;;
