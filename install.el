@@ -31,17 +31,12 @@
 ;;(require 'emu)
 (require 'path-util)			; default-load-path
 
-(defvar emacs-major-version (string-to-int emacs-version)
-  "Major version number of this version of Emacs.
-This variable first existed in version 19.23.")
-
+(defvar emacs-major-version (string-to-int emacs-version))
 (defvar emacs-minor-version
   (string-to-int
    (substring emacs-version
 	      (string-match (format "%d\\." emacs-major-version)
-			    emacs-version)))
-  "Minor version number of this version of Emacs.
-This variable first existed in version 19.23.")
+			    emacs-version))))
 
 ;; verbatim copy of `defun-maybe' from poe.el, and
 ;; `make-directory-internal' and `make-directory' from poe-18.el
