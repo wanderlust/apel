@@ -142,7 +142,13 @@ Associates the function with the current load file, if any."
 ;;;  macros; they are "nuked" by rms in FSF version.)
 
 (put 'inline 'lisp-indent-hook 0)
-(defalias 'inline 'progn)
+(defmacro inline (&rest body)
+  "Eval BODY forms sequentially and return value of last one.
+
+This emulating macro does not support function inlining because old \(v18\)
+compiler does not support inlining feature.
+\[poe-18.el; EMACS 19 emulating macro]"
+  (` (progn (,@ body))))
 
 (put 'defsubst 'lisp-indent-hook 'defun)
 (put 'defsubst 'edebug-form-spec 'defun)
