@@ -49,6 +49,17 @@
 		  mnemonic "ko/EUC"
 		  eol-type nil)))
 
+(or (find-coding-system 'iso-2022-jp-2-dos)
+    (make-coding-system
+     'iso-2022-jp-2 'iso2022
+     "ISO-2022 coding system using SS2 for 96-charset in 7-bit code."
+     '(charset-g0 ascii
+       charset-g2 t ;; unspecified but can be used later.
+       seven t
+       short t
+       mnemonic "ISO7/SS2"
+       eol-type nil)))
+
 
 ;;; @ without code-conversion
 ;;;
