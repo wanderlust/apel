@@ -75,14 +75,23 @@ in the region between START and END."
 ;;; @ binary access
 ;;;
 
-(defun insert-binary-file-contents (filename &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but don't code and format conversion."
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
+Like `insert-file-contents-literary', but it allows find-file-hooks,
+automatic uncompression, etc.
+
+Namely this function ensures that only format decoding and character
+code conversion will not take place."
   (let ((flag enable-multibyte-characters)
 	(coding-system-for-read 'binary)
 	format-alist)
     (insert-file-contents filename visit beg end replace)
     (setq enable-multibyte-characters flag)
     ))
+
+(defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
+(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
 
 (defalias 'insert-binary-file-contents-literally
   'insert-file-contents-literally)
