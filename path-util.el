@@ -24,27 +24,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'static))
-
-(static-condition-case nil
-    (directory-files "." nil nil t)
-  (file-error nil);; unreadable directory.
-  (wrong-number-of-arguments
-   (or (fboundp 'si:directory-files)
-       (fset 'si:directory-files (symbol-function 'directory-files)))
-   ;; This function is also defined in poe-18, but it is needed here
-   ;; for compiling other packages under old Emacsen.
-   (defun directory-files (directory &optional full match nosort)
-     "Return a list of names of files in DIRECTORY.
-There are three optional arguments:
-If FULL is non-nil, return absolute file names.  Otherwise return names
- that are relative to the specified directory.
-If MATCH is non-nil, mention only file names that match the regexp MATCH.
-If NOSORT is dummy for compatibility.
-\[poe-18.el; EMACS 19 emulating function]"
-     (si:directory-files directory full match))
-   ))
-
 (defvar default-load-path load-path
   "*Base of `load-path'.
 It is used as default value of target path to search file or
