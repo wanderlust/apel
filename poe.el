@@ -1108,19 +1108,6 @@ If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
       (setq parts (cons (substring string start (match-beginning 0)) parts)
 	    start (match-end 0)))
     (nreverse (cons (substring string start) parts))))
-
-;; Emacs 20.4 and later:
-;;  (subst-char-in-string FROMCHAR TOCHAR STRING &optional INPLACE)
-(defun subst-char-in-string (fromchar tochar string &optional inplace)
-  "Replace FROMCHAR with TOCHAR in STRING each time it occurs.
-Unless optional argument INPLACE is non-nil, return a new string."
-  (let ((i (length string))
-	(newstr (if inplace string (copy-sequence string))))
-    (while (> i 0)
-      (setq i (1- i))
-      (if (eq (aref newstr i) fromchar)
-	  (aset newstr i tochar)))
-    newstr))
 
 
 ;;; @ Window commands emulation. (lisp/window.el)

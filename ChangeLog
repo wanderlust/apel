@@ -12,7 +12,6 @@
 	* poe.el (remassq): New function.
 	(remassoc): New function.
 	(remrassoc): New function.
-	(subst-char-in-string): New function.
 	(get-buffer-window-list): New function.
 	(save-selected-frame): New macro.
 
