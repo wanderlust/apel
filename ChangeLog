@@ -1,6 +1,6 @@
 1998-11-10  Tanaka Akira  <akr@jaist.ac.jp>
 
-	* EMU-ELS (pccl-modules): Always install 'pccl.
+	* EMU-ELS (emu-modules): Always install 'pccl.
 
 	* broken.el: Use 19.28 style quasi-quote.
 
