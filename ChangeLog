@@ -1,3 +1,15 @@
+1999-06-20  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* install.el: Require 'poe instead of 'emu.
+	(install-prefix): Don't use `running-emacs-18' or `running-xemacs'.
+	(install-detect-elisp-directory): Eliminate local variable `dir'.
+	Don't use `running-emacs-19_29-or-later' or `running-xemacs'.
+
+	* mcs-20.el: Require 'pcustom instead of 'custom.
+
+	* EMU-ELS: Don't use `running-emacs-19_29-or-later' or
+	`running-xemacs-19_14-or-later.'
+
 1999-06-18  Tanaka Akira      <akr@jaist.ac.jp>
 
 	* static.el (static-condition-case): Wrap lambda expression by
@@ -120,7 +132,7 @@
 1999-05-21  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* README.en: Add description of localhook.el.
-	
+
 	* README.ja: Ditto.
 
 	* Makefile (GOMI): New variable.
