@@ -25,7 +25,8 @@
 
 ;;; Code:
 
-(require 'emu)
+(autoload 'buffer-substring-no-properties "emu")
+(autoload 'member "emu")
 
 
 ;;; @ field
@@ -33,9 +34,9 @@
 
 (defconst std11-field-name-regexp "[!-9;-~]+")
 (defconst std11-field-head-regexp
-  (concat "\\(" std11-field-name-regexp "\\):"))
+  (concat "^" std11-field-name-regexp ":"))
 (defconst std11-next-field-head-regexp
-  (concat "\n" std11-field-head-regexp))
+  (concat "\n" std11-field-name-regexp ":"))
 
 (defun std11-field-body (name &optional boundary)
   (save-excursion
@@ -60,6 +61,16 @@
 
 ;;; @ header
 ;;;
+
+(defun std11-narrow-to-header (&optional boundary)
+  (narrow-to-region
+   (goto-char (point-min))
+   (if (re-search-forward
+	(concat "^\\(" (regexp-quote (or boundary "")) "\\)?$")
+	nil t)
+       (match-beginning 0)
+     (point-max)
+     )))
 
 (defun std11-header-string (pat &optional boundary)
   (let ((case-fold-search t))
@@ -93,15 +104,20 @@
 	  header)
 	))))
 
-(defun std11-narrow-to-header (&optional boundary)
-  (narrow-to-region
-   (goto-char (point-min))
-   (if (re-search-forward
-	(concat "^\\(" (regexp-quote (or boundary "")) "\\)?$")
-	nil t)
-       (match-beginning 0)
-     (point-max)
-     )))
+(defun std11-field-names (&optional boundary)
+  (save-excursion
+    (save-restriction
+      (std11-narrow-to-header boundary)
+      (goto-char (point-min))
+      (let (dest name)
+	(while (re-search-forward std11-field-head-regexp nil t)
+	  (setq name (buffer-substring-no-properties
+		      (match-beginning 0)(1- (match-end 0))))
+	  (or (member name dest)
+	      (setq dest (cons name dest))
+	      )
+	  )
+	dest))))
 
 
 ;;; @ end
