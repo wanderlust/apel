@@ -1,3 +1,9 @@
+1999-11-25  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe-18.el: Modified comments.
+	(buffer-undo-list, data-directory): Use `defvar'.
+	(generate-new-buffer-name): Use `defun'.
+
 1999-11-22  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* pccl-20.el, pccl-om.el: Removed "[SOURCE INFO]" style
@@ -83,6 +89,10 @@
 	Modified some comments.
 
 
+1999-11-25  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe-18.el (current-time-string, current-time): New functions.
+
 1999-11-11  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* localhook.el, pcustom.el: checkdoc.
