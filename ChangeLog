@@ -1,3 +1,7 @@
+1999-09-09  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* tinycustom.el (defface): Allow `type' in SPEC; enrich doc string.
+
 1999-09-08  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* tinycustom.el (frame-background-mode): New variable.
