@@ -1,3 +1,7 @@
+2000-12-13  Kenichi Handa  <handa@etl.go.jp>
+
+	* alist.el: Fix and add DOCs and comments; fix coding style.
+
 2000-04-26  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* mcs-xm.el (charsets-mime-charset-alist): Add coded-charset
