@@ -128,27 +128,31 @@ It must be symbol."
       'utf-8
     default-mime-charset)
   "Default value of MIME-charset for encoding.
-It is used when MIME-charset is not specified.
+It may be used when suitable MIME-charset is not found.
 It must be symbol."
   :group 'i18n
   :type 'mime-charset)
 
 (defcustom default-mime-charset-detect-method-for-write
   nil
-  "Function called when suitable MIME-charset is not found to encode."
+  "Function called when suitable MIME-charset is not found to encode.
+It must be nil or function.
+If it is nil, variable `default-mime-charset-for-write' is used.
+If it is a function, interface must be (TYPE CHARSETS &rest ARGS).
+CHARSETS is list of charset.
+If TYPE is 'region, ARGS has START and END."
   :group 'i18n
   :type '(choice function (const nil)))
 
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END."
   (let ((charsets (find-charset-region start end)))
-  (charsets-to-mime-charset
-   charsets
-   (if default-mime-charset-detect-method-for-write
-       (funcall default-mime-charset-detect-method-for-write
-		'region start end charsets)
-     default-mime-charset-for-write)
-   )))
+    (or (charsets-to-mime-charset charsets)
+	(if default-mime-charset-detect-method-for-write
+	    (funcall default-mime-charset-detect-method-for-write
+		     'region charsets start end)
+	  default-mime-charset-for-write)
+	)))
 
 (defun write-region-as-mime-charset (charset start end filename
 					     &optional append visit lockname)
