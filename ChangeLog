@@ -1,5 +1,39 @@
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* emu.el, EMU-ELS: Split code about MIME charset from emu to
+	mcharset.
+
+	* mcharset.el: New file.
+
+	* mcs-xm.el: New file (split code about MIME charset from
+	emu-x20.el).
+
+	* emu-x20.el: Split code about MIME charset to mcs-xm.el.
+
+	* mcs-om.el: New file (split code about MIME charset from
+	emu-mule.el).
+
+	* emu-mule.el: Split code about MIME charset to mcs-om.el.
+
+	* mcs-nemacs.el: New file (split code about MIME charset from
+	emu-nemacs.el).
+
+	* emu-nemacs.el: Split code about MIME charset to mcs-nemacs.el.
+
+	* mcs-ltn1.el: New file (split code about MIME charset from
+	emu-latin1.el).
+
+	* emu-latin1.el: Split code about MIME charset to mcs-latin1.el.
+
+	* mcs-e20.el: New file (split code about MIME charset from
+	emu-e20.el).
+
+	* emu-e20.el: Split code about MIME charset to mcs-e20.el.
+
+	* mcs-20.el: New file (renamed from emu-20.el).
+
+1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu.el, emu-20.el: Move constant `*noconv*' from emu-20.el to
 	emu.el.
 
