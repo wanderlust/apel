@@ -6,9 +6,14 @@
 
 (defvar default-load-path load-path)
 (setq load-path (cons (expand-file-name ".") load-path))
-;; prevent install.el from loading 'emu while compiling APEL.
-(provide 'emu)
 (require 'install)
+
+
+;;;
+;;; @@ Please specify CUSTOM path.
+;;;
+
+(add-latest-path "custom")
 
 
 ;;; @ Please specify prefix of install directory.
