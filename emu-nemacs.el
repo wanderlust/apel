@@ -307,16 +307,23 @@ find-file-hooks, etc.
 		 ))
 	     ))))
 
-(defun decode-mime-charset-region (start end charset)
+(defun decode-mime-charset-region (start end charset &optional lbt)
   "Decode the text between START and END as MIME CHARSET.
 \[emu-nemacs.el]"
-  (let ((cs (mime-charset-to-coding-system charset)))
+  (let ((cs (mime-charset-to-coding-system charset))
+	(nl (cdr (assq lbt '((CRLF . "\r\n") (CR . "\r")
+			     (dos . "\r\n") (mac . "\r"))))))
     (and (numberp cs)
 	 (or (= cs 3)
 	     (save-excursion
 	       (save-restriction
 		 (narrow-to-region start end)
 		 (convert-region-kanji-code start end cs 3)
+		 (if nl
+		     (progn
+		       (goto-char (point-min))
+		       (while (search-forward nl nil t)
+			 (replace-match "\n"))))
 		 ))
 	     ))))
 
@@ -327,12 +334,12 @@ find-file-hooks, etc.
 	(convert-string-kanji-code string 3 cs)
       string)))
 
-(defun decode-mime-charset-string (string charset)
+(defun decode-mime-charset-string (string charset &optional lbt)
   "Decode the STRING as MIME CHARSET. [emu-nemacs.el]"
-  (let ((cs (mime-charset-to-coding-system charset)))
-    (if cs
-	(convert-string-kanji-code string cs 3)
-      string)))
+  (with-temp-buffer
+    (insert string)
+    (decode-mime-charset-region (point-min)(point-max) charset lbt)
+    (buffer-string)))
 
 (defun write-region-as-mime-charset (charset start end filename)
   "Like `write-region', q.v., but code-convert by MIME CHARSET.

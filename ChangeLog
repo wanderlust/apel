@@ -1,3 +1,12 @@
+1998-08-12  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* emu-nemacs.el, emu-mule.el (decode-mime-charset-region): Add new
+	argument `lbt'.
+	(decode-mime-charset-string): Likewise.
+
+	* emu-mule.el (mime-charset-to-coding-system):  Regard `CRLF',
+	`LF', `CR' as line break code type.
+
 1998-08-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-latin1.el, emu-nemacs.el (write-region-as-raw-text-CRLF):
@@ -17,7 +26,7 @@
 	* emu-mule.el (write-region-as-raw-text-CRLF): New function.
 
 	* emu-18.el (generate-new-buffer-name): New function (Emacs 19
-	mulating function).
+	emulating function).
 
 1998-08-10  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
@@ -315,7 +324,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>

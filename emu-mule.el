@@ -235,9 +235,9 @@ find-file-hooks, etc.
 	(code-convert start end *internal* cs)
       )))
 
-(defun decode-mime-charset-region (start end charset)
+(defun decode-mime-charset-region (start end charset &optional lbt)
   "Decode the text between START and END as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
+  (let ((cs (mime-charset-to-coding-system charset lbt)))
     (if cs
 	(code-convert start end cs *internal*)
       )))
@@ -249,9 +249,9 @@ find-file-hooks, etc.
 	(code-convert-string string *internal* cs)
       string)))
 
-(defun decode-mime-charset-string (string charset)
+(defun decode-mime-charset-string (string charset &optional lbt)
   "Decode the STRING which is encoded in MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset)))
+  (let ((cs (mime-charset-to-coding-system charset lbt)))
     (if cs
 	(decode-coding-string string cs)
       string)))
@@ -291,7 +291,10 @@ find-file-hooks, etc.
     (if (or (null lbt)
 	    (null cs))
 	cs
-      (intern (concat (symbol-name cs) (symbol-name lbt)))
+      (intern (format "%s%s" cs (cond ((eq lbt 'CRLF) 'dos)
+				      ((eq lbt 'LF) 'unix)
+				      ((eq lbt 'CR) 'mac)
+				      (t lbt))))
       )))
 
 
