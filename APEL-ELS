@@ -4,6 +4,7 @@
 ;;;
 
 (setq apel-modules '(alist atype file-detect filename install
-			   std11 std11-parse))
+			   std11 std11-parse
+ 			   mule-caesar))
 
 ;;; APEL-ELS ends here
