@@ -28,8 +28,9 @@
 ;; 
 ;; If old (v18) compiler is used, top-level macros are expanded at
 ;; *load-time*, not compile-time.  So, you cannot use macros defined
-;; in this file using `defmacro-maybe'.  Especially, you cannot use
-;; `eval-when-compile' and `eval-and-compile' in this file.
+;; in this file using `defmacro-maybe'.  In addition, due to this
+;; limitation, `eval-when-compile' and `eval-and-compile' provided by
+;; this file do not do compile-time evaluation at all.
 
 ;;; Code:
 
@@ -185,24 +186,18 @@ If you think you need this, you're probably making a mistake somewhere.
 (defmacro-maybe eval-when-compile (&rest body)
   "Like progn, but evaluates the body at compile-time.
 
-This emulating macro does not work if used at top-level.
-Top-level macros are expanded at load-time.
+This emulating macro does not do compile-time evaluation at all because
+of the limitation of old \(v18\) compiler.
 \[poe-18.el; EMACS 19 emulating macro]"
-  (list 'quote (eval (cons 'progn body))))
+  (cons 'progn body))
 
 (put 'eval-and-compile 'lisp-indent-hook 0)
 (defmacro-maybe eval-and-compile (&rest body)
   "Like progn, but evaluates the body at compile-time as well as at load-time.
 
-This emulating macro does not work if used at top-level.
-Top-level macros are expanded at load-time.
+This emulating macro does not do compile-time evaluation at all because
+of the limitation of old \(v18\) compiler.
 \[poe-18.el; EMACS 19 emulating macro]"
-  ;; `form' is a parameter of `byte-compile-form'. kludge! kludge! kludge!
-  ;; this kludge prevents from evaluating `body' twice when this macro is
-  ;; expanded at load-time.
-  (if (and (boundp 'form)
-           (eq (car-safe form) 'eval-and-compile))
-      (eval (cons 'progn body)))
   (cons 'progn body))
 
 
