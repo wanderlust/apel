@@ -1,5 +1,13 @@
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* poe.el (line-beginning-position): New function.
+	(line-end-position): New function.
+
+	* poe-xemacs.el (line-beginning-position): New alias.
+	(line-end-position): New alias.
+
+1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* poe.el, emu.el: Move function `functionp' from emu.el to poe.el.
 
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
