@@ -668,10 +668,17 @@ For a directory, this means you can access files in that directory."
 
 (defun make-directory-internal (dirname)
   "Create a directory. One argument, a file name string."
- (let ((dir (expand-file-name dirname)))
-   (if (file-exists-p dir)
-       (error "Creating directory: %s is already exist" dir)
-     (call-process "mkdir" nil nil nil dir))))
+  (let ((dir (expand-file-name dirname)))
+    (if (file-exists-p dir)
+        (signal 'file-already-exists
+                (list "Creating directory: %s already exists" dir))
+      (let ((exit-status (call-process "mkdir" nil nil nil dir)))
+        (if (or (and (numberp exit-status)
+                     (not (zerop exit-status)))
+                (stringp exit-status))
+            (error "Create directory %s failed.")
+          ;; `make-directory' of v19 and later returns nil for success.
+          )))))
 
 (defun make-directory (dir &optional parents)
   "Create the directory DIR and any nonexistent parent dirs.
@@ -694,6 +701,13 @@ to create parent directories if they don't exist."
 		   (make-directory-internal path))))
 	(setq p p1)))
     (make-directory-internal dir)))
+
+(defun delete-directory (directory)
+  "Delete the directory named DIRECTORY.  Does not follow symlinks."
+  (let ((exit-status (call-process "rmdir" nil nil nil directory)))
+    (when (or (and (numberp exit-status) (not (zerop exit-status)))
+	      (stringp exit-status))
+      (error "Delete directory %s failed."))))
 
 (defun parse-colon-path (cd-path)
   "Explode a colon-separated list of paths into a string list."
@@ -732,6 +746,38 @@ If FULL is non-nil, return absolute file names.  Otherwise return names
 If MATCH is non-nil, mention only file names that match the regexp MATCH.
 If NOSORT is dummy for compatibility."
   (si:directory-files directory full match))
+
+(or (fboundp 'si:write-region)
+    (fset 'si:write-region (symbol-function 'write-region)))
+(defun write-region (start end filename &optional append visit)
+  "Write current region into specified file.
+When called from a program, requires three arguments:
+START, END and FILENAME.  START and END are normally buffer positions
+specifying the part of the buffer to write.
+If START is nil, that means to use the entire buffer contents.
+If START is a string, then output that string to the file
+instead of any buffer contents; END is ignored.
+
+Optional fourth argument APPEND if non-nil means
+  append to existing file contents (if any).  If it is an integer,
+  seek to that offset in the file before writing.
+Optional fifth argument VISIT if t means
+  set the last-save-file-modtime of buffer to this file's modtime
+  and mark buffer not modified.
+If VISIT is a string, it is a second file name;
+  the output goes to FILENAME, but the buffer is marked as visiting VISIT.
+  VISIT is also the file name to lock and unlock for clash detection.
+If VISIT is neither t nor nil nor a string,
+  that means do not display the \"Wrote file\" message."
+  (cond
+   ((null start)
+    (si:write-region (point-min) (point-max) filename append visit))
+   ((stringp start)
+    (with-temp-buffer
+      (insert start)
+      (si:write-region (point-min) (point-max) filename append visit)))
+   (t
+    (si:write-region start end filename append visit))))
 
 ;;; @ Process.
 ;;; 

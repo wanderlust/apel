@@ -1,3 +1,10 @@
+2003-07-03  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe-18.el (make-directory-internal): Signal an error according to
+	the exit status of mkdir.
+	(delete-directory): New function.
+	(write-region): Ditto.
+
 2003-06-06  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* APEL: Version 10.5 released.
