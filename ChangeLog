@@ -1,3 +1,10 @@
+2001-02-01  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* README.ja: Updated as to MAKEIT.BAT and MAKE1.BAT.
+	* make1.bat: New file.
+	* makeit.bat: Ditto.
+	* make.bat: Removed.
+
 2001-01-18  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* inv-19.el (next-visible-point): Return the value of `point-max'
