@@ -34,9 +34,6 @@
 (and (coding-system-property 'iso-2022-jp 'input-charset-conversion)
      (copy-coding-system 'iso-2022-7bit 'iso-2022-jp))
 
-(and (coding-system-property 'iso-2022-jp-dos 'input-charset-conversion)
-     (copy-coding-system 'iso-2022-7bit-dos 'iso-2022-jp-dos))
-
 ;; Redefine if -{dos|mac|unix} is not found.
 (or (find-coding-system 'raw-text-dos)
     (copy-coding-system 'no-conversion-dos 'raw-text-dos))
@@ -109,7 +106,6 @@ This function ensures that none of these modifications will take place."
 	(coding-system-for-read 'binary)
 	(coding-system-for-write 'binary)
 	(jka-compr-compression-info-list nil)
-	(jam-zcat-filename-list nil)
 	(find-buffer-file-type-function
 	 (if (fboundp 'find-buffer-file-type)
 	     (symbol-function 'find-buffer-file-type)

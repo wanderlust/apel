@@ -222,35 +222,6 @@
       (write-region-as-binary (point-min)(point-max)
 			      filename append visit))))
 
-(defun open-network-stream-as-binary (name buffer host service)
-  "Like `open-network-stream', q.v., but don't code conversion."
-  (let ((process (open-network-stream name buffer host service)))
-    (set-process-kanji-code process 0)
-    process))
-
-
-;;; @ with code-conversion
-;;;
-
-(defun insert-file-contents-as-specified-coding-system (filename &rest args)
-  "Like `insert-file-contents', q.v., but code convert by the specified
-coding-system. ARGS the optional arguments are passed to
-`insert-file-contents' except for the last element. The last element of
-ARGS must be a coding-system."
-  (let ((kanji-fileio-code (car (reverse args)))
-	kanji-expected-code)
-    (apply' insert-file-contents filename (nreverse (cdr (nreverse args))))))
-
-(defun write-region-as-specified-coding-system (start end filename
-						      &rest args)
-  "Like `write-region', q.v., but code convert by the specified coding-system.
-ARGS the optional arguments are passed to `write-region' except for the last
-element. The last element of ARGS must be a coding-system."
-  (let ((kanji-fileio-code (car (reverse args)))
-	jka-compr-compression-info-list jam-zcat-filename-list)
-    (apply 'write-region start end filename
-	   (nreverse (cdr (nreverse args))))))
-
 
 ;;; @ buffer representation
 ;;;
