@@ -60,7 +60,7 @@
 	(decode-coding-region start end cs)
       )))
 
-(static-unless (featurep 'utf-2000)
+(unless (featurep 'utf-2000)
   (defcustom mime-iso646-character-unification-alist
     (eval-when-compile
       (let (dest
