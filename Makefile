@@ -1,29 +1,49 @@
 #
-# $Id$
+# Makefile for APEL.
 #
 
-VERSION = 7.1.1
+VERSION = 9.23
 
 TAR	= tar
 RM	= /bin/rm -f
 CP	= /bin/cp -p
 
 EMACS	= emacs
+XEMACS	= xemacs
 FLAGS   = -batch -q -no-site-file -l APEL-MK
 
 PREFIX = NONE
 LISPDIR = NONE
+PACKAGEDIR = NONE
+VERSION_SPECIFIC_LISPDIR = NONE
 
+GOMI	= *.elc
+
+ARCHIVE_DIR_PREFIX = /pub/mule
+
+what-where:
+	$(EMACS) $(FLAGS) -f what-where-apel \
+		$(PREFIX) $(LISPDIR) $(VERSION_SPECIFIC_LISPDIR)
 
 elc:
-	$(EMACS) $(FLAGS) -f compile-apel
+	$(EMACS) $(FLAGS) -f compile-apel \
+		$(PREFIX) $(LISPDIR) $(VERSION_SPECIFIC_LISPDIR)
 
-install:
-	$(EMACS) $(FLAGS) -f install-apel $(PREFIX) $(LISPDIR)
+install:	elc
+	$(EMACS) $(FLAGS) -f install-apel \
+		$(PREFIX) $(LISPDIR) $(VERSION_SPECIFIC_LISPDIR) # $(MAKE)
+
+package:
+	$(XEMACS) $(FLAGS) -f compile-apel-package \
+		$(PACKAGEDIR)
+
+install-package:	package
+	$(XEMACS) $(FLAGS) -f install-apel-package \
+		$(PACKAGEDIR) # $(MAKE)
 
 
 clean:
-	-rm *.elc
+	-$(RM) $(GOMI)
 
 
 tar:
@@ -31,16 +51,15 @@ tar:
 	sh -c 'cvs tag -RF apel-`echo $(VERSION) \
 				| sed s/\\\\./_/ | sed s/\\\\./_/`; \
 	cd /tmp; \
-	cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
+	cvs -d :pserver:morioka@chamonix.jaist.ac.jp:/hare/cvs/root \
 		export -d apel-$(VERSION) \
-		-r apel-`echo $(VERSION) | sed s/\\\\./_/ | sed s/\\\\./_/` \
-		apel'
+		-r apel-`echo $(VERSION) | tr . _` apel'
 	cd /tmp; $(RM) apel-$(VERSION)/ftp.in ; \
 		$(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
 	cd /tmp; $(RM) -r apel-$(VERSION)
 	sed "s/VERSION/$(VERSION)/" < ftp.in > ftp
 
 release:
-	-$(RM) /pub/GNU/elisp/apel/apel-$(VERSION).tar.gz
-	mv /tmp/apel-$(VERSION).tar.gz /pub/GNU/elisp/apel/
-	cd /pub/GNU/elisp/semi/ ; ln -s ../apel/apel-$(VERSION).tar.gz .
+	-$(RM) $(ARCHIVE_DIR_PREFIX)/apel/apel-$(VERSION).tar.gz
+	mv /tmp/apel-$(VERSION).tar.gz $(ARCHIVE_DIR_PREFIX)/apel
+	cd $(ARCHIVE_DIR_PREFIX)/semi/ ; ln -s ../apel/apel-$(VERSION).tar.gz .
