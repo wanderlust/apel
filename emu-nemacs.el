@@ -34,17 +34,14 @@
 ;;; @ character set
 ;;;
 
+(defconst charset-ascii 0 "Character set of ASCII")
+(defconst charset-jisx0208 146 "Character set of JIS X0208-1983")
+
+;;; @@ for Mule emulation
+;;;
+
 (defconst lc-ascii 0)
 (defconst lc-jp  146)
-
-(defun char-charset (chr)
-  "Return the character set of char CHR.
-\[emu-nemacs.el; XEmacs 20 emulating function]"
-  (if (< chr 128)
-      lc-ascii
-    lc-jp))
-
-(defalias 'char-leading-char 'char-charset)
 
 
 ;;; @ coding system
@@ -121,23 +118,40 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
   )
 
 
-;;; @ character and string
+;;; @ character
 ;;;
+
+(defun char-charset (chr)
+  "Return the character set of char CHR.
+\[emu-nemacs.el; XEmacs 20 emulating function]"
+  (if (< chr 128)
+      charset-ascii
+    charset-jisx0208))
 
 (defun char-bytes (chr)
   "Return number of bytes CHAR will occupy in a buffer.
 \[emu-nemacs.el; Mule emulating function]"
   (if (< chr 128) 1 2))
 
-(defun char-width (chr)
-  "Return number of columns CHAR will occupy when displayed.
-\[emu-nemacs.el; Mule emulating function]"
-  (if (< chr 128) 1 2))
+(defun char-columns (character)
+  "Return number of columns a CHARACTER occupies when displayed.
+\[emu-nemacs.el]"
+  (if (< character 128)
+      1
+    2))
 
-(defun string-width (str)
-  "Return number of columns STRING will occupy.
-\[emu-nemacs.el; Mule emulating function]"
-  (length str))
+;;; @@ for Mule emulation
+;;;
+
+(defalias 'char-leading-char 'char-charset)
+
+(defalias 'char-width 'char-columns)
+
+
+;;; @ string
+;;;
+
+(defalias 'string-columns 'length)
 
 (defun sref (str idx)
   "Return the character in STR at index IDX.
@@ -213,18 +227,23 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 	""
       (while (< column start-column)
 	(setq ch (aref str from)
-	      column (+ column (char-width ch))
+	      column (+ column (char-columns ch))
 	      from (+ from (char-bytes ch))))
       (if (< width max-width)
 	  (progn
 	    (setq to from)
 	    (while (<= column width)
 	      (setq ch (aref str to)
-		    column (+ column (char-width ch))
+		    column (+ column (char-columns ch))
 		    to-prev to
 		    to (+ to (char-bytes ch))))
 	    (setq to to-prev)))
       (substring str from to))))
+
+;;; @@ for Mule emulation
+;;;
+
+(defalias 'string-width 'length)
 
 
 ;;; @ text property emulation

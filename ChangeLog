@@ -1,3 +1,80 @@
+Mon May 27 14:04:12 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.27.1 was released.
+
+	* emu-mule.el (charset-*): New constants.
+
+	* emu-x20.el (charset-*): New constants.
+	(charset-description): New alias.
+
+	* emu-e19.el (char-charset):
+	Use constant `charset-ascii' and `charset-latin-1'.
+
+Mon May 27 12:17:42 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el (char-charset): Use constant `charset-ascii' and
+ 	`charset-jisx0208'.
+
+	* emu-nemacs.el (charset-ascii): New constant.
+	(charset-jisx0208): New constant.
+
+Mon May 27 12:06:05 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (charset-description): New alias.
+	(charset-registry): New alias.
+	(charset-columns): New alias.
+	(charset-direction): New alias.
+
+Mon May 27 11:28:24 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (string-columns): New alias.
+
+	* emu-nemacs.el, emu-e19.el, emu-x20.el (string-columns): New
+ 	alias; You should use it instead of `string-width'.
+
+Mon May 27 10:07:19 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el (truncate-string): Use function `char-columns'
+ 	instead of `char-width'.
+
+Mon May 27 10:01:14 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (char-columns): New alias.
+	
+	* emu-nemacs.el, emu-e19.el, emu-x20.el (char-columns): New
+ 	function; You should use it instead of `char-width'.
+
+Sat May 25 20:23:36 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-xemacs.el (invisible-p): New function.
+	(next-visible-point): New function.
+
+Sat May 25 20:21:22 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-19.el (invisible-p): New function.
+	(next-visible-point): New function.
+
+Sat May 25 20:14:52 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-18.el (invisible-p): New function.
+	(next-visible-point): New function.
+
+Sat May 25 19:51:23 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-18.el (invisible-region): New function.
+	(visible-region): New function.
+
+Sat May 25 19:28:13 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-xemacs.el (invisible-region): New function.
+	(visible-region): New function.
+
+Sat May 25 19:22:50 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-19.el (invisible-region): New function.
+	(visible-region): New function.
+
+
 Thu May 23 01:31:02 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.27 was released.

@@ -39,20 +39,35 @@
 ;;; @ character set
 ;;;
 
-(defalias 'char-leading-char 'char-charset)
+(mapcar (lambda (charset)
+	  (set
+	   (cond ((eq charset 'japanese-kana)  'charset-jisx0201-kana)
+		 ((eq charset 'japanese-roman) 'charset-jisx0201-latin)
+		 ((eq charset 'japanese-old)   'charset-jisx0208-1978)
+		 ((eq charset 'chinese-gb)     'charset-gb2312)
+		 ((eq charset 'japanese)       'charset-jisx0208)
+		 ((eq charset 'koran)          'charset-ksc5601)
+		 ((eq charset 'japanese-2)     'charset-jisx0212)
+		 ((eq charset 'chinese-cns-1)  'charset-cns11643-1)
+		 ((eq charset 'chinese-cns-2)  'charset-cns11643-2)
+		 ((eq charset 'chinese-cns-3)  'charset-cns11643-3)
+		 ((eq charset 'chinese-cns-4)  'charset-cns11643-4)
+		 ((eq charset 'chinese-cns-5)  'charset-cns11643-5)
+		 ((eq charset 'chinese-cns-6)  'charset-cns11643-6)
+		 ((eq charset 'chinese-cns-7)  'charset-cns11643-7)
+		 ((eq charset 'chinese-big5-1) 'charset-big5-1)
+		 ((eq charset 'chinese-big5-2) 'charset-big5-2)
+		 (t (intern (concat "charset-" (symbol-name charset))))
+		 )
+	   charset)
+	  )
+	(charset-list)
+	)
 
-(defun find-charset-string (string)
-  "Return a list of charsets in the STRING except ascii.
-\[emu-x20.el; Mule emulating function]"
-  (delq 'ascii (charsets-in-string string))
-  )
+(defalias 'charset-description 'charset-doc-string)
 
-(defun find-charset-region (start end)
-  "Return a list of charsets except ascii
-in the region between START and END.
-\[emu-x20.el; Mule emulating function]"
-  (delq 'ascii (charsets-in-region start end))
-  )
+;;; @@ for Mule emulation
+;;;
 
 (defconst lc-ascii  'ascii)
 (defconst lc-ltn1   'latin-1)
@@ -131,13 +146,42 @@ in the region between START and END.
 (defalias 'character-decode-region 'decode-coding-region)
 
 
-;;; @ character and string
+;;; @ character
 ;;;
 
 (defun char-bytes (chr) 1)
-(defun char-width (chr) 1)
 
-(defalias 'string-width 'length)
+(defun char-columns (character)
+  "Return number of columns a CHARACTER occupies when displayed.
+\[emu-x20.el]"
+  (charset-columns (char-charset character))
+  )
+
+;;; @@ Mule emulating aliases
+;;;
+;;; You should not use them.
+
+(defalias 'char-width 'char-columns)
+
+(defalias 'char-leading-char 'char-charset)
+
+
+;;; @ string
+;;;
+
+(defun string-columns (string)
+  "Return number of columns STRING occupies when displayed.
+\[emu-x20.el]"
+  (let ((col 0)
+	(len (length string))
+	(i 0))
+    (while (< i len)
+      (setq col (+ col (char-columns (aref string i))))
+      (setq i (1+ i))
+      )
+    col))
+
+(defalias 'string-width 'string-column)
 
 (defun string-to-int-list (str)
   (mapcar #'char-int str)
@@ -152,6 +196,19 @@ Optional non-nil arg START-COLUMN specifies the starting column.
   (or start-column
       (setq start-column 0))
   (substring str start-column width)
+  )
+
+(defun find-charset-string (string)
+  "Return a list of charsets in the STRING except ascii.
+\[emu-x20.el; Mule emulating function]"
+  (delq 'ascii (charsets-in-string string))
+  )
+
+(defun find-charset-region (start end)
+  "Return a list of charsets except ascii
+in the region between START and END.
+\[emu-x20.el; Mule emulating function]"
+  (delq 'ascii (charsets-in-region start end))
   )
 
 

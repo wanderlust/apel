@@ -37,6 +37,37 @@
 (defalias 'tl:overlay-buffer 'overlay-buffer)
 
 
+;;; @@ visible/invisible
+;;;
+
+(defun invisible-region (start end)
+  (if (save-excursion
+	(goto-char (1- end))
+	(eq (following-char) ?\n)
+	)
+      (setq end (1- end))
+    )
+  (put-text-property start end 'invisible t)
+  )
+
+(defun visible-region (start end)
+  (put-text-property start end 'invisible nil)
+  )
+
+(defun invisible-p (pos)
+  (get-text-property pos 'invisible)
+  )
+
+(defun next-visible-point (pos)
+  (save-excursion
+    (goto-char (next-single-property-change pos 'invisible))
+    (if (eq (following-char) ?\n)
+	(forward-char)
+      )
+    (point)
+    ))
+
+
 ;;; @ mouse
 ;;;
 

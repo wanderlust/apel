@@ -221,6 +221,48 @@ With optional non-nil ALL, force redisplay of all mode-lines.
 (defun tl:overlay-buffer (overlay))
 
 
+;;; @@ visible/invisible
+;;;
+
+(defun invisible-region (start end)
+  (let ((buffer-read-only nil)		;Okay even if write protected.
+	(modp (buffer-modified-p)))
+    (if (save-excursion
+	  (goto-char (1- end))
+	  (eq (following-char) ?\n)
+	  )
+	(setq end (1- end))
+      )
+    (unwind-protect
+        (subst-char-in-region start end ?\n ?\^M t)
+      (set-buffer-modified-p modp)
+      )))
+
+(defun visible-region (start end)
+  (let ((buffer-read-only nil)		;Okay even if write protected.
+	(modp (buffer-modified-p)))
+    (unwind-protect
+        (subst-char-in-region start end ?\^M ?\n t)
+      (set-buffer-modified-p modp)
+      )))
+
+(defun invisible-p (pos)
+  (save-excursion
+    (goto-char pos)
+    (eq (following-char) ?\^M)
+    ))
+
+(defun next-visible-point (pos)
+  (save-excursion
+    (goto-char pos)
+    (end-of-line)
+    (if (eq (following-char) ?\n)
+	(forward-char)
+      )
+    (point)
+    ))
+
+
 ;;; @ mouse
 ;;;
 

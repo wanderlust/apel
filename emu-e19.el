@@ -40,36 +40,14 @@
 ;;; @ character set
 ;;;
 
+(defconst charset-ascii 0 "Character set of ASCII")
+(defconst charset-latin-1 129 "Character set of ISO-8859-1")
+
+;;; @@ for Mule emulation
+;;;
+
 (defconst lc-ascii 0)
 (defconst lc-ltn1 129)
-
-(defun char-charset (chr)
-  "Return the character set of char CHR.
-\[emu-e19.el; XEmacs 20 emulating function]"
-  (if (< chr 128)
-      lc-ascii
-    lc-ltn1))
-
-(defalias 'char-leading-char 'char-charset)
-
-(defun find-charset-string (str)
-  "Return a list of leading-chars in the string.
-\[emu-e19.el; Mule emulating function]"
-  (if (string-match "[\200-\377]" str)
-      (list lc-ltn1)
-    ))
-
-(defun find-charset-region (start end)
-  "Return a list of leading-chars in the region between START and END.
-\[emu-e19.el; Mule emulating function]"
-  (if (save-excursion
-	(save-restriction
-	  (narrow-to-region start end)
-	  (goto-char start)
-	  (re-search-forward "[\200-\377]" nil t)
-	  ))
-      (list lc-ltn1)
-    ))
 
 
 ;;; @ coding-system
@@ -118,13 +96,54 @@ between START and END. [emu-e19.el; Mule emulating function]"
   )
 
 
-;;; @ character and string
+;;; @ character
 ;;;
 
 (defun char-bytes (chr) 1)
-(defun char-width (chr) 1)
 
-(defalias 'string-width 'length)
+(defun char-columns (character)
+  "Return number of columns a CHARACTER occupies when displayed.
+\[emu-nemacs.el]"
+  1)
+
+(defun char-charset (chr)
+  "Return the character set of char CHR.
+\[emu-e19.el; XEmacs 20 emulating function]"
+  (if (< chr 128)
+      charset-ascii
+    charset-latin-1))
+
+(defun find-charset-string (str)
+  "Return a list of leading-chars in the string.
+\[emu-e19.el; Mule emulating function]"
+  (if (string-match "[\200-\377]" str)
+      (list lc-ltn1)
+    ))
+
+(defun find-charset-region (start end)
+  "Return a list of leading-chars in the region between START and END.
+\[emu-e19.el; Mule emulating function]"
+  (if (save-excursion
+	(save-restriction
+	  (narrow-to-region start end)
+	  (goto-char start)
+	  (re-search-forward "[\200-\377]" nil t)
+	  ))
+      (list lc-ltn1)
+    ))
+
+;;; @@ for Mule emulation
+;;;
+
+(defalias 'char-width 'char-columns)
+
+(defalias 'char-leading-char 'char-charset)
+
+
+;;; @ string
+;;;
+
+(defalias 'string-columns 'length)
 
 (defun string-to-char-list (str)
   (mapcar (function identity) str)
@@ -142,6 +161,11 @@ Optional non-nil arg START-COLUMN specifies the starting column.
       (setq start-column 0))
   (substring str start-column width)
   )
+
+;;; @@ for Mule emulation
+;;;
+
+(defalias 'string-width 'length)
 
 
 ;;; @ end
