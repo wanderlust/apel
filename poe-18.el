@@ -304,9 +304,10 @@ If NOSORT is dummy for compatibility.
   "Return t if FILENAME can be executed by you.
 For a directory, this means you can access files in that directory.
 \[poe-18.el; EMACS 19 emulating function]"
-  (let ((process (start-process "test" nil "test" "-x" filename)))
-    (while (eq 'run (process-status process)))
-    (zerop (process-exit-status process))))
+  (if (file-exists-p filename)
+      (let ((process (start-process "test" nil "test" "-x" filename)))
+	(while (eq 'run (process-status process)))
+	(zerop (process-exit-status process)))))
 
 
 ;;; @ Display Features
