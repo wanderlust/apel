@@ -43,4 +43,18 @@
 
 (setq APEL_DIR (expand-file-name APEL_PREFIX LISPDIR))
 
+(defvar PACKAGEDIR
+  (if (boundp 'early-packages)
+      (let ((dirs (append (if early-package-load-path
+			      early-packages)
+			  (if late-package-load-path
+			      late-packages)
+			  (if last-package-load-path
+			      last-packages)))
+	    dir)
+	(while (not (file-exists-p
+		     (setq dir (car dirs))))
+	  (setq dirs (cdr dirs)))
+	dir)))
+
 ;;; APEL-CFG ends here
