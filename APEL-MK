@@ -53,6 +53,10 @@
 (defun install-apel-package ()
   (config-apel-package)
   (load "EMU-ELS")
+  
+  (compile-elisp-modules emu-modules	".")
+  (compile-elisp-modules apel-modules	".")
+  
   (let ((dir (expand-file-name APEL_PREFIX
 			       (expand-file-name "lisp"
 						 PACKAGEDIR))))
