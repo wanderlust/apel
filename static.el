@@ -60,6 +60,14 @@
 		      (` ((, (car h)) (quote (progn (,@ (cdr h))))))))
 		  handlers))))))
 
+(defmacro static-defconst (symbol initvalue docstring)
+  "`defconst' expression but INITVALUE is evaluated at compile-time.
+
+The variable SYMBOL can be referenced at either compile-time or run-time."
+  (let ((value (eval initvalue)))
+    (eval (` (defconst (, symbol) (quote (, value)) (, docstring))))
+    (` (defconst (, symbol) (quote (, value)) (, docstring)))))
+
 
 ;;; @ end
 ;;;

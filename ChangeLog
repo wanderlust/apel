@@ -1,3 +1,7 @@
+1999-06-11  Tanaka Akira      <akr@jaist.ac.jp>
+
+	* static.el (static-defconst): New function.
+
 1999-06-04  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* pces-xfc.el (insert-file-contents-literally-treats-binary): New
