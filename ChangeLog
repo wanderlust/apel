@@ -1,3 +1,11 @@
+1999-10-04  Keiichi Suzuki  <keiichi@nanap.org>
+
+	* path-util.el (exec-installed-p): Use `file-executable-p' instead
+	of `file-exists-p'.
+	When FILE already inculdes suffix in `exec-suffix-list', do not
+	expand file name with `exec-suffix-list'.
+	(module-installed-p): Do not use `exec-installed-p'.
+
 1999-09-27  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* mcs-xm.el: Use `unless' instead `static-unless' to share *.elc
