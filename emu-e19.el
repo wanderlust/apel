@@ -7,7 +7,7 @@
 ;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;;; Version:
 ;;;	$Id$
-;;; Keywords: emulation, compatibility, Mule
+;;; Keywords: emulation, compatibility, Mule, Latin-1
 ;;;
 ;;; This file is part of tl (Tiny Library).
 ;;;
@@ -69,20 +69,28 @@
 (defconst *ctext* nil)
 (defconst *noconv* nil)
 
+(defun character-encode-string (str coding-system)
+  "Encode the string STR which is encoded in CODING-SYSTEM. [emu-e19.el]"
+  str)
+
+(defun character-decode-string (str coding-system)
+  "Decode the string STR which is encoded in CODING-SYSTEM. [emu-e19.el]"
+  str)
+
+(defun character-encode-region (start end coding-system)
+  "Encode the text between START and END which is
+encoded in CODING-SYSTEM. [emu-e19.el]"
+  t)
+
+(defun character-decode-region (start end coding-system)
+  "Decode the text between START and END which is
+encoded in CODING-SYSTEM. [emu-e19.el]"
+  t)
+
 (defun code-convert-string (str ic oc)
   "Convert code in STRING from SOURCE code to TARGET code,
 On successful converion, returns the result string,
 else returns nil. [emu-e19.el; Mule emulating function]"
-  str)
-
-(defun decode-coding-string (str coding-system)
-  "Decode the string STR which is encoded in CODING-SYSTEM.
-\[emu-mule.el; XEmacs 20 emulating function]"
-  str)
-
-(defun encode-coding-string (str coding-system)
-  "Encode the string STR which is encoded in CODING-SYSTEM.
-\[emu-mule.el; XEmacs 20 emulating function]"
   str)
 
 (defun code-convert-region (beg end ic oc)
@@ -91,19 +99,9 @@ to TARGET. On successful conversion returns t,
 else returns nil. [emu-e19.el; Mule emulating function]"
   t)
 
-(defun decode-coding-region (start end coding-system &optional buffer)
-  "Decode the text between START and END which is encoded in CODING-SYSTEM.
-\[emu-mule.el; XEmacs 20 emulating function]"
-  t)
-
-(defun encode-coding-region (start end coding-system &optional buffer)
-  "Encode the text between START and END which is encoded in CODING-SYSTEM.
-\[emu-mule.el; XEmacs 20 emulating function]"
-  t)
-
 (defun code-detect-region (beg end)
-  "Detect coding-system of the text in the region between START and END.
-\[emu-e19.el; Mule emulating function]"
+  "Detect coding-system of the text in the region
+between START and END. [emu-e19.el; Mule emulating function]"
   )
 
 (defun set-file-coding-system (coding-system &optional force)

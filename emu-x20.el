@@ -123,6 +123,11 @@ in the region between START and END.
 ;;;
 ))
 
+(defalias 'character-encode-string 'encode-coding-string)
+(defalias 'character-decode-string 'decode-coding-string)
+(defalias 'character-encode-region 'encode-coding-region)
+(defalias 'character-decode-region 'decode-coding-region)
+
 
 ;;; @ character and string
 ;;;

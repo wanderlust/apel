@@ -57,6 +57,34 @@
 (defconst *internal*  3)
 (defconst *euc-japan* 3)
 
+(defun character-encode-string (str coding-system)
+  "Encode the string STR which is encoded in CODING-SYSTEM. [emu-nemacs.el]"
+  (convert-string-kanji-code str 3 coding-system)
+  )
+
+(defun character-decode-string (str coding-system)
+  "Decode the string STR which is encoded in CODING-SYSTEM. [emu-nemacs.el]"
+  (convert-string-kanji-code str coding-system 3)
+  )
+
+(defun character-encode-region (start end coding-system)
+  "Encode the text between START and END which is
+encoded in CODING-SYSTEM. [emu-nemacs.el]"
+  (save-excursion
+    (save-restriction
+      (narrow-to-region beg end)
+      (convert-region-kanji-code start end 3 coding-system)
+      )))
+
+(defun character-decode-region (start end coding-system)
+  "Decode the text between START and END which is
+encoded in CODING-SYSTEM. [emu-nemacs.el]"
+  (save-excursion
+    (save-restriction
+      (narrow-to-region beg end)
+      (convert-region-kanji-code start end coding-system 3)
+      )))
+
 (defun code-convert-string (str ic oc)
   "Convert code in STRING from SOURCE code to TARGET code,
 On successful converion, returns the result string,
@@ -65,45 +93,16 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
       (convert-string-kanji-code str ic oc)
     str))
 
-(defun decode-coding-string (str coding-system)
-  "Decode the string STR which is encoded in CODING-SYSTEM.
-\[emu-nemacs.el; XEmacs 20 emulating function]"
-  (convert-string-kanji-code str coding-system 3)
-  )
-
-(defun encode-coding-string (str coding-system)
-  "Encode the string STR which is encoded in CODING-SYSTEM.
-\[emu-nemacs.el; XEmacs 20 emulating function]"
-  (convert-string-kanji-code str 3 coding-system)
-  )
-
 (defun code-convert-region (beg end ic oc)
   "Convert code of the text between BEGIN and END from SOURCE
 to TARGET. On successful conversion returns t,
 else returns nil. [emu-nemacs.el; Mule emulating function]"
-  (if (not (eq ic oc))
-      (convert-region-kanji-code beg end ic oc)
-    ))
-
-(defun decode-coding-region (start end coding-system &optional buffer)
-  "Decode the text between START and END which is encoded in CODING-SYSTEM.
-\[emu-nemacs.el; XEmacs 20 emulating function]"
-  (save-excursion
-    (if buffer
-	(set-buffer buffer)
-      )
-    (convert-region-kanji-code start end coding-system 3)
-    ))
-
-(defun encode-coding-region (start end coding-system &optional buffer)
-  "Encode the text between START and END which is encoded in CODING-SYSTEM.
-\[emu-mule.el; XEmacs 20 emulating function]"
-  (save-excursion
-    (if buffer
-	(set-buffer buffer)
-      )
-    (convert-region-kanji-code start end 3 coding-system)
-    ))
+  (if (/= ic oc)
+      (save-excursion
+	(save-restriction
+	  (narrow-to-region beg end)
+	  (convert-region-kanji-code beg end ic oc)
+	  ))))
 
 (defun code-detect-region (start end)
   "Detect coding-system of the text in the region between START and END.
@@ -287,8 +286,6 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 	(attribute-add-narrow-attribute (cdr ret)
 					(car overlay)(cdr overlay))
       )))
-
-(defun tl:add-text-properties (start end properties &optional object)) 
 
 
 ;;; @ end

@@ -36,36 +36,28 @@
 ;;; @ coding system
 ;;;
 
-(defun decode-coding-region (start end coding-system &optional buffer)
-  "Decode the text between START and END which is encoded in CODING-SYSTEM.
-\[emu-mule.el; XEmacs 20 emulating function]"
-  (save-excursion
-    (if buffer
-	(set-buffer buffer)
-      )
-    (code-convert start end coding-system *internal*)
-    ))
+(defun character-encode-string (str coding-system)
+  "Encode the string STR which is encoded in CODING-SYSTEM.
+\[emu-mule.el]"
+  (code-convert-string str *internal* coding-system)
+  )
 
-(defun encode-coding-region (start end coding-system &optional buffer)
-  "Encode the text between START and END which is encoded in CODING-SYSTEM.
-\[emu-mule.el; XEmacs 20 emulating function]"
-  (save-excursion
-    (if buffer
-	(set-buffer buffer)
-      )
-    (code-convert start end *internal* coding-system)
-    ))
-
-(defun decode-coding-string (str coding-system)
+(defun character-decode-string (str coding-system)
   "Decode the string STR which is encoded in CODING-SYSTEM.
-\[emu-mule.el; XEmacs 20 emulating function]"
+\[emu-mule.el]"
   (code-convert-string str coding-system *internal*)
   )
 
-(defun encode-coding-string (str coding-system)
-  "Encode the string STR which is encoded in CODING-SYSTEM.
-\[emu-mule.el; XEmacs 20 emulating function]"
-  (code-convert-string str *internal* coding-system)
+(defun character-encode-region (start end coding-system)
+  "Encode the text between START and END which is
+encoded in CODING-SYSTEM. [emu-mule.el]"
+  (code-convert start end *internal* coding-system)
+  )
+
+(defun character-decode-region (start end coding-system)
+  "Decode the text between START and END which is
+encoded in CODING-SYSTEM. [emu-mule.el]"
+  (code-convert start end coding-system *internal*)
   )
 
 
@@ -75,30 +67,27 @@
 (cond (running-emacs-19
        (require 'emu-19)
        
+       ;; Suggested by SASAKI Osamu <osamu@shuugr.bekkoame.or.jp>
+       ;; (cf. [os2-emacs-ja:78])
        (defun fontset-pixel-size (fontset)
-	 (let* ((fonts (cdr (get-fontset-info fontset)))
-		(font
-		 (let ((i 0)
-		       (len (length fonts))
-		       n)
-		   (catch 'tag
-		     (while (< i len)
-		       (setq n (aref fonts i))
-		       (if (/= n -1)
-			   (throw 'tag n)
-			 )
-		       (setq i (1+ i))
-		       ))))
-		)
-	   (if font
-	       (aref (get-font-info font) 5)
+	 (let* ((font (get-font-info
+		       (aref (cdr (get-fontset-info fontset)) 0)))
+		(open (aref font 4)))
+	   (if (= open 1)
+	       (aref font 5)
+	     (if (= open 0)
+		 (let ((pat (aref font 1)))
+		   (if (string-match "-[0-9]+-" pat)
+		       (string-to-number
+			(substring
+			 pat (1+ (match-beginning 0)) (1- (match-end 0))))
+		     0)))
 	     )))
        )
       (running-emacs-18
        (require 'emu-18)
        (defun tl:make-overlay (beg end &optional buffer type))
        (defun tl:overlay-put (overlay prop value))
-       (defun tl:add-text-properties (start end properties &optional object))
        ))
 
 

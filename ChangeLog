@@ -1,3 +1,82 @@
+Sat May 11 08:36:35 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.22.4 was released.
+
+	* emu.el (add-to-list): New function for Emacs 19.28 or earlier.
+
+Thu May  9 16:38:20 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (fontset-pixel-size): New implementation.
+
+Thu May  9 15:09:00 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-18.el (tl:add-text-properties): New function; moved from
+ 	emu-nemacs.el or emu-mule.el.
+
+	* emu-mule.el, emu-nemacs.el: Function `tl:add-text-properties'
+ 	was moved to emu-18.el.
+
+Thu May  9 15:01:57 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-18.el (remove-text-properties): New function.
+
+	* emu-nemacs.el (character-encode-string):
+	Renamed from `encode-coding-string'.
+	(character-decode-string): Renamed from `decode-coding-string'.
+
+Thu May  9 14:26:27 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e19.el (character-encode-string): Renamed from
+ 	`encode-coding-string'.
+	(character-decode-string): Renamed from `decode-coding-string'.
+
+Thu May  9 14:07:02 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (character-encode-string): Renamed from
+ 	`encode-coding-string'.
+	(character-decode-string): Renamed from `decode-coding-string'.
+
+Thu May  9 13:48:25 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (character-encode-string, character-decode-string):
+ 	New alias.
+
+	* emu-x20.el (character-encode-region, character-decode-region):
+ 	New alias.
+
+Thu May  9 13:22:18 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e19.el (character-encode-region): New function.
+	(character-decode-region): New function.
+	Function `encode-coding-region' and `decode-coding-region' were
+	abolished.
+
+Thu May  9 12:54:58 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (character-encode-region): New function.
+	(character-decode-region): New function.
+	Function `encode-coding-region' and `decode-coding-region' were
+ 	abolished.
+
+Thu May  9 12:45:03 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el (character-encode-region): fixed for NEmacs bug?
+	(character-decode-region): fixed for NEmacs bug?
+
+	* emu-nemacs.el (code-convert-region): fixed for NEmacs bug?
+	(character-encode-region): New function.
+	(character-decode-region): New function.
+	Function `encode-coding-region' and `decode-coding-region' were
+ 	abolished.
+
+
+Wed May  8 13:56:30 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.22.3 was released.
+
+	* tl-list.el (last): New implementation.
+
+
 Tue May  7 18:16:38 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.22.2 was released.

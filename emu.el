@@ -82,6 +82,18 @@
 	 )
        ))
 
+(or (fboundp 'add-to-list)
+    ;; This function was imported Emacs 19.30.
+    (defun add-to-list (list-var element)
+      "Add to the value of LIST-VAR the element ELEMENT if it isn't there yet.
+If you want to use `add-to-list' on a variable that is not defined
+until a certain package is loaded, you should put the call to `add-to-list'
+into a hook function that will be run only after loading the package.
+\[emu.el; Emacs 19.30 emulating function]"
+      (or (member element (symbol-value list-var))
+	  (set list-var (cons element (symbol-value list-var)))))
+    )
+
 
 ;;; @ XEmacs emulation
 ;;;

@@ -215,7 +215,9 @@ With optional non-nil ALL, force redisplay of all mode-lines.
 ;;; @ text property
 ;;;
 
-(defun tl:set-text-properties (start end props &optional object))
+(defun tl:set-text-properties (start end properties &optional object))
+(defun tl:add-text-properties (start end properties &optional object)) 
+(defun remove-text-properties (start end properties &optional object))
 (defun tl:overlay-buffer (overlay))
 
 
