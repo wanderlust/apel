@@ -1,3 +1,11 @@
+1998-06-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (charset-chars): New function.
+
+	* mule-caesar.el (split-char): Redefine if it has bug.
+	(char-to-octet-list): Use `split-char'.
+
+
 1998-06-01  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 8.13 was released.
@@ -150,7 +158,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
