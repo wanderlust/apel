@@ -17,6 +17,8 @@ LISPDIR = NONE
 PACKAGEDIR = NONE
 VERSION_SPECIFIC_LISPDIR = NONE
 
+GOMI	= *.elc
+
 ARCHIVE_DIR_PREFIX = /pub/mule
 
 elc:
@@ -41,7 +43,7 @@ what-where:
 
 
 clean:
-	-rm *.elc
+	-$(RM) $(GOMI)
 
 
 tar:
