@@ -26,25 +26,25 @@
 
 (eval-and-compile
 
-(defvar notice-non-obvious-broken-facility t
-  "If the value is t, non-obvious broken facility is noticed when
+  (defvar notice-non-obvious-broken-facility t
+    "If the value is t, non-obvious broken facility is noticed when
 `broken-facility' macro is expanded.")
 
-(defun broken-facility-internal (facility &optional docstring assertion)
-  "Declare that FACILITY emulation is broken if ASSERTION is nil."
-  (when docstring
-    (put facility 'broken-docstring docstring))
-  (put facility 'broken (not assertion)))
+  (defun broken-facility-internal (facility &optional docstring assertion)
+    "Declare that FACILITY emulation is broken if ASSERTION is nil."
+    (when docstring
+      (put facility 'broken-docstring docstring))
+    (put facility 'broken (not assertion)))
 
-(defun broken-p (facility)
-  "t if FACILITY emulation is broken."
-  (get facility 'broken))
+  (defun broken-p (facility)
+    "t if FACILITY emulation is broken."
+    (get facility 'broken))
 
-(defun broken-facility-description (facility)
-  "Return description for FACILITY."
-  (get facility 'broken-docstring))
+  (defun broken-facility-description (facility)
+    "Return description for FACILITY."
+    (get facility 'broken-docstring))
 
-)
+  )
 
 (put 'broken-facility 'lisp-indent-function 1)
 (defmacro broken-facility (facility &optional docstring assertion no-notice)
@@ -55,45 +55,47 @@ FACILITY must be symbol.
 
 If ASSERTION is not ommited and evaluated to nil and NO-NOTICE is nil, it is noticed."
   (let ((assertion-value (eval assertion)))
-    (eval `(broken-facility-internal ',facility ,docstring ',assertion-value))
+    (eval (` (broken-facility-internal
+	      '(, facility) (, docstring) '(, assertion-value))))
     (when (and assertion (not assertion-value) (not no-notice)
 	       notice-non-obvious-broken-facility)
       (message "BROKEN FACILITY DETECTED: %s" docstring))
-    `(broken-facility-internal ',facility ,docstring ',assertion-value)))
+    (` (broken-facility-internal
+	'(, facility) (, docstring) '(, assertion-value)))))
 
 (put 'if-broken 'lisp-indent-function 2)
 (defmacro if-broken (facility then &rest else)
   "If FACILITY is broken, expand to THEN, otherwise (progn . ELSE)."
   (if (broken-p facility)
-    then
-    `(progn . ,else)))
+      then
+    (` (progn . (, else)))))
 
 (put 'when-broken 'lisp-indent-function 1)
 (defmacro when-broken (facility &rest body)
   "If FACILITY is broken, expand to (progn . BODY), otherwise nil."
   (when (broken-p facility)
-    `(progn . ,body)))
+    (` (progn . (, body)))))
 
 (put 'unless-broken 'lisp-indent-function 1)
 (defmacro unless-broken (facility &rest body)
   "If FACILITY is not broken, expand to (progn . BODY), otherwise nil."
   (unless (broken-p facility)
-    `(progn . ,body)))
+    (` (progn . (, body)))))
 
 (defmacro check-broken-facility (facility)
   "Check FACILITY is broken or not. If the status is different on
 compile(macro expansion) time and run time, warn it."
-  `(if-broken ,facility
-       (unless (broken-p ',facility)
-	 (message "COMPILE TIME ONLY BROKEN FACILITY DETECTED: %s" 
+  (` (if-broken (, facility)
+	 (unless (broken-p '(, facility))
+	   (message "COMPILE TIME ONLY BROKEN FACILITY DETECTED: %s" 
+		    (or
+		     '(, (broken-facility-description facility))
+		     (broken-facility-description '(, facility)))))
+       (when (broken-p '(, facility))
+	 (message "RUN TIME ONLY BROKEN FACILITY DETECTED: %s" 
 		  (or
-		   ',(broken-facility-description facility)
-		   (broken-facility-description ',facility))))
-     (when (broken-p ',facility)
-       (message "RUN TIME ONLY BROKEN FACILITY DETECTED: %s" 
-		(or
-		 (broken-facility-description ',facility)
-		 ',(broken-facility-description facility))))))
+		   (broken-facility-description '(, facility))
+		   '(, (broken-facility-description facility))))))))
 
 
 ;;; @ end

@@ -24,13 +24,43 @@
 
 ;;; Code:
 
+(require 'ccl)
+(require 'broken)
+
 (if (featurep 'mule)
-    (if (>= emacs-major-version 20)
-	;; for Emacs 20 and XEmacs-mule
-	(require 'pccl-20)
-      ;; for MULE 1.* and 2.*
-      (require 'pccl-om)
-      ))
+    (if (featurep 'xemacs)
+        (if (>= emacs-major-version 21)
+            ;; for XEmacs-21-mule
+            (require 'pccl-20))
+      (if (>= emacs-major-version 20)
+          ;; for Emacs 20
+          (require 'pccl-20)
+        ;; for MULE 1.* and 2.*
+        (require 'pccl-om))))
+
+(broken-facility ccl-usable
+  "Emacs has CCL."
+  (and (featurep 'mule)
+       (if (featurep 'xemacs)
+           (>= emacs-major-version 21)
+         t)))
+
+(defmacro define-long-ccl-program (name ccl-program &optional doc)
+  "Define CCL program as define-ccl-program."
+  (setq ccl-program (eval ccl-program))
+  (let ((try-ccl-compile t))
+    (while try-ccl-compile
+      (setq try-ccl-compile nil)
+      (condition-case sig
+	  (ccl-compile ccl-program)
+	(args-out-of-range
+	 (if (and (eq (car (cdr sig)) ccl-program-vector)
+		  (= (car (cdr (cdr sig))) (length ccl-program-vector)))
+	     (setq ccl-program-vector
+		   (make-vector (* 2 (length ccl-program-vector)) 0)
+		   try-ccl-compile t)
+	   (signal (car sig) (cdr sig))))))
+    (` (define-ccl-program (, name) '(, ccl-program) (, doc)))))
 
 
 ;;; @ end
