@@ -1,5 +1,11 @@
 1999-05-16  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
+	* poe-18.el (inline): New alias for `progn'.
+	(make-obsolete-variable): New function.
+	(dont-compile): New macro.
+
+1999-05-16  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
 	* poe.el (subr-fboundp): Use `defun' instead of `defsubst'.
 
 1999-05-16  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
