@@ -30,6 +30,10 @@
 
 (or (boundp 'emacs-major-version)
     (defconst emacs-major-version (string-to-int emacs-version)))
+(or (boundp 'emacs-minor-version)
+    (defconst emacs-minor-version
+      (string-to-int
+       (substring emacs-version (string-match "18\\." emacs-version)))))
 
 (defvar running-emacs-18 (<= emacs-major-version 18))
 (defvar running-xemacs (string-match "XEmacs" emacs-version))
@@ -60,6 +64,37 @@
       (t
        (require 'emu-e19)
        ))
+
+
+;;; @ MIME charset
+;;;
+
+(defun charsets-to-mime-charset (charsets)
+  "Return MIME charset from list of charset CHARSETS.
+This function refers variable `charsets-mime-charset-alist'
+and `default-mime-charset'. [emu.el]"
+  (if charsets
+      (or (catch 'tag
+	    (let ((rest charsets-mime-charset-alist)
+		  cell csl)
+	      (while (setq cell (car rest))
+		(if (catch 'not-subset
+		      (let ((set1 charsets)
+			    (set2 (car cell))
+			    obj)
+			(while set1
+			  (setq obj (car set1))
+			  (or (memq obj set2)
+			      (throw 'not-subset nil)
+			      )
+			  (setq set1 (cdr set1))
+			  )
+			t))
+		    (throw 'tag (cdr cell))
+		  )
+		(setq rest (cdr rest))
+		)))
+	  default-mime-charset)))
 
 
 ;;; @ Emacs 19.29 emulation

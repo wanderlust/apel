@@ -60,40 +60,6 @@
 ;;; @ character set
 ;;;
 
-;; 94 character set
-(defconst charset-ascii          lc-ascii  "ASCII")
-(defconst charset-jisx0201-kana  lc-kana   "JIS X0201 Katakana")
-(defconst charset-jisx0201-latin lc-roman  "JIS X0201 Latin")
-
-;; 96 character set
-(defconst charset-latin-1        lc-ltn1   "ISO-8859-1 (Latin-1)")
-(defconst charset-latin-2        lc-ltn2   "ISO-8859-2 (Latin-2)")
-(defconst charset-latin-3        lc-ltn3   "ISO-8859-3 (Latin-3)")
-(defconst charset-latin-4        lc-ltn4   "ISO-8859-4 (Latin-4)")
-(defconst charset-cyrillic       lc-crl    "ISO-8859-5 (Cyrillic)")
-(defconst charset-arabic         lc-arb    "ISO-8859-6 (Arabic)")
-(defconst charset-greek          lc-grk    "ISO-8859-7 (Greek)")
-(defconst charset-hebrew         lc-hbw    "ISO-8859-8 (Hebrew)")
-(defconst charset-latin-5        lc-ltn5   "ISO-8859-9 (Latin-5)")
-
-;; 94x94 character set
-(defconst charset-jisx0208-1978  lc-jpold  "JIS X0208-1978")
-(defconst charset-gb2312         lc-cn     "GB 2312-1980")
-(defconst charset-jisx0208       lc-jp     "JIS X0208-1983")
-(defconst charset-ksc5601        lc-kr     "KS C5601-1987")
-(defconst charset-jisx0212       lc-jp2    "JIS X0212-1990")
-(defconst charset-cns11643-1     lc-cns1   "CNS 11643-1986 plane 1")
-(defconst charset-cns11643-2     lc-cns2   "CNS 11643-1986 plane 2")
-(defconst charset-cns11643-3     lc-cns3   "CNS 11643-1986 plane 3")
-(defconst charset-cns11643-4     lc-cns4   "CNS 11643-1986 plane 4")
-(defconst charset-cns11643-5     lc-cns5   "CNS 11643-1986 plane 5")
-(defconst charset-cns11643-6     lc-cns6   "CNS 11643-1986 plane 6")
-(defconst charset-cns11643-7     lc-cns7   "CNS 11643-1986 plane 7")
-
-;; Big 5
-(defconst charset-big5-1         lc-big5-1 "Big5 Level 1")
-(defconst charset-big5-2         lc-big5-2 "Big5 Level 2")
-
 (defalias 'charset-description 'char-description)
 (defalias 'charset-registry    'char-registry)
 (defalias 'charset-columns     'char-width)
@@ -175,34 +141,6 @@ encoded in CODING-SYSTEM. [emu-mule.el]"
 
 (defvar default-mime-charset 'iso-2022-int-1)
 
-(defun charsets-to-mime-charset (charsets)
-  (if charsets
-      (or (catch 'tag
-	    (let ((rest charsets-mime-charset-alist)
-		  cell csl)
-	      (while (setq cell (car rest))
-		(if (catch 'not-subset
-		      (let ((set1 charsets)
-			    (set2 (car cell))
-			    obj)
-			(while set1
-			  (setq obj (car set1))
-			  (or (memq obj set2)
-			      (throw 'not-subset nil)
-			      )
-			  (setq set1 (cdr set1))
-			  )
-			t))
-		    (throw 'tag (cdr cell))
-		  )
-		(setq rest (cdr rest))
-		)))
-	  default-mime-charset)))
-
-(defun detect-mime-charset-region (beg end)
-  (charsets-to-mime-charset
-   (cons lc-ascii (find-charset-region beg end))))
-
 (defvar mime-charset-coding-system-alist
   '((iso-8859-1      . *ctext*)
     (gb2312          . *euc-china*)
@@ -221,6 +159,27 @@ encoded in CODING-SYSTEM. [emu-mule.el]"
       (let ((cs (intern (concat "*" (symbol-name charset) "*"))))
 	(and (coding-system-p cs) cs)
 	)))
+
+(defun detect-mime-charset-region (start end)
+  "Return MIME charset for region between START and END.
+\[emu-mule.el]"
+  (charsets-to-mime-charset
+   (cons lc-ascii (find-charset-region start end))))
+
+(defun encode-mime-charset-region (start end charset)
+  "Encode the text between START and END which is
+encoded in MIME CHARSET. [emu-mule.el]"
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(code-convert start end *internal* cs)
+      )))
+
+(defun encode-mime-charset-string (string charset)
+  "Encode the STRING which is encoded in MIME CHARSET. [emu-mule.el]"
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(code-convert-string string *internal* cs)
+      string)))
 
 
 ;;; @ character

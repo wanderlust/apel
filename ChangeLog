@@ -1,3 +1,67 @@
+Thu Jul 11 14:11:12 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.36 was released.
+
+	* emu.el (emacs-minor-version): New variable for Emacs 18.
+
+Thu Jul 11 13:59:54 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el (charsets-mime-charset-alist): New variable.
+	(default-mime-charset): New variable.
+	(mime-charset-coding-system-alist): New variable.
+	(mime-charset-to-coding-system): New function.
+	(detect-mime-charset-region): New function.
+	(encode-mime-charset-region): New function.
+	(encode-mime-charset-string): New function.
+
+Thu Jul 11 09:04:23 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (charsets-to-mime-charset): New function; moved from
+ 	emu-*.el.
+
+Thu Jul 11 08:58:54 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el, emu-mule.el, emu-e19.el: Function
+ 	`charsets-to-mime-charset' was moved to emu.el.
+
+	* emu-e19.el (charsets-mime-charset-alist): New variable.
+	(default-mime-charset): New variable.
+	(charsets-to-mime-charset): New function.
+	(detect-mime-charset-region): New function.
+	(encode-mime-charset-region): New function.
+	(encode-mime-charset-string): New function.
+
+Wed Jul 10 13:58:11 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (encode-mime-charset-region): New function.
+	(encode-mime-charset-string): New function.
+
+Wed Jul 10 13:55:09 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (detect-mime-charset-region): New function.
+
+	* emu-x20.el (mime-charset-to-coding-system): New function.
+
+	* emu-x20.el (mime-charset-coding-system-alist): New variable.
+
+	* emu-x20.el (charsets-to-mime-charset): New function.
+
+	* emu-x20.el (default-mime-charset): New variable.
+
+	* emu-x20.el: charset constants were abolished.
+	(charsets-mime-charset-alist): New variable.
+
+	* emu-mule.el: charset constants were abolished.
+
+Wed Jul 10 12:54:46 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (encode-mime-charset-string): New function.
+
+Wed Jul 10 11:58:23 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (encode-mime-charset-region): New function.
+
+
 Tue Jul  9 13:16:23 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.31.1 was released.

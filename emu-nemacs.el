@@ -183,6 +183,57 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
        )))
 
 
+;;; @ MIME charset
+;;;
+
+(defvar charsets-mime-charset-alist
+  (list (cons (list charset-ascii) 'us-ascii)))
+
+(defvar default-mime-charset 'iso-2022-jp)
+
+(defvar mime-charset-coding-system-alist
+  '((iso-2022-jp     . 2)
+    (shift_jis       . 1)
+    ))
+
+(defun mime-charset-to-coding-system (charset)
+  (if (stringp charset)
+      (setq charset (intern (downcase charset)))
+    )
+  (cdr (assq charset mime-charset-coding-system-alist))
+  )
+
+(defun detect-mime-charset-region (start end)
+  "Return MIME charset for region between START and END.
+\[emu-nemacs.el]"
+  (if (save-excursion
+	(save-restriction
+	  (narrow-to-region start end)
+	  (goto-char start)
+	  (re-search-forward "[\200-\377]" nil t)
+	  ))
+      default-mime-charset
+    'us-ascii))
+
+(defun encode-mime-charset-region (start end charset)
+  "Encode the text between START and END which is
+encoded in MIME CHARSET. [emu-nemacs.el]"
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(save-excursion
+	  (save-restriction
+	    (narrow-to-region start end)
+	    (convert-region-kanji-code start end 3 cs)
+	    )))))
+
+(defun encode-mime-charset-string (string charset)
+  "Encode the STRING which is encoded in MIME CHARSET. [emu-nemacs.el]"
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(convert-string-kanji-code string 3 cs)
+      string)))
+
+
 ;;; @ character
 ;;;
 

@@ -143,6 +143,36 @@ between START and END. [emu-e19.el; Mule emulating function]"
        )))
 
 
+;;; @ MIME charset
+;;;
+
+(defvar charsets-mime-charset-alist
+  (list (cons (list charset-ascii) 'us-ascii)))
+
+(defvar default-mime-charset 'iso-8859-1)
+
+(defun detect-mime-charset-region (start end)
+  "Return MIME charset for region between START and END.
+\[emu-e19.el]"
+  (if (save-excursion
+	(save-restriction
+	  (narrow-to-region start end)
+	  (goto-char start)
+	  (re-search-forward "[\200-\377]" nil t)
+	  ))
+      default-mime-charset
+    'us-ascii))
+
+(defun encode-mime-charset-region (start end charset)
+  "Encode the text between START and END which is
+encoded in MIME CHARSET. [emu-e19.el]"
+  )
+
+(defun encode-mime-charset-string (string charset)
+  "Encode the STRING which is encoded in MIME CHARSET. [emu-e19.el]"
+  string)
+
+
 ;;; @ character
 ;;;
 

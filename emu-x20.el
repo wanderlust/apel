@@ -1,5 +1,5 @@
 ;;;
-;;; emu-x20.el --- Mule 2 emulation module for XEmacs 20 with Mule
+;;; emu-x20.el --- emu API implementation for XEmacs 20 with mule
 ;;;
 ;;; Copyright (C) 1995 Free Software Foundation, Inc.
 ;;; Copyright (C) 1994 .. 1996 MORIOKA Tomohiko
@@ -38,31 +38,6 @@
 
 ;;; @ character set
 ;;;
-
-(mapcar (lambda (charset)
-	  (set
-	   (cond ((eq charset 'japanese-kana)  'charset-jisx0201-kana)
-		 ((eq charset 'japanese-roman) 'charset-jisx0201-latin)
-		 ((eq charset 'japanese-old)   'charset-jisx0208-1978)
-		 ((eq charset 'chinese-gb)     'charset-gb2312)
-		 ((eq charset 'japanese)       'charset-jisx0208)
-		 ((eq charset 'koran)          'charset-ksc5601)
-		 ((eq charset 'japanese-2)     'charset-jisx0212)
-		 ((eq charset 'chinese-cns-1)  'charset-cns11643-1)
-		 ((eq charset 'chinese-cns-2)  'charset-cns11643-2)
-		 ((eq charset 'chinese-cns-3)  'charset-cns11643-3)
-		 ((eq charset 'chinese-cns-4)  'charset-cns11643-4)
-		 ((eq charset 'chinese-cns-5)  'charset-cns11643-5)
-		 ((eq charset 'chinese-cns-6)  'charset-cns11643-6)
-		 ((eq charset 'chinese-cns-7)  'charset-cns11643-7)
-		 ((eq charset 'chinese-big5-1) 'charset-big5-1)
-		 ((eq charset 'chinese-big5-2) 'charset-big5-2)
-		 (t (intern (concat "charset-" (symbol-name charset))))
-		 )
-	   charset)
-	  )
-	(charset-list)
-	)
 
 (defalias 'charset-description 'charset-doc-string)
 
@@ -163,6 +138,73 @@ in the region between START and END.
 	 process-input-coding-system
 	 process-output-coding-system)
      ,@body))
+
+
+;;; @ MIME charset
+;;;
+
+(defvar charsets-mime-charset-alist
+  '(((ascii)						. us-ascii)
+    ((ascii latin-1)					. iso-8859-1)
+    ((ascii latin-2)					. iso-8859-2)
+    ((ascii latin-3)					. iso-8859-3)
+    ((ascii latin-4)					. iso-8859-4)
+;;; ((ascii cyrillic)					. iso-8859-5)
+    ((ascii cyrillic)					. koi8-r)
+    ((ascii arabic)					. iso-8859-6)
+    ((ascii greek)					. iso-8859-7)
+    ((ascii hebrew)					. iso-8859-8)
+    ((ascii latin-5)					. iso-8859-9)
+    ((ascii japanese-old japanese)			. iso-2022-jp)
+    ((ascii korean)					. euc-kr)
+    ((ascii chinese-big5-1 chinese-big5-2)		. big5)
+    ((ascii japanese-old chinese-gb japanese korean
+	    japanese-2 latin-1 greek)			. iso-2022-jp-2)
+    ((ascii japanese-old chinese-gb japanese korean
+	    japanese-2 chinese-cns-1 chinese-cns-2
+	    latin-1 greek)				. iso-2022-int-1)
+    ))
+
+(defvar default-mime-charset 'iso-2022-int-1)
+
+(defvar mime-charset-coding-system-alist
+  '((iso-8859-1      . ctext)
+    (gb2312          . euc-china)
+    (koi8-r          . koi8)
+    (iso-2022-jp-2   . iso-2022-ss2-7)
+    (x-iso-2022-jp-2 . iso-2022-ss2-7)
+    (shift_jis       . sjis)
+    (x-shiftjis      . sjis)
+    ))
+
+(defun mime-charset-to-coding-system (charset)
+  "Return coding-system by MIME charset. [emu-x20.el]"
+  (if (stringp charset)
+      (setq charset (intern (downcase charset)))
+    )
+  (or (cdr (assq charset mime-charset-coding-system-alist))
+      (and (memq charset (coding-system-list)) charset)
+      ))
+
+(defun detect-mime-charset-region (start end)
+  "Return MIME charset for region between START and END.
+\[emu-x20.el]"
+  (charsets-to-mime-charset (charsets-in-region start end)))
+
+(defun encode-mime-charset-region (start end charset)
+  "Encode the text between START and END which is
+encoded in MIME CHARSET. [emu-x20.el]"
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(encode-coding-region start end cs)
+      )))
+
+(defun encode-mime-charset-string (string charset)
+  "Encode the STRING which is encoded in MIME CHARSET. [emu-x20.el]"
+  (let ((cs (mime-charset-to-coding-system charset)))
+    (if cs
+	(encode-coding-string string cs)
+      string)))
 
 
 ;;; @ character
