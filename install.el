@@ -162,7 +162,7 @@
 						emacs-major-version
 						emacs-minor-version)
 					(car rest))))
-		 (throw 'tag dir)))
+		 (throw 'tag (car rest))))
 	 (setq rest (cdr rest)))))
    (expand-file-name (concat
 		      (if (and		; running-emacs-19_29-or-later
