@@ -45,10 +45,6 @@
 	    ))))
     )
 
-(defun char-to-octet-list (character)
-  "Return list of octets in code table of graphic character set."
-  (cdr (split-char character)))
-
 (defun mule-caesar-region (start end &optional stride-ascii)
   "Caesar rotation of current region.
 Optional argument STRIDE-ASCII is rotation-size for Latin alphabet
@@ -94,7 +90,7 @@ for 96 or 96x96 graphic character set)."
 				       (+ octet stride)
 				     (- octet stride)
 				     )))
-				(char-to-octet-list chr))))
+				(cdr (split-char chr)))))
 	      (delete-char 1)
 	      (insert (make-char (char-charset chr)
 				 (car ret)(car (cdr ret))))
