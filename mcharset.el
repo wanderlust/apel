@@ -1,6 +1,6 @@
 ;;; mcharset.el --- MIME charset API
 
-;; Copyright (C) 1997,1998,1999 Free Software Foundation, Inc.
+;; Copyright (C) 1997,1998,1999,2000 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: emulation, compatibility, Mule
@@ -40,7 +40,7 @@
 
 (defcustom default-mime-charset-for-write
   (if (and (require 'pces) ; for find-coding-system
-	   (find-coding-system 'utf-8))
+	   (mime-charset-p 'utf-8))
       'utf-8
     default-mime-charset)
   "Default value of MIME-charset for encoding.
