@@ -1,3 +1,7 @@
+1999-12-24  Keiichi Suzuki  <keiichi@nanap.org>
+
+	* apel-ver.el: Fix file header.
+
 1999-12-23  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* timezone.el (timezone-abs): Eliminated.
