@@ -1,3 +1,8 @@
+2000-10-10  Keiichi Suzuki  <keiichi@mdcnet.co.jp>
+
+	* product.el (product-version-as-string): New function.
+	(product-string-1): Use `product-version-as-string'.
+
 2000-08-10  MORIOKA Tomohiko  <tomo@m17n.org>
 
 	* poem-e20_3.el: Require `pym'.
