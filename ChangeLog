@@ -1,5 +1,7 @@
 1998-06-01  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* APEL: Version 8.13 was released.
+
 	* emu-x20.el (mime-character-unification-limit-size): Change
 	default value to 2048.
 
