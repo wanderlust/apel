@@ -1,3 +1,11 @@
+Fri May 17 08:12:46 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.25 was released.
+
+	* tl-822.el (rfc822/analyze-comment): Unused local variable `chr'
+ 	was abolished.
+
+
 Wed May 15 14:23:50 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.24 was released.
@@ -16,6 +24,9 @@ Wed May 15 14:12:22 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
  	abolished.
 
 Wed May 15 14:05:34 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (string-to-int-list): New function; moved from
+ 	em-xemacs.el.
 
 	* emu-xemacs.el: Function `string-to-int-list' for XEmacs 19 was
  	deleted, for XEmacs 20 with Mule was moved to emu-x20.el.
