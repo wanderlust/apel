@@ -1,10 +1,9 @@
 ;;; std11.el --- STD 11 functions for GNU Emacs
 
-;; Copyright (C) 1995,1996,1997 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author:   MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: mail, news, RFC 822, STD 11
-;; Version: $Id$
 
 ;; This file is part of MU (Message Utilities).
 
@@ -27,6 +26,10 @@
 
 (autoload 'buffer-substring-no-properties "emu")
 (autoload 'member "emu")
+
+(eval-when-compile
+  (provide 'std11)
+  (require 'std11-parse))
 
 
 ;;; @ field
