@@ -28,8 +28,8 @@
 
 ;;; Code:
 
-(require 'emu-xemacs)
-(require 'emu-20)
+;; (require 'emu-xemacs)
+;; (require 'emu-20)
 
 
 (and (coding-system-property 'iso-2022-jp 'input-charset-conversion)
