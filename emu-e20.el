@@ -37,11 +37,8 @@
     (cond ((> height 0) height)
 	  ((string-match "-\\([0-9]+\\)-" fontset)
 	   (string-to-number
-	    (substring fontset (match-beginning 1)(match-end 1))
-	    )
-	   )
-	  (t 0)
-	  )))
+	    (substring fontset (match-beginning 1)(match-end 1))))
+	  (t 0))))
 
 
 ;;; @ character set
@@ -51,14 +48,12 @@
 
 (defun find-non-ascii-charset-string (string)
   "Return a list of charsets in the STRING except ascii."
-  (delq 'ascii (find-charset-string string))
-  )
+  (delq 'ascii (find-charset-string string)))
 
 (defun find-non-ascii-charset-region (start end)
   "Return a list of charsets except ascii
 in the region between START and END."
-  (delq 'ascii (find-charset-string (buffer-substring start end)))
-  )
+  (delq 'ascii (find-charset-string (buffer-substring start end))))
 
 
 ;;; @ coding system
@@ -159,8 +154,7 @@ in the region between START and END."
   "Return string of category mnemonics for CHAR in TABLE.
 CHAR can be any multilingual character
 TABLE defaults to the current buffer's category table."
-  (category-set-mnemonics (char-category-set character))
-  )
+  (category-set-mnemonics (char-category-set character)))
 
 
 ;;; @ CCL
@@ -168,54 +162,58 @@ TABLE defaults to the current buffer's category table."
 (require 'ccl)
 
 (eval-when-compile
-(defconst ccl-use-symbol-as-program
-  (progn
-    (define-ccl-program ew-ccl-identity-program
-      '(1 ((read r0) (loop (write-read-repeat r0)))))
-    (condition-case nil
-        (progn
-          (funcall
-	   (if (fboundp 'ccl-vector-program-execute-on-string)
-	       'ccl-vector-program-execute-on-string
-	     'ccl-execute-on-string)
-	   'ew-ccl-identity-program
-	   (make-vector 9 nil)
-	   "")
-          t)
-      (error nil)))
-  "t if CCL related builtins accept symbol as CCL
-program. (20.2 with ExCCL, 20.3 or later)
+  (defconst ccl-use-symbol-as-program
+    (progn
+      (define-ccl-program ew-ccl-identity-program
+	'(1 ((read r0) (loop (write-read-repeat r0)))))
+      (condition-case nil
+	  (progn
+	    (funcall
+	     (if (fboundp 'ccl-vector-program-execute-on-string)
+		 'ccl-vector-program-execute-on-string
+	       'ccl-execute-on-string)
+	     'ew-ccl-identity-program
+	     (make-vector 9 nil)
+	     "")
+	    t)
+	(error nil)))
+    "\
+T if CCL related builtins accept symbol as CCL program.
+(20.2 with ExCCL, 20.3 or later)
 Otherwise nil (20.2 without ExCCL or former).
 
 Because emu provides functions accepting symbol as CCL program,
 user programs should not refer this variable.")
-)
+  )
 
 (eval-and-compile
-(defconst ccl-use-symbol-as-program
-  (eval-when-compile ccl-use-symbol-as-program))
+  (defconst ccl-use-symbol-as-program
+    (eval-when-compile ccl-use-symbol-as-program))
 
-(defun make-ccl-coding-system
-  (coding-system mnemonic doc-string decoder encoder)
-  "Define a new CODING-SYSTEM (symbol) by CCL programs
+  (defun make-ccl-coding-system
+    (coding-system mnemonic doc-string decoder encoder)
+    "\
+Define a new CODING-SYSTEM (symbol) by CCL programs
 DECODER (symbol) and ENCODER (symbol)."
-  (unless ccl-use-symbol-as-program
-    (setq decoder (symbol-value decoder))
-    (setq encoder (symbol-value encoder)))
-  (make-coding-system coding-system 4 mnemonic doc-string
-		      (cons decoder encoder)))
-)
+    (unless ccl-use-symbol-as-program
+      (setq decoder (symbol-value decoder))
+      (setq encoder (symbol-value encoder)))
+    (make-coding-system coding-system 4 mnemonic doc-string
+			(cons decoder encoder)))
+  )
 
 (eval-when-compile
-(define-ccl-program test-ccl-eof-block
-  '(1
-    (read r0)
-    (write "[EOF]")))
+  (define-ccl-program test-ccl-eof-block
+    '(1
+      (read r0)
+      (write "[EOF]")))
 
-(make-ccl-coding-system
- 'test-ccl-eof-block-cs ?T "CCL_EOF_BLOCK tester"
- 'test-ccl-eof-block 'test-ccl-eof-block)
-)
+  (unless (coding-system-p 'test-ccl-eof-block-cs)
+    (make-ccl-coding-system
+     'test-ccl-eof-block-cs ?T "CCL_EOF_BLOCK tester"
+     'test-ccl-eof-block 'test-ccl-eof-block)
+    )
+  )
 
 (defconst ccl-encoder-eof-block-is-broken
   (eval-when-compile
@@ -237,30 +235,30 @@ decoding.")
 
 (unless ccl-use-symbol-as-program
 
-(when (subrp (symbol-function 'ccl-execute))
-  (fset 'ccl-vector-program-execute
-	(symbol-function 'ccl-execute))
-  (defun ccl-execute (ccl-prog reg)
-    "Execute CCL-PROG `ccl-vector-program-execute'.
+  (when (subrp (symbol-function 'ccl-execute))
+    (fset 'ccl-vector-program-execute
+	  (symbol-function 'ccl-execute))
+    (defun ccl-execute (ccl-prog reg)
+      "\
+Execute CCL-PROG with registers initialized by REGISTERS.
 If CCL-PROG is symbol, it is dereferenced.
 \[Emacs 20.3 emulating function]"
-    (ccl-vector-program-execute
-     (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
-     reg)))
+      (ccl-vector-program-execute
+       (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
+       reg)))
 
-(when (subrp (symbol-function 'ccl-execute-on-string))
-  (fset 'ccl-vector-program-execute-on-string
-	(symbol-function 'ccl-execute-on-string))
-  (defun ccl-execute-on-string (ccl-prog status &optional contin)
-    "Execute CCL-PROG `ccl-vector-program-execute-on-string'.
+  (when (subrp (symbol-function 'ccl-execute-on-string))
+    (fset 'ccl-vector-program-execute-on-string
+	  (symbol-function 'ccl-execute-on-string))
+    (defun ccl-execute-on-string (ccl-prog status string &optional contin)
+      "\
+Execute CCL-PROG with initial STATUS on STRING.
 If CCL-PROG is symbol, it is dereferenced.
 \[Emacs 20.3 emulating function]"
-    (ccl-vector-program-execute-on-string
-     (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
-     status
-     contin)))
-
-)
+      (ccl-vector-program-execute-on-string
+       (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
+       status string contin)))
+  )
 
 
 ;;; @ end
