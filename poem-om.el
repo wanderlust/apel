@@ -47,6 +47,56 @@
 			 pat (1+ (match-beginning 0)) (1- (match-end 0))))
 		     0))
 	       ))))
+
+       (define-ccl-program ccl-decode-raw-text
+	 '(1
+	   ((read r1 r0)
+	    (loop
+	      (r2 = (r1 == ?\x0d))
+	      (r2 &= (r0 == ?\x0a))
+	      (if r2
+		  ((write ?\x0a)
+		   (read r1 r0)
+		   (repeat))
+		((write r1)
+		 (r1 = (r0 + 0))
+		 (read r0)
+		 (repeat)
+		 ))))
+	   (write r1))
+	 "Convert line-break code from CRLF to LF.")
+
+       (define-ccl-program ccl-encode-raw-text
+	 '(1
+	   ((read r0)
+	    (loop (write-read-repeat r0))))
+	 "Pass through without any conversions.")
+
+       (define-ccl-program ccl-encode-raw-text-CRLF
+	 '(2
+	   ((loop
+	      (read r0)
+	      (if (r0 == ?\x0a)
+		  (write "\x0d\x0a")
+		(write r0))
+	      (repeat))))
+	 "Convert line-break code from LF to CRLF.")
+
+       (make-coding-system
+	'raw-text 4 ?=
+	"No conversion"
+	nil
+	(cons ccl-decode-raw-text ccl-encode-raw-text))
+
+       (make-coding-system
+	'raw-text-dos 4 ?=
+	"No conversion"
+	nil
+	(cons ccl-decode-raw-text ccl-encode-raw-text-CRLF))
+
+       (make-coding-system
+	'binary nil ?=
+	"No conversion")
        ))
 
 
@@ -202,6 +252,10 @@ find-file-hooks, etc.
 	  (replace-match "\\1\r\n"))
 	(write-region-as-binary (point-min)(point-max)
 				filename append visit lockname))))
+
+  (defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
+    "Like `find-file-noselect', q.v., but don't code and format conversion."
+    (as-binary-input-file (find-file-noselect filename nowarn rawfile)))
   )
  (t
   ;; for MULE 2.3 based on Emacs 19.28.
@@ -222,11 +276,11 @@ find-file-hooks, etc.
 	  (replace-match "\\1\r\n"))
 	(write-region-as-binary (point-min)(point-max)
 				filename append visit))))
-  ))
 
-(defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but don't code and format conversion."
-  (as-binary-input-file (find-file-noselect filename nowarn rawfile)))
+  (defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
+    "Like `find-file-noselect', q.v., but don't code and format conversion."
+    (as-binary-input-file (find-file-noselect filename nowarn)))
+  ))
 
 (defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but it does not code and format conversion
@@ -251,49 +305,48 @@ except for line-break code."
 ;;; @ with code-conversion
 ;;;
 
-(defun insert-file-contents-as-specified-coding-system (filename &rest args)
-  "Like `insert-file-contents', q.v., but code convert by the specified
-coding-system. ARGS the optional arguments are passed to
-`insert-file-contents' except for the last element. The last element of
-ARGS must be a coding-system."
-  (let ((file-coding-system-for-read (car (reverse args))))
-    (apply 'insert-file-contents filename (nreverse (cdr (nreverse args))))))
+(defun insert-file-contents-as-coding-system
+  (coding-system filename &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but CODING-SYSTEM the first arg will
+be applied to `file-coding-system-for-read'."
+  (let ((file-coding-system-for-read coding-system))
+    (insert-file-contents filename visit beg end replace)))
 
 (cond
  (running-emacs-19_29-or-later
   ;; for MULE 2.3 based on Emacs 19.34.
-  (defun write-region-as-specified-coding-system (start end filename
-							&rest args)
-    "Like `write-region', q.v., but code convert by the specified
-coding-system. ARGS the optional arguments are passed to `write-region'
-except for the last element. The last element of ARGS must be a
-coding-system."
-    (let ((file-coding-system (car (reverse args)))
+  (defun write-region-as-coding-system
+    (coding-system start end filename &optional append visit lockname)
+    "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
+applied to `file-coding-system'."
+    (let ((file-coding-system coding-system)
 	  jka-compr-compression-info-list jam-zcat-filename-list)
-      (apply 'write-region start end filename
-	     (nreverse (cdr (nreverse args))))))
+      (write-region start end filename append visit lockname)))
+
+  (defun find-file-noselect-as-coding-system
+    (coding-system filename &optional nowarn rawfile)
+    "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
+be applied to `file-coding-system-for-read'."
+    (let ((file-coding-system-for-read coding-system))
+      (find-file-noselect filename nowarn rawfile)))
   )
  (t
   ;; for MULE 2.3 based on Emacs 19.28.
-  (defun write-region-as-specified-coding-system (start end filename
-							&rest args)
-    "Like `write-region', q.v., but code convert by the specified
-coding-system. ARGS the optional arguments are passed to `write-region'
-except for the last element. The last element of ARGS must be a
-coding-system."
-    (let ((code (car (reverse args)))
-	  (args (nreverse (cdr (nreverse args))))
+  (defun write-region-as-coding-system
+    (coding-system start end filename &optional append visit lockname)
+    "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
+applied to `file-coding-system'."
+    (let ((file-coding-system coding-system)
 	  jka-compr-compression-info-list jam-zcat-filename-list)
-      (write-region start end filename (car args) (car (cdr args)) code)))
-  ))
+      (write-region start end filename append visit)))
 
-(defun find-file-noselect-as-specified-coding-system (filename &optional args)
-  "Like `find-file-noselect', q.v., but code convert by the specified
-coding-system. ARGS the optional arguments are passed to `find-file-noselect'
-except for the last element. The last element of ARGS must be a
-coding-system."
-  (let ((file-coding-system-for-read (car (reverse args))))
-    (apply' find-file-noselect filename (nreverse (cdr (nreverse args))))))
+  (defun find-file-noselect-as-coding-system
+    (coding-system filename &optional nowarn rawfile)
+    "Like `find-file-noselect', q.v., but CODING-SYSTEM the first arg will
+be applied to `file-coding-system-for-read'."
+    (let ((file-coding-system-for-read coding-system))
+      (find-file-noselect filename nowarn)))
+  ))
 
 
 ;;; @ buffer representation
