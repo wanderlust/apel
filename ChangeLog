@@ -1,3 +1,7 @@
+2000-12-30  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	*  APEL: Version 10.3 released.
+ 
 2000-12-28  Tanaka Akira      <akr@m17n.org>
 
 	* pccl-20.el (ccl-compat): new advice for `make-coding-system' of
@@ -43,7 +47,7 @@
 	(minor-mode-map-alist): Ditto.
 
 	* README.en ((d) make.bat (for MS-DOS family)): New section.
-	* README.ja ((d) make.bat を利用する (MS-DOS 系 OS の場合)):
+	* README.ja ((d) make.bat を利用する (MS-DOS 系 OS の場合)):
 	Ditto.
 
 2000-12-22  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
@@ -2829,7 +2833,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
