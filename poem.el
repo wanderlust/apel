@@ -76,10 +76,10 @@ If STRING is multibyte, the result is STRING itself.
 
 (defun-maybe char-octet (ch &optional n)
   "Return the octet numbered N (should be 0 or 1) of char CH.
-N defaults to 0 if omitted. [XEmacs-mule emulating function]"
+N defaults to 0 if omitted. [XEmacs-mule emulating function]""
   (or (nth (if n
-	       (1+ n)
-	     1)
+	       1
+	     (1+ n))
 	   (split-char ch))
       0))
 

@@ -1,34 +1,3 @@
-1998-10-26  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* poe.el (remove-local-hook): Use `defmacro-maybe'.
-
-1998-10-26  Mikio Nakajima    <minakaji@osaka.email.ne.jp>
-
-	* poe.el (add-local-hook): fixed.
-	(remove-local-hook): fixed.
-
-
-1998-10-26  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* APEL: Version 9.6 was released.
-
-1998-10-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* poe.el (rassoc): New function.
-
-1998-10-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* poem-e20_3.el (characterp): New alias.
-
-	* poe-xemacs.el (eval-after-load): New function.
-
-	* poem.el (characterp): New alias.
-	(char-octet): New function.
-
-	* poe.el (make-local-hook): New macro.
-	(add-local-hook): New macro.
-	(remove-local-hook): New macro.
-
 1998-10-25  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* poem.el, poem-20.el, poem-e20_3.el, poem-e20.el, poem-xm.el: Add
