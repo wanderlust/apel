@@ -1,50 +1,5 @@
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
-	* emu.el, emu-20.el: Move constant `*noconv*' from emu-20.el to
-	emu.el.
-
-1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-	
-	* emu.el, EMU-ELS: Split core part about MULE from emu to poem.
-
-	* poem.el: New file.
-
-	* poem-e20_3.el: New file (renamed from emu-e20_3.el).
-
-	* poem-e20_2.el: New file (renamed from poem-e20_2.el).
-
-	* poem-xm.el: New file (split core part of MULE from emu-x20.el).
-
-	* emu-x20.el: Split core part of MULE to poem-xm.el.
-
-	* poem-om.el: New file (split core part of MULE from emu-mule.el).
-
-	* emu-mule.el: Split core part of MULE to poem-om.el.
-
-	* poem-ltn1.el: New file (split core part of MULE from
-	emu-latin1.el).
-
-	* emu-latin1.el: Split core part of MULE to poem-ltn1.el.
-
-	* poem-e20.el: New file (split core part of MULE from emu-e20.el).
-
-	* emu-e20.el: Split core part of MULE to poem-e20.el.
-
-	* poem-20.el: New file (split core part of MULE from emu-20.el).
-
-	* emu-20.el: Split core part of MULE to poem-20.el.
-
-	* poem-nemacs.el: New file (split core part of MULE from
-	emu-nemacs.el).
-
-	* emu-nemacs.el: Split core part of MULE to poem-nemacs.el; move
-	overlay emulation code of Nemacs to poe-18.el.
-
-	* poe-18.el: Move overlay emulation code of Nemacs from
-	emu-nemacs.el.
-
-1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
 	* poe.el, emu.el: Move function `point-at-bol' and `point-at-eol'
 	from emu.el to poe.el.
 

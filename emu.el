@@ -101,17 +101,6 @@
        ))
 
 
-;;; @ Mule emulating aliases
-;;;
-;;; You should not use it.
-
-(or (boundp '*noconv*)
-    (defconst *noconv* 'binary
-      "Coding-system for binary.
-This constant is defined to emulate old MULE anything older than MULE 2.3.
-It is obsolete, so don't use it."))
-
-
 ;;; @ MIME charset
 ;;;
 
