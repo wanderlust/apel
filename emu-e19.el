@@ -288,8 +288,9 @@ Optional non-nil arg START-COLUMN specifies the starting column.
   (substring str start-column width)
   )
 
-;;; @@ for old MULE emulation
+;;; @@ obsoleted aliases
 ;;;
+;;; You should not use them.
 
 (defalias 'string-columns 'length)
 (make-obsolete 'string-columns 'string-width)

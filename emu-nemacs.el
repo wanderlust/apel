@@ -335,22 +335,11 @@ find-file-hooks, etc.
       1
     2))
 
+(defalias 'char-length 'char-bytes)
+
 (defmacro char-next-index (char index)
   "Return index of character succeeding CHAR whose index is INDEX."
   (` (1+ index)))
-
-;;; @@ Old Mule emulating aliases
-;;;
-;;; You should not use them.
-
-;;(defalias 'char-leading-char 'char-charset)
-
-;;; @@ obsoleted aliases
-;;;
-;;; You should not use them.
-
-(defalias 'char-length 'char-bytes)
-;;(defalias 'char-columns 'char-width)
 
 
 ;;; @ string
