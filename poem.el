@@ -46,6 +46,10 @@
        ;; for Nemacs and Nepoch
        (require 'poem-nemacs)
        )
+      ((featurep 'file-coding)
+       ;; file coding xemacs
+       (require 'poem-xfc)
+       )
       (t
        (require 'poem-ltn1)
        ))
