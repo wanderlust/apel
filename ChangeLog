@@ -1,3 +1,11 @@
+1999-11-12  Keiichi Suzuki  <keiichi@nanap.org>
+
+	* product.el: New file.
+
+	* apel-ver.el: New file.
+
+	* APEL-ELS (apel-modules): Add `apel-ver' and `product'.
+
 1999-11-11  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* localhook.el, pcustom.el: checkdoc.
@@ -2192,7 +2200,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
