@@ -38,15 +38,17 @@ Otherwise nil (20.2 without ExCCL or former).
 Because emu provides functions accepting symbol as CCL program,
 user programs should not refer this variable.")
 
-(defun make-ccl-coding-system
-  (coding-system mnemonic doc-string decoder encoder)
-  "Define a new CODING-SYSTEM (symbol) by CCL programs
+(eval-and-compile
+  (defun make-ccl-coding-system
+    (coding-system mnemonic doc-string decoder encoder)
+    "Define a new CODING-SYSTEM (symbol) by CCL programs
 DECODER (symbol) and ENCODER (symbol)."
-  (setq decoder (symbol-value decoder)
-	encoder (symbol-value encoder))
-  (make-coding-system coding-system 4 mnemonic doc-string
-		      nil ; Mule takes one more optional argument: EOL-TYPE.
-		      (cons decoder encoder)))
+    (setq decoder (symbol-value decoder)
+	  encoder (symbol-value encoder))
+    (make-coding-system coding-system 4 mnemonic doc-string
+			nil ; Mule takes one more optional argument: EOL-TYPE.
+			(cons decoder encoder)))
+  )
 
 (eval-when-compile
   (define-ccl-program test-ccl-eof-block

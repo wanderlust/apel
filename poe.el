@@ -209,6 +209,11 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
   "(when COND BODY...): if COND yields non-nil, do BODY, else return nil."
   (list 'if cond (cons 'progn body)))
 
+;; This macro was imported Emacs 20.3.
+(defmacro-maybe unless (cond &rest body)
+  "(unless COND BODY...): if COND yields nil, do BODY, else return nil."
+  (cons 'if (cons cond (cons nil body))))
+
 (defmacro-maybe save-current-buffer (&rest body)
   "Save the current buffer; execute BODY; restore the current buffer.
 Executes BODY just like `progn'."
