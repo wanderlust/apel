@@ -139,13 +139,8 @@ It must be symbol."
 
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END."
-  (let ((charsets (find-charset-region start end)))
-    (or (charsets-to-mime-charset charsets)
-	(if default-mime-charset-detect-method-for-write
-	    (funcall default-mime-charset-detect-method-for-write
-		     'region charsets start end)
-	  default-mime-charset-for-write)
-	)))
+  (find-mime-charset-by-charsets (find-charset-region start end)
+				 'region start end))
 
 (defun write-region-as-mime-charset (charset start end filename
 					     &optional append visit lockname)
