@@ -244,7 +244,7 @@ find-file-hooks, etc.
 			  ;; variables in the wrong buffer.
 			  (if orig-buf (set-buffer orig-buf))
 			  (funcall si:enriched-initial-annotation)))))))
-	     (si::enriched-encode))))))
+	     (si::enriched-encode from to))))))
 
 
 ;;; @ end
