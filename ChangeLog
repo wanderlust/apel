@@ -1,3 +1,8 @@
+1998-08-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-20.el (mime-charset-coding-system-alist): Add `unknown' and
+	`x-unknown'.
+
 1998-08-12  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-x20.el: Redefine coding-system `ctext' if `ctext-dos' is not
