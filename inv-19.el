@@ -55,6 +55,7 @@
 ;;; @ end
 ;;;
 
-(provide 'inv-19)
+(require 'product)
+(product-provide (provide 'inv-19) (require 'apel-ver))
 
 ;;; inv-19.el ends here

@@ -1,9 +1,9 @@
-;;; invisible.el --- hide region
+;;; pces.el --- Portable Character Encoding Scheme (coding-system) features
 
-;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
+;; Copyright (C) 1998,1999 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Keywords: invisible, text-property, region
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
+;; Keywords: coding-system, emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
 
@@ -24,19 +24,36 @@
 
 ;;; Code:
 
-(cond
- ((featurep 'xemacs)
-  (require 'inv-xemacs))
- ((>= emacs-major-version 19)
-  (require 'inv-19))
- (t
-  (require 'inv-18)))
+(require 'poe)
 
+(eval-and-compile
+  (unless (fboundp 'open-network-stream)
+    (require 'tcp)))
 
+(cond ((featurep 'xemacs)
+       (if (featurep 'file-coding)
+	   (require 'pces-xfc)
+	 (require 'pces-raw)
+	 ))
+      ((featurep 'mule)
+       (if (>= emacs-major-version 20)
+	   (require 'pces-e20)
+	 ;; for MULE 1.* and 2.*
+	 (require 'pces-om)
+	 ))
+      ((boundp 'NEMACS)
+       ;; for Nemacs and Nepoch
+       (require 'pces-nemacs)
+       )
+      (t
+       (require 'pces-raw)
+       ))
+
+	 
 ;;; @ end
 ;;;
 
 (require 'product)
-(product-provide (provide 'invisible) (require 'apel-ver))
+(product-provide (provide 'pces) (require 'apel-ver))
 
-;;; invisible.el ends here
+;;; pces.el ends here

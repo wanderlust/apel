@@ -25,7 +25,8 @@
 
 ;;; Code:
 
-(require 'emu)
+(require 'emu)				; for backward compatibility.
+(require 'poe)				; delete.
 (require 'alist)
 
 
@@ -184,6 +185,7 @@
 ;;; @ end
 ;;;
 
-(provide 'atype)
+(require 'product)
+(product-provide (provide 'atype) (require 'apel-ver))
 
 ;;; atype.el ends here

@@ -62,6 +62,7 @@
 ;;; @ end
 ;;;
 
-(provide 'inv-xemacs)
+(require 'product)
+(product-provide (provide 'inv-xemacs) (require 'apel-ver))
 
 ;;; inv-xemacs.el ends here

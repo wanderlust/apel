@@ -1,3 +1,36 @@
+1999-12-24  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* APEL: Version 10.0 released.
+
+1999-12-24  Keiichi Suzuki  <keiichi@nanap.org>
+
+	* apel-ver.el: Fix file header.
+
+1999-12-23  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* timezone.el (timezone-abs): Eliminated.
+	(timezone-zone-to-minute): Use `abs' instead of `timezone-abs'.
+
+	* poe-18.el (current-time-zone): Use `abs'.
+
+1999-12-23  Keiichi Suzuki  <keiichi@nanap.org>
+
+	* product.el: Fix file header. `checkdoc' fix.
+
+	* apel-ver.el: Fix file header.
+
+1999-12-22  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* APEL-ELS, EMU-ELS: product.el, apel-ver.el, time-stamp.el,
+	and timezone.el are version-dependent.
+
+	* product.el (emacs-major-version, emacs-minor-version): Moved
+	from poe.el.
+
+	* poe.el (emacs-major-version, emacs-minor-version): Removed.
+
+	* pym.el: Add product information.
+
 1999-12-22  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* poe.el (string-to-int): Commented out an alias for
@@ -143,6 +176,78 @@
 	Modified some comments.
 
 
+1999-12-22  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* timezone.el: Modified comments.
+	(toplevel): Require 'product.
+
+1999-12-21  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* apel-ver.el: Footer fix.
+
+1999-12-21  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe-18.el (current-time-zone): New function.
+	(current-time-world-timezones, current-time-local-timezone):
+	New variables.
+	(current-time-string): Use `current-time-zone' to get local timezone.
+	(current-time): Ditto.
+
+	* timezone.el: New file.
+
+	* APEL-ELS (apel-modules): Add `timezone' if existing timezone.el
+	has y2k problem.
+
+	* product.el (product-string-1): Use `int-to-string' instead of
+	`number-to-string'.
+
+1999-12-20  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* apel-ver.el, product.el: Header fix.
+
+1999-12-20  Keiichi Suzuki  <keiichi@nanap.org>
+
+	* alist.el, atype.el, broken.el, calist.el, emu-mule.el, emu.el,
+	  env.el, file-detect.el, filename.el, install.el, inv-18.el,
+	  inv-19.el, inv-xemacs.el, invisible.el, localhook.el,
+	  mcharset.el, mcs-20.el, mcs-e20.el, mcs-ltn1.el, mcs-nemacs.el,
+	  mcs-om.el, mcs-xm.el, mcs-xmu.el, mule-caesar.el, path-util.el,
+	  pccl-20.el, pccl-om.el, pccl.el, pces-20.el, pces-e20.el,
+	  pces-e20_2.el, pces-nemacs.el, pces-om.el, pces-raw.el,
+	  pces-xfc.el, pces-xm.el, pces.el, pcustom.el, poe-18.el,
+	  poe-xemacs.el, poe.el, poem-e20.el, poem-e20_2.el,
+	  poem-e20_3.el, poem-ltn1.el, poem-nemacs.el, poem-om.el,
+	  poem-xm.el, poem.el, richtext.el, static.el, time-stamp.el,
+	  tinycustom.el, tinyrich.el (TopLevel): Add product information.
+
+	* Sync up with apel-product.
+
+* 1999-11-12  Keiichi Suzuki  <keiichi@nanap.org>
+
+	* product.el (product-define): Add new slot `version-string'.
+	(product-provide): Likewise.
+	(product-version-string): New function.
+	(product-set-version-string): New function.
+	(product-string-1): Use `version-string'.
+	(product-for-each): New function.
+	(product-string): Separate `product-string' and
+	`product-string-verbose'.
+	(product-string-verbose): Likewise.
+	(product-parse-version-string): New function.
+
+* 1999-11-12  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* product.el: Some `checkdoc' fixes.
+	(product-version>=): Eliminate local variable.
+
+* 1999-11-12  Keiichi Suzuki  <keiichi@nanap.org>
+
+	* product.el: New file.
+
+	* apel-ver.el: New file.
+
+	* APEL-ELS (apel-modules): Add `apel-ver' and `product'.
+
 1999-11-25  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* poe-18.el (current-time-string, current-time): New functions.
@@ -163,7 +268,7 @@
 
 1999-11-08  Yuuichi Teranishi  <teranisi@gohome.org>
 
-	* poe-18.el (put-text-property, next-property-change, 
+	* poe-18.el (put-text-property, next-property-change,
 	text-properties-at): Define as null function.
 
 1999-11-02  Katsumi Yamaoka   <yamaoka@jpl.org>
@@ -2341,7 +2446,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>

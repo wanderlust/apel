@@ -58,7 +58,10 @@
 
 ;;; Code:
 
-(provide 'localhook)			; beware of circular dependency.
+;; beware of circular dependency.
+(require 'product)
+(product-provide (provide 'localhook) (require 'apel-ver))
+
 (require 'poe)				; this file is loaded from poe.el.
 
 ;; These two functions are not complete, but work enough for our purpose.

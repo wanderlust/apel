@@ -109,6 +109,7 @@ When called interactively, prompt for the name of the color to use."
 ;;; @ end
 ;;;
 
-(provide 'poe-xemacs)
+(require 'product)
+(product-provide (provide 'poe-xemacs) (require 'apel-ver))
 
 ;;; poe-xemacs.el ends here

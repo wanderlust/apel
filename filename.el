@@ -25,8 +25,10 @@
 
 ;;; Code:
 
-(require 'emu)
-(require 'cl)
+(require 'emu)				; for backward compatibility.
+(require 'poe)				; functionp.
+(require 'poem)				; char-int, and char-length.
+(require 'path-util)
 
 (defsubst poly-funcall (functions argument)
   "Apply initial ARGUMENT to sequence of FUNCTIONS.
@@ -39,8 +41,7 @@ For example, (poly-funcall '(car number-to-string) '(100)) returns
 \"100\"."
   (while functions
     (setq argument (funcall (car functions) argument)
-	  functions (cdr functions))
-    )
+	  functions (cdr functions)))
   argument)
 
 
@@ -53,8 +54,7 @@ For example, (poly-funcall '(car number-to-string) '(100)) returns
   '(((?\  ?\t) . "_")
     ((?! ?\" ?# ?$ ?% ?& ?' ?\( ?\) ?* ?/
 	 ?: ?\; ?< ?> ?? ?\[ ?\\ ?\] ?` ?{ ?| ?}) . "_")
-    (filename-control-p . "")
-    )
+    (filename-control-p . ""))
   "Alist list of characters vs. string as replacement.
 List of characters represents characters not allowed as file-name.")
 
@@ -65,7 +65,6 @@ List of characters represents characters not allowed as file-name.")
 		   filename-maybe-truncate-by-size
 		   filename-eliminate-bottom-low-lines
 		   )))
-    (require 'path-util)
     (if (exec-installed-p "kakasi")
 	(cons 'filename-japanese-to-roman-string filters)
       filters))
@@ -80,40 +79,35 @@ List of characters represents characters not allowed as file-name.")
     (set-buffer (get-buffer-create " *temp kakasi*"))
     (erase-buffer)
     (insert str)
-    (call-process-region (point-min)(point-max) "kakasi" t t t
-			 "-Ha" "-Ka" "-Ja" "-Ea" "-ka")
-    (buffer-string)
-    ))
+    (call-process-region
+     (point-min)(point-max)
+     "kakasi" t t t "-Ha" "-Ka" "-Ja" "-Ea" "-ka")
+    (buffer-string)))
 
 (defun filename-control-p (character)
   (let ((code (char-int character)))
-    (or (< code 32)(= code 127))
-    ))
+    (or (< code 32)(= code 127))))
 
 (defun filename-special-filter (string)
-  (let (dest
-	(i 0)
-	(len (length string))
-	(b 0)
-	)
+  (let ((len (length string))
+	(b 0)(i 0)
+	(dest ""))
     (while (< i len)
-      (let* ((chr (sref string i))
-	     (ret (assoc-if (function
-			     (lambda (key)
-			       (if (functionp key)
-				   (funcall key chr)
-				 (memq chr key)
-				 )))
-			    filename-replacement-alist))
-	     )
+      (let ((chr (sref string i))
+            (lst filename-replacement-alist)
+            ret)
+        (while (and lst (not ret))
+          (if (if (functionp (car (car lst)))
+                  (setq ret (funcall (car (car lst)) chr))
+                (setq ret (memq chr (car (car lst)))))
+              t                         ; quit this loop.
+            (setq lst (cdr lst))))
 	(if ret
-	    (setq dest (concat dest (substring string b i)(cdr ret))
+	    (setq dest (concat dest (substring string b i)(cdr (car lst)))
 		  i (+ i (char-length chr))
 		  b i)
-	  (setq i (+ i (char-length chr)))
-	  )))
-    (concat dest (substring string b))
-    ))
+	  (setq i (+ i (char-length chr))))))
+    (concat dest (substring string b))))
 
 (defun filename-eliminate-top-low-lines (string)
   (if (string-match "^_+" string)
@@ -121,18 +115,15 @@ List of characters represents characters not allowed as file-name.")
     string))
 
 (defun filename-canonicalize-low-lines (string)
-  (let (dest)
+  (let ((dest ""))
     (while (string-match "__+" string)
       (setq dest (concat dest (substring string 0 (1+ (match-beginning 0)))))
-      (setq string (substring string (match-end 0)))
-      )
-    (concat dest string)
-    ))
+      (setq string (substring string (match-end 0))))
+    (concat dest string)))
 
 (defun filename-maybe-truncate-by-size (string)
   (if (and (> (length string) filename-limit-length)
-	   (string-match "_" string filename-limit-length)
-	   )
+	   (string-match "_" string filename-limit-length))
       (substring string 0 (match-beginning 0))
     string))
 
@@ -150,13 +141,13 @@ List of characters represents characters not allowed as file-name.")
 It refers variable `filename-filters' and default filters refers
 `filename-limit-length', `filename-replacement-alist'."
   (and string
-       (poly-funcall filename-filters string)
-       ))
+       (poly-funcall filename-filters string)))
 
 
 ;;; @ end
 ;;;
 
-(provide 'filename)
+(require 'product)
+(product-provide (provide 'filename) (require 'apel-ver))
 
 ;;; filename.el ends here

@@ -1,9 +1,8 @@
 ;;; mule-caesar.el --- ROT 13-47 Caesar rotation utility
 
-;; Copyright (C) 1997 Free Software Foundation, Inc.
+;; Copyright (C) 1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: ROT 13-47, caesar, mail, news, text/x-rot13-47
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -25,17 +24,10 @@
 
 ;;; Code:
 
-(defun char-to-octet-list (character)
-  "Return list of octets in code table of graphic character set."
-  (let* ((code (char-int character))
-	 (dim (charset-dimension (char-charset code)))
-	 dest)
-    (while (> dim 0)
-      (setq dest (cons (logand code 127) dest)
-	    dim (1- dim)
-	    code (lsh code -7))
-      )
-    dest))
+(require 'emu)				; for backward compatibility.
+(require 'poe)				; char-after.
+(require 'poem)				; charset-chars, char-charset,
+					; and split-char.
 
 (defun mule-caesar-region (start end &optional stride-ascii)
   "Caesar rotation of current region.
@@ -52,43 +44,43 @@ for 96 or 96x96 graphic character set)."
       (narrow-to-region start end)
       (goto-char start)
       (while (< (point)(point-max))
-	(let* ((chr (char-after (point)))
-	       (charset (char-charset chr))
-	       )
-	  (if (eq charset 'ascii)
-	      (cond ((and (<= ?A chr) (<= chr ?Z))
-		     (setq chr (+ chr stride-ascii))
-		     (if (> chr ?Z)
-			 (setq chr (- chr 26))
-		       )
-		     (delete-char 1)
-		     (insert chr)
-		     )
-		    ((and (<= ?a chr) (<= chr ?z))
-		     (setq chr (+ chr stride-ascii))
-		     (if (> chr ?z)
-			 (setq chr (- chr 26))
-		       )
-		     (delete-char 1)
-		     (insert chr)
-		     )
-		    (t
-		     (forward-char)
-		     ))
-	    (let* ((stride (lsh (charset-chars charset) -1))
-		   (ret (mapcar (function
-				 (lambda (octet)
-				   (if (< octet 80)
-				       (+ octet stride)
-				     (- octet stride)
-				     )))
-				(char-to-octet-list chr))))
-	      (delete-char 1)
-	      (insert (make-char (char-charset chr)
-				 (car ret)(car (cdr ret))))
-	      )))))))
-  
+	(let* ((chr (char-after (point))))
+	  (cond ((and (<= ?A chr) (<= chr ?Z))
+		 (setq chr (+ chr stride-ascii))
+		 (if (> chr ?Z)
+		     (setq chr (- chr 26))
+		   )
+		 (delete-char 1)
+		 (insert chr)
+		 )
+		((and (<= ?a chr) (<= chr ?z))
+		 (setq chr (+ chr stride-ascii))
+		 (if (> chr ?z)
+		     (setq chr (- chr 26))
+		   )
+		 (delete-char 1)
+		 (insert chr)
+		 )
+		((<= chr ?\x9f)
+		 (forward-char)
+		 )
+		(t
+		 (let* ((stride (lsh (charset-chars (char-charset chr)) -1))
+			(ret (mapcar (function
+				      (lambda (octet)
+					(if (< octet 80)
+					    (+ octet stride)
+					  (- octet stride)
+					  )))
+				     (cdr (split-char chr)))))
+		   (delete-char 1)
+		   (insert (make-char (char-charset chr)
+				      (car ret)(car (cdr ret))))
+		   )))
+	  )))))
 
-(provide 'mule-caesar)
+
+(require 'product)
+(product-provide (provide 'mule-caesar) (require 'apel-ver))
 
 ;;; mule-caesar.el ends here

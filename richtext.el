@@ -179,6 +179,7 @@ Return value is \(begin end name positive-p), or nil if none was found."
 ;;; @ end
 ;;;
 
-(provide 'richtext)
+(require 'product)
+(product-provide (provide 'richtext) (require 'apel-ver))
 
 ;;; richtext.el ends here

@@ -149,6 +149,7 @@ If CCL-PROG is symbol, it is dereferenced."
 ;;; @ end
 ;;;
 
-(provide 'pccl-20)
+(require 'product)
+(product-provide (provide 'pccl-20) (require 'apel-ver))
 
 ;;; pccl-20.el ends here

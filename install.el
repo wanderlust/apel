@@ -194,6 +194,7 @@
 ;;; @ end
 ;;;
 
-(provide 'install)
+(require 'product)
+(product-provide (provide 'install) (require 'apel-ver))
 
 ;;; install.el ends here

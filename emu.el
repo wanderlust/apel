@@ -1,9 +1,8 @@
 ;;; emu.el --- Emulation module for each Emacs variants
 
-;; Copyright (C) 1995,1996,1997 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
 ;; Keywords: emulation, compatibility, NEmacs, MULE, Emacs/mule, XEmacs
 
 ;; This file is part of emu.
@@ -25,64 +24,10 @@
 
 ;;; Code:
 
-(defmacro defun-maybe (name &rest everything-else)
-  (or (and (fboundp name)
-	   (not (get name 'defun-maybe))
-	   )
-      (` (or (fboundp (quote (, name)))
-	     (progn
-	       (defun (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defun-maybe t)
-	       ))
-	 )))
-
-(defmacro defsubst-maybe (name &rest everything-else)
-  (or (and (fboundp name)
-	   (not (get name 'defsubst-maybe))
-	   )
-      (` (or (fboundp (quote (, name)))
-	     (progn
-	       (defsubst (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defsubst-maybe t)
-	       ))
-	 )))
-
-(defmacro defmacro-maybe (name &rest everything-else)
-  (or (and (fboundp name)
-	   (not (get name 'defmacro-maybe))
-	   )
-      (` (or (fboundp (quote (, name)))
-	     (progn
-	       (defmacro (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defmacro-maybe t)
-	       ))
-	 )))
-
-(put 'defun-maybe 'lisp-indent-function 'defun)
-(put 'defsubst-maybe 'lisp-indent-function 'defun)
-(put 'defmacro-maybe 'lisp-indent-function 'defun)
-
-(defmacro defconst-maybe (name &rest everything-else)
-  (or (and (boundp name)
-	   (not (get name 'defconst-maybe))
-	   )
-      (` (or (boundp (quote (, name)))
-	     (progn
-	       (defconst (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defconst-maybe t)
-	       ))
-	 )))
-
-
-(defconst-maybe emacs-major-version (string-to-int emacs-version))
-(defconst-maybe emacs-minor-version
-  (string-to-int
-   (substring emacs-version
-	      (string-match (format "%d\\." emacs-major-version)
-			    emacs-version))))
+(require 'poe)
 
 (defvar running-emacs-18 (<= emacs-major-version 18))
-(defvar running-xemacs (string-match "XEmacs" emacs-version))
+(defvar running-xemacs (featurep 'xemacs))
 
 (defvar running-mule-merged-emacs (and (not (boundp 'MULE))
 				       (not running-xemacs) (featurep 'mule)))
@@ -101,211 +46,157 @@
   (or (and running-xemacs-19 (>= emacs-minor-version 14))
       running-xemacs-20-or-later))
 
-(cond (running-mule-merged-emacs
-       ;; for mule merged EMACS
-       (require 'emu-e20)
+(cond (running-xemacs
+       ;; for XEmacs
+       (defvar mouse-button-1 'button1)
+       (defvar mouse-button-2 'button2)
+       (defvar mouse-button-3 'button3)
        )
-      (running-xemacs-with-mule
-       ;; for XEmacs/mule
-       (require 'emu-x20)
+      ((>= emacs-major-version 19)
+       ;; mouse
+       (defvar mouse-button-1 [mouse-1])
+       (defvar mouse-button-2 [mouse-2])
+       (defvar mouse-button-3 [down-mouse-3])
        )
-      ((boundp 'MULE)
-       ;; for MULE 1.* and 2.*
-       (require 'emu-mule)
+      (t
+       ;; mouse
+       (defvar mouse-button-1 nil)
+       (defvar mouse-button-2 nil)
+       (defvar mouse-button-3 nil)
+       ))
+
+;; for tm-7.106
+(unless (fboundp 'tl:make-overlay)
+  (defalias 'tl:make-overlay 'make-overlay)
+  (make-obsolete 'tl:make-overlay 'make-overlay)
+  )
+(unless (fboundp 'tl:overlay-put)
+  (defalias 'tl:overlay-put 'overlay-put)
+  (make-obsolete 'tl:overlay-put 'overlay-put)
+  )
+(unless (fboundp 'tl:overlay-put)
+  (defalias 'tl:overlay-buffer 'overlay-buffer)
+  (make-obsolete 'tl:overlay-buffer 'overlay-buffer)
+  )
+
+(require 'poem)
+(require 'mcharset)
+(require 'invisible)
+
+(defsubst char-list-to-string (char-list)
+  "Convert list of character CHAR-LIST to string."
+  (apply (function string) char-list))
+
+(cond ((featurep 'mule)
+       (cond ((featurep 'xemacs) ; for XEmacs with MULE
+	      ;; old Mule emulating aliases
+
+	      ;;(defalias 'char-leading-char 'char-charset)
+
+	      (defun char-category (character)
+		"Return string of category mnemonics for CHAR in TABLE.
+CHAR can be any multilingual character
+TABLE defaults to the current buffer's category table."
+		(mapconcat (lambda (chr)
+			     (char-to-string (int-char chr)))
+			   (char-category-list character)
+			   ""))
+	      )
+	     ((>= emacs-major-version 20) ; for Emacs 20
+	      (defalias 'insert-binary-file-contents-literally
+		'insert-file-contents-literally)
+	      
+	      ;; old Mule emulating aliases
+	      (defun char-category (character)
+		"Return string of category mnemonics for CHAR in TABLE.
+CHAR can be any multilingual character
+TABLE defaults to the current buffer's category table."
+		(category-set-mnemonics (char-category-set character)))
+	      )
+	     (t ; for MULE 1.* and 2.*
+	      (require 'emu-mule)
+	      ))
        )
       ((boundp 'NEMACS)
        ;; for NEmacs and NEpoch
-       (require 'emu-nemacs)
-       )
-      (t
-       ;; for EMACS 19 and XEmacs 19 (without mule)
-       (require 'emu-e19)
-       ))
 
-
-;;; @ MIME charset
-;;;
-
-(defun charsets-to-mime-charset (charsets)
-  "Return MIME charset from list of charset CHARSETS.
-This function refers variable `charsets-mime-charset-alist'
-and `default-mime-charset'."
-  (if charsets
-      (or (catch 'tag
-	    (let ((rest charsets-mime-charset-alist)
-		  cell)
-	      (while (setq cell (car rest))
-		(if (catch 'not-subset
-		      (let ((set1 charsets)
-			    (set2 (car cell))
-			    obj)
-			(while set1
-			  (setq obj (car set1))
-			  (or (memq obj set2)
-			      (throw 'not-subset nil)
-			      )
-			  (setq set1 (cdr set1))
-			  )
-			t))
-		    (throw 'tag (cdr cell))
-		  )
-		(setq rest (cdr rest))
-		)))
-	  default-mime-charset)))
-
-
-;;; @ Emacs 19 emulation
-;;;
-
-(defun-maybe minibuffer-prompt-width ()
-  "Return the display width of the minibuffer prompt."
-  (save-excursion
-    (set-buffer (window-buffer (minibuffer-window)))
-    (current-column)
-    ))
-
-
-;;; @ Emacs 19.29 emulation
-;;;
-
-(defvar path-separator ":"
-  "Character used to separate concatenated paths.")
-
-(defun-maybe buffer-substring-no-properties (start end)
-  "Return the characters of part of the buffer, without the text properties.
-The two arguments START and END are character positions;
-they can be in either order. [Emacs 19.29 emulating function]"
-  (let ((string (buffer-substring start end)))
-    (set-text-properties 0 (length string) nil string)
-    string))
-
-(defun-maybe match-string (num &optional string)
-  "Return string of text matched by last search.
-NUM specifies which parenthesized expression in the last regexp.
- Value is nil if NUMth pair didn't match, or there were less than NUM pairs.
-Zero means the entire text matched by the whole regexp or whole string.
-STRING should be given if the last search was by `string-match' on STRING.
-\[Emacs 19.29 emulating function]"
-  (if (match-beginning num)
-      (if string
-	  (substring string (match-beginning num) (match-end num))
-	(buffer-substring (match-beginning num) (match-end num)))))
-
-(or running-emacs-19_29-or-later
-    running-xemacs
-    ;; for Emacs 19.28 or earlier
-    (fboundp 'si:read-string)
-    (progn
-      (fset 'si:read-string (symbol-function 'read-string))
-      
-      (defun read-string (prompt &optional initial-input history)
-	"Read a string from the minibuffer, prompting with string PROMPT.
-If non-nil, second arg INITIAL-INPUT is a string to insert before reading.
-The third arg HISTORY, is dummy for compatibility. [emu.el]
-See `read-from-minibuffer' for details of HISTORY argument."
-	(si:read-string prompt initial-input)
-	)
-      ))
-
-
-;;; @ Emacs 19.30 emulation
-;;;
-
-;; This function was imported Emacs 19.30.
-(defun-maybe add-to-list (list-var element)
-  "Add to the value of LIST-VAR the element ELEMENT if it isn't there yet.
-If you want to use `add-to-list' on a variable that is not defined
-until a certain package is loaded, you should put the call to `add-to-list'
-into a hook function that will be run only after loading the package.
-\[Emacs 19.30 emulating function]"
-  (or (member element (symbol-value list-var))
-      (set list-var (cons element (symbol-value list-var)))
-      ))
-
-(cond ((fboundp 'insert-file-contents-literally)
-       )
-      ((boundp 'file-name-handler-alist)
-       (defun insert-file-contents-literally
-	 (filename &optional visit beg end replace)
-	 "Like `insert-file-contents', q.v., but only reads in the file.
-A buffer may be modified in several ways after reading into the buffer due
-to advanced Emacs features, such as file-name-handlers, format decoding,
-find-file-hooks, etc.
-  This function ensures that none of these modifications will take place.
-\[Emacs 19.30 emulating function]"
-	 (let (file-name-handler-alist)
-	   (insert-file-contents filename visit beg end replace)
+       ;; old MULE emulation
+       (defconst *noconv*    0)
+       (defconst *sjis*      1)
+       (defconst *junet*     2)
+       (defconst *ctext*     2)
+       (defconst *internal*  3)
+       (defconst *euc-japan* 3)
+       
+       (defun code-convert-string (str ic oc)
+	 "Convert code in STRING from SOURCE code to TARGET code,
+On successful converion, returns the result string,
+else returns nil."
+	 (if (not (eq ic oc))
+	     (convert-string-kanji-code str ic oc)
+	   str))
+       
+       (defun code-convert-region (beg end ic oc)
+	 "Convert code of the text between BEGIN and END from SOURCE
+to TARGET. On successful conversion returns t,
+else returns nil."
+	 (if (/= ic oc)
+	     (save-excursion
+	       (save-restriction
+		 (narrow-to-region beg end)
+		 (convert-region-kanji-code beg end ic oc)))
 	   ))
        )
       (t
-       (defalias 'insert-file-contents-literally 'insert-file-contents)
+       ;; for Emacs 19 and XEmacs without MULE
+       
+       ;; old MULE emulation
+       (defconst *internal* nil)
+       (defconst *ctext* nil)
+       (defconst *noconv* nil)
+       
+       (defun code-convert-string (str ic oc)
+	 "Convert code in STRING from SOURCE code to TARGET code,
+On successful converion, returns the result string,
+else returns nil. [emu-latin1.el; old MULE emulating function]"
+	 str)
+
+       (defun code-convert-region (beg end ic oc)
+	 "Convert code of the text between BEGIN and END from SOURCE
+to TARGET. On successful conversion returns t,
+else returns nil. [emu-latin1.el; old MULE emulating function]"
+	 t)
        ))
 
 
-;;; @ Emacs 19.31 emulation
+;;; @ Mule emulating aliases
+;;;
+;;; You should not use it.
+
+(or (boundp '*noconv*)
+    (defconst *noconv* 'binary
+      "Coding-system for binary.
+This constant is defined to emulate old MULE anything older than MULE 2.3.
+It is obsolete, so don't use it."))
+
+
+;;; @ without code-conversion
 ;;;
 
-(defun-maybe buffer-live-p (object)
-  "Return non-nil if OBJECT is a buffer which has not been killed.
-Value is nil if OBJECT is not a buffer or if it has been killed.
-\[Emacs 19.31 emulating function]"
-  (and object
-       (get-buffer object)
-       (buffer-name (get-buffer object))
-       ))
+(defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
+(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
 
-;; This macro was imported Emacs 19.33.
-(defmacro-maybe save-selected-window (&rest body)
-  "Execute BODY, then select the window that was selected before BODY.
-\[Emacs 19.31 emulating function]"
-  (list 'let
-	'((save-selected-window-window (selected-window)))
-	(list 'unwind-protect
-	      (cons 'progn body)
-	      (list 'select-window 'save-selected-window-window))))
-
-
-;;; @ XEmacs emulation
-;;;
-
-(defun-maybe functionp (obj)
-  "Returns t if OBJ is a function, nil otherwise.
-\[XEmacs emulating function]"
-  (or (subrp obj)
-      (byte-code-function-p obj)
-      (and (symbolp obj)(fboundp obj))
-      (and (consp obj)(eq (car obj) 'lambda))
-      ))
-
-(defun-maybe point-at-eol (&optional arg buffer)
-  "Return the character position of the last character on the current line.
-With argument N not nil or 1, move forward N - 1 lines first.
-If scan reaches end of buffer, return that position.
-This function does not move point. [XEmacs emulating function]"
-  (save-excursion
-    (if buffer
-	(set-buffer buffer)
-      )
-    (if arg
-	(forward-line (1- arg))
-      )
-    (end-of-line)
-    (point)
-    ))
-
-
-;;; @ for XEmacs 20
-;;;
-
-(or (fboundp 'char-int)
-    (fset 'char-int (symbol-function 'identity))
-    )
-(or (fboundp 'int-char)
-    (fset 'int-char (symbol-function 'identity))
-    )
-(or (fboundp 'char-or-char-int-p)
-    (fset 'char-or-char-int-p (symbol-function 'integerp))
-    )
+(defun-maybe insert-binary-file-contents-literally (filename
+						    &optional visit
+						    beg end replace)
+  "Like `insert-file-contents-literally', q.v., but don't code conversion.
+A buffer may be modified in several ways after reading into the buffer due
+to advanced Emacs features, such as file-name-handlers, format decoding,
+find-file-hooks, etc.
+  This function ensures that none of these modifications will take place."
+  (as-binary-input-file
+   ;; Returns list absolute file name and length of data inserted.
+   (insert-file-contents-literally filename visit beg end replace)))
 
 
 ;;; @ for text/richtext and text/enriched
@@ -336,6 +227,7 @@ This function does not move point. [XEmacs emulating function]"
 ;;; @ end
 ;;;
 
-(provide 'emu)
+(require 'product)
+(product-provide (provide 'emu) (require 'apel-ver))
 
 ;;; emu.el ends here

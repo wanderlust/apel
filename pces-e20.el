@@ -1,11 +1,9 @@
-;;; file-detect.el --- Path management or file detection utility
+;;; pces-e20.el --- pces submodule for Emacs 20
 
-;; Copyright (C) 1996,1997 Free Software Foundation, Inc.
+;; Copyright (C) 1998,1999 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
-;; Keywords: file detection, install, module
-;; Status: obsoleted
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
+;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
 
@@ -24,16 +22,27 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
-;;; Commentary:
-
-;;	This file is existed only for compatibility.  Please use
-;;	path-util.el instead of this file.
-
 ;;; Code:
 
-(require 'path-util)
+(require 'pces-20)
+
+(unless (and (fboundp 'set-buffer-multibyte)
+	     (subrp (symbol-function 'set-buffer-multibyte)))
+  (require 'pces-e20_2) ; for Emacs 20.1 and 20.2
+  )
+
+(defsubst-maybe find-coding-system (obj)
+  "Return OBJ if it is a coding-system."
+  (if (coding-system-p obj)
+      obj))
+
+(defalias 'set-process-input-coding-system 'set-process-coding-system)
+
+
+;;; @ end
+;;;
 
 (require 'product)
-(product-provide (provide 'file-detect) (require 'apel-ver))
+(product-provide (provide 'pces-e20) (require 'apel-ver))
 
-;;; file-detect.el ends here
+;;; pces-e20.el ends here

@@ -1,11 +1,9 @@
-;;; file-detect.el --- Path management or file detection utility
+;;; pces-xfc.el --- pces module for XEmacs with file coding
 
-;; Copyright (C) 1996,1997 Free Software Foundation, Inc.
+;; Copyright (C) 1998,1999 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
-;; Keywords: file detection, install, module
-;; Status: obsoleted
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
+;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
 
@@ -24,16 +22,27 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
-;;; Commentary:
-
-;;	This file is existed only for compatibility.  Please use
-;;	path-util.el instead of this file.
-
 ;;; Code:
 
-(require 'path-util)
+;; Redefine if -{dos|mac|unix} is not found.
+(or (find-coding-system 'raw-text-dos)
+    (copy-coding-system 'no-conversion-dos 'raw-text-dos))
+(or (find-coding-system 'raw-text-mac)
+    (copy-coding-system 'no-conversion-mac 'raw-text-mac))
+(or (find-coding-system 'raw-text-unix)
+    (copy-coding-system 'no-conversion-unix 'raw-text-unix))
+
+(if (featurep 'mule)
+    (require 'pces-xm)
+  )
+
+(require 'pces-20)
+
+
+;;; @ end
+;;;
 
 (require 'product)
-(product-provide (provide 'file-detect) (require 'apel-ver))
+(product-provide (provide 'pces-xfc) (require 'apel-ver))
 
-;;; file-detect.el ends here
+;;; pces-xfc.el ends here
