@@ -81,9 +81,14 @@ When called interactively, prompt for the name of the color to use."
 ;;; @ timer
 ;;;
 
-(condition-case nil
-    (require 'timer)
-  (error
+(or
+ (condition-case nil
+     (require 'timer-funcs)
+   (error nil))
+ (condition-case nil
+     (require 'timer)
+   (error nil))
+ (progn
    (require 'itimer)
    (if (and (= emacs-major-version 19) (<= emacs-minor-version 14))
        (defun-maybe run-at-time (time repeat function &rest args)
