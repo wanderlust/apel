@@ -50,13 +50,7 @@
 
 ;;; @ Compilation.
 ;;;
-
-(defun defalias (symbol definition)
-  "Set SYMBOL's function definition to DEFINITION, and return DEFINITION.
-Associates the function with the current load file, if any.
-
-This emulating function does not support load-history feature."
-  (fset symbol definition))
+(fset 'defalias 'fset)
 
 (defun byte-code-function-p (object)
   "Return t if OBJECT is a byte-compiled function object."
@@ -494,10 +488,16 @@ With optional non-nil ALL, force redisplay of all mode-lines."
 ;;; @ Basic editing commands.
 ;;;
 
-;; 18.55 does not have this variable.
+;; 18.55 does not have these variables.
 (defvar buffer-undo-list nil)
+(defvar-maybe auto-fill-function nil)
+(defvar-maybe unread-command-event nil)
+(defvar-maybe unread-command-events nil)
 
 (defalias 'buffer-disable-undo 'buffer-flush-undo)
+(defalias 'insert-and-inherit 'insert)
+(defalias 'insert-before-markers-and-inherit 'insert-before-markers)
+(defalias 'number-to-string 'int-to-string)
 
 (defun generate-new-buffer-name (name &optional ignore)
   "Return a string that is the name of no existing buffer based on NAME.
