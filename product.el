@@ -56,7 +56,7 @@ numbers.  Optional 4th argument CODE-NAME is a string."
   (and family
        (product-add-to-family family name))
   (set (intern name product-obarray)
-       (vector name family version code-name nil nil nil)))
+       (vector name family version code-name nil nil nil nil)))
 
 (defun product-name (product)
   "Return the name of PRODUCT, a string."
@@ -79,6 +79,9 @@ numbers.  Optional 4th argument CODE-NAME is a string."
 (defun product-features (product)
   "Return the features of PRODUCT, a list of feature."
   (aref product 6))
+(defun product-version-string (product)
+  "Return the version string of PRODUCT, a string."
+  (aref product 7))
 
 (defun product-set-name (product name)
   "Set name of PRODUCT to NAME."
@@ -102,6 +105,9 @@ numbers.  Optional 4th argument CODE-NAME is a string."
 (defun product-set-features (product features)
   "Set features of PRODUCT to FEATURES."
   (aset product 6 features))
+(defun product-set-version-string (product version-string)
+  "Set version string of PRODUCT to VERSION-STRING."
+  (aset product 7 version-string))
 
 (defun product-add-to-family (family product-name)
   "Add PRODUCT-NAME to FAMILY product."
@@ -201,7 +207,8 @@ all checkers."
 	 (product-name (product-name product))
 	 (product-family (product-family product))
 	 (product-version (product-version product))
-	 (product-code-name (product-code-name product)))
+	 (product-code-name (product-code-name product))
+	 (product-version-string (product-version-string product)))
     (`  (progn
 	  (, product-def)
 	  (put (, feature) 'product
@@ -215,7 +222,7 @@ all checkers."
 		     product
 		   (vector (, product-name) (, product-family)
 			   '(, product-version) (, product-code-name)
-			   nil nil nil))))
+			   nil nil nil (, product-version-string)))))
 	  (, feature-def)))))
 
 (defun product-string-1 (product &optional verbose)
@@ -224,29 +231,56 @@ If optional argument VERBOSE is non-nil, then return string of
 \"NAME/VERSION (CODE-NAME)\"."
   (setq product (product-find product))
   (concat (product-name product)
-	  (if (product-version product)
-	      (concat "/"
-		      (mapconcat (function number-to-string)
-				 (product-version product)
-				 "."))
-	    "")
+	  (cond
+	   ((product-version-string product)
+	    (concat "/" (product-version-string product)))
+	   ((product-version product)
+	    (concat "/"
+		    (product-set-version-string
+		     product
+		     (mapconcat (function number-to-string)
+				(product-version product)
+				"."))))
+	   (""))
 	  (if (and verbose (product-code-name product))
 	      (concat " (" (product-code-name product) ")")
 	    "")))
 
-(defun product-string (product &optional verbose)
+(defun product-for-each (product all function &rest args)
+  "Apply FUNCTION to PRODUCT and PRODUCT's family with ARGS.
+If ALL is nil, apply function to only products which provide feature."
   (setq product (product-find product))
-  (let ((family (product-family-products product))
-	dest str)
-    (and (product-features product)
-	 (setq dest (product-string-1 product verbose)))
+  (let ((family (product-family-products product)))
+    (and (or all (product-features product))
+	 (apply function product args))
     (while family
-      (setq str (product-string (car family) verbose)
-	    family (cdr family))
-      (if str
-	  (setq dest (if dest
-			 (concat dest " " str)
-		       str))))
+      (apply 'product-for-each (car family) all function args)
+      (setq family (cdr family)))))
+
+(defun product-string (product)
+  "Return information of PRODUCT as a string of \"NAME/VERSION\"."
+  (let (dest)
+    (product-for-each product nil
+     (function
+      (lambda (product)
+	(let ((str (product-string-1 product nil)))
+	  (if str
+	      (setq dest (if dest
+			     (concat dest " " str)
+			   str)))))))
+    dest))
+
+(defun product-string-verbose (product)
+  "Return information of PRODUCT as a string of \"NAME/VERSION (CODE-NAME)\"."
+  (let (dest)
+    (product-for-each product nil
+     (function
+      (lambda (product)
+	(let ((str (product-string-1 product t)))
+	  (if str
+	      (setq dest (if dest
+			     (concat dest " " str)
+			   str)))))))
     dest))
 
 (defun product-version-compare (v1 v2)
@@ -270,7 +304,29 @@ If optional argument VERBOSE is non-nil, then return string of
 	(setq dest (cons (symbol-value sym) dest))))
      product-obarray)
     dest))
-      
+
+(defun product-parse-version-string (verstr)
+  "Parse version string \".*v1.v2... (CODE-NAME)\".
+Return list of version, code-name, and version-string."
+  (let (version version-string code-name)
+    (and (string-match "\\(\\([0-9.]+\\)[^ ]*\\)[^(]*\\((\\(.+\\))\\)?" verstr)
+	 (let ((temp (substring verstr (match-beginning 2) (match-end 2))))
+	   (setq version-string (substring verstr
+					   (match-beginning 1)
+					   (match-end 1))
+		 code-name (and (match-beginning 4)
+				(substring verstr
+					   (match-beginning 4)
+					   (match-end 4))))
+	   (while (string-match "^\\([0-9]+\\)\\.?" temp)
+	     (setq version (cons (string-to-number
+				  (substring temp
+					     (match-beginning 1)
+					     (match-end 1)))
+				 version)
+		   temp (substring temp (match-end 0))))))
+    (list (nreverse version) code-name version-string)))
+
 ;;; @ End.
 ;;;
 
@@ -280,14 +336,36 @@ If optional argument VERBOSE is non-nil, then return string of
 
 ;;; @ Define emacs versions.
 
-;(or (product-find "emacs")
-;    (progn
-;      (product-define "emacs")
-;      (product-define "Meadow" "emacs" '(1 11 1) "TSUYU")
-;      (product-provide 'Meadow "Meadow")))
-;(product-define "MULE" "Meadow" '(4 1) "AOI")
-;(product-provide 'mule "MULE")
-;(product-define "Emacs" "Meadow" '(20 4) system-configuration)
-;(product-provide 'emacs "Emacs")
+(or (product-find "emacs")
+    (progn
+      (product-define "emacs")
+      (cond
+       ((featurep 'meadow)
+	(let* ((info (product-parse-version-string (Meadow-version)))
+	       (version (nth 0 info))
+	       (code-name (nth 1 info))
+	       (version-string (nth 2 info)))
+	  (product-set-version-string
+	   (product-define "Meadow" "emacs" version code-name)
+	   version-string)
+	  (product-provide 'Meadow "Meadow"))
+	(and (featurep 'mule)
+	     (let* ((info (product-parse-version-string mule-version))
+		    (version (nth 0 info))
+		    (code-name (nth 1 info))
+		    (version-string (nth 2 info)))
+	       (product-set-version-string
+		(product-define "MULE" "Meadow" version code-name)
+		version-string)
+	       (product-provide 'mule "MULE")))
+	(let* ((info (product-parse-version-string emacs-version))
+	       (version (nth 0 info))
+	       (code-name (nth 1 info))
+	       (version-string (nth 2 info)))
+	  (product-set-version-string
+	   (product-define "Emacs" "Meadow" version code-name)
+	   version-string)
+	  (product-provide 'emacs "Emacs")))
+       )))
 
 ;;; product.el ends here
