@@ -24,6 +24,8 @@
 
 ;;; Code:
 
+(require 'poe)
+
 (eval-and-compile
 
   (defvar notice-non-obvious-broken-facility t
