@@ -1,3 +1,10 @@
+2001-05-24  Tanaka Akira      <akr@m17n.org>
+
+	* pccl.el (accept-long-ccl-program): Don't advice for Emacs 21.
+	(transform-make-coding-system-args): New emulating function.
+	(ccl-compat): new advice for `make-coding-system' of
+	Emacs 20 or former to handle XEmacs style CCL coding system definition.
+
 2001-04-29  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* poe.el (remassoc, remassq, remrassoc, remrassq): Fixed.
