@@ -343,7 +343,7 @@ find-file-hooks, etc.
 ;;;
 ;;; You should not use them.
 
-(defalias 'char-leading-char 'char-charset)
+;;(defalias 'char-leading-char 'char-charset)
 
 ;;; @@ obsoleted aliases
 ;;;
