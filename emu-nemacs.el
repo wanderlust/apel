@@ -220,6 +220,14 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
 
 (fset 'insert-binary-file-contents 'insert-file-contents-as-binary)
 
+(defun insert-file-contents-as-raw-text (filename
+					 &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't character code conversion.
+\[emu-nemacs.el]"
+  (let (kanji-flag)
+    (insert-file-contents filename visit beg end replace)
+    ))
+
 (defun insert-binary-file-contents-literally (filename
 					      &optional visit beg end replace)
   "Like `insert-file-contents-literally', q.v., but don't code conversion.
