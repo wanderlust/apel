@@ -51,10 +51,12 @@
 ;;; @ Compilation.
 ;;;
 
-(defun defalias (sym newdef)
-  "Set SYMBOL's function definition to NEWVAL, and return NEWVAL.
-Associates the function with the current load file, if any."
-  (fset sym newdef))
+(defun defalias (symbol definition)
+  "Set SYMBOL's function definition to DEFINITION, and return DEFINITION.
+Associates the function with the current load file, if any.
+
+This emulating function does not support load-history feature."
+  (fset symbol definition))
 
 (defun byte-code-function-p (object)
   "Return t if OBJECT is a byte-compiled function object."
@@ -476,7 +478,17 @@ With optional non-nil ALL, force redisplay of all mode-lines."
   (if all (save-excursion (set-buffer (other-buffer))))
   (set-buffer-modified-p (buffer-modified-p)))
 
-;; (defalias 'save-match-data 'store-match-data)
+(defalias 'set-match-data 'store-match-data)
+
+(defvar save-match-data-internal)
+
+;; We use save-match-data-internal as the local variable because
+;; that works ok in practice (people should not use that variable elsewhere).
+(defmacro save-match-data (&rest body)
+  "Execute the BODY forms, restoring the global value of the match data."
+  (` (let ((save-match-data-internal (match-data)))
+       (unwind-protect (progn (,@ body))
+         (set-match-data save-match-data-internal)))))
 
 
 ;;; @ Basic editing commands.
@@ -613,7 +625,7 @@ If NOSORT is dummy for compatibility."
 (defun previous-property-change (position &optional object limit))
 (defun previous-single-property-change (position prop &optional object limit))
 (defun add-text-properties (start end properties &optional object))
-(defun put-text-properties (start end property &optional object))
+(defun put-text-property (start end property &optional object))
 (defun set-text-properties (start end properties &optional object))
 (defun remove-text-properties (start end properties &optional object))
 (defun text-property-any (start end property value &optional object))
