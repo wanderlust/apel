@@ -1,3 +1,8 @@
+2000-04-25  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* EMU-ELS (emu-modules): Don't include `pccl-20' for XEmacs 20 and
+	earlier.
+
 2000-03-25  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
 
 	* pym.el: Define edebug specs for `static-if', `static-when',
