@@ -1,3 +1,13 @@
+1998-06-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-20.el, emu-x20.el: Move `insert-file-contents-as-binary' and
+	`insert-file-contents-as-raw-text' from emu-x20.el to emu-20.el.
+
+	* emu-e20_2.el, emu-e20.el: Move `insert-file-contents-as-binary'
+	and `insert-file-contents-as-raw-text' from emu-e20.el to
+	emu-e20_2.el.
+
+
 1998-06-09  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 8.15 was released.
