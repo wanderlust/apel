@@ -1,3 +1,10 @@
+1998-03-15  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL-ELS: Add calist.el.
+
+	* calist.el: New module.
+
+
 1998-03-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 7.2 was released.
