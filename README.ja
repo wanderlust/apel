@@ -11,6 +11,7 @@ APEL とは？
       poe-xemacs.el  --- XEmacs用
       poe-18.el	     --- Emacs 18/Nemacs 用
          env.el      --- Emacs 18 用の env.el
+      localhook.el   --- Emacs 18 と Emacs 19.28 以前用の hook 関数群
 
     poem.el --- 移植性の高い MULE プログラムを書くための基礎的な関数を
 		提供する

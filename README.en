@@ -11,6 +11,7 @@ What's APEL?
       poe-xemacs.el  --- for XEmacs
       poe-18.el	     --- for Emacs 18/Nemacs
          env.el      --- env.el for Emacs 18
+      localhook.el   --- hook functions for Emacs 19.28 and earlier.
 
     poem.el --- provide basic functions to write portable MULE
 		programs
