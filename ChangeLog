@@ -2,6 +2,8 @@
 
 	* APEL: Version 9.0 was released.
 
+	* Delete EMU-CFG and EMU-MK because they have been not used.
+
 1998-09-22  Tanaka Akira      <akr@jaist.ac.jp>
 
 	* README.en (What's APEL?): Add notice for broken.el.
