@@ -1557,6 +1557,19 @@ The extension, in a file name, is the part that follows the last `.'."
 	filename))))
 
 
+;;; @ Miscellanea.
+
+;; Emacs 19.29 and later: (current-fill-column)
+(defun-maybe current-fill-column ()
+  "Return the fill-column to use for this line."
+  fill-column)
+
+;; Emacs 19.29 and later: (current-left-margin)
+(defun-maybe current-left-margin ()
+  "Return the left margin to use for this line."
+  left-margin)
+
+
 ;;; @ XEmacs emulation.
 ;;;
 
