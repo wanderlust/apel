@@ -369,33 +369,6 @@ but the contents viewed as characters do change.
   "Return index of character succeeding CHAR whose index is INDEX."
   (` (+ (, index) (char-bytes (, char)))))
 
-(if (subr-fboundp 'char-before)
-    (condition-case err
-	(char-before)
-      (wrong-number-of-arguments
-       (or (fboundp 'si:char-before)
-	   (progn
-	     (fset 'si:char-before (symbol-function 'char-before))
-	     (defun char-before (&optional pos)
-	       "Return character in current buffer preceding position POS.
-POS is an integer or a buffer pointer.
-If POS is out of range, the value is nil."
-	       (si:char-before (or pos (point))))
-	     )))))
-
-(if (subr-fboundp 'char-after)
-    (condition-case nil
-	(char-after)
-      (wrong-number-of-arguments
-       (or (fboundp 'si:char-after)
-	   (progn
-	     (fset 'si:char-after (symbol-function 'char-after))
-	     (defun char-after (&optional pos)
-	       "Return character in current buffer at position POS.
-POS is an integer or a buffer pointer.
-If POS is out of range, the value is nil."
-	       (si:char-after (or pos (point))))
-	     )))))
 
 ;;; @@ obsoleted aliases
 ;;;
