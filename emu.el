@@ -41,10 +41,18 @@
   (or (and running-emacs-19 (>= emacs-minor-version 29))
       (>= emacs-major-version 20)))
 
-(cond ((boundp 'MULE)  (require 'emu-mule))
-      ((boundp 'NEMACS)(require 'emu-nemacs))
-      (t               (require 'emu-orig))
-      )
+(cond ((boundp 'MULE)
+       (require 'emu-mule)
+       )
+      ((and running-xemacs-20 (featurep 'mule))
+       (require 'emu-x20)
+       )
+      ((boundp 'NEMACS)
+       (require 'emu-nemacs)
+       )
+      (t
+       (require 'emu-e19)
+       ))
 
 
 ;;; @ Emacs 19.29 emulation

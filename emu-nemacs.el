@@ -5,7 +5,7 @@
 ;;; Copyright (C) 1993 .. 1996 MORIOKA Tomohiko
 ;;;
 ;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;;; modified by KOBAYASHI Shuhei <shuhei@cmpt01.phys.tohoku.ac.jp>
+;;; modified by KOBAYASHI Shuhei <shuhei-k@jaist.ac.jp>
 ;;; Version:
 ;;;	$Id$
 ;;; Keywords: emulation, compatibility, NEmacs, Mule
@@ -31,7 +31,7 @@
 (require 'emu-18)
 
 
-;;; @ leading-char
+;;; @ character set
 ;;;
 
 (defconst lc-ascii 0)
@@ -45,10 +45,9 @@
     lc-jp))
 
 (defalias 'char-leading-char 'char-charset)
-(defalias 'get-lc            'char-charset)
 
 
-;;; @ coding-system
+;;; @ coding system
 ;;;
 
 (defconst *noconv*    0)
@@ -66,12 +65,45 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
       (convert-string-kanji-code str ic oc)
     str))
 
+(defun decode-coding-string (str coding-system)
+  "Decode the string STR which is encoded in CODING-SYSTEM.
+\[emu-nemacs.el; XEmacs 20 emulating function]"
+  (convert-string-kanji-code str coding-system 3)
+  )
+
+(defun encode-coding-string (str coding-system)
+  "Encode the string STR which is encoded in CODING-SYSTEM.
+\[emu-nemacs.el; XEmacs 20 emulating function]"
+  (convert-string-kanji-code str 3 coding-system)
+  )
+
 (defun code-convert-region (beg end ic oc)
   "Convert code of the text between BEGIN and END from SOURCE
 to TARGET. On successful conversion returns t,
 else returns nil. [emu-nemacs.el; Mule emulating function]"
   (if (not (eq ic oc))
-      (convert-region-kanji-code beg end ic oc)))
+      (convert-region-kanji-code beg end ic oc)
+    ))
+
+(defun decode-coding-region (start end coding-system &optional buffer)
+  "Decode the text between START and END which is encoded in CODING-SYSTEM.
+\[emu-nemacs.el; XEmacs 20 emulating function]"
+  (save-excursion
+    (if buffer
+	(set-buffer buffer)
+      )
+    (convert-region-kanji-code start end coding-system 3)
+    ))
+
+(defun encode-coding-region (start end coding-system &optional buffer)
+  "Encode the text between START and END which is encoded in CODING-SYSTEM.
+\[emu-mule.el; XEmacs 20 emulating function]"
+  (save-excursion
+    (if buffer
+	(set-buffer buffer)
+      )
+    (convert-region-kanji-code start end 3 coding-system)
+    ))
 
 (defun code-detect-region (start end)
   "Detect coding-system of the text in the region between START and END.

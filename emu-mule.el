@@ -27,31 +27,46 @@
 ;;;
 ;;; Code:
 
-(defun some-element (pred seq)
-  "Return the first element of sequence SEQ
-whose return value applied function PRED is not nil.
-[emu-mule; tl-list function]"
- (let ((i 0)(len (length seq)) element)
-   (catch 'tag
-     (while (< i len)
-       (if (funcall pred (setq element (elt seq i)))
-	   (throw 'tag element)
-	 )
-       (setq i (+ i 1))
-       ))
-   ))
-
-
-;;; @ leading-character
+;;; @ character set
 ;;;
 
 (defalias 'char-charset 'char-leading-char)
 
-(defun get-lc (chr)
-  "Return leading character of CHAR or LEADING-CHARACTER."
-  (if (< chr 128)
-      lc-ascii
-    chr))
+
+;;; @ coding system
+;;;
+
+(defun decode-coding-region (start end coding-system &optional buffer)
+  "Decode the text between START and END which is encoded in CODING-SYSTEM.
+\[emu-mule.el; XEmacs 20 emulating function]"
+  (save-excursion
+    (if buffer
+	(set-buffer buffer)
+      )
+    (code-convert start end coding-system *internal*)
+    ))
+
+(defun encode-coding-region (start end coding-system &optional buffer)
+  "Encode the text between START and END which is encoded in CODING-SYSTEM.
+\[emu-mule.el; XEmacs 20 emulating function]"
+  (save-excursion
+    (if buffer
+	(set-buffer buffer)
+      )
+    (code-convert start end *internal* coding-system)
+    ))
+
+(defun decode-coding-string (str coding-system)
+  "Decode the string STR which is encoded in CODING-SYSTEM.
+\[emu-mule.el; XEmacs 20 emulating function]"
+  (code-convert-string str coding-system *internal*)
+  )
+
+(defun encode-coding-string (str coding-system)
+  "Encode the string STR which is encoded in CODING-SYSTEM.
+\[emu-mule.el; XEmacs 20 emulating function]"
+  (code-convert-string str *internal* coding-system)
+  )
 
 
 ;;; @ version specific features
@@ -59,16 +74,25 @@ whose return value applied function PRED is not nil.
 
 (cond (running-emacs-19
        (require 'emu-19)
+       
        (defun fontset-pixel-size (fontset)
-	 (elt
-	  (get-font-info
-	   (some-element
-	    (function
-	     (lambda (n)
-	       (not (= n -1))
-	       ))
-	    (cdr (get-fontset-info fontset))
-	    )) 5))
+	 (let* ((fonts (cdr (get-fontset-info fontset)))
+		(font
+		 (let ((i 0)
+		       (len (length fonts))
+		       n)
+		   (catch 'tag
+		     (while (< i len)
+		       (setq n (aref fonts i))
+		       (if (/= n -1)
+			   (throw 'tag n)
+			 )
+		       (setq i (1+ i))
+		       ))))
+		)
+	   (if font
+	       (aref (get-font-info font) 5)
+	     )))
        )
       (running-emacs-18
        (require 'emu-18)

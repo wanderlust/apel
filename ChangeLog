@@ -1,3 +1,70 @@
+Mon Apr 29 06:30:47 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.22.1 was released.
+
+Sun Apr 28 16:53:05 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (find-charset-string, find-charset-region): don't
+ 	include ascii.
+
+Sat Apr 27 19:08:03 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el (lc-ascii, lc-ltn1, lc-ltn2, lc-ltn3, lc-ltn4,
+ 	lc-crl, lc-arb, lc-grk, lc-hbw, lc-ltn5, lc-jp, lc-jp2, lc-kr,
+ 	lc-big5-1, lc-big5-2, lc-cn, lc-cns1, lc-cns2, lc-cns3, lc-cns4,
+ 	lc-cns5, lc-cns6, lc-cns7): New constant.
+
+Sat Apr 27 15:43:06 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* bitmap.el (bitmap-show-xbm): `j' should be defined as local
+ 	variable.
+
+	* tl-els: add emu-x20.el.
+
+Sat Apr 27 15:25:33 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el: require emu-x20 if running XEmacs 20 with Mule feature.
+
+Sat Apr 27 15:24:00 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-x20.el: New module for XEmacs 20 with Mule.
+
+Sat Apr 27 13:48:55 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e19.el (decode-coding-region): New function.
+	(encode-coding-region): New function.
+	(decode-coding-string): New function.
+	(encode-coding-string): New function.
+
+Sat Apr 27 13:36:32 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-nemacs.el (decode-coding-region): New function.
+	(encode-coding-region): New function.
+	(decode-coding-string): New function.
+	(encode-coding-string): New function.
+
+	* emu-nemacs.el: KOBAYASHI Shuhei's address was changed.
+
+Sat Apr 27 13:27:06 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (decode-coding-region): New function.
+	(encode-coding-region): New function.
+	(decode-coding-string): New function.
+	(encode-coding-string): New function.
+
+	* tl-els: emu-19.el was renamed to `emu-e19.el'.
+
+	* emu-mule.el (fontset-pixel-size): New implementation.
+
+Sat Apr 27 11:21:45 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el, emu-e19.el: emu-orig.el was renamed to `emu-e19.el'.
+
+	* emu-nemacs.el, emu-e19.el: Alias `get-lc' was abolished.
+
+	* emu-mule.el: Function `get-lc' was abolished.
+
+
 Fri Apr 26 05:28:30 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.22 was released.
