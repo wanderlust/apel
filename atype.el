@@ -25,7 +25,8 @@
 
 ;;; Code:
 
-(require 'emu)
+(require 'emu)				; for backward compatibility.
+(require 'poe)				; delete.
 (require 'alist)
 
 
