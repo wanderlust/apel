@@ -27,7 +27,7 @@
 	      '(emu-nemacs)
 	      )
 	     (t
-	      '(emu-e19)
+	      '(emu-latin1)
 	      ))
        emu-modules))
 

@@ -1,4 +1,4 @@
-;;; emu-e19.el --- emu module for Emacs 19 and XEmacs without MULE
+;;; emu-latin1.el --- emu module for Emacs 19 and XEmacs without MULE
 
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 
@@ -71,8 +71,7 @@
 (defalias 'find-non-ascii-charset-string 'find-charset-string)
 
 (defun find-charset-region (start end)
-  "Return a list of charsets in the region between START and END.
-\[emu-e19.el; Mule emulating function]"
+  "Return a list of charsets in the region between START and END."
   (if (save-excursion
 	(goto-char start)
 	(re-search-forward "[\200-\377]" end t)
@@ -91,33 +90,27 @@
 (defconst *noconv* nil)
 
 (defun decode-coding-string (string coding-system)
-  "Decode the STRING which is encoded in CODING-SYSTEM.
-\[emu-e19.el; Emacs 20 emulating function]"
+  "Decode the STRING which is encoded in CODING-SYSTEM."
   string)
 
 (defun encode-coding-string (string coding-system)
-  "Encode the STRING as CODING-SYSTEM.
-\[emu-e19.el; Emacs 20 emulating function]"
+  "Encode the STRING as CODING-SYSTEM."
   string)
 
 (defun decode-coding-region (start end coding-system)
-  "Decode the text between START and END which is encoded in CODING-SYSTEM.
-\[emu-e19.el; Emacs 20 emulating function]"
+  "Decode the text between START and END which is encoded in CODING-SYSTEM."
   0)
 
 (defun encode-coding-region (start end coding-system)
-  "Encode the text between START and END to CODING-SYSTEM.
-\[emu-e19.el; Emacs 20 emulating function]"
+  "Encode the text between START and END to CODING-SYSTEM."
   0)
 
 (defun detect-coding-region (start end)
-  "Detect coding-system of the text in the region between START and END.
-\[emu-e19.el; Emacs 20 emulating function]"
+  "Detect coding-system of the text in the region between START and END."
   )
 
 (defun set-buffer-file-coding-system (coding-system &optional force)
-  "Set buffer-file-coding-system of the current buffer to CODING-SYSTEM.
-\[emu-e19.el; Emacs 20 emulating function]"
+  "Set buffer-file-coding-system of the current buffer to CODING-SYSTEM."
   )
 
 (defmacro as-binary-process (&rest body)
@@ -142,13 +135,13 @@
 (defun code-convert-string (str ic oc)
   "Convert code in STRING from SOURCE code to TARGET code,
 On successful converion, returns the result string,
-else returns nil. [emu-e19.el; old MULE emulating function]"
+else returns nil. [emu-latin1.el; old MULE emulating function]"
   str)
 
 (defun code-convert-region (beg end ic oc)
   "Convert code of the text between BEGIN and END from SOURCE
 to TARGET. On successful conversion returns t,
-else returns nil. [emu-e19.el; old MULE emulating function]"
+else returns nil. [emu-latin1.el; old MULE emulating function]"
   t)
 
 
@@ -271,7 +264,7 @@ find-file-hooks, etc.
 (defun truncate-string (str width &optional start-column)
   "Truncate STR to fit in WIDTH columns.
 Optional non-nil arg START-COLUMN specifies the starting column.
-\[emu-e19.el; MULE 2.3 emulating function]"
+\[emu-latin1.el; MULE 2.3 emulating function]"
   (or start-column
       (setq start-column 0))
   (substring str start-column width)
@@ -288,6 +281,6 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 ;;; @ end
 ;;;
 
-(provide 'emu-e19)
+(provide 'emu-latin1)
 
-;;; emu-e19.el ends here
+;;; emu-latin1.el ends here
