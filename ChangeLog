@@ -1,3 +1,7 @@
+1998-04-30  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 8.7 was released.
+
 1998-04-29  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* calist.el (ctree-match-calist-partially): New function.
