@@ -163,6 +163,98 @@ TABLE defaults to the current buffer's category table."
   )
 
 
+;;; @ CCL
+;;;
+
+(eval-and-compile
+(defconst ccl-use-symbol-as-program
+  (eval-when-compile
+    (define-ccl-program ew-ccl-identity-program
+      '(1 ((read r0) (loop (write-read-repeat r0)))))
+    (condition-case nil
+        (progn
+          (make-coding-system
+           'ew-ccl-identity 4 ?I
+           "Identity coding system for byte-compile time checking"
+           '(ew-ccl-identity-program . ew-ccl-identity-program))
+          t)
+      (error nil)))
+  "t if CCL related builtins accept symbol as CCL
+program. (20.2 with ExCCL, 20.3 or later)
+Otherwise nil (20.2 without ExCCL or former).
+
+Because emu provides functions accepting symbol as CCL program,
+user programs should not refer this variable.")
+
+(defun make-ccl-coding-system
+  (coding-system mnemonic doc-string decoder encoder)
+  "Define a new CODING-SYSTEM (symbol) by CCL programs
+DECODER (symbol) and ENCODER (symbol)."
+  (unless ccl-use-symbol-as-program
+    (setq decoder (symbol-value decoder))
+    (setq encoder (symbol-value encoder)))
+  (make-coding-system coding-system 4 mnemonic doc-string
+    (cons decoder encoder)))
+)
+
+(eval-when-compile
+(define-ccl-program test-ccl-eof-block
+  '(1
+    (read r0)
+    (write "[EOF]")))
+
+(make-ccl-coding-system 'test-ccl-eof-block-cs ?T
+  "CCL_EOF_BLOCK tester"
+  'test-ccl-eof-block
+  'test-ccl-eof-block)
+)
+
+(defconst ccl-encoder-eof-block-is-broken
+  (eval-when-compile
+    (not (equal (encode-coding-string "" 'test-ccl-eof-block-cs)
+                "[EOF]")))
+  "t if CCL_EOF_BLOCK is not executed when coding system encounts EOF on
+encoding.")
+
+(defconst ccl-decoder-eof-block-is-broken
+  (eval-when-compile
+    (not (equal (decode-coding-string "" 'test-ccl-eof-block-cs)
+                "[EOF]")))
+  "t if CCL_EOF_BLOCK is not executed when coding system encounts EOF on
+decoding.")
+
+(defconst ccl-eof-block-is-broken
+  (or ccl-encoder-eof-block-is-broken
+      ccl-decoder-eof-block-is-broken))
+
+(unless ccl-use-symbol-as-program
+
+(when (subrp (symbol-function 'ccl-execute))
+  (fset 'ccl-vector-program-execute
+    (symbol-function 'ccl-execute))
+  (defun ccl-execute (ccl-prog reg)
+    "Execute CCL-PROG `ccl-vector-program-execute'.
+If CCL-PROG is symbol, it is dereferenced.
+\[Emacs 20.3 emulating function]"
+    (ccl-vector-program-execute
+      (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
+      reg)))
+
+(when (subrp (symbol-function 'ccl-execute-on-string))
+  (fset 'ccl-vector-program-execute-on-string
+    (symbol-function 'ccl-execute-on-string))
+  (defun ccl-execute-on-string (ccl-prog status &optional contin)
+    "Execute CCL-PROG `ccl-vector-program-execute-on-string'.
+If CCL-PROG is symbol, it is dereferenced.
+\[Emacs 20.3 emulating function]"
+    (ccl-vector-program-execute-on-string
+      (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
+      status
+      contin)))
+
+)
+
+
 ;;; @ end
 ;;;
 

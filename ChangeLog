@@ -1,3 +1,13 @@
+1998-08-27  Tanaka Akira  <akr@jaist.ac.jp>
+
+	* emu-e20.el (ccl-use-symbol-as-program): New constant.
+	(make-ccl-coding-system): New function.
+	(ccl-encoder-eof-block-is-broken): New constant.
+	(ccl-decoder-eof-block-is-broken): New constant.
+	(ccl-eof-block-is-broken): New constant.
+	(ccl-execute): Redefine if `ccl-use-symbol-as-program' is nil.
+	(ccl-execute-on-string): Ditto.
+
 1998-08-24  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-20.el (mime-charset-coding-system-alist): Add `unknown' and
@@ -334,7 +344,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
