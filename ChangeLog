@@ -1,3 +1,8 @@
+2001-10-12  TSUCHIYA Masatoshi  <tsuchiya@pine.kuee.kyoto-u.ac.jp>
+
+	* poe.el (format-time-string): Support the construct `%z'.
+	(support-timezone-in-numeric-form): New advice.
+
 2001-09-09   Daiki Ueno  <ueno@unixuser.org>
 
 	* pccl.el (transform-make-coding-system-args): Follow old backquote

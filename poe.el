@@ -1418,6 +1418,11 @@ Not fully compatible especially when invalid format is specified."
 		 ((eq cur-char ?Z)
 		  (setq change-case (not change-case))
 		  (downcase (cadr (current-time-zone))))
+		 ((eq cur-char ?z)
+		  (let ((tz (car (current-time-zone))))
+		    (if (< tz 0)
+			(format "-%02d%02d" (/ (- tz) 3600) (/ (% (- tz) 3600) 60))
+		      (format "+%02d%02d" (/ tz 3600) (/ (% tz 3600) 60)))))
 		 (t
 		  (concat
 		   "%"
@@ -1458,6 +1463,24 @@ Not fully compatible especially when invalid format is specified."
   ;; for `load-history'.
   (setq current-load-list (cons 'format-time-string current-load-list))
   (put 'format-time-string 'defun-maybe t))))
+
+;; Emacs 19.29-19.34/XEmacs: format-time-string() doesn't support `%z'.
+(unless (string-match "\\`[\\-\\+][0-9]+\\'"
+		      (format-time-string "%z" (current-time)))
+  (defadvice format-time-string
+    (before support-timezone-in-numeric-form activate compile)
+    "Advice to support the construct `%z'."
+    (if (let ((case-fold-search nil))
+	  (string-match "\\(\\(\\`\\|[^%]\\)\\(%%\\)*\\)%z" (ad-get-arg 0)))
+	(ad-set-arg
+	 0
+	 (concat
+	  (substring (ad-get-arg 0) 0 (match-end 1))
+	  (let ((tz (car (current-time-zone))))
+	    (if (< tz 0)
+		(format "-%02d%02d" (/ (- tz) 3600) (/ (% (- tz) 3600) 60))
+	      (format "+%02d%02d" (/ tz 3600) (/ (% tz 3600) 60))))
+	  (substring (ad-get-arg 0) (match-end 0)))))))
 
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (split-string STRING &optional PATTERN)
 ;; Here is a XEmacs version.
