@@ -57,6 +57,21 @@
      ,@body))
 
 
+;;; @ binary access
+;;;
+
+(defun insert-binary-file-contents-literally
+  (filename &optional visit beg end replace)
+  "Like `insert-file-contents-literally', q.v., but don't code conversion.
+A buffer may be modified in several ways after reading into the buffer due
+to advanced Emacs features, such as file-name-handlers, format decoding,
+find-file-hooks, etc.
+  This function ensures that none of these modifications will take place."
+  (let ((file-coding-system-for-read 'no-conversion))
+    (insert-file-contents-literally filename visit beg end replace)
+    ))
+
+
 ;;; @ MIME charset
 ;;;
 
