@@ -1,3 +1,22 @@
+2000-02-21   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* poe-18.el (next-window): New function.
+	(walk-windows): New function.
+
+	* poe-xemacs.el
+	(set-extent-properties): New function.
+	(run-at-time): New function.
+	(cancel-timer): New function.
+	(with-timeout-handler): New function.
+	(with-timeout): New function.
+
+	* poe.el (remassq): New function.
+	(remassoc): New function.
+	(remrassoc): New function.
+	(subst-char-in-string): New function.
+	(get-buffer-window-list): New function.
+	(save-selected-frame): New macro.
+
 2000-02-10  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* poe.el (replace-match): Redefined to add `STRING' optional
