@@ -1,0 +1,54 @@
+;;; APEL-CFG --- user customizations for APEL installation. -*-Emacs-Lisp-*-
+
+;;; Commentary:
+
+;; Use this file to override variables defined in APEL-MK.
+
+;;; Code:
+
+;;; "custom" library.
+
+;; If you use "new custom" but do not use "subdirs.el" to add "custom"
+;; to your load-path, uncomment and edit this.
+;; (add-latest-path "custom")
+
+
+;;; Install to home directory.
+
+;; If you want to install APEL to home directory and you already have
+;; the standard hierarchy such as "~/share/emacs/site-lisp" and
+;; "~/share/emacs/VERSION/site-lisp", uncomment and edit this.
+;; (setq PREFIX "~/")
+
+;; Or, you can specify APEL_DIR and EMU_DIR directly.
+;; (setq APEL_DIR "~/lib/emacs/lisp/apel")
+;; (setq EMU_DIR "~/lib/emacs/lisp/emu")
+
+
+;;; Install to site-lisp directories.
+
+;; (setq APEL_PREFIX "apel")
+;; (setq EMU_PREFIX "emu")
+
+;; (setq PREFIX "/usr/local")
+
+;; Mule based on Emacs 19.28 and eariler.
+;; (setq LISPDIR "/usr/local/share/mule/site-lisp")
+;; Mule based on Emacs 19.29 and later.
+;; (setq LISPDIR "/usr/local/share/emacs/site-lisp")
+;; (setq LISPDIR "/usr/local/share/mule/site-lisp")
+;; (setq VERSION_SPECIFIC_LISPDIR "/usr/local/share/emacs/19.34/site-lisp")
+;; (setq VERSION_SPECIFIC_LISPDIR "/usr/local/share/mule/19.34/site-lisp")
+
+;; XEmacs 21.0 and later.
+;; (setq PACKAGEDIR "/usr/local/lib/xemacs/xemacs-packages")
+
+;; If you want to install all of APEL files to VERSION_SPECIFIC_LISPDIR,
+;; uncomment this.
+;; (setq APEL_DIR (expand-file-name APEL_PREFIX VERSION_SPECIFIC_LISPDIR))
+
+;; You can specify APEL_DIR and EMU_DIR directly.
+;; (setq APEL_DIR (expand-file-name APEL_PREFIX LISPDIR))
+;; (setq EMU_DIR (expand-file-name EMU_PREFIX VERSION_SPECIFIC_LISPDIR))
+
+;;; APEL-CFG ends here
