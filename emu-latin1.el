@@ -216,17 +216,31 @@ find-file-hooks, etc.
   "Encode the text between START and END as MIME CHARSET."
   )
 
-(defun decode-mime-charset-region (start end charset)
+(defun decode-mime-charset-region (start end charset &optional lbt)
   "Decode the text between START and END as MIME CHARSET."
+  (cond ((eq lbt 'CRLF)
+	 (save-excursion
+	   (save-restriction
+	     (narrow-to-region start end)
+	     (goto-char (point-min))
+	     (while (search-forward "\r\n" nil t)
+	       (replace-match "\n"))
+	     ))))
   )
 
 (defun encode-mime-charset-string (string charset)
   "Encode the STRING as MIME CHARSET."
   string)
 
-(defun decode-mime-charset-string (string charset)
+(defun decode-mime-charset-string (string charset &optional lbt)
   "Decode the STRING as MIME CHARSET."
-  string)
+  (if lbt
+      (with-temp-buffer
+	(insert string)
+	(decode-mime-charset-region (point-min)(point-max) charset lbt)
+	(buffer-string)
+	)
+    string))
 
 (defalias 'write-region-as-mime-charset 'write-region)
 
