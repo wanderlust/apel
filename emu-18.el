@@ -227,6 +227,15 @@ With optional non-nil ALL, force redisplay of all mode-lines.
 (defvar mouse-button-3 nil)
 
 
+;;; @ string
+;;;
+
+(defun char-list-to-string (char-list)
+  "Convert list of character CHAR-LIST to string. [emu-18.el]"
+  (mapconcat (function char-to-string) char-list "")
+  )
+
+
 ;;; @ end
 ;;;
 

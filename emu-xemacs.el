@@ -9,7 +9,25 @@
 ;;;	$Id$
 ;;; Keywords: emulation, compatibility, XEmacs
 ;;;
-;;; This file is part of tl and tm (Tools for MIME).
+;;; This file is part of tl (Tiny Library).
+;;;
+;;; This program is free software; you can redistribute it and/or
+;;; modify it under the terms of the GNU General Public License as
+;;; published by the Free Software Foundation; either version 2, or
+;;; (at your option) any later version.
+;;;
+;;; This program is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;;; General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with This program.  If not, write to the Free Software
+;;; Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+;;;
+;;; Code:
+
+;;; @ text property
 ;;;
 
 (or (fboundp 'face-list)
@@ -50,9 +68,17 @@
   (set-extent-endpoints extent start end)
   )
 
+
+;;; @ mouse
+;;;
+
 (defvar mouse-button-1 'button1)
 (defvar mouse-button-2 'button2)
 (defvar mouse-button-3 'button3)
+
+
+;;; @ dired
+;;;
 
 (or (fboundp 'dired-other-frame)
     (defun dired-other-frame (dirname &optional switches)
@@ -63,7 +89,17 @@
     )
 
 
+;;; @ string
+;;;
+
+(defmacro char-list-to-string (char-list)
+  "Convert list of character CHAR-LIST to string. [emu-xemacs.el]"
+  `(mapconcat #'char-to-string ,char-list ""))
+
+
 ;;; @ end
 ;;;
 
 (provide 'emu-xemacs)
+
+;;; emu-xemacs.el ends here

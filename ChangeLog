@@ -1,3 +1,63 @@
+Mon Apr 15 08:57:58 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.19.1 was released.
+
+	* tl-822.el (rfc822/parse-ascii-token): does not exit from loop
+ 	even if token-value is nil.
+
+	* tl-822.el (rfc822/parse-ascii-token): nil check for token-value
+
+Sun Apr 14 00:11:18 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (running-emacs-18, running-emacs-19): New variable
+
+	* emu.el (running-emacs-19_29-or-later): New variable
+
+Sat Apr 13 23:46:09 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (running-xemacs): New variable
+
+Thu Apr 11 14:13:56 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-comment.el (comment-sexp-first-line-method-alist): New variable
+	(comment-sexp-middle-line-method-alist): New variable
+	(comment-sexp-last-line-method-alist): New variable
+	(comment-sexp-middle-line-method-for-lisp): New function
+	(comment-sexp-middle-line-method-for-c++): New function
+	(comment-sexp-first-line-method-for-c): New function
+	(comment-sexp-middle-line-method-for-c): New function
+	(comment-sexp-last-line-method-for-c): New function
+	(comment-sexp-last-line-method-for-dummy): New function
+	(comment-sexp): Call methods instead od insert directly
+
+Thu Apr 11 01:05:58 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-xemacs.el (char-list-to-string): New macro
+
+	* emu-19.el (char-list-to-string): New macro; moved from tl-str.el
+
+	* emu-18.el (char-list-to-string): New function
+
+	* tl-str.el: Macro `char-list-to-string' were moved to emu-*.el
+
+Tue Apr  9 20:42:59 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (poly-funcall): New function
+
+Sun Apr  7 00:37:48 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-misc.el (get-latest-path): New function
+
+Sat Apr  6 21:35:59 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-str.el (version-to-list): New function
+	(version<, version<=, version>, version>=): New function
+
+Sat Apr  6 21:31:32 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-str.el (expand-char-ranges): New function
+
+
 Mon Mar 25 12:00:57 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.19 was released.

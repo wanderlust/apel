@@ -9,7 +9,7 @@
 ;;;	$Id$
 ;;; Keywords: emulation, compatibility
 ;;;
-;;; This file is part of tl and tm (Tools for MIME).
+;;; This file is part of tl (Tiny Library).
 ;;;
 ;;; This program is free software; you can redistribute it and/or
 ;;; modify it under the terms of the GNU General Public License as
@@ -27,15 +27,33 @@
 ;;;
 ;;; Code:
 
+;;; @ text property
+;;;
+
 (defalias 'tl:set-text-properties 'set-text-properties)
 (defalias 'tl:add-text-properties 'add-text-properties)
 (defalias 'tl:make-overlay 'make-overlay)
 (defalias 'tl:overlay-put 'overlay-put)
 (defalias 'tl:overlay-buffer 'overlay-buffer)
 
+
+;;; @ mouse
+;;;
+
 (defvar mouse-button-1 [mouse-1])
 (defvar mouse-button-2 [mouse-2])
 (defvar mouse-button-3 [down-mouse-3])
+
+
+;;; @ string
+;;;
+
+(defmacro char-list-to-string (char-list)
+  "Convert list of character CHAR-LIST to string. [emu-19.el]"
+  (` (mapconcat (function char-to-string)
+		(, char-list)
+		"")
+     ))
 
 
 ;;; @ end
