@@ -1,3 +1,8 @@
+2001-03-26  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* EMU-ELS: Add checking whether the native timezone.el has an old
+	date string parser.
+
 2001-03-23  TSUCHIYA Masatoshi  <tsuchiya@pine.kuee.kyoto-u.ac.jp>
 
 	* timezone.el (timezone-parse-date): Import from Emacs-20.7.
