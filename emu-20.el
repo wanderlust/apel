@@ -71,7 +71,7 @@ This constant is defined to emulate old MULE anything older than MULE
 ;;; @ MIME charset
 ;;;
 
-(defvar mime-charset-coding-system-alist
+(defcustom mime-charset-coding-system-alist
   `,(let ((rest
 	   '((us-ascii      . iso-8859-1)
 	     (gb2312	    . cn-gb-2312)
@@ -88,7 +88,9 @@ This constant is defined to emulate old MULE anything older than MULE
 	)
       dest)
   "Alist MIME CHARSET vs CODING-SYSTEM.
-MIME CHARSET and CODING-SYSTEM must be symbol.")
+MIME CHARSET and CODING-SYSTEM must be symbol."
+  :group 'i18n
+  :type '(repeat (cons symbol coding-system)))
 
 (defsubst mime-charset-to-coding-system (charset &optional lbt)
   "Return coding-system corresponding with CHARSET.
