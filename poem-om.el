@@ -257,21 +257,6 @@ but the contents viewed as characters do change.
   "Return index of character succeeding CHAR whose index is INDEX."
   (` (+ (, index) (char-bytes (, char)))))
 
-(if (subr-fboundp 'char-before)
-    (condition-case err
-	(char-before)
-      (error
-       (when (and (eq (car (get (car err) 'error-conditions))
-		      'wrong-number-of-arguments)
-		  (not (boundp 'si:char-before)))
-	 (fset 'si:char-before (symbol-function 'char-before))
-	 (defun char-before (&optional pos)
-	   "Return character in current buffer preceding position POS.
-POS is an integer or a buffer pointer.
-If POS is out of range, the value is nil."
-	   (si:char-before (or pos (point)))
-	   )))))
-
 ;;; @@ obsoleted aliases
 ;;;
 ;;; You should not use them.

@@ -299,30 +299,3 @@ Bug reports
 
 	tm-en-help@chamonix.jaist.ac.jp	(English)
 	tm-ja-help@chamonix.jaist.ac.jp	(Japanese)
-
-
-CVS
-===
-
-  Development of APEL uses CVS.  So latest developing version is
-  available at CVS.
-
-(0) cvs login
-
-    % cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
-	login
-
-    CVS password: [CR] # NULL string
-
-(1) checkout
-
-    % cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
-	checkout apel
-
-
-  If you would like to join CVS based development, please send mail to
-
-	cvs@chamonix.jaist.ac.jp
-
-  with your account name and UNIX /etc/passwd style crypted password.
-  We hope you will join the open development.
