@@ -1,5 +1,14 @@
 1998-09-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* Makefile: Abolish target `package'.
+	(install-package): Use `elc' instead of `package'.
+
+	* APEL-MK: Abolish function `compile-apel-package'.
+	(install-apel-package): Update auto-autoloads.el and
+	custom-load.el at target directory.
+
+1998-09-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* README.en (run in expanded place): fixed.
 	(install as a XEmacs package): New description.
 
