@@ -1,3 +1,14 @@
+Tue Aug  6 12:18:37 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.44 was released.
+
+Mon Aug  5 15:15:18 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (mime-charset-coding-system-alist): add `x-ctext'.
+
+	(default-mime-charset): default value was changed to `x-ctext'.
+
+
 Thu Aug  1 06:43:54 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.43.2 was released.

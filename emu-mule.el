@@ -121,10 +121,11 @@
 	       lc-cns1 lc-cns2 lc-ltn1 lc-grk)		'iso-2022-int-1)
    ))
 
-(defvar default-mime-charset 'iso-2022-int-1)
+(defvar default-mime-charset 'x-ctext)
 
 (defvar mime-charset-coding-system-alist
   '((iso-8859-1      . *ctext*)
+    (x-ctext         . *ctext*)
     (gb2312          . *euc-china*)
     (koi8-r          . *koi8*)
     (iso-2022-jp-2   . *iso-2022-ss2-7*)
