@@ -1,3 +1,23 @@
+2000-12-21  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poe-18.el (numberp, mod): Removed.
+
+2000-12-21  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* mcharset.el (default-mime-charset-for-write): Require `pces' for
+	`find-coding-system'.
+
+2000-12-21  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* poe-18.el (minor-mode-alist): Removed.
+	(minor-mode-overriding-map-alist): Move to poe.el.
+
+2000-12-20  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* APEL-MK (install-apel): Add new optional argument `just-print'.
+	(what-where-apel): New implementation [use `install-apel' with
+	`just-print' mode].
+
 2000-12-20  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* APEL-MK (install-just-print-p): Moved to install.el.
