@@ -164,6 +164,18 @@ Associates the function with the current load file, if any.
   (cons 'defun (cons name (cons arglist body)))
   )
 
+(defun-maybe make-obsolete (fn new)
+  "Make the byte-compiler warn that FUNCTION is obsolete.
+The warning will say that NEW should be used instead.
+If NEW is a string, that is the `use instead' message."
+  (interactive "aMake function obsolete: \nxObsoletion replacement: ")
+  (let ((handler (get fn 'byte-compile)))
+    (if (eq 'byte-compile-obsolete handler)
+	(setcar (get fn 'byte-obsolete-info) new)
+      (put fn 'byte-obsolete-info (cons new handler))
+      (put fn 'byte-compile 'byte-compile-obsolete)))
+  fn)
+
 
 ;;; @ file
 ;;;
