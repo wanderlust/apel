@@ -199,13 +199,13 @@ The value is actually the element of LIST whose cdr equals KEY."
 
 (defmacro-maybe add-local-hook (hook function &optional append)
   (if (fboundp 'make-local-hook)
-      (list 'add-hook hook function append 'local)
+      (list 'add-hook hook function append t)
     (list 'add-hook hook function append)
     ))
 
-(defmacro remove-local-hook (hook function)
+(defmacro-maybe remove-local-hook (hook function)
   (if (fboundp 'make-local-hook)
-      (list 'remove-hook hook function 'local)
+      (list 'remove-hook hook function t)
     (list 'remove-hook hook function)
     ))
 

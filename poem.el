@@ -47,6 +47,13 @@
        ))
 
 
+;;; @ MULE 2 emulation
+;;;
+
+(defsubst-maybe cancel-undo-boundary ()
+  "Cancel undo boundary. [MULE 2.3 emulating function]")
+
+
 ;;; @ Emacs 20.3 emulation
 ;;;
 
