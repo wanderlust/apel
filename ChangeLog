@@ -1,6 +1,6 @@
 2002-04-30  Katsumi Yamaoka  <yamaoka@jpl.org>
 
-	* poem-xm.el (string-to-char-list): Revived it again.
+	* poem-xm.el (string-to-char-list): Revive it again.
 
 2002-04-25  Katsumi Yamaoka  <yamaoka@jpl.org>
 
