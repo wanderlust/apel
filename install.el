@@ -88,7 +88,7 @@
 ;;; @@ install Emacs Lisp files
 ;;;
 
-(defun install-elisp-module (module src dest &optional just-print)
+(defun install-elisp-module (module src dest &optional just-print del-elc)
   (let (el-file elc-file)
     (let ((name (symbol-name module)))
       (setq el-file (concat name ".el"))
@@ -106,7 +106,12 @@
 	    (princ (format "%s -> %s\n" el-file dest)))))
       (setq src-file (expand-file-name elc-file src))
       (if (not (file-exists-p src-file))
-	  nil 
+	  (let ((full-path (expand-file-name elc-file dest)))
+	    (if (and del-elc (file-exists-p full-path))
+		(if just-print
+		    (princ (format "%s -> to be deleted\n" full-path))
+		  (delete-file full-path)
+		  (princ (format "%s -> deleted\n" full-path)))))
 	(if just-print
 	    (princ (format "%s -> %s\n" elc-file dest))
 	  (let ((full-path (expand-file-name elc-file dest)))
@@ -123,14 +128,14 @@
 		  (error (princ (format "%s\n" (nth 1 err)))))))
 	    (princ (format "%s -> %s\n" elc-file dest))))))))
 
-(defun install-elisp-modules (modules src dest &optional just-print)
+(defun install-elisp-modules (modules src dest &optional just-print del-elc)
   (or just-print
       (file-exists-p dest)
       (make-directory dest t))
   (mapcar
    (function
     (lambda (module)
-      (install-elisp-module module src dest just-print)))
+      (install-elisp-module module src dest just-print del-elc)))
    modules))
 
 
