@@ -6,6 +6,8 @@
 
 (defvar default-load-path load-path)
 (setq load-path (cons (expand-file-name ".") load-path))
+
+(require 'poe);; Pickup `eval-when-compile'.
 (require 'install)
 
 
