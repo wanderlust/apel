@@ -81,32 +81,12 @@
        (cond ((featurep 'xemacs)
 	      ;; for XEmacs with MULE
 	      (require 'emu-x20)
-	      
-	      ;; old Mule emulating aliases
-
-	      ;;(defalias 'char-leading-char 'char-charset)
-
-	      (defun char-category (character)
-		"Return string of category mnemonics for CHAR in TABLE.
-CHAR can be any multilingual character
-TABLE defaults to the current buffer's category table."
-		(mapconcat (lambda (chr)
-			     (char-to-string (int-char chr)))
-			   (char-category-list character)
-			   ""))
 	      )
 	     ((>= emacs-major-version 20)
 	      ;; for Emacs 20
 	      (require 'emu-e20)
 	      (defalias 'insert-binary-file-contents-literally
 		'insert-file-contents-literally)
-	      
-	      ;; old Mule emulating aliases
-	      (defun char-category (character)
-		"Return string of category mnemonics for CHAR in TABLE.
-CHAR can be any multilingual character
-TABLE defaults to the current buffer's category table."
-		(category-set-mnemonics (char-category-set character)))
 	      )
 	     (t
 	      ;; for MULE 1.* and 2.*
@@ -145,23 +125,7 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
        )
       (t
        ;; for Emacs 19 and XEmacs without MULE
-       
-       ;; old MULE emulation
-       (defconst *internal* nil)
-       (defconst *ctext* nil)
-       (defconst *noconv* nil)
-       
-       (defun code-convert-string (str ic oc)
-	 "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
-else returns nil. [emu-latin1.el; old MULE emulating function]"
-	 str)
-
-       (defun code-convert-region (beg end ic oc)
-	 "Convert code of the text between BEGIN and END from SOURCE
-to TARGET. On successful conversion returns t,
-else returns nil. [emu-latin1.el; old MULE emulating function]"
-	 t)
+       (require 'emu-latin1)
        ))
 
 
