@@ -1,8 +1,22 @@
+1999-11-12  Keiichi Suzuki  <keiichi@nanap.org>
+
+	* product.el (product-define): Add new slot `version-string'.
+	(product-provide): Likewise.
+	(product-version-string): New function.
+	(product-set-version-string): New function.
+	(product-string-1): Use `version-string'.
+	(product-for-each): New function.
+	(product-string): Separate `product-string' and
+	`product-string-verbose'.
+	(product-string-verbose): Likewise.
+	(product-parse-version-string): New function.
+	(Toplevel): Define product information for `Meadow'.
+
 1999-11-12  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* product.el: Some `checkdoc' fixes.
 	(product-version>=): Eliminate local variable.
-	
+
 1999-11-12  Keiichi Suzuki  <keiichi@nanap.org>
 
 	* product.el: New file.
@@ -27,7 +41,7 @@
 
 1999-11-08  Yuuichi Teranishi  <teranisi@gohome.org>
 
-	* poe-18.el (put-text-property, next-property-change, 
+	* poe-18.el (put-text-property, next-property-change,
 	text-properties-at): Define as null function.
 
 1999-11-02  Katsumi Yamaoka   <yamaoka@jpl.org>
