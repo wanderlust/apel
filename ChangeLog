@@ -1,3 +1,12 @@
+Mon Dec 23 14:57:21 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.16 was released.
+
+Thu Dec 19 10:06:42 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* filename.el (replace-as-filename): Check nil.
+
+
 Mon Dec 16 13:42:44 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.15 was released.

@@ -130,8 +130,9 @@
 
 (defun replace-as-filename (string)
   "Return safety filename from STRING. [filename.el]"
-  (poly-funcall filename-filters string)
-  )
+  (and string
+       (poly-funcall filename-filters string)
+       ))
 
 
 ;;; @ end
