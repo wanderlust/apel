@@ -1,18 +1,6 @@
-2000-12-19  Katsumi Yamaoka   <yamaoka@jpl.org>
-
-	* poe.el (current-fill-column): New emulating function.
-	(current-left-margin): New emulating function.
-
-	* poe-18.el (numberp): Use `defalias-maybe' instead of `defalias'.
-	(mod): Ditto.
-
 2000-12-20  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
 	* poe-18.el (set-frame-height): Typo fixed.
-	(read-from-minibuffer): Do not run `minibuffer-setup-hook' and
-	`minibuffer-exit-hook'.
-	(minibuffer-setup-hook): Comment out.
-	(minibuffer-exit-hook): Ditto.
 
 2000-12-19  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
