@@ -300,7 +300,8 @@ from the following URL.
 ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz
 
 (Note that "new custom" bundled with XEmacs 19.15 - 20.2, and Gnus
-5.4/5.5 is older than this version.)
+5.4/5.5 is older than this version.  You should upgrade to the latest
+"new custom".)
 
 Before installing "new custom", you should check the following points.
 

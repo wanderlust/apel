@@ -378,7 +378,8 @@ URL から手に入れることができます。
 ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz
 
 (注: XEmacs 19.15〜20.2 と Gnus 5.4/5.5 に含まれている「新しい custom」
-はこの版より古いものです。)
+はこの版より古いものです。最新版の「新しい custom」にすることをお勧めし
+ます。)
 
 「新しい custom」をインストールする前に、次の各項目をチェックして下
 さい。
