@@ -34,6 +34,8 @@
 (defconst std11-space-chars " \t\n")
 (defconst std11-spaces-regexp (concat "^[" std11-space-chars "]+"))
 (defconst std11-special-chars "][()<>@,;:\\<>.\"")
+(defconst std11-atom-regexp
+  (concat "^[^" std11-special-chars std11-space-chars "]+"))
 
 (defun std11-analyze-spaces (str)
   (if (string-match std11-spaces-regexp str)
@@ -49,6 +51,13 @@
       (cons (cons 'specials (substring str 0 1))
 	    (substring str 1)
 	    )))
+
+(defun std11-analyze-atom (str)
+  (if (string-match std11-atom-regexp str)
+      (let ((end (match-end 0)))
+	(cons (cons 'atom (substring str 0 end))
+	      (substring str end)
+	      ))))
 
 
 ;;; @ end
