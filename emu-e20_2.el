@@ -68,6 +68,12 @@ but the contents viewed as characters do change."
 
 (defalias 'string-to-int-list 'string-to-char-list)
 
+(defun looking-at-as-unibyte (regexp)
+  "Like `looking-at', but string is regarded as unibyte sequence."
+  (let (enable-multibyte-characters)
+    (looking-at regexp)
+    ))
+
 ;;; @@ obsoleted aliases
 ;;;
 ;;; You should not use them.
