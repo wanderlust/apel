@@ -1,5 +1,14 @@
 1999-11-12  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
+	* inv-18.el, inv-19.el, inv-xemacs.el:
+	Require 'poe in each submodule.
+	(enable-invisible): Changed to function.
+	(disable-invisible): Renamed from `end-of-invisible'.
+	Changed to function.
+	(end-of-invisible): Make obsolete.
+
+1999-11-12  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
 	* README.en (Version specific information): New section.
 
 	* pcustom.el [old custom]: Refer to it.
