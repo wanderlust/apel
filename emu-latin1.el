@@ -27,11 +27,11 @@
 ;;; @ version and variant specific features
 ;;;
 
-(cond (running-xemacs
-       (require 'emu-xemacs))
-      (running-emacs-19
-       (require 'emu-e19)
-       ))
+;; (cond (running-xemacs
+;;        (require 'emu-xemacs))
+;;       (running-emacs-19
+;;        (require 'emu-e19)
+;;        ))
 
 
 ;;; @ character set
