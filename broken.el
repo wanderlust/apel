@@ -86,10 +86,14 @@ compile(macro expansion) time and run time, warn it."
   `(if-broken ,facility
        (unless (broken-p ',facility)
 	 (message "COMPILE TIME ONLY BROKEN FACILITY DETECTED: %s" 
-		  (broken-facility-description ',facility)))
+		  (or
+		   ',(broken-facility-description facility)
+		   (broken-facility-description ',facility))))
      (when (broken-p ',facility)
        (message "RUN TIME ONLY BROKEN FACILITY DETECTED: %s" 
-		(broken-facility-description ',facility)))))
+		(or
+		 (broken-facility-description ',facility)
+		 ',(broken-facility-description facility))))))
 
 
 ;;; @ end
