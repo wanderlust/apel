@@ -1,5 +1,11 @@
 1998-04-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* install.el (install-detect-elisp-directory): Modify regexp to
+ 	allow trailing `/'.
+
+
+1998-04-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* APEL: Version 8.1 was released.
 
 1998-04-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
