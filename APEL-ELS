@@ -20,4 +20,22 @@
     (setq apel-modules (cons 'time-stamp apel-modules))
   )
 
+(condition-case nil
+    (let ((load-path (delete (expand-file-name ".")
+                             (copy-sequence load-path))))
+      ;; v18 does not have timezone.el.
+      (require 'timezone)
+      ;; Is timezone.el APEL version?
+      (if (product-find 'timezone)
+	  (error "timezone.el is APEL version. Install newer version."))
+      ;; Y2K test.
+      (or (string= (aref (timezone-parse-date "Sat, 1 Jan 00 00:00:00 GMT")
+                         0)
+                   "2000")
+	  (error "timezone.el has Y2K problem. Install fixed version."))
+      ;; another test here.
+      )
+  (error
+   (setq apel-modules (cons 'timezone apel-modules))))
+
 ;;; APEL-ELS ends here

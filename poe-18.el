@@ -414,8 +414,66 @@ even if a buffer with that name exists."
 (defun mark (&optional force)
   (si:mark))
 
-;;; @@ current-time
+;;; @@ current-time.
 ;;;
+
+(defvar current-time-world-timezones
+  '(("PST" .  -800)("PDT" .  -700)("MST" .  -700)
+    ("MDT" .  -600)("CST" .  -600)("CDT" .  -500)
+    ("EST" .  -500)("EDT" .  -400)("AST" .  -400)
+    ("NST" .  -330)("UT"  .  +000)("GMT" .  +000)
+    ("BST" .  +100)("MET" .  +100)("EET" .  +200)
+    ("JST" .  +900)("GMT+1"  .  +100)("GMT+2"  .  +200)
+    ("GMT+3"  .  +300)("GMT+4"  .  +400)("GMT+5"  .  +500)
+    ("GMT+6"  .  +600)("GMT+7"  .  +700)("GMT+8"  .  +800)
+    ("GMT+9"  .  +900)("GMT+10" . +1000)("GMT+11" . +1100)
+    ("GMT+12" . +1200)("GMT+13" . +1300)("GMT-1"  .  -100)
+    ("GMT-2"  .  -200)("GMT-3"  .  -300)("GMT-4"  .  -400)
+    ("GMT-5"  .  -500)("GMT-6"  .  -600)("GMT-7"  .  -700)
+    ("GMT-8"  .  -800)("GMT-9"  .  -900)("GMT-10" . -1000)
+    ("GMT-11" . -1100) ("GMT-12" . -1200))
+  "Time differentials of timezone from GMT in +-HHMM form.
+Used in `current-time-zone' (Emacs 19 emulating function in poe-18.el).")
+
+(defvar current-time-local-timezone nil 
+  "*Local timezone name.
+Used in `current-time-zone' (Emacs 19 emulating function in poe-18.el).")
+
+(defun current-time-zone (&optional specified-time)
+  "Return the offset and name for the local time zone.
+This returns a list of the form (OFFSET NAME).
+OFFSET is an integer number of seconds ahead of UTC (east of Greenwich).
+    A negative value means west of Greenwich.
+NAME is a string giving the name of the time zone.
+Optional argument SPECIFIED-TIME is ignored in this implementation.
+Some operating systems cannot provide all this information to Emacs;
+in this case, `current-time-zone' returns a list containing nil for
+the data it can't find."
+  (let ((local-timezone 
+	 (or current-time-local-timezone
+	     (setq current-time-local-timezone
+		   (with-temp-buffer
+		     (call-process "date" nil (current-buffer) t)
+		     (goto-char (point-min))
+		     (if (looking-at 
+			  "^.*\\([A-Z][A-Z][A-Z]\\([^ \n\t]*\\)\\).*$")
+			 (buffer-substring (match-beginning 1)
+					   (match-end 1)))))))
+	timezone abszone seconds)
+    (setq timezone
+	  (or (cdr (assoc (upcase local-timezone) 
+			  current-time-world-timezones))
+	      ;; "+900" style or nil.
+	      local-timezone))
+    (when timezone
+      (if (stringp timezone)
+	  (setq timezone (string-to-int timezone)))
+      ;; Taking account of minute in timezone.
+      ;; HHMM -> MM
+      (setq abszone (if (< timezone 0) (- timezone) timezone))
+      (setq seconds (* 60 (+ (* 60 (/ abszone 100)) (% abszone 100))))
+      (list (if (< timezone 0) (- seconds) seconds)
+	    local-timezone))))
 
 (or (fboundp 'si:current-time-string)
     (fset 'si:current-time-string (symbol-function 'current-time-string)))
@@ -424,76 +482,76 @@ even if a buffer with that name exists."
 Programs can use this function to decode a time,
 since the number of columns in each field is fixed.
 The format is `Sun Sep 16 01:03:52 1973'.
-If an argument is given, it specifies a time to format
+If an argument SPECIFIED-TIME is given, it specifies a time to format
 instead of the current time.  The argument should have the form:
   (HIGH . LOW)
 or the form:
   (HIGH LOW . IGNORED).
 Thus, you can use times obtained from `current-time'
-and from `file-attributes'.
-\[poe-18.el; EMACS 19 emulating function]"
+and from `file-attributes'."
   (if (null specified-time)
       (si:current-time-string)
-    (unless (consp specified-time)
-      (error "Wrong type argument %s" specified-time))
+    (or (consp specified-time)
+	(error "Wrong type argument %s" specified-time))
     (let ((high (car specified-time))
 	  (low  (cdr specified-time))
+	  (offset (or (car (current-time-zone)) 0))
 	  (mdays '(31 28 31 30 31 30 31 31 30 31 30 31))
 	  (mnames '("Jan" "Feb" "Mar" "Apr" "May" "Jun" 
 		    "Jul" "Aug" "Sep" "Oct" "Nov" "Dec"))
 	  (wnames '("Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat"))
-	  days dd yyyy mm HH MM SS)
+	  days dd yyyy lyear mm HH MM SS)
       (if (consp low)
 	  (setq low (car low)))
-      (unless (integerp high)
-	(error "Wrong type argument %s" high))
-      (unless (integerp low)
-	(error "Wrong type argument %s" low))
-      (setq low (+ low 32400))
+      (or (integerp high)
+	  (error "Wrong type argument %s" high))
+      (or (integerp low)
+	  (error "Wrong type argument %s" low))
+      (setq low (+ low offset))
       (while (> low 65535)
 	(setq high (1+ high)
 	      low (- low 65536)))
       (setq yyyy 1970)
       (while (or (> high 481)
-		 (and (eq high 481)
+		 (and (= high 481)
 		      (>= low 13184)))
-	(when (and (> high 0)
-		   (< low 13184))
-	  (setq high (1- high)
-		low  (+ 65536 low)))
+	(if (and (> high 0)
+		 (< low 13184))
+	    (setq high (1- high)
+		  low  (+ 65536 low)))
 	(setq high (- high 481)
 	      low  (- low 13184))
 	(if (and (zerop (% yyyy 4))
 		 (or (not (zerop (% yyyy 100)))
-		   (zerop (% yyyy 400))))
+		     (zerop (% yyyy 400))))
 	    (progn
-	      (when (and (> high 0) 
-			 (< low 20864))
-		(setq high (1- high)
-		      low  (+ 65536 low)))
+	      (if (and (> high 0) 
+		       (< low 20864))
+		  (setq high (1- high)
+			low  (+ 65536 low)))
 	      (setq high (- high 1)
 		    low (- low 20864))))
 	(setq yyyy (1+ yyyy)))
       (setq dd 1)
       (while (or (> high 1)
-		 (and (eq high 1)
+		 (and (= high 1)
 		      (>= low 20864)))
-	(when (and (> high 0)
-		   (< low 20864))
-	  (setq high (1- high)
-		low  (+ 65536 low)))
+	(if (and (> high 0)
+		 (< low 20864))
+	    (setq high (1- high)
+		  low  (+ 65536 low)))
 	(setq high (- high 1)
 	      low  (- low 20864)
 	      dd (1+ dd)))
       (setq days dd)
-      (if (eq high 1)
+      (if (= high 1)
 	  (setq low (+ 65536 low)))
       (setq mm 0)
-      (setq uru (and (zerop (% yyyy 4))
-		     (or (not (zerop (% yyyy 100)))
-			 (zerop (% yyyy 400)))))
+      (setq lyear (and (zerop (% yyyy 4))
+		       (or (not (zerop (% yyyy 100)))
+			   (zerop (% yyyy 400)))))
       (while (> (- dd (nth mm mdays)) 0)
-	(if (and (eq mm 1) uru)
+	(if (and (= mm 1) lyear)
 	    (setq dd (- dd 29))
 	  (setq dd (- dd (nth mm mdays))))
 	(setq mm (1+ mm)))
@@ -517,8 +575,7 @@ least significant 16 bits.  The third integer gives the microsecond
 count.
 
 The microsecond count is zero on systems that do not provide
-resolution finer than a second.
-\[poe-18.el; EMACS 19 emulating function]"
+resolution finer than a second."
   (let* ((str (current-time-string))
 	 (yyyy (string-to-int (substring str 20 24)))
 	 (mm (length (member (substring str 4 7)
@@ -528,6 +585,7 @@ resolution finer than a second.
 	 (HH (string-to-int (substring str 11 13)))
 	 (MM (string-to-int (substring str 14 16)))
 	 (SS (string-to-int (substring str 17 19)))
+	 (offset (or (car (current-time-zone)) 0))
 	 dn ct1 ct2 i1 i2
 	 year uru)
     (setq ct1 0 ct2 0 i1 0 i2 0)
@@ -576,10 +634,10 @@ resolution finer than a second.
 	  ct2 (+ (+ i2 (% ct2 65536))
 		 (% (+ (* HH 3600) (* MM 60) SS)
 		    65536)))
-    (while (< (- ct2 32400) 0)
+    (while (< (- ct2 offset) 0)
       (setq ct1 (1- ct1)
 	    ct2 (+ ct2 65536)))
-    (setq ct2 (- ct2 32400))
+    (setq ct2 (- ct2 offset))
     (while (> ct2 65535)
       (setq ct1 (1+ ct1)
 	    ct2 (- ct2 65536)))

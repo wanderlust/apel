@@ -238,7 +238,7 @@ If optional argument VERBOSE is non-nil, then return string of
 	    (concat "/"
 		    (product-set-version-string
 		     product
-		     (mapconcat (function number-to-string)
+		     (mapconcat (function int-to-string)
 				(product-version product)
 				"."))))
 	   (""))

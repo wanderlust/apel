@@ -1,3 +1,19 @@
+1999-12-21  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe-18.el (current-time-zone): New function.
+	(current-time-world-timezones, current-time-local-timezone):
+	New variables.
+	(current-time-string): Use `current-time-zone' to get local timezone.
+	(current-time): Ditto.
+
+	* timezone.el: New file.
+
+	* APEL-ELS (apel-modules): Add `timezone' if existing timezone.el
+	has y2k problem.
+
+	* product.el (product-string-1): Use `int-to-string' instead of
+	`number-to-string'.
+
 1999-12-20  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
 	* apel-ver.el, product.el: Header fix.
