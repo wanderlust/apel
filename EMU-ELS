@@ -11,6 +11,13 @@
 			  '(tinyrich)
 			  )))
 
+(setq pcustom-modules
+      (cons 'pcustom
+	    (if (module-installed-p 'custom)
+		nil
+	      '(tinycustom)
+	      )))
+
 (let ((poe-modules '(poe))
       (poem-modules '(poem))
       (mcs-modules '(mcharset))
@@ -69,7 +76,7 @@
   
   (setq emu-modules (append poe-modules poem-modules
 			    mcs-modules invisible-modules
-			    pccl-modules
+			    pccl-modules pcustom-modules
 			    emu-modules))
   (setq emu-modules (cons 'broken emu-modules))
   )
