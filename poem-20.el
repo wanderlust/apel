@@ -51,7 +51,7 @@
 				     &optional append visit lockname)
   "Like `write-region', q.v., but don't encode."
   (let ((coding-system-for-write 'binary)
-	jka-compr-compression-info-list)
+	jka-compr-compression-info-list jam-zcat-filename-list)
     (write-region start end filename append visit lockname)))
 
 ;; `insert-file-contents-literally' of Emacs 20 supports
@@ -76,6 +76,19 @@ code."
   (let ((coding-system-for-write 'raw-text-dos))
     (write-region start end filename append visit lockname)))
 
+(defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but don't code and format conversion."
+  (let ((coding-system-for-write 'binary)
+	format-alist)
+    (find-file-noselect filename nowarn rawfile)))
+
+(defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but it does not code and format conversion
+except for line-break code."
+  (let ((coding-system-for-read 'raw-text)
+	format-alist)
+    (find-file-noselect filename nowarn rawfile)))
+
 (defun open-network-stream-as-binary (name buffer host service)
   "Like `open-network-stream', q.v., but don't code conversion."
   (let ((coding-system-for-read 'binary)
@@ -86,24 +99,29 @@ code."
 ;;; @ with code-conversion
 ;;;
 
-(defun insert-file-contents-as-specified-coding-system (filename &rest args)
-  "Like `insert-file-contents', q.v., but code convert by the specified
-coding-system. ARGS the optional arguments are passed to
-`insert-file-contents' except for the last element. The last element of
-ARGS must be a coding-system."
-  (let ((coding-system-for-read (car (reverse args)))
+(defun insert-file-contents-as-coding-system
+  (filename coding-system &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but CODING-SYSTEM the second arg will
+be applied to `coding-system-for-read'."
+  (let ((coding-system-for-read coding-system)
 	format-alist)
-    (apply 'insert-file-contents filename (nreverse (cdr (nreverse args))))))
+    (insert-file-contents filename visit beg end replace)))
 
-(defun write-region-as-specified-coding-system (start end filename
-						      &rest args)
-  "Like `write-region', q.v., but code convert by the specified coding-system.
-ARGS the optional arguments are passed to `write-region' except for the last
-element. The last element of ARGS must be a coding-system."
-  (let ((coding-system-for-write (car (reverse args)))
+(defun write-region-as-coding-system (start end filename coding-system
+					    &optional append visit lockname)
+  "Like `write-region', q.v., but CODING-SYSTEM the fourth arg will be
+applied to `coding-system-for-write'."
+  (let ((coding-system-for-write coding-system)
 	jka-compr-compression-info-list jam-zcat-filename-list)
-    (apply 'write-region start end filename
-	   (nreverse (cdr (nreverse args))))))
+    (write-region start end filename append visit lockname)))
+
+(defun find-file-noselect-as-coding-system (filename coding-system
+						     &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but CODING-SYSTEM the second arg will
+be applied to `coding-system-for-read'."
+  (let ((coding-system-for-read coding-system)
+	format-alist)
+    (find-file-noselect filename nowarn rawfile)))
 
 
 ;;; @ end
