@@ -947,6 +947,120 @@ STRING should be given if the last search was by `string-match' on STRING."
 	(buffer-substring-no-properties (match-beginning num)
 					(match-end num)))))
 
+;; Emacs 19.28 and earlier
+;;  (replace-match NEWTEXT &optional FIXEDCASE LITERAL)
+;; Emacs 20.x (?) and later
+;;  (replace-match NEWTEXT &optional FIXEDCASE LITERAL STRING SUBEXP)
+;; XEmacs 21:
+;;  (replace-match NEWTEXT &optional FIXEDCASE LITERAL STRING STRBUFFER)
+;; We support following API.
+;;  (replace-match NEWTEXT &optional FIXEDCASE LITERAL STRING)
+(static-condition-case nil
+    ;; compile-time check
+    (progn
+      (string-match "" "")
+      (replace-match "" nil nil "")
+      (if (get 'replace-match 'defun-maybe)
+	  (error "`replace-match' is already defined")))
+  (wrong-number-of-arguments ; Emacs 19.28 and earlier
+   ;; load-time check.
+   (or (fboundp 'si:replace-match)
+       (progn
+	 (fset 'si:replace-match (symbol-function 'replace-match))
+	 (put 'replace-match 'defun-maybe t)
+	 (defun replace-match (newtext &optional fixedcase literal string)
+	   "Replace text matched by last search with NEWTEXT.
+If second arg FIXEDCASE is non-nil, do not alter case of replacement text.
+Otherwise maybe capitalize the whole text, or maybe just word initials,
+based on the replaced text.
+If the replaced text has only capital letters
+and has at least one multiletter word, convert NEWTEXT to all caps.
+If the replaced text has at least one word starting with a capital letter,
+then capitalize each word in NEWTEXT.
+
+If third arg LITERAL is non-nil, insert NEWTEXT literally.
+Otherwise treat `\' as special:
+  `\&' in NEWTEXT means substitute original matched text.
+  `\N' means substitute what matched the Nth `\(...\)'.
+       If Nth parens didn't match, substitute nothing.
+  `\\' means insert one `\'.
+FIXEDCASE and LITERAL are optional arguments.
+Leaves point at end of replacement text.
+
+The optional fourth argument STRING can be a string to modify.
+In that case, this function creates and returns a new string
+which is made by replacing the part of STRING that was matched."
+	   (if string
+	       (with-temp-buffer
+		(save-match-data
+		  (insert string)
+		  (let* ((matched (match-data))
+			 (beg (nth 0 matched))
+			 (end (nth 1 matched)))
+		    (store-match-data
+		     (list
+		      (if (markerp beg)
+			  (move-marker beg (1+ (match-beginning 0)))
+			(1+ (match-beginning 0)))
+		      (if (markerp end)
+			  (move-marker end (1+ (match-end 0)))
+			(1+ (match-end 0))))))
+		  (si:replace-match newtext fixedcase literal)
+		  (buffer-string)))
+	     (si:replace-match newtext fixedcase literal))))))
+  (error ; found our definition at compile-time.
+   ;; load-time check.
+   (condition-case nil
+    (progn
+      (string-match "" "")
+      (replace-match "" nil nil ""))
+    (wrong-number-of-arguments ; Emacs 19.28 and earlier
+     ;; load-time check.
+     (or (fboundp 'si:replace-match)
+	 (progn
+	   (fset 'si:replace-match (symbol-function 'replace-match))
+	   (put 'replace-match 'defun-maybe t)
+	   (defun replace-match (newtext &optional fixedcase literal string)
+	     "Replace text matched by last search with NEWTEXT.
+If second arg FIXEDCASE is non-nil, do not alter case of replacement text.
+Otherwise maybe capitalize the whole text, or maybe just word initials,
+based on the replaced text.
+If the replaced text has only capital letters
+and has at least one multiletter word, convert NEWTEXT to all caps.
+If the replaced text has at least one word starting with a capital letter,
+then capitalize each word in NEWTEXT.
+
+If third arg LITERAL is non-nil, insert NEWTEXT literally.
+Otherwise treat `\' as special:
+  `\&' in NEWTEXT means substitute original matched text.
+  `\N' means substitute what matched the Nth `\(...\)'.
+       If Nth parens didn't match, substitute nothing.
+  `\\' means insert one `\'.
+FIXEDCASE and LITERAL are optional arguments.
+Leaves point at end of replacement text.
+
+The optional fourth argument STRING can be a string to modify.
+In that case, this function creates and returns a new string
+which is made by replacing the part of STRING that was matched."
+	     (if string
+		 (with-temp-buffer
+		  (save-match-data
+		    (insert string)
+		    (let* ((matched (match-data))
+			   (beg (nth 0 matched))
+			   (end (nth 1 matched)))
+		      (store-match-data
+		       (list
+			(if (markerp beg)
+			    (move-marker beg (1+ (match-beginning 0)))
+			  (1+ (match-beginning 0)))
+			(if (markerp end)
+			    (move-marker end (1+ (match-end 0)))
+			  (1+ (match-end 0))))))
+		    (si:replace-match newtext fixedcase literal)
+		    (buffer-string)))
+	       (si:replace-match newtext fixedcase literal)))))))))
+
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (split-string STRING &optional PATTERN)
 ;; Here is a XEmacs version.
 (defun-maybe split-string (string &optional pattern)
