@@ -74,7 +74,7 @@
   (defalias 'tl:overlay-put 'overlay-put)
   (make-obsolete 'tl:overlay-put 'overlay-put)
   )
-(unless (fboundp 'tl:overlay-put)
+(unless (fboundp 'tl:overlay-buffer)
   (defalias 'tl:overlay-buffer 'overlay-buffer)
   (make-obsolete 'tl:overlay-buffer 'overlay-buffer)
   )
