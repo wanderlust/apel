@@ -179,8 +179,12 @@ If BOUNDARY is not nil, it is used as message header separator.
 
 (provide 'std11)
 
-(autoload 'std11-lexical-analyze	"std11-parse")
-(autoload 'std11-parse-address		"std11-parse")
-(autoload 'std11-parse-addresses	"std11-parse")
+(mapcar (function
+	 (lambda (func)
+	   (autoload func "std11-parse")
+	   ))
+	'(std11-lexical-analyze
+	  std11-parse-address std11-parse-addresses
+	  std11-parse-address-string))
 
 ;;; std11.el ends here
