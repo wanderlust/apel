@@ -1,3 +1,35 @@
+Mon Feb 26 01:14:28 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.11.3 was released.
+
+	* emu-18.el (tl:set-text-properties): New function.
+	(tl:overlay-buffer): New function. (cf. [tm-ja:1606])
+
+Mon Feb 26 01:05:28 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-18.el (remove-hook): New function: Imported from Emacs
+	19.28. (cf. [tm-ja:1606])
+	
+	* emu-18.el (defalias): Implementation was fixed.
+ 	(cf. [tm-ja:1606])
+
+Mon Feb 26 00:56:18 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el: Version check was changed. (cf. [tm-ja:1606])
+
+Mon Feb 26 00:54:12 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el: Version check was changed. (cf. [tm-ja:1606])
+
+Sun Feb 25 18:08:24 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-list.el (expand-range): New implementation.
+
+	* tl-list.el: Function `uncompress-range' was renamed to
+ 	`expand-range'.
+
+	* tl-list.el (member-of-range): New implementation.
+
 Fri Feb 23 20:43:33 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl-list.el (last): changed to macro.

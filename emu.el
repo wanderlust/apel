@@ -2,7 +2,7 @@
 ;;; emu.el --- Emulation module for each Emacs variants
 ;;;
 ;;; Copyright (C) 1995 Free Software Foundation, Inc.
-;;; Copyright (C) 1995 MORIOKA Tomohiko
+;;; Copyright (C) 1995 .. 1996 MORIOKA Tomohiko
 ;;;
 ;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;;; Version:
@@ -36,17 +36,20 @@
 ;;; @ Emacs 19.29 emulation
 ;;;
 
-(cond ((fboundp 'buffer-substring-no-properties)
-       ;; for Emacs 19.29 or later
-       (defalias 'tl:read-string 'read-string)
-       )
-      (t
+(or (fboundp 'buffer-substring-no-properties)
+    (defalias 'buffer-substring-no-properties 'buffer-substring)
+    )
+
+(cond ((or (<= emacs-major-version 18)
+	   (<= emacs-minor-version 28))
        ;; for Emacs 19.28 or earlier
-       (defalias 'buffer-substring-no-properties 'buffer-substring)
-       
        (defun tl:read-string (prompt &optional initial-input history)
 	 (read-string prompt initial-input)
 	 )
+       )
+      (t
+       ;; for Emacs 19.29 or later
+       (defalias 'tl:read-string 'read-string)
        ))
 
 
