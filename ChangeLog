@@ -1,18 +1,3 @@
-2000-12-15  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
-
-	* mcs-xm.el: Don't require `poem' instead of `mcs-20'.
-
-	* mcs-e20.el: Don't require mcs-20.
-
-	* mcs-20.el: - Don't require `poem'.
-	- Require `custom' instead of `pcustom'.
-	- Require mcs-xm for XEmacs-Mule.
-	- Require mcs-e20 for GNU Emacs 20.1 or later.
-	(default-mime-charset): Change initial value to `x-unknown'.
-
-	* mcharset.el: Require mcs-20 if running with XEmacs-Mule and GNU
-	Emacs 20.1 or later.
-
 2000-12-19  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* poe.el (current-fill-column): New emulating function.
@@ -2743,7 +2728,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>

@@ -1,9 +1,9 @@
 ;;; mcs-xm.el --- MIME charset implementation for XEmacs-mule
 
-;; Copyright (C) 1997,1998,1999,2000 Free Software Foundation, Inc.
+;; Copyright (C) 1997,1998,1999 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <tomo@m17n.org>
-;; Keywords: MIME-charset, coding-system, emulation, compatibility, Mule
+;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
 
@@ -29,7 +29,7 @@
 
 ;;; Code:
 
-(require 'poem)
+(require 'mcs-20)
 
 
 (defun encode-mime-charset-region (start end charset &optional lbt)
