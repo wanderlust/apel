@@ -2,7 +2,7 @@
 # Makefile for APEL.
 #
 
-VERSION = 10.2
+VERSION = 10.3
 
 TAR	= tar
 RM	= /bin/rm -f
@@ -51,7 +51,7 @@ tar:
 	sh -c 'cvs tag -R apel-`echo $(VERSION) \
 				| sed s/\\\\./_/ | sed s/\\\\./_/`; \
 	cd /tmp; \
-	cvs -d :pserver:morioka@cvs.m17n.org:/cvs/root \
+	cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root \
 		export -d apel-$(VERSION) \
 		-r apel-`echo $(VERSION) | tr . _` apel'
 	cd /tmp; $(RM) apel-$(VERSION)/ftp.in apel-$(VERSION)/.cvsignore ; \
