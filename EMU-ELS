@@ -14,15 +14,20 @@
 (let ((poe-modules '(poe))
       (poem-modules '(poem))
       (mcs-modules '(mcharset))
+      (invisible-modules '(invisible))
       pccl-modules)
-  (setq poe-modules (cons (cond ((featurep 'xemacs)
-				 'poe-xemacs)
-				((>= emacs-major-version 19)
-				 'poe-19)
-				(t
-				 'poe-18))
-			  poe-modules))
-  
+  (cond ((featurep 'xemacs)
+	 (setq poe-modules (cons 'poe-xemacs poe-modules)
+	       invisible-modules (cons 'inv-xemacs invisible-modules))
+	 )
+	((>= emacs-major-version 19)
+	 (setq poe-modules (cons 'poe-19 poe-modules)
+	       invisible-modules (cons 'inv-19 invisible-modules))
+	 )
+	(t
+	 (setq poe-modules (cons 'poe-18 poe-modules)
+	       invisible-modules (cons 'inv-18 invisible-modules))
+	 ))
   (cond ((featurep 'mule)
 	 (cond ((featurep 'xemacs)
 		(setq poem-modules (cons 'poem-xm (cons 'poem-20
@@ -64,7 +69,8 @@
 	 ))
   
   (setq emu-modules (append poe-modules poem-modules
-			    mcs-modules pccl-modules
+			    mcs-modules invisible-modules
+			    pccl-modules
 			    emu-modules))
   (setq emu-modules (cons 'broken emu-modules))
   )

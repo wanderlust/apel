@@ -86,6 +86,16 @@
        (provide 'xemacs)
        (require 'poe-xemacs)
        )
+      ((>= emacs-major-version 20)
+       (require 'poe-19)
+       (cond ((fboundp 'string)
+	      ;; Emacs 20.3 or later
+	      )
+	     ((fboundp 'concat-chars)
+	      ;; Emacs 20.1 or later
+	      (defalias 'string 'concat-chars)
+	      ))
+       )
       ((>= emacs-major-version 19)
        (require 'poe-19)
        )
@@ -96,6 +106,11 @@
 
 ;;; @ Emacs 19 emulation
 ;;;
+
+(defmacro-maybe eval-and-compile (&rest body)
+  "Like `progn', but evaluates the body at compile time and at load time."
+  ;; Remember, it's magic.
+  (cons 'progn body))
 
 (defun-maybe minibuffer-prompt-width ()
   "Return the display width of the minibuffer prompt."
@@ -136,9 +151,8 @@ STRING should be given if the last search was by `string-match' on STRING.
 	 (>= emacs-minor-version 29))
     ;; for Emacs 19.28 or earlier
     (fboundp 'si:read-string)
-    (progn
+    (eval-and-compile
       (fset 'si:read-string (symbol-function 'read-string))
-      
       (defun read-string (prompt &optional initial-input history)
 	"Read a string from the minibuffer, prompting with string PROMPT.
 If non-nil, second arg INITIAL-INPUT is a string to insert before reading.
@@ -338,7 +352,12 @@ This function does not move point."
     (end-of-line)
     (point)))
 
+(defun-maybe string (&rest chars)
+  "Concatenate all the argument characters and make the result a string."
+  (mapconcat (function char-to-string) chars "")
+  )
 
+    
 ;;; @ XEmacs emulation
 ;;;
 
