@@ -1,5 +1,9 @@
 1999-05-16  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
 
+	* poe.el (subr-fboundp): Use `defun' instead of `defsubst'.
+
+1999-05-16  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
 	* poem-om.el (insert-binary-file-contents-literally): Removed,
 	since provided by emu.el.
 	(char-before, char-after): Use `fboundp', not `boundp'.
