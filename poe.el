@@ -78,8 +78,8 @@
 ;;; @ C primitives emulation.
 ;;;
 
-;; (require FEATURE &optional FILENAME NOERROR)
-;; Emacs 20.4 and later takes optional 3rd arg NOERROR.
+;; Emacs 20.3 and earlier: (require FEATURE &optional FILENAME)
+;; Emacs 20.4 and later: (require FEATURE &optional FILENAME NOERROR)
 (static-condition-case nil
     ;; compile-time check.
     (progn
@@ -128,6 +128,7 @@ corresponding to the given PROP, or nil if PROP is not
 one of the properties on the list."
 	  (setplist 'plist-get-internal-symbol plist)
 	  (get 'plist-get-internal-symbol prop))
+	;; for `load-history'.
 	(setq current-load-list (cons 'plist-get current-load-list))
 	(put 'plist-get 'defun-maybe t))))
 
@@ -165,6 +166,7 @@ The PLIST is modified by side effects."
 	  (setplist 'plist-put-internal-symbol plist)
 	  (put 'plist-put-internal-symbol prop val)
 	  (symbol-plist 'plist-put-internal-symbol))
+	;; for `load-history'.
 	(setq current-load-list (cons 'plist-put current-load-list))
 	(put 'plist-put 'defun-maybe t))))
 
@@ -648,11 +650,13 @@ On those systems, it is automatically local in every buffer.
 On other systems, this variable is normally always nil.")
 
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (save-current-buffer &rest BODY)
+;;
 ;; v20 defines `save-current-buffer' as a C primitive (in src/editfns.c)
 ;; and introduces a new bytecode Bsave_current_buffer(_1), replacing an
 ;; obsolete bytecode Bread_char.  To make things worse, Emacs 20.1 and
 ;; 20.2 have a bug that it will restore the current buffer without
 ;; confirming that it is alive.
+;;
 ;; This is a source of incompatibility of .elc between v18/v19 and v20.
 ;; (XEmacs compiler takes care of it if compatibility mode is enabled.)
 (defmacro-maybe save-current-buffer (&rest body)
@@ -854,8 +858,8 @@ If PATTERN is omitted, it defaults to \"[ \\f\\t\\n\\r\\v]+\"."
  ((memq system-type '(windows-nt ms-dos))
   ;; should we do (require 'filename) at load-time ?
   ;; (require 'filename)
-  ;; filename.el requires many modules, so we do not want to load at
-  ;; compile-time. instead, suppress warnings by this.
+  ;; filename.el requires many modules, so we do not want to load it
+  ;; at compile-time. Instead, suppress warnings by these autoloads.
   (eval-when-compile
     (autoload 'filename-maybe-truncate-by-size "filename")
     (autoload 'filename-special-filter "filename"))
@@ -930,7 +934,7 @@ Otherwise, FACE-OR-NAME should be a symbol.  If there is no such face,
 nil is returned.  Otherwise the associated face object is returned."
   (car (memq face-or-name (face-list))))
 
-;; Emacs 20.5 defines this as an alias for `line-beginning-position'.
+;; Emacs 21.1 defines this as an alias for `line-beginning-position'.
 ;; Therefore, optional 2nd arg BUFFER is not portable.
 (defun-maybe point-at-bol (&optional n buffer)
   "Return the character position of the first character on the current line.
@@ -942,7 +946,7 @@ This function does not move point."
     (forward-line (1- (or n 1)))
     (point)))
 
-;; Emacs 20.5 defines this as an alias for `line-end-position'.
+;; Emacs 21.1 defines this as an alias for `line-end-position'.
 ;; Therefore, optional 2nd arg BUFFER is not portable.
 (defun-maybe point-at-eol (&optional n buffer)
   "Return the character position of the last character on the current line.

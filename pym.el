@@ -46,6 +46,7 @@
 
 ;;; Code:
 
+;; for `load-history'.
 (or (boundp 'current-load-list) (setq current-load-list nil))
 
 (require 'static)
@@ -62,8 +63,8 @@ See also the function `defun'."
       (` (or (fboundp (quote (, name)))
 	     (prog1
 		 (defun (, name) (,@ everything-else))
-	       ;; This `defun' will be compiled to `fset', which does
-	       ;; not update `load-history'.
+	       ;; This `defun' will be compiled to `fset',
+	       ;; which does not update `load-history'.
 	       ;; We must update `current-load-list' explicitly.
 	       (setq current-load-list
 		     (cons (quote (, name)) current-load-list))
@@ -78,6 +79,9 @@ See also the function `defmacro'."
       (` (or (fboundp (quote (, name)))
 	     (prog1
 		 (defmacro (, name) (,@ everything-else))
+	       ;; This `defmacro' will be compiled to `fset',
+	       ;; which does not update `load-history'.
+	       ;; We must update `current-load-list' explicitly.
 	       (setq current-load-list
 		     (cons (quote (, name)) current-load-list))
 	       (put (quote (, name)) 'defmacro-maybe t))))))
@@ -91,6 +95,9 @@ See also the macro `defsubst'."
       (` (or (fboundp (quote (, name)))
 	     (prog1
 		 (defsubst (, name) (,@ everything-else))
+	       ;; This `defsubst' will be compiled to `fset',
+	       ;; which does not update `load-history'.
+	       ;; We must update `current-load-list' explicitly.
 	       (setq current-load-list
 		     (cons (quote (, name)) current-load-list))
 	       (put (quote (, name)) 'defsubst-maybe t))))))
@@ -104,8 +111,7 @@ See also the function `defalias'."
       (` (or (fboundp (quote (, symbol)))
 	     (prog1
 		 (defalias (quote (, symbol)) (, definition))
-	       (setq current-load-list
-		     (cons (quote (, symbol)) current-load-list))
+	       ;; `defalias' updates `load-history' internally.
 	       (put (quote (, symbol)) 'defalias-maybe t))))))
 
 (defmacro defvar-maybe (name &rest everything-else)
@@ -128,6 +134,8 @@ See also the function `defconst'."
       (` (or (boundp (quote (, name)))
 	     (prog1
 		 (defconst (, name) (,@ everything-else))
+	       ;; byte-compiler will generate code to update
+	       ;; `load-history'.
 	       (put (quote (, name)) 'defconst-maybe t))))))
 
 (defmacro defun-maybe-cond (name args &optional doc &rest clauses)
@@ -155,6 +163,9 @@ See also the function `defun'."
 				  (` (defun (, name) (, args)
 				       (,@ (cdr case))))))))
 		       clauses)))
+	       ;; This `defun' will be compiled to `fset',
+	       ;; which does not update `load-history'.
+	       ;; We must update `current-load-list' explicitly.
 	       (setq current-load-list
 		     (cons (quote (, name)) current-load-list))
 	       (put (quote (, name)) 'defun-maybe t))))))
@@ -184,6 +195,9 @@ See also the function `defmacro'."
 				  (` (defmacro (, name) (, args)
 				       (,@ (cdr case))))))))
 		       clauses)))
+	       ;; This `defmacro' will be compiled to `fset',
+	       ;; which does not update `load-history'.
+	       ;; We must update `current-load-list' explicitly.
 	       (setq current-load-list
 		     (cons (quote (, name)) current-load-list))
 	       (put (quote (, name)) 'defmacro-maybe t))))))
@@ -213,6 +227,9 @@ See also the macro `defsubst'."
 				  (` (defsubst (, name) (, args)
 				       (,@ (cdr case))))))))
 		       clauses)))
+	       ;; This `defsubst' will be compiled to `fset',
+	       ;; which does not update `load-history'.
+	       ;; We must update `current-load-list' explicitly.
 	       (setq current-load-list
 		     (cons (quote (, name)) current-load-list))
 	       (put (quote (, name)) 'defsubst-maybe t))))))
