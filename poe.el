@@ -31,6 +31,8 @@
 
 (provide 'poe)
 
+(or (boundp 'current-load-list) (setq current-load-list nil))
+
 (put 'defun-maybe 'lisp-indent-function 'defun)
 (defmacro defun-maybe (name &rest everything-else)
   "Define NAME as a function if NAME is not defined.
@@ -40,6 +42,10 @@ See also the function `defun'."
       (` (or (fboundp (quote (, name)))
 	     (prog1
 		 (defun (, name) (,@ everything-else))
+	       ;; This `defun' will be compiled to `fset', which does
+	       ;; not update `load-history'.
+	       (setq current-load-list
+		     (cons (quote (, name)) current-load-list))
 	       (put (quote (, name)) 'defun-maybe t))))))
 
 (put 'defmacro-maybe 'lisp-indent-function 'defun)
@@ -51,6 +57,8 @@ See also the function `defmacro'."
       (` (or (fboundp (quote (, name)))
 	     (prog1
 		 (defmacro (, name) (,@ everything-else))
+	       (setq current-load-list
+		     (cons (quote (, name)) current-load-list))
 	       (put (quote (, name)) 'defmacro-maybe t))))))
 
 (put 'defsubst-maybe 'lisp-indent-function 'defun)
@@ -62,6 +70,8 @@ See also the macro `defsubst'."
       (` (or (fboundp (quote (, name)))
 	     (prog1
 		 (defsubst (, name) (,@ everything-else))
+	       (setq current-load-list
+		     (cons (quote (, name)) current-load-list))
 	       (put (quote (, name)) 'defsubst-maybe t))))))
 
 (defmacro defalias-maybe (symbol definition)
@@ -73,6 +83,8 @@ See also the function `defalias'."
       (` (or (fboundp (quote (, symbol)))
 	     (prog1
 		 (defalias (quote (, symbol)) (, definition))
+	       (setq current-load-list
+		     (cons (quote (, symbol)) current-load-list))
 	       (put (quote (, symbol)) 'defalias-maybe t))))))
 
 (defmacro defvar-maybe (name &rest everything-else)
@@ -83,6 +95,8 @@ See also the function `defvar'."
       (` (or (boundp (quote (, name)))
 	     (prog1
 		 (defvar (, name) (,@ everything-else))
+	       ;; byte-compiler will generate code to update
+	       ;; `load-history'.
 	       (put (quote (, name)) 'defvar-maybe t))))))
 
 (defmacro defconst-maybe (name &rest everything-else)
@@ -93,6 +107,8 @@ See also the function `defconst'."
       (` (or (boundp (quote (, name)))
 	     (prog1
 		 (defconst (, name) (,@ everything-else))
+	       ;; byte-compiler will generate code to update
+	       ;; `load-history'.
 	       (put (quote (, name)) 'defconst-maybe t))))))
 
 (defmacro defun-maybe-cond (name args &optional doc &rest everything-else)
@@ -103,16 +119,20 @@ See also the function `defconst'."
 	   (not (get name 'defun-maybe)))
       (` (or (fboundp (quote (, name)))
 	     (prog1
-		 (cond (,@ (mapcar (function
-				    (lambda (case)
-				      (list (car case)
-					    (if doc
-						(` (defun (, name) (, args)
-						     (, doc)
-						     (,@ (cdr case))))
-					      (` (defun (, name) (, args)
-						   (,@ (cdr case))))))))
-				   everything-else)))
+		 (cond
+		  (,@ (mapcar
+		       (function
+			(lambda (case)
+			  (list (car case)
+				(if doc
+				    (` (defun (, name) (, args)
+					 (, doc)
+					 (,@ (cdr case))))
+				  (` (defun (, name) (, args)
+				       (,@ (cdr case))))))))
+		       everything-else)))
+	       (setq current-load-list
+		     (cons (quote (, name)) current-load-list))
 	       (put (quote (, name)) 'defun-maybe t))))))
 
 (defmacro defmacro-maybe-cond (name args &optional doc &rest everything-else)
@@ -123,16 +143,20 @@ See also the function `defconst'."
 	   (not (get name 'defmacro-maybe)))
       (` (or (fboundp (quote (, name)))
 	     (prog1
-		 (cond (,@ (mapcar (function
-				    (lambda (case)
-				      (list (car case)
-					    (if doc
-						(` (defmacro (, name) (, args)
-						     (, doc)
-						     (,@ (cdr case))))
-					      (` (defmacro (, name) (, args)
-						   (,@ (cdr case))))))))
-				   everything-else)))
+		 (cond
+		  (,@ (mapcar
+		       (function
+			(lambda (case)
+			  (list (car case)
+				(if doc
+				    (` (defmacro (, name) (, args)
+					 (, doc)
+					 (,@ (cdr case))))
+				  (` (defmacro (, name) (, args)
+				       (,@ (cdr case))))))))
+		       everything-else)))
+	       (setq current-load-list
+		     (cons (quote (, name)) current-load-list))
 	       (put (quote (, name)) 'defmacro-maybe t))))))
 
 (defun subr-fboundp (symbol)
