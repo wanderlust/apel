@@ -270,17 +270,6 @@ applied to `coding-system-for-write'."
 
 (defalias 'set-process-input-coding-system 'set-process-coding-system)
 
-(defun insert-binary-file-contents-literally (filename
-					      &optional visit beg end replace)
-  "Like `insert-file-contents-literally', q.v., but don't code conversion.
-A buffer may be modified in several ways after reading into the buffer due
-to advanced Emacs features, such as file-name-handlers, format decoding,
-find-file-hooks, etc.
-  This function ensures that none of these modifications will take place."
-  (as-binary-input-file
-   ;; Returns list absolute file name and length of data inserted.
-   (insert-file-contents-literally filename visit beg end replace)))
-
 (defun insert-file-contents-as-binary (filename
 				       &optional visit beg end replace)
   "Like `insert-file-contents', q.v., but don't code and format conversion.
@@ -383,32 +372,30 @@ but the contents viewed as characters do change.
 (if (subr-fboundp 'char-before)
     (condition-case err
 	(char-before)
-      (error
-       (when (and (eq (car (get (car err) 'error-conditions))
-		      'wrong-number-of-arguments)
-		  (not (boundp 'si:char-before)))
-	 (fset 'si:char-before (symbol-function 'char-before))
-	 (defun char-before (&optional pos)
-	   "Return character in current buffer preceding position POS.
+      (wrong-number-of-arguments
+       (or (fboundp 'si:char-before)
+	   (progn
+	     (fset 'si:char-before (symbol-function 'char-before))
+	     (defun char-before (&optional pos)
+	       "Return character in current buffer preceding position POS.
 POS is an integer or a buffer pointer.
 If POS is out of range, the value is nil."
-	   (si:char-before (or pos (point)))
-	   )))))
+	       (si:char-before (or pos (point))))
+	     )))))
 
 (if (subr-fboundp 'char-after)
-    (condition-case err
+    (condition-case nil
 	(char-after)
-      (error
-       (when (and (eq (car (get (car err) 'error-conditions))
-		      'wrong-number-of-arguments)
-		  (not (boundp 'si:char-after)))
-	 (fset 'si:char-after (symbol-function 'char-after))
-	 (defun char-after (&optional pos)
-	   "Return character in current buffer at position POS.
+      (wrong-number-of-arguments
+       (or (fboundp 'si:char-after)
+	   (progn
+	     (fset 'si:char-after (symbol-function 'char-after))
+	     (defun char-after (&optional pos)
+	       "Return character in current buffer at position POS.
 POS is an integer or a buffer pointer.
 If POS is out of range, the value is nil."
-	   (si:char-after (or pos (point)))
-	   )))))
+	       (si:char-after (or pos (point))))
+	     )))))
 
 ;;; @@ obsoleted aliases
 ;;;
