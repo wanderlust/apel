@@ -1,5 +1,9 @@
 1998-10-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* alist.el: Add autoload cookies.
+
+1998-10-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* poe.el, EMU-ELS, README.en: Move `find-face' from poe-19.el to
 	poe.el; abolish poe-19.el.
 
