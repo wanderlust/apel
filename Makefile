@@ -2,7 +2,7 @@
 # Makefile for APEL.
 #
 
-VERSION = 8.0
+VERSION = 8.2
 
 TAR	= tar
 RM	= /bin/rm -f

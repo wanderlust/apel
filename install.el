@@ -166,9 +166,9 @@
 	   dir)
        (while (setq dir (car rest))
 	 (if (string-match
-	      (concat "^"
-		      (expand-file-name (concat ".*/" elisp-prefix) prefix)
-		      "$")
+	      `,(concat "^"
+			(expand-file-name (concat ".*/" elisp-prefix) prefix)
+			"/?$")
 	      dir)
 	     (if (or allow-version-specific
 		     (not (string-match (format "%d\\.%d"

@@ -1,3 +1,11 @@
+1998-04-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* README.en (What's APEL?): Remove description about std11.el and
+ 	std11-parse.el.
+
+	* install.el (install-detect-elisp-directory): Modify regexp to
+ 	allow trailing `/'.
+
 1998-04-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-x20.el (encode-mime-charset-region): Use 'defun instead of
