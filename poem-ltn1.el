@@ -27,6 +27,9 @@
 ;;; @ buffer representation
 ;;;
 
+(eval-when-compile
+  (require 'poe))
+
 (defun-maybe set-buffer-multibyte (flag)
   "Set the multibyte flag of the current buffer to FLAG.
 If FLAG is t, this makes the buffer a multibyte buffer.
@@ -163,9 +166,9 @@ code conversion will not take place."
   (let ((emx-binary-mode t))
     (find-file-noselect filename nowarn rawfile)))
 
-(defalias find-file-noselect-as-raw-text 'find-file-noselect)
+(defalias 'find-file-noselect-as-raw-text 'find-file-noselect)
 
-(defalias find-file-noselect-as-raw-text-CRLF 'find-file-noselect)
+(defalias 'find-file-noselect-as-raw-text-CRLF 'find-file-noselect)
 
 (defun save-buffer-as-binary (&optional args)
   "Like `save-buffer', q.v., but don't encode."
