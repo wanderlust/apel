@@ -32,14 +32,14 @@
 ;;	run-hooks, run-hook-with-args,
 ;;	run-hook-with-args-until-success, and
 ;;	run-hook-with-args-until-failure.
-;;
+
 ;; The following functions which do not exist in 19.28 are used in the
 ;; original definitions of add-hook, remove-hook, and make-local-hook.
 ;;
 ;;	local-variable-p, and local-variable-if-set-p.
 ;;
 ;; In this file, these functions are replaced with mock versions.
-;;
+
 ;; In addition, the following functions which do not exist in v18 are used.
 ;;
 ;;	default-boundp, byte-code-function-p, functionp, member, and delete.
@@ -47,6 +47,7 @@
 ;; These functions are provided by poe-18.el.
 
 ;; For historians:
+;;
 ;;	`add-hook' and `remove-hook' were introduced in v19.
 ;;
 ;;	Local hook feature and `make-local-hook' were introduced in 19.29.
@@ -55,15 +56,13 @@
 ;;	`run-hook-with-args' was introduced in 19.23 as a lisp function.
 ;;	Two variants of `run-hook-with-args' were introduced in 19.29 as
 ;;	lisp functions.  `run-hook' family became C primitives in 19.30.
-;;
-;;	(Needs XEmacs info: it seems XEmacs 21 is synched up with 19.30.)
 
 ;;; Code:
 
 (provide 'localhook)			; beware of circular dependency.
 (require 'poe)				; this file is loaded from poe.el.
 
-;;; These two functions are not complete, but work enough for our purpose.
+;; These two functions are not complete, but work enough for our purpose.
 ;;
 ;; (defun local-variable-p (variable &optional buffer)
 ;;   "Non-nil if VARIABLE has a local binding in buffer BUFFER.
@@ -80,12 +79,11 @@
 ;; 	   (memq variable (buffer-local-variables buffer))); local but void.
 ;;        ;; docstring is ambiguous; 20.3 returns bool value.
 ;;        t))
+
+;;; Hook manipulation functions.
 
-;;; @ Hook manipulation functions.
-;;;
-
-;;; The following three functions are imported from emacs-20.3/lisp/subr.el.
-;;; (local-variable-p, and local-variable-if-set-p are replaced.)
+;; The following three functions are imported from emacs-20.3/lisp/subr.el.
+;; (local-variable-p, and local-variable-if-set-p are expanded.)
 (defun make-local-hook (hook)
   "Make the hook HOOK local to the current buffer.
 The return value is HOOK.
@@ -148,7 +146,7 @@ function, it is changed to a list of functions."
       (or (if (or (consp function) (byte-code-function-p function))
 	      (member function (symbol-value hook))
 	    (memq function (symbol-value hook)))
-	  (set hook 
+	  (set hook
 	       (if append
 		   (append (symbol-value hook) (list function))
 		 (cons function (symbol-value hook)))))
@@ -157,7 +155,7 @@ function, it is changed to a list of functions."
     (or (if (or (consp function) (byte-code-function-p function))
 	    (member function (default-value hook))
 	  (memq function (default-value hook)))
-	(set-default hook 
+	(set-default hook
 		     (if append
 			 (append (default-value hook) (list function))
 		       (cons function (default-value hook)))))))
@@ -201,19 +199,17 @@ To make a hook variable buffer-local, always use
 	      (setq hook-value nil)))
 	(set-default hook hook-value)))))
 
-
-;;; @ Hook execution functions.
-;;;
+;;; Hook execution functions.
 
 (defun run-hook-with-args-internal (hook args cond)
-;;   "Run HOOK with the specified arguments ARGS.
-;; HOOK should be a symbol, a hook variable.  Its value should be a list of
-;; functions.  We call those functions, one by one, passing arguments ARGS
-;; to each of them, until specified COND is satisfied.  If COND is nil, we
-;; call those functions until one of them returns a non-nil value, and then
-;; we return that value.  If COND is t, we call those functions until one
-;; of them returns nil, and then we return nil.  If COND is not nil and not
-;; t, we call all the functions."
+  "Run HOOK with the specified arguments ARGS.
+HOOK should be a symbol, a hook variable.  Its value should be a list of
+functions.  We call those functions, one by one, passing arguments ARGS
+to each of them, until specified COND is satisfied.  If COND is nil, we
+call those functions until one of them returns a non-nil value, and then
+we return that value.  If COND is t, we call those functions until one
+of them returns nil, and then we return nil.  If COND is not nil and not
+t, we call all the functions."
   (if (not (boundp hook))
       ;; hook is void.
       (not cond)
@@ -251,8 +247,8 @@ To make a hook variable buffer-local, always use
 	    (setq ret (apply function args))))
 	ret))))
 
-;;; The following four functions are direct translation of their
-;;; C definitions of emacs-20.3/src/eval.c.
+;; The following four functions are direct translation of their
+;; C definitions in emacs-20.3/src/eval.c.
 (defun run-hooks (&rest hooks)
   "Run each hook in HOOKS.  Major mode functions use this.
 Each argument should be a symbol, a hook variable.
@@ -307,7 +303,4 @@ To make a hook variable buffer-local, use `make-local-hook',
 not `make-local-variable'."
   (run-hook-with-args-internal hook args t))
 
-;;; @ End.
-;;;
-
-;;; localhook.el ends here.
+;;; localhook.el ends here

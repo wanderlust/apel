@@ -5,7 +5,6 @@
 
 ;; Author: Mikio Nakajima <minakaji@osaka.email.ne.jp>
 ;;	Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
-;; Maintainer: Mikio Nakajima <minakaji@osaka.email.ne.jp>
 ;; Keywords: emulating, custom
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -25,14 +24,13 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
 ;;; Code:
 
 (require 'poe)
-;; If old compiler is used under v18, `eval-when-compile' and
-;; `static-if' are expanded (and evaluated) at *load-time*.
 (eval-when-compile (require 'static))
 
-;; XXX: needs better abstraction.
 (static-if (condition-case nil
 	       ;; compile-time check.
 	       ;; "new custom" requires widget library.
@@ -57,18 +55,19 @@
 	      nil))
     ;; you have "new custom". no load-time check.
     (require 'custom)
-  ;; your custom is "old custom", or you don't have custom library
-  ;; at compile-time.
+  ;; your custom is "old custom",
+  ;; or you don't have custom library at compile-time.
   (or (condition-case nil
 	  ;; load-time check.
 	  ;; load "custom" if exists.
 	  (and (require 'custom)
 	       (fboundp 'custom-declare-variable))
 	(error nil))
-      ;; your custom is "old custom", or you don't have custom library.
+      ;; your custom is "old custom",
+      ;; or you don't have custom library.
       ;; load emulation version of "new custom".
       (require 'tinycustom)))
 
 (provide 'pcustom)
 
-;; end of pcustom.el
+;;; pcustom.el ends here

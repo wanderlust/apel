@@ -1,3 +1,7 @@
+1999-11-11  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* localhook.el, pcustom.el: checkdoc.
+
 1999-11-09  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* pcustom.el: Warn if the new custom library is not found at the
