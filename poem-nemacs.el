@@ -200,7 +200,7 @@
 \[emu-nemacs.el]"
   (as-binary-input-file
    ;; Returns list absolute file name and length of data inserted.
-   (insert-file-contents filename visit)))
+   (insert-file-contents filename visit beg end replace)))
 
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)
@@ -208,7 +208,7 @@
 \[emu-nemacs.el]"
   (as-binary-input-file
    ;; Returns list absolute file name and length of data inserted.
-   (insert-file-contents filename visit)))
+   (insert-file-contents filename visit beg end replace)))
 
 (defun write-region-as-raw-text-CRLF (start end filename
 					    &optional append visit lockname)
@@ -222,15 +222,6 @@
       (write-region-as-binary (point-min)(point-max)
 			      filename append visit))))
 
-(defun find-file-noselect-as-binary (filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but don't code conversion."
-  (as-binary-input-file (find-file-noselect filename nowarn rawfile)))
-
-(defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but it does not code conversion
-except for line-break code."
-  (as-binary-input-file (find-file-noselect filename nowarn rawfile)))
-
 (defun open-network-stream-as-binary (name buffer host service)
   "Like `open-network-stream', q.v., but don't code conversion."
   (let ((process (open-network-stream name buffer host service)))
@@ -241,29 +232,24 @@ except for line-break code."
 ;;; @ with code-conversion
 ;;;
 
-(defun insert-file-contents-as-coding-system
-  (filename coding-system &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but CODING-SYSTEM the second arg will
-be applied to `coding-system-for-read'."
-  (let ((kanji-fileio-code coding-system)
+(defun insert-file-contents-as-specified-coding-system (filename &rest args)
+  "Like `insert-file-contents', q.v., but code convert by the specified
+coding-system. ARGS the optional arguments are passed to
+`insert-file-contents' except for the last element. The last element of
+ARGS must be a coding-system."
+  (let ((kanji-fileio-code (car (reverse args)))
 	kanji-expected-code)
-    (insert-file-contents filename visit)))
+    (apply' insert-file-contents filename (nreverse (cdr (nreverse args))))))
 
-(defun write-region-as-coding-system (start end filename coding-system
-					    &optional append visit lockname)
-  "Like `write-region', q.v., but CODING-SYSTEM the fourth arg will be
-applied to `coding-system-for-write'."
-  (let ((kanji-fileio-code coding-system)
+(defun write-region-as-specified-coding-system (start end filename
+						      &rest args)
+  "Like `write-region', q.v., but code convert by the specified coding-system.
+ARGS the optional arguments are passed to `write-region' except for the last
+element. The last element of ARGS must be a coding-system."
+  (let ((kanji-fileio-code (car (reverse args)))
 	jka-compr-compression-info-list jam-zcat-filename-list)
-    (write-region start end filename append visit)))
-
-(defun find-file-noselect-as-coding-system (filename coding-system
-						     &optional nowarn rawfile)
-  "Like `find-file-noselect', q.v., but CODING-SYSTEM the second arg will
-be applied to `coding-system-for-read'."
-  (let ((kanji-fileio-code coding-system)
-	kanji-expected-code)
-    (find-file-noselect filename nowarn)))
+    (apply 'write-region start end filename
+	   (nreverse (cdr (nreverse args))))))
 
 
 ;;; @ buffer representation
