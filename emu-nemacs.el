@@ -395,12 +395,12 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 ;;; @ text property emulation
 ;;;
 
-(setq tl:available-face-attribute-alist
-      '(
-	;;(bold      . inversed-region)
-	(italic    . underlined-region)
-	(underline . underlined-region)
-	))
+(defvar emu:available-face-attribute-alist
+  '(
+    ;;(bold      . inversed-region)
+    (italic    . underlined-region)
+    (underline . underlined-region)
+    ))
 
 ;; by YAMATE Keiichirou 1994/10/28
 (defun attribute-add-narrow-attribute (attr from to)
@@ -441,11 +441,11 @@ Optional non-nil arg START-COLUMN specifies the starting column.
       (setcdr (nthcdr posfrom attr-value)
 	      (nthcdr posto attr-value)))))
 
-(defalias 'tl:make-overlay 'cons)
+(defalias 'make-overlay 'cons)
 
-(defun tl:overlay-put (overlay prop value)
+(defun overlay-put (overlay prop value)
   (let ((ret (and (eq prop 'face)
-		  (assq value tl:available-face-attribute-alist)
+		  (assq value emu:available-face-attribute-alist)
 		  )))
     (if ret
 	(attribute-add-narrow-attribute (cdr ret)

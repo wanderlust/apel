@@ -50,8 +50,8 @@
        )
       (running-emacs-18
        (require 'emu-18)
-       (defun tl:make-overlay (beg end &optional buffer type))
-       (defun tl:overlay-put (overlay prop value))
+       (defun make-overlay (beg end &optional buffer type))
+       (defun overlay-put (overlay prop value))
        ))
 
 

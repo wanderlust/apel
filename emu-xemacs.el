@@ -46,16 +46,18 @@
 ;;; @ overlay
 ;;;
 
-(defalias 'tl:make-overlay 'make-extent)
-(defalias 'tl:overlay-put 'set-extent-property)
-(defalias 'tl:overlay-buffer 'extent-buffer)
+(condition-case err
+    (require 'overlay)
+  (error (defalias 'make-overlay 'make-extent)
+	 (defalias 'overlay-put 'set-extent-property)
+	 (defalias 'overlay-buffer 'extent-buffer)
+	 (defun move-overlay (extent start end &optional buffer)
+	   (set-extent-endpoints extent start end)
+	   )
+	 ))
 
-(defun tl:move-overlay (extent start end &optional buffer)
-  (set-extent-endpoints extent start end)
-  )
 
-
-;;; @@ visible/invisible
+;;; @ visible/invisible
 ;;;
 
 (defmacro enable-invisible ())

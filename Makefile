@@ -2,23 +2,26 @@
 # $Id$
 #
 
+VERSION = 3.3.2
+
+TAR	= gtar
+RM	= /bin/rm -f
+CP	= /bin/cp -p
+
 EMACS	= emacs
 FLAGS   = -batch -q -no-site-file -l APEL-MK
 
 PREFIX =
 
-FILES =	emu/Makefile emu/EMU-MK emu/EMU-CFG emu/EMU-ELS \
-	emu/*.el emu/README.?? \
-	apel/Makefile apel/APEL-MK apel/APEL-CFG apel/APEL-ELS \
-	apel/*.el 
+EMU_FILES =	EMU-ELS *.el
 
-TARFILE = apel-0.1.tar
+APEL_FILES =	README.?? Makefile APEL-MK APEL-CFG APEL-ELS *.el ChangeLog
 
 
 elc:
 	$(EMACS) $(FLAGS) -f compile-apel
 
-install:	elc
+install:
 	$(EMACS) $(FLAGS) -f install-apel $(PREFIX)
 
 
@@ -27,4 +30,15 @@ clean:
 
 
 tar:
-	cd ..; tar cvf $(TARFILE) $(FILES); gzip -best $(TARFILE)
+	-cd ..; mkdir apel-$(VERSION)
+	-cd ../emu; $(CP) $(EMU_FILES) ../apel-$(VERSION)
+	-cd ../emu; $(CP) ChangeLog ../apel-$(VERSION)/ChangeLog.emu
+	-$(CP) $(APEL_FILES) ../apel-$(VERSION)
+	cd ..; $(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
+	cd ..; $(RM) -r apel-$(VERSION)
+
+release:
+	-$(RM) /pub/GNU/elisp/apel/apel-$(VERSION).tar.gz
+	cd ..; mv apel-$(VERSION).tar.gz /pub/GNU/elisp/apel/
+	cd /pub/GNU/elisp/mime/alpha/ ; \
+		ln -s ../../apel/apel-$(VERSION).tar.gz .

@@ -7,7 +7,7 @@
 ;;	$Id$
 ;; Keywords: install, module
 
-;; This file is part of tl (Tiny Library).
+;; This file is part of APEL (A Portable Emacs Library).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -41,9 +41,7 @@ You can use following PATH styles:
 You can specify following OPTIONS:
 	'all-paths	search from `load-path'
 			instead of `default-load-path'
-	'append		add PATH to the last of `load-path'
-
-\[file-detect.el]"
+	'append		add PATH to the last of `load-path'"
   (let ((rest (if (memq 'all-paths options)
 		  load-path
 		default-load-path))
@@ -77,9 +75,9 @@ of load-path instead of default-load-path. [file-detect.el]"
 	(add-to-list 'load-path path)
       )))
 
-(defun get-latest-path (pat &optional all-paths)
+(defun get-latest-path (pattern &optional all-paths)
   "Return latest directory in default-load-path
-which is matched to regexp PAT.
+which is matched to regexp PATTERN.
 If optional argument ALL-PATHS is specified,
 it is searched from all of load-path instead of default-load-path."
   (catch 'tag
@@ -91,7 +89,7 @@ it is searched from all of load-path instead of default-load-path."
 	(if (and (file-exists-p dir)
 		 (file-directory-p dir)
 		 )
-	    (let ((files (sort (directory-files dir t pat t)
+	    (let ((files (sort (directory-files dir t pattern t)
 			       (function file-newer-than-file-p)))
 		  file)
 	      (while (setq file (car files))
@@ -105,7 +103,7 @@ it is searched from all of load-path instead of default-load-path."
 
 (defun file-installed-p (file &optional paths)
   "Return absolute-path of FILE if FILE exists in PATHS.
-If PATHS is omitted, `load-path' is used. [file-detect.el]"
+If PATHS is omitted, `load-path' is used."
   (if (null paths)
       (setq paths load-path)
     )
@@ -125,7 +123,7 @@ If PATHS is omitted, `load-path' is used. [file-detect.el]"
 (defun exec-installed-p (file &optional paths suffixes)
   "Return absolute-path of FILE if FILE exists in PATHS.
 If PATHS is omitted, `exec-path' is used.
-If suffixes is omitted, `exec-suffix-list' is used. [file-detect.el]"
+If suffixes is omitted, `exec-suffix-list' is used."
   (or paths
       (setq paths exec-path)
       )
@@ -149,7 +147,7 @@ If suffixes is omitted, `exec-suffix-list' is used. [file-detect.el]"
 
 (defun module-installed-p (module &optional paths)
   "Return t if module is provided or exists in PATHS.
-If PATHS is omitted, `load-path' is used. [file-detect.el]"
+If PATHS is omitted, `load-path' is used."
   (or (featurep module)
       (exec-installed-p (symbol-name module) load-path '(".elc" ".el"))
       ))

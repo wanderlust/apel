@@ -276,7 +276,7 @@ With optional non-nil ALL, force redisplay of all mode-lines.
 ;;; @ overlay
 ;;;
 
-(defun tl:overlay-buffer (overlay))
+(defun overlay-buffer (overlay))
 
 
 ;;; @ text property

@@ -134,6 +134,17 @@ and `default-mime-charset'. [emu.el]"
 	  default-mime-charset)))
 
 
+;;; @ Emacs 19 emulation
+;;;
+
+(defun-maybe minibuffer-prompt-width ()
+  "Return the display width of the minibuffer prompt."
+  (save-excursion
+    (set-buffer (window-buffer (minibuffer-window)))
+    (current-column)
+    ))
+
+
 ;;; @ Emacs 19.29 emulation
 ;;;
 
@@ -246,6 +257,22 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
       (and (consp obj)(eq (car obj) 'lambda))
       ))
 
+(defun-maybe point-at-eol (&optional arg buffer)
+  "Return the character position of the last character on the current line.
+With argument N not nil or 1, move forward N - 1 lines first.
+If scan reaches end of buffer, return that position.
+This function does not move point. [XEmacs emulating function]"
+  (save-excursion
+    (if buffer
+	(set-buffer buffer)
+      )
+    (if arg
+	(forward-line (1- arg))
+      )
+    (end-of-line)
+    (point)
+    ))
+
 
 ;;; @ for XEmacs 20
 ;;;
@@ -255,6 +282,9 @@ Value is nil if OBJECT is not a buffer or if it has been killed.
     )
 (or (fboundp 'int-char)
     (fset 'int-char (symbol-function 'identity))
+    )
+(or (fboundp 'char-or-char-int-p)
+    (fset 'char-or-char-int-p (symbol-function 'integerp))
     )
 
 

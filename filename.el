@@ -27,39 +27,49 @@
 
 (require 'emu)
 (require 'cl)
-(require 'file-detect)
 
-(defsubst poly-funcall (functions arg)
+(defsubst poly-funcall (functions argument)
+  "Apply initial ARGUMENT to sequence of FUNCTIONS.
+FUNCTIONS is list of functions.
+
+(poly-funcall '(f1 f2 .. fn) arg) is as same as
+(fn .. (f2 (f1 arg)) ..).
+
+For example, (poly-funcall '(car number-to-string) '(100)) returns
+\"100\"."
   (while functions
-    (setq arg (funcall (car functions) arg)
+    (setq argument (funcall (car functions) argument)
 	  functions (cdr functions))
     )
-  arg)
+  argument)
 
 
 ;;; @ variables
 ;;;
 
-(defvar filename-limit-length 21)
+(defvar filename-limit-length 21 "Limit size of file-name.")
 
 (defvar filename-replacement-alist
   '(((?\  ?\t) . "_")
     ((?! ?\" ?# ?$ ?% ?& ?' ?\( ?\) ?* ?/
-	 ?: ?; ?< ?> ?? ?\[ ?\\ ?\] ?` ?{ ?| ?}) . "_")
+	 ?: ?\; ?< ?> ?? ?\[ ?\\ ?\] ?` ?{ ?| ?}) . "_")
     (filename-control-p . "")
-    ))
+    )
+  "Alist list of characters vs. string as replacement.
+List of characters represents characters not allowed as file-name.")
 
 (defvar filename-filters
-  (nconc
-   (and (exec-installed-p "kakasi")
-	'(filename-japanese-to-roman-string)
-	)
-   '(filename-special-filter
-     filename-eliminate-top-low-lines
-     filename-canonicalize-low-lines
-     filename-maybe-truncate-by-size
-     filename-eliminate-bottom-low-lines
-     )))
+  (let ((filters '(filename-special-filter
+		   filename-eliminate-top-low-lines
+		   filename-canonicalize-low-lines
+		   filename-maybe-truncate-by-size
+		   filename-eliminate-bottom-low-lines
+		   )))
+    (require 'file-detect)
+    (if (exec-installed-p "kakasi")
+	(cons 'filename-japanese-to-roman-string filters)
+      filters))
+  "List of functions for file-name filter.")
 
 
 ;;; @ filters
@@ -136,7 +146,9 @@
 ;;;
 
 (defun replace-as-filename (string)
-  "Return safety filename from STRING. [filename.el]"
+  "Return safety filename from STRING.
+It refers variable `filename-filters' and default filters refers
+`filename-limit-length', `filename-replacement-alist'."
   (and string
        (poly-funcall filename-filters string)
        ))

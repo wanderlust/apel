@@ -25,7 +25,7 @@
 
 ;;; Commentary:
 
-;; This module requires XEmacs 20.1 b6 or later with mule.
+;; This module requires XEmacs 20.1 b12 or later with mule.
 
 ;;; Code:
 
@@ -36,21 +36,20 @@
 ;;; @ coding-system
 ;;;
 
-(defconst *noconv* 'no-conversion)
+(defconst *noconv* 'binary)
 
 (defmacro as-binary-process (&rest body)
   `(let (selective-display	; Disable ^M to nl translation.
-	 (coding-system-for-write 'no-conversion)
-	 process-input-coding-system
-	 process-output-coding-system)
+	 (coding-system-for-read  'binary)
+	 (coding-system-for-write 'binary))
      ,@body))
 
 (defmacro as-binary-input-file (&rest body)
-  `(let ((coding-system-for-read 'no-conversion))
+  `(let ((coding-system-for-read 'binary))
      ,@body))
 
 (defmacro as-binary-output-file (&rest body)
-  `(let ((coding-system-for-write 'no-conversion))
+  `(let ((coding-system-for-write 'binary))
      ,@body))
 
 
@@ -64,7 +63,7 @@ A buffer may be modified in several ways after reading into the buffer due
 to advanced Emacs features, such as file-name-handlers, format decoding,
 find-file-hooks, etc.
   This function ensures that none of these modifications will take place."
-  (let ((coding-system-for-read 'no-conversion))
+  (let ((coding-system-for-read 'binary))
     (insert-file-contents-literally filename visit beg end replace)
     ))
 
@@ -123,7 +122,7 @@ find-file-hooks, etc.
     ))
 
 (defun mime-charset-to-coding-system (charset)
-  "Return coding-system by MIME charset. [emu-x20.el]"
+  "Return coding-system by MIME charset."
   (if (stringp charset)
       (setq charset (intern (downcase charset)))
     )
@@ -132,35 +131,32 @@ find-file-hooks, etc.
       ))
 
 (defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END.
-\[emu-x20.el]"
+  "Return MIME charset for region between START and END."
   (charsets-to-mime-charset (charsets-in-region start end)))
 
 (defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET.
-\[emu-x20.el]"
+  "Encode the text between START and END as MIME CHARSET."
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(encode-coding-region start end cs)
       )))
 
 (defun decode-mime-charset-region (start end charset)
-  "Decode the text between START and END as MIME CHARSET.
-\[emu-x20.el]"
+  "Decode the text between START and END as MIME CHARSET."
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(decode-coding-region start end cs)
       )))
 
 (defun encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET. [emu-x20.el]"
+  "Encode the STRING as MIME CHARSET."
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(encode-coding-string string cs)
       string)))
 
 (defun decode-mime-charset-string (string charset)
-  "Decode the STRING as MIME CHARSET. [emu-x20.el]"
+  "Decode the STRING as MIME CHARSET."
   (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(decode-coding-string string cs)
@@ -179,8 +175,7 @@ find-file-hooks, etc.
 (defun char-category (character)
   "Return string of category mnemonics for CHAR in TABLE.
 CHAR can be any multilingual character
-TABLE defaults to the current buffer's category table.
-\[emu-x20.el; Mule emulating function]"
+TABLE defaults to the current buffer's category table."
   (mapconcat (lambda (chr)
 	       (char-to-string (int-char chr))
 	       )

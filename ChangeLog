@@ -1,3 +1,68 @@
+1997-05-09  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu: Version 7.43.1 was released.
+	* APEL: Version 3.3.2 was released.
+
+Fri May  9 01:23:44 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL-ELS: Add mule-caesar.el.
+
+	* mule-caesar.el: New file.
+
+
+1997-04-30  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu: Version 7.43 was released.
+	* APEL: Version 3.3.1 was released.
+
+Wed Apr 30 12:40:32 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* Makefile: add `release'.
+
+Mon Apr 28 16:47:30 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* Makefile: `TARFILE' was abolished.
+
+Thu Apr  3 17:14:39 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL-ELS: std11.el and std11-parse.el were moved from mu/.
+
+
+1997-03-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 3.3 was released.
+
+Thu Mar 20 06:09:03 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* Makefile: Add README.en.
+
+Thu Mar 20 06:08:29 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* file-detect.el: Header and DOC-strings were modified.
+
+Thu Mar 20 06:03:51 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* README.en: New file.
+
+Thu Mar 20 05:48:02 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* filename.el: Add DOC-strings.
+
+	* APEL-MK (install-apel): Use `compile-apel'.
+
+	* Makefile (install): Don't depend on `elc'.
+
+Thu Mar 20 02:04:19 1997  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL-MK: Setting for load-path and requiring install were moved
+ 	from APEL-CFG.
+
+	(install-apel): Compile apel-modules.
+
+	* APEL-CFG: Setting for load-path and requiring install were moved
+ 	to APEL-MK.
+
+
 1997-03-14  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 3.2 was released.

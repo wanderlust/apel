@@ -33,15 +33,7 @@
   )
 
 
-;;; @ overlay
-;;;
-
-(defalias 'tl:make-overlay 'make-overlay)
-(defalias 'tl:overlay-put 'overlay-put)
-(defalias 'tl:overlay-buffer 'overlay-buffer)
-
-
-;;; @@ visible/invisible
+;;; @ visible/invisible
 ;;;
 
 (defmacro enable-invisible ())
