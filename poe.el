@@ -427,7 +427,7 @@ See also `with-temp-file' and `with-output-to-string'."
   (cons 'progn body))
 
 ;; imported from emacs-20.3/lisp/subr.el.
-(defun functionp (object)
+(defun-maybe functionp (object)
   "Non-nil if OBJECT is a type of object that can be called as a function."
   (or (subrp object) (byte-code-function-p object)
       (eq (car-safe object) 'lambda)
