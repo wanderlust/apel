@@ -57,11 +57,13 @@ When called interactively, prompt for the name of the color to use."
 (condition-case nil
     (require 'overlay)
   (error (defalias 'make-overlay 'make-extent)
+	 (defalias 'overlayp 'extentp)
 	 (defalias 'overlay-put 'set-extent-property)
 	 (defalias 'overlay-buffer 'extent-buffer)
 	 (defun move-overlay (extent start end &optional buffer)
 	   (set-extent-endpoints extent start end)
 	   )
+	 (defalias 'delete-overlay 'detach-extent)
 	 ))
 
 
