@@ -268,13 +268,12 @@ Both SYMBOL and SPEC are unevaluated. The SPEC can be 0, t, a symbol
 	   &rest (&rest sexp)))
 
 ;; edebug-spec for `static-*' macros are also defined here.
-;; XXX: not defined yet.  FIXME!
-;; (def-edebug-spec static-if ...)
-;; (def-edebug-spec static-when ...)
-;; (def-edebug-spec static-unless ...)
-;; (def-edebug-spec static-condition-case ...)
-;; (def-edebug-spec static-defconst ...)
-;; (def-edebug-spec static-cond ...)
+(def-edebug-spec static-if if) 
+(def-edebug-spec static-when when)
+(def-edebug-spec static-unless unless)
+(def-edebug-spec static-condition-case condition-case)
+(def-edebug-spec static-defconst defconst)
+(def-edebug-spec static-cond cond)
 
 
 ;;; for backward compatibility.

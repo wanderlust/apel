@@ -1,3 +1,9 @@
+2000-03-25  Mikio Nakajima  <minakaji@osaka.email.ne.jp>
+
+	* pym.el: Define edebug specs for `static-if', `static-when',
+	`static-unless', `static-condition-case', `static-defconst' and
+	`static-cond'.
+
 2000-03-08  Akihiro Arisawa  <ari@atesoft.advantest.co.jp>
 
 	* poe.el (format-time-string): Fix problem when `format' contains "%d"
