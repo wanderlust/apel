@@ -42,7 +42,7 @@
 		   (mac . "\r"))))
   )
 
-(defun mime-charset-to-coding-system (charset)
+(defun mime-charset-to-coding-system (charset &optional lbt)
   (if (stringp charset)
       (setq charset (intern (downcase charset)))
     )

@@ -1,3 +1,8 @@
+2002-10-02  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* mcs-ltn1.el (mime-charset-to-coding-system): Allow the 2nd arg.
+	* mcs-nemacs.el (mime-charset-to-coding-system): Ditto.
+
 2002-07-13  Daiki Ueno  <daiki@xemacs.org>
 
 	* mcs-xm.el (encode-mime-charset-string): Use `defun' instead of
