@@ -1,26 +1,3 @@
-1998-10-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* poe.el (eval-and-compile): New macro.
-	Enclose redefinition of `read-string' by `eval-and-compile'.
-
-1998-10-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* poe.el (string): New function.
-
-1998-10-19  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* emu.el (char-list-to-string): New function.
-
-	* poe-xemacs.el, poe-19.el: Abolish macro `char-list-to-string'.
-
-	* poe-18.el: Abolish function `char-list-to-string'.
-
-1998-10-18  Tanaka Akira  <morioka@jaist.ac.jp>
-
-	* broken.el (check-broken-facility): Also use compile time
-	description.
-
-
 1998-10-18  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 9.4 was released.

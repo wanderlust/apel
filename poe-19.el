@@ -66,6 +66,16 @@
     (point)))
 
 
+;;; @ string
+;;;
+
+(defmacro char-list-to-string (char-list)
+  "Convert list of character CHAR-LIST to string."
+  (` (mapconcat (function char-to-string)
+		(, char-list)
+		"")))
+
+
 ;;; @ end
 ;;;
 

@@ -104,7 +104,15 @@
     )
 
 
-;;; @ to avoid bug of XEmacs 19.14
+;;; @ string
+;;;
+
+(defmacro char-list-to-string (char-list)
+  "Convert list of character CHAR-LIST to string. [poe-xemacs.el]"
+  `(mapconcat #'char-to-string ,char-list ""))
+
+
+;;; @@ to avoid bug of XEmacs 19.14
 ;;;
 
 (or (string-match "^../"
