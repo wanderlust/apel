@@ -26,8 +26,6 @@
 
 (require 'broken)
 
-;; The condition for non-XEmacs mule t may be wrong.
-;; But I don't know exact version which introduce CCL on mule.
 (broken-facility ccl-usable
   "Emacs has not CCL."
   (and (featurep 'mule)

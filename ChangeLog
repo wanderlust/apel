@@ -1,3 +1,10 @@
+1999-02-11  Tanaka Akira  <akr@jaist.ac.jp>
+
+	* README.en, README.ja, pccl.el: pccl does not support Mule 1.x.
+
+	* pccl-20.el: Update broken facility message with Emacs version
+	it fixes.
+
 1999-02-07  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* install.el (install-prefix): Modify for Meadow.
