@@ -188,14 +188,14 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 	""
       (while (< column start-column)
 	(setq ch (aref str from)
-	      column (+ column (char-columns ch))
+	      column (+ column (char-width ch))
 	      from (+ from (char-bytes ch))))
       (if (< width max-width)
 	  (progn
 	    (setq to from)
 	    (while (<= column width)
 	      (setq ch (aref str to)
-		    column (+ column (char-columns ch))
+		    column (+ column (char-width ch))
 		    to-prev to
 		    to (+ to (char-bytes ch))))
 	    (setq to to-prev)))
