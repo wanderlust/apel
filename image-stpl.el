@@ -97,17 +97,17 @@ means display it in the right marginal area.
   (save-excursion
     (save-restriction
       (narrow-to-region (point)(point))
-      (insert (mapconcat
-	       (function ignore)
-	       (make-list (/ (cadr image)
-			     (frame-char-height))
-			  (make-string (/ (car image)
-					  (frame-char-width))
-				       ? )) "\n"))
       (or (facep 'image-stipple-splash)
 	  (make-face 'image-stipple-splash))
       (set-face-stipple 'image-stipple-splash image)
-      (set-text-properties (point-min)(point) '(face image-stipple-splash)))))
+      (let ((row (make-string (/ (car image)  (frame-char-width)) ? ))
+	    (height (/ (nth 1 image)  (frame-char-height)))
+	    (i 0))
+	(while (< i height)
+	  (set-text-properties (point) (progn (insert row)(point))
+			       '(face image-stipple-splash))
+	  (insert "\n")
+	  (setq i (1+ i)))))))
 
 (defun-maybe remove-images (start end &optional buffer)
   "Remove images between START and END in BUFFER.
