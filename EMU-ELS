@@ -1,7 +1,8 @@
 ;;; -*-Emacs-Lisp-*-
-;;;
-;;; $Id$
-;;;
+
+;; EMU-ELS: list of EMU modules to install
+
+;;; Code:
 
 (setq emu-modules
       (cons
@@ -22,7 +23,7 @@
 		      '(emu-latin1) ; for XEmacs without MULE
 		      ))
 	      )
-	     ((featurep 'mule)
+	     (running-mule-merged-emacs
 	      ;; for Emacs 20.1 or later
 	      (cons (if (= (length "あ") 1)
 			'emu-e20_3 ; for Emacs 20.3
