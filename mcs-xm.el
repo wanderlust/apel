@@ -96,8 +96,8 @@
 	(let ((rest mime-iso646-character-unification-alist))
 	  (while rest
 	    (let ((pair (car rest)))
-	      (goto-char (point-min))
-	      (while (search-forward (car pair) nil t)
+	      (goto-char start)
+	      (while (search-forward (car pair) end t)
 		(let ((str (cdr pair)))
 		  (put-text-property 0 (length str)
 				     'face mime-unified-character-face str)
