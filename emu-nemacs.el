@@ -164,25 +164,6 @@
 
 (defalias 'set-buffer-file-coding-system 'set-kanji-fileio-code)
 
-(defmacro as-binary-process (&rest body)
-  (` (let (selective-display	; Disable ^M to nl translation.
-	   ;; NEmacs
-	   kanji-flag
-	   (default-kanji-process-code 0)
-	   program-kanji-code-alist)
-       (,@ body)
-       )))
-
-(defmacro as-binary-input-file (&rest body)
-  (` (let (kanji-flag)
-       (,@ body)
-       )))
-
-(defmacro as-binary-output-file (&rest body)
-  (` (let (kanji-flag)
-       (,@ body)
-       )))
-
 
 ;;; @@ for old MULE emulation
 ;;;
@@ -207,8 +188,34 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
 	  ))))
 
 
-;;; @ binary access
+;;; @ without code-conversion
 ;;;
+
+(defmacro as-binary-process (&rest body)
+  (` (let (selective-display	; Disable ^M to nl translation.
+	   ;; NEmacs
+	   kanji-flag
+	   (default-kanji-process-code 0)
+	   program-kanji-code-alist)
+       (,@ body)
+       )))
+
+(defmacro as-binary-input-file (&rest body)
+  (` (let (kanji-flag)
+       (,@ body)
+       )))
+
+(defmacro as-binary-output-file (&rest body)
+  (` (let (kanji-flag)
+       (,@ body)
+       )))
+
+(defun write-region-as-binary (start end filename
+				     &optional append visit lockname)
+  "Like `write-region', q.v., but don't code conversion. [emu-nemacs.el]"
+  (let (kanji-flag)
+    (write-region start end filename append visit)
+    ))
 
 (defun insert-file-contents-as-binary (filename
 				       &optional visit beg end replace)
@@ -219,14 +226,6 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
     ))
 
 (fset 'insert-binary-file-contents 'insert-file-contents-as-binary)
-
-(defun insert-file-contents-as-raw-text (filename
-					 &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but don't character code conversion.
-\[emu-nemacs.el]"
-  (let (kanji-flag)
-    (insert-file-contents filename visit beg end replace)
-    ))
 
 (defun insert-binary-file-contents-literally (filename
 					      &optional visit beg end replace)
@@ -240,12 +239,27 @@ find-file-hooks, etc.
     (insert-file-contents-literally filename visit beg end replace)
     ))
 
-(defun write-region-as-binary (start end filename
-				     &optional append visit lockname)
-  "Like `write-region', q.v., but don't code conversion. [emu-nemacs.el]"
+(defun insert-file-contents-as-raw-text (filename
+					 &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't character code conversion.
+\[emu-nemacs.el]"
   (let (kanji-flag)
-    (write-region start end filename append visit)
+    (insert-file-contents filename visit beg end replace)
     ))
+
+(defun write-region-as-raw-text-CRLF (start end filename
+					    &optional append visit lockname)
+  "Like `write-region', q.v., but don't code conversion. [emu-nemacs.el]"
+  (let ((the-buf (current-buffer)))
+    (with-temp-buffer
+      (insert-buffer-substring the-buf start end)
+      (goto-char (point-min))
+      (while (re-search-forward "\\([^\r]\\)\n" nil t)
+	(replace-match "\\1\r\n")
+	)
+      (let (kanji-flag)
+	(write-region (point-min)(point-max) filename append visit)
+	))))
 
 
 ;;; @ MIME charset
