@@ -16,9 +16,10 @@ TLDIR18 = $(HOME)/lib/emacs18/lisp
 TLDIR19 = $(HOME)/lib/emacs19/lisp
 
 
-FILES	= tl/README.eng tl/Makefile tl/mk-tl tl/*.el tl/doc/*.texi
+FILES	= tl/README.eng tl/Makefile tl/mk-tl tl/*.el tl/doc/*.texi \
+		tl/Changes*
 
-TARFILE = tl-7.01.2.tar
+TARFILE = tl-7.01.3.tar
 
 
 elc:

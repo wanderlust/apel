@@ -26,7 +26,7 @@ FUNCTION is added at the end.
 HOOK should be a symbol, and FUNCTION may be any valid function.  If
 HOOK is void, it is first set to nil.  If HOOK's value is a single
 function, it is changed to a list of functions.
-\[emu-18 Emacs 19 emulating function]"
+\[emu-18.el; Emacs 19 emulating function]"
   (or (boundp hook)
       (set hook nil)
       )
@@ -58,10 +58,30 @@ function, it is changed to a list of functions.
 (defun member (elt list)
   "Return non-nil if ELT is an element of LIST.  Comparison done with EQUAL.
 The value is actually the tail of LIST whose car is ELT.
-\[emu-18 Emacs 19 emulating function]"
+\[emu-18.el; Emacs 19 emulating function]"
   (while (and list (not (equal elt (car list))))
     (setq list (cdr list)))
   list)
+
+(defun delete (elt list)
+  "Delete by side effect any occurrences of ELT as a member of LIST.
+The modified LIST is returned.  Comparison is done with `equal'.
+If the first member of LIST is ELT, deleting it is not a side effect;
+it is simply using a different list.
+Therefore, write `(setq foo (delete element foo))'
+to be sure of changing the value of `foo'.
+\[emu-18.el; Emacs 19 emulating function]"
+  (if (equal elt (car list))
+      (cdr list)
+    (let ((rest list)
+	  (rrest (cdr list))
+	  )
+      (while (and rrest (not (equal elt (car rrest))))
+	(setq rest rrest
+	      rrest (cdr rrest))
+	)
+      (rplacd rest (cdr rrest))
+      list)))
 
 
 ;;; @ function
@@ -70,11 +90,13 @@ The value is actually the tail of LIST whose car is ELT.
 (defun defalias (SYM NEWDEF)
   "Set SYMBOL's function definition to NEWVAL, and return NEWVAL.
 Associates the function with the current load file, if any.
-\[emu-18 Emacs 19 emulating function]"
+\[emu-18.el; Emacs 19 emulating function]"
   (fset SYM (symbol-function NEWDEF))
   NEWDEF)
 
 (defun byte-code-function-p (exp)
+  "T if OBJECT is a byte-compiled function object.
+\[emu-18.el; Emacs 19 emulating function]"
   (let* ((rest (cdr (cdr exp))) elt)
     (if (stringp (car rest))
         (setq rest (cdr rest))
@@ -94,7 +116,7 @@ Associates the function with the current load file, if any.
 
 (defun make-directory-internal (dirname)
   "Create a directory. One argument, a file name string.
-\[emu-18 Emacs 19 emulating function]"
+\[emu-18.el; Emacs 19 emulating function]"
   (if (file-exists-p dirname)
       (error "Creating directory: %s is already exist" dirname)
     (if (not (= (call-process "mkdir" nil nil nil dirname) 0))
@@ -105,7 +127,7 @@ Associates the function with the current load file, if any.
   "Create the directory DIR and any nonexistent parent dirs.
 The second (optional) argument PARENTS says whether
 to create parent directories if they don't exist.
-\[emu-18 Emacs 19 emulating function]"
+\[emu-18.el; Emacs 19 emulating function]"
   (let ((len (length dir))
 	(p 0) p1 path)
     (catch 'tag
