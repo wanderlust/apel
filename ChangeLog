@@ -1,3 +1,34 @@
+Wed Mar 13 17:16:09 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.18 was released.
+
+	* emu.el (functionp): New function.
+
+	* mu-cite.el (mu-cite/get-value): Use function `functionp'.
+
+Wed Mar 13 16:35:15 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-comment.el: New file.
+
+Sat Mar  9 08:13:21 1996  Hiroshi Ueno <zodiac@ibm.net>
+
+	* mu-cite.el (mu-cite/cite-original): exchange-point-and-mark if
+	mark < point. (cf. [OS/2:1536])
+
+Tue Mar 12 11:32:54 1996  Shuhei KOBAYASHI  <shuhei@cmpt01.phys.tohoku.ac.jp>
+
+	* mu-bbdb.el (mu-cite/get-bbdb-prefix-register-method),
+	(mu-cite/get-bbdb-prefix-register-verbose-method): Don't register
+ 	null string. (cf.[tm-ja:1662])
+
+	* mu-cite.el (mu-cite/get-prefix-register-method),
+	(mu-cite/get-prefix-register-method): Don't register null string.
+	(cf.[tm-ja:1662])
+	
+	* emu.el (buffer-substring-no-properties): New implementation
+ 	imported from Emacs 19.30. (cf.[tm-ja:1662])
+
+
 Wed Mar  6 00:24:08 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.15 was released.

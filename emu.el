@@ -2,9 +2,10 @@
 ;;; emu.el --- Emulation module for each Emacs variants
 ;;;
 ;;; Copyright (C) 1995 Free Software Foundation, Inc.
-;;; Copyright (C) 1995 .. 1996 MORIOKA Tomohiko
+;;; Copyright (C) 1995,1996 MORIOKA Tomohiko
 ;;;
 ;;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;;; modified by Shuhei KOBAYASHI <shuhei@cmpt01.phys.tohoku.ac.jp>
 ;;; Version:
 ;;;	$Id$
 ;;; Keywords: emulation, compatibility, NEmacs, Mule, XEmacs
@@ -37,7 +38,11 @@
 ;;;
 
 (or (fboundp 'buffer-substring-no-properties)
-    (defalias 'buffer-substring-no-properties 'buffer-substring)
+    (defun buffer-substring-no-properties (beg end)
+      "Return the text from BEG to END, without text properties, as a string."
+      (let ((string (buffer-substring beg end)))
+        (tl:set-text-properties 0 (length string) nil string)
+	string))
     )
 
 (cond ((or (<= emacs-major-version 18)
@@ -52,6 +57,21 @@
        (defalias 'tl:read-string 'read-string)
        ))
 
+
+;;; @ XEmacs emulation
+;;;
+
+(or (fboundp 'functionp)
+    (defun functionp (obj)
+      "Returns t if OBJ is a function, nil otherwise.
+\[emu.el; XEmacs emulating function]"
+      (or (subrp obj)
+	  (byte-code-function-p obj)
+	  (and (symbolp obj)(fboundp obj))
+	  (and (consp obj)(eq (car obj) 'lambda))
+	  ))
+    )
+	
 
 ;;; @ end
 ;;;
