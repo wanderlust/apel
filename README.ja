@@ -229,7 +229,7 @@ c:\usr\Meadow にインストールされている 1.10 の Meadow を使用
 
 上記の例では、meadow のバイナリが c:\usr\Meadow\1.10\bin\meadow95.exe
 にインストールされていることを前提にしています。その前提に基づき、APEL
-のモジュールのうち、meadow のバージョンに依存しないモジュールを 
+のモジュールのうち、meadow のバージョンに依存しないモジュールを
 
   c:\usr\Meadow\site-lisp
 
@@ -311,7 +311,7 @@ checkout した場合は、cvs.exe により行末コードが正規化されて CRCRLF 
 $B$-$^$;$s$N$G9TKv%3!<%I$r CRLF に修正してお使い下さい。この問題について
 詳しくは、
 
-  http://openlab.ring.gr.jp/skk/cvswin-ja.html 
+  http://openlab.ring.gr.jp/skk/cvswin-ja.html
 
 をご参照下さい。
 
@@ -585,10 +585,5 @@ CVS に基づいた開発に参加したいときは、
 
 にアカウント名と、ssh の公開鍵を送ってください。ssh 経由では、cvsroot
 は :ext:cvs@cvs.m17n.org:/cvs/root となります。
-
-どうしても ssh が使えない場合、pserver 経由でも開発に参加できます。こ
-の場合、UNIX の /etc/passwd 様式で暗号化されたパスワードを送って下さい。
-この場合 cvsroot は :pserver:<アカウント名>@cvs.m17n.org:/cvs/root と
-なります。
 
 開かれた開発に参加してくださることを期待します。

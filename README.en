@@ -242,7 +242,7 @@ code is CRCRLF does not work, so if you get such a make.bat, edit it
 to really regularize eol codes to CRLF.  If you need further
 information, see the following URL (n.b. Japanese only)
 
-  http://openlab.ring.gr.jp/skk/cvswin-ja.html 
+  http://openlab.ring.gr.jp/skk/cvswin-ja.html
 
 * load-path (for Emacs or MULE)
 
@@ -493,9 +493,5 @@ available at CVS.
 
 with your account name and your public key for ssh.  cvsroot is
 :ext:cvs@cvs.m17n.org:/cvs/root.
-
-If you cannot use ssh, please send UNIX /etc/passwd style crypted
-password.  you can commit with the cvsroot
-:pserver:<accountname>@cvs.m17n.org:/cvs/root.
 
 We hope you will join the open development.
