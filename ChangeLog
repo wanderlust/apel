@@ -1,5 +1,7 @@
 1998-08-31  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* APEL: Version 8.17 was released.
+
 	* emu.el (with-temp-file): Must use old forms.
 
 1998-08-31  Katsumi Yamoaka   <yamaoka@jpl.org>
