@@ -1,3 +1,7 @@
+2004-02-06  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* calist.el (use-calist-package): Add missing arg to `format'.
+
 2004-01-26  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* Makefile: Make `elc' into the default entry.

@@ -48,7 +48,7 @@
 	      (if (intern-soft (symbol-name sym)
 			       calist-field-match-method-obarray)
 		  (signal 'conflict-of-calist-symbol
-			  (list (format "Conflict of symbol %s")))
+			  (list (format "Conflict of symbol %s" sym)))
 		(if (fboundp sym)
 		    (define-calist-field-match-method
 		      sym (symbol-function sym))
