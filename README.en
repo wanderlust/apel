@@ -1,6 +1,4 @@
 [README for APEL (English Version)]
-by MORIOKA Tomohiko <morioka@jaist.ac.jp>
-$Id$
 
 What's APEL?
 ============
@@ -8,40 +6,69 @@ What's APEL?
   APEL stands for "A Portable Emacs Library".  It consists of
   following modules:
 
-	emu:	A package to fill incompatibilities of emacsen
-		emu.el --- main module
-	    About mule API:
-		emu-nemacs.el --- for NEmacs
-		emu-e19.el    --- for Emacs 19 or XEmacs without mule
-		emu-mule.el   --- for MULE 2.3
-		emu-20.el     --- for Emacs 20 and XEmacs/mule
-		emu-e20.el    --- for Emacs 20 and MULE 3
-		emu-x20.el    --- for XEmacs/mule
-	    About other API
-		emu-18.el     --- for Emacs 18
-		emu-19.el     --- for Emacs 19 or later
-		emu-xemacs.el --- for XEmacs
-		env.el        --- env.el for Emacs 18
-		richtext.el   --- text/richtext module
-				    for Emacs 19.29 or later,
-		                        XEmacs 19.14 or later
-		tinyrich.el   --- text/richtext module for old emacsen
+    poe.el --- emulation module mainly for basic functions and special
+	       forms/macros of latest emacsen
+      poe-xemacs.el  --- for XEmacs
+      poe-18.el	     --- for Emacs 18/Nemacs
+         env.el      --- env.el for Emacs 18
+      localhook.el   --- hook functions for Emacs 19.28 and earlier.
 
-	alist.el: utility for Association-list
+    poem.el --- provide basic functions to write portable MULE
+		programs
+      poem-nemacs.el --- for Nemacs
+      poem-ltn1.el   --- for Emacs 19/XEmacs without MULE
+      poem-om.el     --- for MULE 1.*, 2.*
+      poem-20.el     --- shared module between Emacs 20 and XEmacs-MULE
+      poem-e20_2.el  --- for Emacs 20.1/20.2
+      poem-e20_3.el  --- for Emacs 20.3
+      poem-xm.el     --- for XEmacs-MULE
 
-	atype.el: utility for atype
+    invisible.el --- provide features about invisible region
+      inv-18.el     --- for Emacs 18
+      inv-19.el     --- for Emacs 19
+      inv-xemacs.el --- for XEmacs
 
-	path-util.el: utility for path management or file detection
+    mcharset.el --- provide MIME charset related features
+      mcs-nemacs.el --- for Nemacs
+      mcs-ltn1.el   --- for Emacs 19/XEmacs without MULE
+      mcs-om.el     --- for MULE 1.*, 2.*
+      mcs-20.el     --- shared module between Emacs 20 and XEmacs-MULE
+      mcs-e20.el    --- for Emacs 20
+      mcs-xm.el     --- for XEmacs-MULE
+      mcs-xmu.el    --- for XEmacs-MULE to unify ISO646 characters
 
-	filename.el: utility to make file-name
+    static.el --- utility for static evaluation
 
-	install.el: utility to install emacs-lisp package
+    broken.el --- provide information of broken facilities of Emacs
 
-	mule-caesar.el: ROT 13-47-48 Caesar rotation utility
+    pccl.el --- utility to write portable CCL program
+      pccl-om.el --- for MULE 2.*
+      pccl-20.el --- for Emacs 20/XEmacs-21-MULE
 
-	std11: RFC 822/STD 11 parser and utility
-	    std11.el       --- main module
-	    std11-parse.el --- parser
+    alist.el: utility for Association-list
+
+    calist.el: utility for condition tree and
+	       condition/situation-alist
+
+    path-util.el: utility for path management or file detection
+
+    filename.el: utility to make file-name
+
+    install.el: utility to install emacs-lisp package
+
+    mule-caesar.el: ROT 13-47-48 Caesar rotation utility
+
+    emu.el --- (emu bundled in tm-7.106 compatibility module; it
+	        required poe, poem and mcharset)
+      emu-mule:	for MULE 1.*, 2.*
+      richtext.el   --- text/richtext module
+			for Emacs 19.29 or later,
+			    XEmacs 19.14 or later
+      tinyrich.el   --- text/richtext module for old emacsen
+
+    pcustom.el --- provide portable custom environment
+
+      tinycustom.el --- emulation module of custom.el
 
 
 Installation
@@ -56,7 +83,7 @@ Installation
 
   You can specify the emacs command name, for example
 
-	% make install EMACS=xemacs
+	% make EMACS=xemacs
 
   If `EMACS=...' is omitted, EMACS=emacs is used.
 
@@ -86,23 +113,135 @@ Installation
 	/usr/local/share/emacs/20.2/site-lisp/	--- emu
 	/usr/local/share/emacs/site-lisp/apel/	--- APEL
 
+  You can specify the lisp directory for Emacs Lisp programs,
+  for example:
+
+	% make install LISPDIR=~/elisp
+
+  You can also specify the version specific lisp directory where the
+  emu modules will be installed in, for example:
+
+	% make install VERSION_SPECIFIC_LISPDIR=~/elisp
+
+  If you would like to know what files belong to the emu modules or
+  the apel modules, or where they will be installed in, for example,
+  please type the following command.
+
+	% make what-where LISPDIR=~/elisp VERSION_SPECIFIC_LISPDIR=~/elisp
+
   You can specify other optional settings by editing the file
   APEL-CFG.  Please read comments in it.
+
+(c) install as a XEmacs package
+
+  If you want to install to XEmacs package directory, please do
+  following:
+
+	% make install-package
+
+  You can specify the emacs command name, for example
+
+	% make install-package XEMACS=xemacs-21
+
+  If `XEMACS=...' is omitted, XEMACS=xemacs is used.
+
+  You can specify the package directory, for example:
+
+	% make install PACKAGEDIR=~/.xemacs
+
+  If `PACKAGEDIR=...' is omitted, the first existing package
+  directory is used.
+
+  Notice that XEmacs package system requires XEmacs 21.0 or later.
 
 
 load-path (for Emacs or MULE)
 =============================
 
   If you are using Emacs or Mule, please add directory of apel to
-  load-path.  If you install by default setting, you can write
-  subdirs.el for example:
+  load-path.  If you install by default setting with Emacs 20.1/20.2,
+  you can write subdirs.el for example:
 
   --------------------------------------------------------------------
   (normal-top-level-add-to-load-path '("apel"))
   --------------------------------------------------------------------
 
-  If you are using XEmacs, there are no need of setting about
-  load-path.
+  If you are using Emacs 20.3 or later or XEmacs, there are no need to
+  set up load-path with normal installation.
+
+
+Version specific information
+============================
+
+For Emacs 18 users: "old byte-compiler" vs "new byte-compiler"
+
+  In this package, we use compile-time evaluation heavily.
+  Unfortunately, the byte-compiler bundled with Emacs 18 (the "old
+  byte-compiler") does not have features such as `eval-when-compile'
+  and `eval-and-compile', and our emulation version of these macros
+  evaluate "compile-time evaluation" at load-time or at run-time!
+  In addition, the "old byte-compiler" cannot compile top-level use of
+  macros and leaves most of our code uncompiled.
+
+  Therefore, we recommend you to use the "new" optimizing byte-compiler.
+  It is the origin of byte-compiler bundled with Emacs 19 and later.
+
+  Optimizing byte-compiler for Emacs 18 is available from the Emacs
+  Lisp Archive and its mirrors.
+
+  In Mule 1.* days, "contrib" package for Mule 1.* was distributed and
+  it contained the "new byte-compiler" for Mule.  But, we think it is
+  difficult to obtain this package now.
+
+  AFAIK, the "new byte-compiler" for Emacs 18 is also bundled with SKK
+  9.6.  It includes patch for Mule 1.*.
+
+
+For Emacs 19.34 and XEmacs 19.14 users: "old custom" vs "new custom"
+
+  "custom" library bundled with Emacs 19.32 - 19.34, XEmacs 19.14, and
+  Gnus 5.2/5.3 is "old", its API is incompatible with "new custom"
+  bundled with Emacs 20.1, XEmacs 19.15, or newer, and Gnus 5.4/5.5.
+
+  "new custom" for Emacs 19.34 and XEmacs 19.15 - 20.2 is available
+  from the following URL.
+
+  ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz
+
+  (Note that "new custom" bundled with XEmacs 19.15 - 20.2, and Gnus
+  5.4/5.5 is older than this version.)
+
+  Before installing "new custom", you should check the following points.
+
+    1) If you stick to Gnus 5.2/5.3 (or any other applications which
+       use "old custom"), you should not install "new custom".
+
+    2) If you use Mule (based on Emacs 19), you must apply this patch
+       to "new custom".
+
+----8<------8<------8<------8<------8<------8<------8<------8<----
+--- custom-1.9962/cus-face.el~	Wed Mar  4 19:52:39 1998
++++ custom-1.9962/cus-face.el	Mon Mar  9 08:05:33 1998
+@@ -96,7 +96,7 @@
+       "Define a new FACE on all frames, ignoring X resources."
+       (interactive "SMake face: ")
+       (or (internal-find-face name)
+-	  (let ((face (make-vector 8 nil)))
++	  (let ((face (make-vector face-vector-length nil)))
+ 	    (aset face 0 'face)
+ 	    (aset face 1 name)
+ 	    (let* ((frames (frame-list))
+----8<------8<------8<------8<------8<------8<------8<------8<----
+
+    3) Applications compiled with "custom" require the same version of
+       "custom" at load-time (and run-time).  Therefore, if you use
+       "new custom", you must always include "new custom" in your
+       load-path.  The easiest way to achieve this is "subdirs.el";
+       if you installed "new custom" in "/usr/local/share/emacs/19.34/
+       site-lisp/custom/", put the following line to "/usr/local/share/
+       emacs/19.34/site-lisp/subdirs.el".
+
+       (normal-top-level-add-to-load-path '("custom"))
 
 
 How to use
@@ -148,7 +287,7 @@ Function add-path (PATH &rest OPTIONS)
   You can use following PATH styles:
 
     load-path relative: "PATH" (it is searched from
-				`defaul-load-path')
+				`default-load-path')
 
     home directory relative: "~/PATH" "~USER/PATH"
 
@@ -171,7 +310,7 @@ Function add-latest-path (PATTERN &optional ALL-PATHS)
   and if bbdb-1.51 is newer than bbdb-1.50, and site-lisp is
   /usr/local/share/emacs/site-lisp,
 
-	(add-path "bbdb")
+	(add-latest-path "bbdb")
 
   it adds "/usr/local/share/emacs/site-lisp/bbdb-1.51" to top of
   `load-path'.
@@ -199,12 +338,12 @@ Function file-installed-p (FILE &optional PATHS)
 Function exec-installed-p (FILE &optional PATHS SUFFIXES)
 
   Return absolute-path of FILE if FILE exists in PATHS.  If PATHS is
-  omitted, `exec-path' is used.  If suffixes is omitted,
+  omitted, `exec-path' is used.  If SUFFIXES is omitted,
   `exec-suffix-list' is used.
 
 Function module-installed-p (MODULE &optional PATHS)
 
-  Return non-nil if module is provided or exists in PATHS.  If PATHS
+  Return non-nil if MODULE is provided or exists in PATHS.  If PATHS
   is omitted, `load-path' is used.
 
 filename
@@ -231,17 +370,49 @@ Bug reports
 ===========
 
   If you write bug-reports and/or suggestions for improvement, please
-  send them to the tm Mailing List:
+  send them to the APEL Mailing List:
 
-	bug-tm-en@chamonix.jaist.ac.jp	(English)
-	bug-tm-ja@chamonix.jaist.ac.jp	(Japanese)
+	apel-en@m17n.org	(English)
+	apel-ja@m17n.org	(Japanese)
 
-  Via the tm ML, you can report APEL bugs, obtain the latest release
-  of APEL, and discuss future enhancements to APEL.  To join the tm
-  ML, send e-mail to
+  Via the APEL ML, you can report APEL bugs, obtain the latest release
+  of APEL, and discuss future enhancements to APEL.  To join the APEL
+  ML, send an empty e-mail to
 
-	tm-ja-admin@chamonix.jaist.ac.jp	(Japanese)
-	tm-en-admin@chamonix.jaist.ac.jp	(English)
+	apel-en-ctl@m17n.org	(English)
+	apel-ja-ctl@m17n.org	(Japanese)
 
-  Since the user registration is done manually, please write the mail
-  body in human-recognizable language (^_^).
+
+Anonymous FTP
+=============
+
+  Latest release of APEL can be obtained from:
+
+    ftp://ftp.m17n.org/pub/mule/apel/
+
+
+CVS
+===
+
+  Development of APEL uses CVS.  So latest developing version is
+  available at CVS.
+
+(0) cvs login (first time only)
+
+    % cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
+	login
+
+    CVS password: [CR] # NULL string
+
+(1) checkout
+
+    % cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
+	checkout apel
+
+
+  If you would like to join CVS based development, please send mail to
+
+	cvs@chamonix.jaist.ac.jp
+
+  with your account name and UNIX /etc/passwd style crypted password.
+  We hope you will join the open development.
