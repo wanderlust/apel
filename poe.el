@@ -168,9 +168,122 @@
     (set-buffer (window-buffer (minibuffer-window)))
     (current-column)))
 
-
 ;;; @ Emacs 19.29 emulation
 ;;;
+
+;; `add-hook' and `remove-hook' are imported from Emacs 19.28
+;; (with additional `local' argument).
+(condition-case nil
+    (let (test-hook)
+      (add-hook 'test-hook 'test 'append 'local)
+      (remove-hook 'test-hook 'test 'local))
+  (void-function
+   ;; emulate add-hook/remove-hook for version 18.
+   (defun add-hook (hook function &optional append local)
+     "Add to the value of HOOK the function FUNCTION.
+FUNCTION is not added if already present.
+FUNCTION is added \(if necessary\) at the beginning of the hook list
+unless the optional argument APPEND is non-nil, in which case
+FUNCTION is added at the end.
+
+The optional fourth argument, LOCAL, if non-nil, says to modify
+the hook's buffer-local value rather than its default value
+\(LOCAL is only for emulation\).
+
+HOOK should be a symbol, and FUNCTION may be any valid function.  If
+HOOK is void, it is first set to nil.  If HOOK's value is a single
+function, it is changed to a list of functions.
+\[Emacs 19.29 emulating function]"
+     (or (boundp hook)
+	 (set hook nil))
+     ;; If the hook value is a single function, turn it into a list.
+     (let ((old (symbol-value hook)))
+       (if (or (not (listp old))
+	       (eq (car old) 'lambda))
+	   (set hook (list old))))
+     (or (if (consp function)
+	     ;; Clever way to tell whether a given lambda-expression
+	     ;; is equal to anything in the hook.
+	     (let ((tail (assoc (cdr function) (symbol-value hook))))
+	       (equal function tail))
+	   (memq function (symbol-value hook)))
+	 (set hook 
+	      (if append
+		  (nconc (symbol-value hook) (list function))
+		(cons function (symbol-value hook))))))
+
+   (defun remove-hook (hook function &optional local)
+     "Remove from the value of HOOK the function FUNCTION.
+HOOK should be a symbol, and FUNCTION may be any valid function.  If
+FUNCTION isn't the value of HOOK, or, if FUNCTION doesn't appear in the
+list of hooks to run in HOOK, then nothing is done.  See `add-hook'.
+
+The optional third argument, LOCAL, if non-nil, says to modify
+the hook's buffer-local value rather than its default value
+\(LOCAL is only for emulation\).
+\[Emacs 19.29 emulating function]"
+     (if (or (not (boundp hook))
+	     (null (symbol-value hook))
+	     (null function))
+	 nil
+       (let ((hook-value (symbol-value hook)))
+	 (if (consp hook-value)
+	     (setq hook-value (delete function hook-value))
+	   (if (equal hook-value function)
+	       (setq hook-value nil)))
+	 (set hook hook-value))))
+
+   (defun-maybe make-local-hook (hook)
+     "Make the hook HOOK local to the current buffer.
+This function is only for emulation.
+\[Emacs 19.29 emulating function]"
+     )
+   )
+  (wrong-number-of-arguments
+   ;; emulate `local' arg for version 19.28 and earlier.
+   (or (fboundp 'si:add-hook)
+       (progn
+	 (fset 'si:add-hook (symbol-function 'add-hook))
+	 (defun add-hook (hook function &optional append local)
+	   "Add to the value of HOOK the function FUNCTION.
+FUNCTION is not added if already present.
+FUNCTION is added \(if necessary\) at the beginning of the hook list
+unless the optional argument APPEND is non-nil, in which case
+FUNCTION is added at the end.
+
+The optional fourth argument, LOCAL, if non-nil, says to modify
+the hook's buffer-local value rather than its default value
+\(LOCAL is only for emulation\).
+
+HOOK should be a symbol, and FUNCTION may be any valid function.  If
+HOOK is void, it is first set to nil.  If HOOK's value is a single
+function, it is changed to a list of functions.
+\[Emacs 19.29 emulating function]"
+	   ;; the fourth argument LOCAL is simply ignored.
+	   (si:add-hook hook function append))))
+
+   (or (fboundp 'si:remove-hook)
+       (progn
+	 (fset 'si:remove-hook (symbol-function 'remove-hook))
+	 (defun remove-hook (hook function &optional local)
+	   "Remove from the value of HOOK the function FUNCTION.
+HOOK should be a symbol, and FUNCTION may be any valid function.  If
+FUNCTION isn't the value of HOOK, or, if FUNCTION doesn't appear in the
+list of hooks to run in HOOK, then nothing is done.  See `add-hook'.
+
+The optional third argument, LOCAL, if non-nil, says to modify
+the hook's buffer-local value rather than its default value
+\(LOCAL is only for emulation\).
+\[Emacs 19.29 emulating function]"
+	   ;; the third argument LOCAL is simply ignored.
+	   (si:remove-hook hook function))))
+
+   (defun-maybe make-local-hook (hook)
+     "Make the hook HOOK local to the current buffer.
+This function is only for emulation.
+\[Emacs 19.29 emulating function]"
+     )
+   ))
 
 (defvar-maybe path-separator ":"
   "Character used to separate concatenated paths.")
@@ -234,23 +347,6 @@ The extension, in a file name, is the part that follows the last `.'."
 				directory)
 	    (substring file 0 (match-beginning 0)))
 	filename))))
-
-;; It is not Emacs feature.
-(defmacro-maybe add-local-hook (hook function &optional append)
-  (if (fboundp 'make-local-hook)
-      (list 'add-hook hook function append t)
-    (list 'add-hook hook function append)
-    ))
-
-;; It is not Emacs feature.
-(defmacro-maybe remove-local-hook (hook function)
-  (if (fboundp 'make-local-hook)
-      (list 'remove-hook hook function t)
-    (list 'remove-hook hook function)
-    ))
-
-(defmacro-maybe make-local-hook (hook))
-
 
 ;;; @ Emacs 19.30 emulation
 ;;;
