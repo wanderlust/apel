@@ -1,5 +1,13 @@
 1998-06-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* emu-latin1.el, emu-x20.el (set-buffer-multibyte): New macro.
+
+	* mule-caesar.el (mule-caesar-region): Use '(cdr (split-char ...))
+	instead of `char-to-octet-list'; abolish function
+	`char-to-octet-list'.
+
+1998-06-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu-mule.el (charset-chars): New function.
 
 	* mule-caesar.el (split-char): Redefine if it has bug.
@@ -158,7 +166,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
