@@ -419,20 +419,17 @@ CVS
 
 (0) cvs login (一回目だけ)
 
-    % cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
-	login
+    % cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root login
 
     CVS password: [CR] # 空文字列
 
 (1) checkout
 
-    % cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
-	checkout apel
-
+    % cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root checkout apel
 
   CVS に基づいた開発に参加したいときは、
 
-	cvs@chamonix.jaist.ac.jp
+	cvs@cvs.m17n.org
 
   にアカウント名と、UNIX の /etc/passwd 様式で暗号化されたパスワードを
   送ってください。開かれた開発に参加してくださることを期待します。

@@ -399,20 +399,17 @@ CVS
 
 (0) cvs login (first time only)
 
-    % cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
-	login
+    % cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root login
 
     CVS password: [CR] # NULL string
 
 (1) checkout
 
-    % cvs -d :pserver:anonymous@chamonix.jaist.ac.jp:/hare/cvs/root \
-	checkout apel
-
+    % cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root checkout apel
 
   If you would like to join CVS based development, please send mail to
 
-	cvs@chamonix.jaist.ac.jp
+	cvs@cvs.m17n.org
 
   with your account name and UNIX /etc/passwd style crypted password.
   We hope you will join the open development.
