@@ -1,11 +1,10 @@
 ;;; std11-parse.el --- STD 11 parser for GNU Emacs
 
-;; Copyright (C) 1995,1996 Free Software Foundation, Inc.
+;; Copyright (C) 1995,1996,1997 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Keywords: mail, news, RFC 822, STD 11
-;; Version:
-;;	$Id$
+;; Version: $Id$
 
 ;; This file is part of MU (Message Utilities).
 
@@ -34,10 +33,12 @@
 ;;;
 
 (defconst std11-space-chars " \t\n")
-(defconst std11-spaces-regexp (concat "[" std11-space-chars "]+"))
-(defconst std11-special-chars "][()<>@,;:\\<>.\"")
+(defconst std11-spaces-regexp (` (, (concat "[" std11-space-chars "]+"))))
+(defconst std11-special-char-list '(?\( ?\) ?< ?> ?@
+					?, ?\; ?: ?\\ ?\"
+					?. ?\[ ?\]))
 (defconst std11-atom-regexp
-  (concat "^[^" std11-special-chars std11-space-chars "]+"))
+  (` (, (concat "^[^" std11-special-char-list std11-space-chars "]+"))))
 
 (defun std11-analyze-spaces (string)
   (if (and (string-match std11-spaces-regexp string)
@@ -49,8 +50,7 @@
 
 (defun std11-analyze-special (str)
   (if (and (> (length str) 0)
-	   (find (aref str 0) std11-special-chars)
-	   )
+	   (memq (aref str 0) std11-special-char-list))
       (cons (cons 'specials (substring str 0 1))
 	    (substring str 1)
 	    )))
