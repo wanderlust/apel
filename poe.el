@@ -39,16 +39,6 @@
 	       ))
 	 )))
 
-(defmacro defsubst-maybe (name &rest everything-else)
-  (or (and (fboundp name)
-	   (not (get name 'defsubst-maybe)))
-      (` (or (fboundp (quote (, name)))
-	     (progn
-	       (defsubst (, name) (,@ everything-else))
-	       (put (quote (, name)) 'defsubst-maybe t)
-	       ))
-	 )))
-
 (defmacro defmacro-maybe (name &rest everything-else)
   (or (and (fboundp name)
 	   (not (get name 'defmacro-maybe)))
@@ -56,6 +46,21 @@
 	     (progn
 	       (defmacro (, name) (,@ everything-else))
 	       (put (quote (, name)) 'defmacro-maybe t)
+	       ))
+	 )))
+
+(defmacro-maybe defsubst (name arglist &rest body)
+  "Define an inline function.  The syntax is just like that of `defun'."
+  (cons 'defun (cons name (cons arglist body)))
+  )
+
+(defmacro defsubst-maybe (name &rest everything-else)
+  (or (and (fboundp name)
+	   (not (get name 'defsubst-maybe)))
+      (` (or (fboundp (quote (, name)))
+	     (progn
+	       (defsubst (, name) (,@ everything-else))
+	       (put (quote (, name)) 'defsubst-maybe t)
 	       ))
 	 )))
 
