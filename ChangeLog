@@ -1,3 +1,8 @@
+2003-05-29  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe.el (make-temp-file) [no make-temp-file, single-user system]:
+	Modified for OS/2.
+
 2003-05-22  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* install.el (install-prefix): Change value for Meadow2 and NTEmacs.

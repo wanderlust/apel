@@ -1660,7 +1660,7 @@ If SUFFIX is non-nil, add that at the end of the file name."
 (cond
  ;; must be load-time check to share .elc between different systems.
  ((fboundp 'make-temp-file))
- ((memq system-type '(windows-nt ms-dos))
+ ((memq system-type '(windows-nt ms-dos OS/2 emx))
   ;; For single-user systems:
   (defun-maybe make-temp-file (prefix &optional dir-flag suffix)
     "Create a temporary file.
