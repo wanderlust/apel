@@ -191,6 +191,50 @@
   (install-detect-elisp-directory))
 
 
+;;; @ for XEmacs package system
+;;;
+
+(defun install-update-package-files (package dir &optional just-print)
+  (cond
+   (just-print
+    (princ (format "Updating autoloads in directory %s..\n\n" dir))
+
+    (princ (format "Processing %s\n" dir))
+    (princ "Generating custom-load.el...\n\n")
+
+    (princ (format "Compiling %s...\n"
+		   (expand-file-name "auto-autoloads.el" dir)))
+    (princ (format "Wrote %s\n"
+		   (expand-file-name "auto-autoloads.elc" dir)))
+
+    (princ (format "Compiling %s...\n"
+		   (expand-file-name "custom-load.el" dir)))
+    (princ (format "Wrote %s\n"
+		   (expand-file-name "custom-load.elc" dir))))
+   (t
+    (setq autoload-package-name package)
+
+    (let ((command-line-args-left (list dir)))
+      (batch-update-directory))
+
+    (let ((command-line-args-left (list dir)))
+      (Custom-make-dependencies))
+
+    (byte-compile-file (expand-file-name "auto-autoloads.el" dir))
+    (byte-compile-file (expand-file-name "custom-load.el" dir)))))
+
+
+;;; @ Other Utilities
+;;;
+
+(defun install-just-print-p ()
+  (let ((flag (getenv "MAKEFLAGS"))
+	(case-fold-search nil))
+    (princ (format "%s\n" flag))
+    (if flag
+	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag))))
+
+
 ;;; @ end
 ;;;
 
