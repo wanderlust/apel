@@ -225,9 +225,7 @@ It must be symbol.")
   default-mime-charset
   "Default value of MIME-charset for encoding.
 It is used when suitable MIME-charset is not found.
-It must be symbol."
-  :group 'i18n
-  :type 'mime-charset)
+It must be symbol.")
 
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END."

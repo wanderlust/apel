@@ -1,8 +1,9 @@
 1999-02-14  Katsumi Yamaoka   <yamaoka@jpl.org>
 
-	* mcs-om.el (TopLevel): Don't refer to
-	`running-emacs-19_29-or-later', use `emacs-major-version' and
-	`emacs-minor-version' instead.
+	* mcs-om.el (default-mime-charset-for-write): Delete the remaining
+	arguments for `defcustom'.
+	(TopLevel): Don't refer to `running-emacs-19_29-or-later', use
+	`emacs-major-version' and `emacs-minor-version' instead.
 
 1999-02-13  Tanaka Akira  <akr@jaist.ac.jp>
 
