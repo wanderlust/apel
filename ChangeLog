@@ -1,3 +1,11 @@
+1998-12-18  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poem-om.el (poem-ccl-decode-raw-text): Renamed from
+	`ccl-decode-raw-text'.
+	(poem-ccl-encode-raw-text): Reanamed from `ccl-encode-raw-text'.
+	(poem-ccl-encode-raw-text-CRLF): Renamed from
+	`ccl-encode-raw-text-CRLF`.
+
 1998-12-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* poem-om.el (poem-decode-raw-text): New function for MULE 1.
