@@ -49,21 +49,13 @@
 (defun write-region-as-binary (start end filename
 				     &optional append visit lockname)
   "Like `write-region', q.v., but don't encode."
-  (let ((coding-system-for-write 'binary))
+  (let ((coding-system-for-write 'binary)
+	jka-compr-compression-info-list)
     (write-region start end filename append visit lockname)))
 
-(defun insert-file-contents-as-binary (filename
-				       &optional visit beg end replace)
-  "Like `insert-file-contents', q.v., but don't code and format conversion.
-Like `insert-file-contents-literary', but it allows find-file-hooks,
-automatic uncompression, etc.
-
-Namely this function ensures that only format decoding and character
-code conversion will not take place."
-  (let ((coding-system-for-read 'binary)
-	format-alist)
-    ;; Returns list of absolute file name and length of data inserted.
-    (insert-file-contents filename visit beg end replace)))
+;; `insert-file-contents-literally' of Emacs 20 supports
+;; `file-name-handler-alist'.
+(defalias 'insert-file-contents-as-binary 'insert-file-contents-literally)
 
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)

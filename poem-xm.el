@@ -69,6 +69,55 @@
 		  mnemonic "ko/EUC"
 		  eol-type nil)))
 
+;; (when (= (function-max-args 'coding-system-list) 0)
+;;   (or (fboundp 'coding-system-list-internal)
+;;       (fset 'coding-system-list-internal
+;;             (symbol-function 'coding-system-list)))
+;;   (defun coding-system-list (&optional base-only)
+;;     "Return a list of all existing coding systems.
+;; If optional arg BASE-ONLY is non-nil, only base coding systems are listed."
+;;     (if base-only
+;;         (let (dest
+;;               (rest (coding-system-list-internal))
+;;               cs)
+;;           (while rest
+;;             (setq cs (coding-system-name (coding-system-base (pop rest))))
+;;             (or (memq cs dest)
+;;                 (push cs dest))
+;;             )
+;;           dest)
+;;       (coding-system-list-internal)))
+;;   )
+
+
+;;; @ without code-conversion
+;;;
+
+(defun insert-file-contents-as-binary (filename
+				       &optional visit beg end replace)
+  "Like `insert-file-contents', but only reads in the file literally.
+A buffer may be modified in several ways after reading into the buffer,
+to Emacs features such as format decoding, character code
+conversion, find-file-hooks, automatic uncompression, etc.
+
+This function ensures that none of these modifications will take place."
+  (let ((format-alist nil)
+	(after-insert-file-functions nil)
+	(coding-system-for-read 'binary)
+	(coding-system-for-write 'binary)
+	(jka-compr-compression-info-list nil)
+	(find-buffer-file-type-function
+	 (if (fboundp 'find-buffer-file-type)
+	     (symbol-function 'find-buffer-file-type)
+	   nil)))
+    (unwind-protect
+	(progn
+	  (fset 'find-buffer-file-type (lambda (filename) t))
+	  (insert-file-contents filename visit beg end replace))
+      (if find-buffer-file-type-function
+	  (fset 'find-buffer-file-type find-buffer-file-type-function)
+	(fmakunbound 'find-buffer-file-type)))))
+
 
 ;;; @ buffer representation
 ;;;
