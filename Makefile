@@ -8,21 +8,21 @@
 #	ORIG19	= for Emacs 19.* (FSF original or XEmacs)
 #	MULE2	= for MULE 2.* (based on Emacs 19.*)
 
-	NEMACS	= nemacs
-	MULE1	= mule1
-	ORIG19	= emacs19
-	MULE2	= mule2
+NEMACS	= nemacs
+MULE1	= mule1
+ORIG19	= emacs19
+MULE2	= mule2
 
 
 # Please specfy Emacs Lisp install directory:
 #	TLDIR18 = for Emacs 18.* (NEMACS, NEpoch or MULE 1)
 #	TLDIR19 = for Emacs 19.* (FSF original, XEmacs or MULE 2)
 
-	TLDIR18	= /usr/local/lib/emacs/local.lisp
-	TLDIR19	= /usr/local/lib/mule/site-lisp
+TLDIR18	= /usr/local/lib/emacs/local.lisp
+TLDIR19	= /usr/local/lib/mule/site-lisp
 
-#	TLDIR18 = $(HOME)/lib/emacs18/lisp
-#	TLDIR19 = $(HOME)/lib/emacs19/lisp
+# TLDIR18 = $(HOME)/lib/emacs18/lisp
+# TLDIR19 = $(HOME)/lib/emacs19/lisp
 
 
 nemacs:
