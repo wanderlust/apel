@@ -192,6 +192,31 @@ If BOUNDARY is not nil, it is used as message header separator.
   (std11-parse-address (std11-lexical-analyze string))
   )
 
+(defun std11-addr-to-string (seq)
+  (mapconcat (function
+	      (lambda (token)
+		(if (eq (car token) 'spaces)
+		    ""
+		  (cdr token)
+		  )))
+	     seq "")
+  )
+
+(defun std11-address-string (address)
+  (cond ((eq (car address) 'group)
+	 (mapconcat (function std11-address-string)
+		    (car (cdr address))
+		    ", ")
+	 )
+	((eq (car address) 'mailbox)
+	 (let ((addr (nth 1 address)))
+	   (std11-addr-to-string
+	    (if (eq (car addr) 'phrase-route-addr)
+		(nth 2 addr)
+	      (cdr addr)
+	      )
+	    )))))
+
 
 ;;; @ end
 ;;;
