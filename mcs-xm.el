@@ -162,8 +162,8 @@
     ((ascii latin-jisx0201
 	    katakana-jisx0201 japanese-jisx0208)	. shift_jis)
     ((ascii korean-ksc5601)				. euc-kr)
-    ((ascii chinese-gb2312)				. cn-gb)
-    ((ascii chinese-big5-1 chinese-big5-2)		. cn-big5)
+    ((ascii chinese-gb2312)				. gb2312)
+    ((ascii chinese-big5-1 chinese-big5-2)		. big5)
     ((ascii latin-iso8859-1 greek-iso8859-7
 	    latin-jisx0201 japanese-jisx0208-1978
 	    chinese-gb2312 japanese-jisx0208
