@@ -195,7 +195,10 @@ If BOUNDARY is not nil, it is used as message header separator.
 (defun std11-addr-to-string (seq)
   (mapconcat (function
 	      (lambda (token)
-		(if (eq (car token) 'spaces)
+		(if (let ((name (car token)))
+		      (or (eq name 'spaces)
+			  (eq name 'comment)
+			  ))
 		    ""
 		  (cdr token)
 		  )))
