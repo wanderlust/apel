@@ -273,7 +273,7 @@ or an integer of the form +-HHMM, or a time zone name."
 	    (setq timezone (string-to-int timezone)))
 	;; Taking account of minute in timezone.
 	;; HHMM -> MM
-	(let* ((abszone (timezone-abs timezone))
+	(let* ((abszone (abs timezone))
  	       (minutes (+ (* 60 (/ abszone 100)) (% abszone 100))))
  	  (if (< timezone 0) (- minutes) minutes))))
      (t 0)))
@@ -486,12 +486,6 @@ The Gregorian date Sunday, December 31, 1 BC is imaginary."
      (/ (1- year) 4);;		+ Julian leap years
      (- (/ (1- year) 100));;	- century years
      (/ (1- year) 400)));;	+ Gregorian leap years
-
-(defun timezone-abs (n)
-  "Return the absolute value of N."
-  (if (fboundp 'abs)
-      (abs n)
-    (if (< n 0) (- n) n)))
 
 (defun timezone-floor (n &optional divisor)
   "Return the largest integer no grater than N.

@@ -1,3 +1,10 @@
+1999-12-23  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* timezone.el (timezone-abs): Eliminated.
+	(timezone-zone-to-minute): Use `abs' instead of `timezone-abs'.
+
+	* poe-18.el (current-time-zone): Use `abs'.
+
 1999-12-23  Keiichi Suzuki  <keiichi@nanap.org>
 
 	* product.el: Fix file header. `checkdoc' fix.

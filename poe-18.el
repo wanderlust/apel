@@ -265,7 +265,7 @@ the data it can't find."
 	  (setq timezone (string-to-int timezone)))
       ;; Taking account of minute in timezone.
       ;; HHMM -> MM
-      (setq abszone (if (< timezone 0) (- timezone) timezone))
+      (setq abszone (abs timezone))
       (setq seconds (* 60 (+ (* 60 (/ abszone 100)) (% abszone 100))))
       (list (if (< timezone 0) (- seconds) seconds)
 	    local-timezone))))
