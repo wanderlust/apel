@@ -203,10 +203,11 @@ DECODER (symbol) and ENCODER (symbol)."
     (read r0)
     (write "[EOF]")))
 
-(make-ccl-coding-system 'test-ccl-eof-block-cs ?T
-  "CCL_EOF_BLOCK tester"
-  'test-ccl-eof-block
-  'test-ccl-eof-block)
+(unless (coding-system-p 'test-ccl-eof-block-cs)
+  (make-ccl-coding-system 'test-ccl-eof-block-cs ?T
+			  "CCL_EOF_BLOCK tester"
+			  'test-ccl-eof-block
+			  'test-ccl-eof-block))
 )
 
 (defconst ccl-encoder-eof-block-is-broken
