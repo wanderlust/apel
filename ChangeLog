@@ -1,3 +1,31 @@
+1998-11-17  Kazuhiro Ohta  <ohta@ele.cst.nihon-u.ac.jp>
+
+	* README.en, README.ja: add-latest-path: Fix typo.
+
+
+1998-11-14  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 9.11 was released.
+
+	* poem-ltn1.el (char-charset): Fix typo.
+
+1998-11-13  Tanaka Akira  <akr@jaist.ac.jp>
+
+	* broken.el: require 'poe.
+
+1998-11-13  Tanaka Akira  <akr@jaist.ac.jp>
+
+	* pccl.el: Enclose mule depended process by `unless-broken'.
+
+1998-11-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* poe.el (defun-maybe-cond): fixed problem in Emacs 18.
+
+	* poe.el (defsubst): Moved from poe-18.el.
+
+	* poe-18.el: Move macro `defsubst' to poe.el.
+
+
 1998-11-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 9.10 was released.
