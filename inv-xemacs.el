@@ -25,39 +25,36 @@
 
 ;;; Code:
 
-(defmacro enable-invisible ())
+(require 'poe)
 
-(defmacro end-of-invisible ())
+(defun enable-invisible ())
+(defun disable-invisible ())
+(defalias 'end-of-invisible 'disable-invisible)
+(make-obsolete 'end-of-invisible 'disable-invisible)
 
 (defun invisible-region (start end)
   (if (save-excursion
 	(goto-char start)
 	(eq (following-char) ?\n))
-      (setq start (1+ start))
-    )
-  (put-text-property start end 'invisible t)
-  )
+      (setq start (1+ start)))
+  (put-text-property start end 'invisible t))
 
 (defun visible-region (start end)
-  (put-text-property start end 'invisible nil)
-  )
+  (put-text-property start end 'invisible nil))
 
 (defun invisible-p (pos)
   (if (save-excursion
 	(goto-char pos)
 	(eq (following-char) ?\n))
-      (setq pos (1+ pos))
-    )
-  (get-text-property pos 'invisible)
-  )
+      (setq pos (1+ pos)))
+  (get-text-property pos 'invisible))
 
 (defun next-visible-point (pos)
   (save-excursion
     (if (save-excursion
 	  (goto-char pos)
 	  (eq (following-char) ?\n))
-	(setq pos (1+ pos))
-      )
+	(setq pos (1+ pos)))
     (or (next-single-property-change pos 'invisible)
 	(point-max))))
 

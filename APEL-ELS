@@ -1,19 +1,21 @@
-;;; -*-Emacs-Lisp-*-
+;;; APEL-ELS --- list of APEL modules to install. -*-Emacs-Lisp-*-
 
-;; APEL-ELS: list of APEL modules to install
+;;; Commentary:
+
+;; APEL-MK imports `apel-modules' from here.
 
 ;;; Code:
 
-(setq apel-modules '(product apel-ver
-			     alist calist
-			     path-util filename install
-			     mule-caesar
-			     
+(defvar apel-modules '(product apel-ver
+			       alist calist path-util filename install
+			     ;; "mule-caesar" is version-dependent.
+			     ;; moved to EMU-ELS.
+			     ;; mule-caesar
+
 			     ;; [obsoleted modules] If you would like to
 			     ;; install following, please activate them.
-
 			     ;; atype file-detect
-			     ))
+			       ))
 
 (if (or (< emacs-major-version 19)
 	(and (eq emacs-major-version 19) (< emacs-minor-version 16)))

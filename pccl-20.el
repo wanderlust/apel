@@ -80,8 +80,7 @@ CODING-SYSTEM, DECODER and ENCODER must be symbol."
       (defun ccl-execute (ccl-prog reg)
 	"\
 Execute CCL-PROG with registers initialized by REGISTERS.
-If CCL-PROG is symbol, it is dereferenced.
-\[Emacs 20.3 emulating function]"
+If CCL-PROG is symbol, it is dereferenced."
 	(ccl-vector-program-execute
 	 (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
 	 reg)))
@@ -92,8 +91,7 @@ If CCL-PROG is symbol, it is dereferenced.
       (defun ccl-execute-on-string (ccl-prog status string &optional contin)
 	"\
 Execute CCL-PROG with initial STATUS on STRING.
-If CCL-PROG is symbol, it is dereferenced.
-\[Emacs 20.3 emulating function]"
+If CCL-PROG is symbol, it is dereferenced."
 	(ccl-vector-program-execute-on-string
 	 (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
 	 status string contin)))

@@ -24,17 +24,13 @@
 
 ;;; Code:
 
-(require 'poe)
-
-(cond ((featurep 'xemacs)
-       (require 'inv-xemacs)
-       )
-      ((>= emacs-major-version 19)
-       (require 'inv-19)
-       )
-      (t
-       (require 'inv-18)
-       ))
+(cond
+ ((featurep 'xemacs)
+  (require 'inv-xemacs))
+ ((>= emacs-major-version 19)
+  (require 'inv-19))
+ (t
+  (require 'inv-18)))
 
 
 ;;; @ end

@@ -24,57 +24,50 @@
 
 ;;; Code:
 
-(defmacro enable-invisible ()
-  (`
-   (progn
-     (make-local-variable 'original-selective-display)
-     (setq original-selective-display selective-display)
-     (setq selective-display t)
-     )))
+(require 'poe)
 
-(defmacro end-of-invisible ()
-  (` (setq selective-display
-	   (if (boundp 'original-selective-display)
-	       original-selective-display))
-     ))
+(defun enable-invisible ()
+  (make-local-variable 'original-selective-display)
+  (setq original-selective-display selective-display)
+  (setq selective-display t))
+
+(defun disable-invisible ()
+  (setq selective-display
+	(and (boundp 'original-selective-display)
+	     original-selective-display)))
+(defalias 'end-of-invisible 'disable-invisible)
+(make-obsolete 'end-of-invisible 'disable-invisible)
 
 (defun invisible-region (start end)
-  (let ((buffer-read-only nil)		;Okay even if write protected.
+  (let ((buffer-read-only nil)
 	(modp (buffer-modified-p)))
     (if (save-excursion
 	  (goto-char (1- end))
-	  (eq (following-char) ?\n)
-	  )
-	(setq end (1- end))
-      )
+	  (eq (following-char) ?\n))
+	(setq end (1- end)))
     (unwind-protect
-        (subst-char-in-region start end ?\n ?\^M t)
-      (set-buffer-modified-p modp)
-      )))
+        (subst-char-in-region start end ?\n ?\r t)
+      (set-buffer-modified-p modp))))
 
 (defun visible-region (start end)
-  (let ((buffer-read-only nil)		;Okay even if write protected.
+  (let ((buffer-read-only nil)
 	(modp (buffer-modified-p)))
     (unwind-protect
-        (subst-char-in-region start end ?\^M ?\n t)
-      (set-buffer-modified-p modp)
-      )))
+        (subst-char-in-region start end ?\r ?\n t)
+      (set-buffer-modified-p modp))))
 
 (defun invisible-p (pos)
   (save-excursion
     (goto-char pos)
-    (eq (following-char) ?\^M)
-    ))
+    (eq (following-char) ?\r)))
 
 (defun next-visible-point (pos)
   (save-excursion
     (goto-char pos)
     (end-of-line)
     (if (eq (following-char) ?\n)
-	(forward-char)
-      )
-    (point)
-    ))
+	(forward-char))
+    (point)))
 
 
 ;;; @ end

@@ -1,107 +1,218 @@
-;;; -*-Emacs-Lisp-*-
+;;; APEL-MK --- installer for APEL. -*-Emacs-Lisp-*-
 
-;; APEL-MK: installer for APEL.
+;;; Commentary:
+
+;; DON'T EDIT THIS FILE; edit APEL-CFG instead.
 
 ;;; Code:
 
+;;; Configuration variables.
+
+;; Set these four variables in "APEL-CFG" or in "Makefile".
+
+;; This variable will be detected automatically.
+(defvar PREFIX nil)
+
+;; This variable will be detected automatically using PREFIX.
+;; v18: (no standard site-lisp directory)
+;; Emacs 19.28 and earlier: "PREFIX/lib/emacs/site-lisp"
+;; Emacs 19.29 and later: "PREFIX/share/emacs/site-lisp"
+(defvar LISPDIR nil)
+
+;; This variable will be detected automatically using PREFIX.
+;; Emacs 19.31 and later: "PREFIX/share/emacs/VERSION/site-lisp"
+(defvar VERSION_SPECIFIC_LISPDIR nil)
+
+;; This variable will be detected automatically.
+;; XEmacs 21.0 and later: "/usr/local/lib/xemacs/xemacs-packages"
+(defvar PACKAGEDIR nil)
+
+;; Install APEL modules to "apel" subdirectory.
+(defvar APEL_PREFIX "apel")
+
+;; Install EMU modules to "emu" subdirectory if emacs supports some features.
+;; If your emacs does not have `normal-top-level-add-subdirs-to-load-path'
+;; but have `normal-top-level-add-to-load-path' and you want to use it in
+;; "subdirs.el", put the following line to "APEL-CFG".
+;; (setq EMU_PREFIX "emu")
+(defvar EMU_PREFIX
+  (if (or (featurep 'xemacs)
+	  (fboundp 'normal-top-level-add-subdirs-to-load-path))
+      ;; Make "emu" subdirectory.
+      "emu"
+    ;; Don't make "emu" subdirectory.
+    ""))
+
+;; The directories where APEL and EMU modules will be installed.
+;; These two variables will be generated from other variables above.
+(defvar APEL_DIR nil)			; LISPDIR/APEL_PREFIX
+(defvar EMU_DIR nil)			; VERSION_SPECIFIC_LISPDIR/EMU_PREFIX
+
+
+;;; Utilities. (XXX: should be moved to install.el ?)
+
 (defun install-just-print-p ()
   (let ((flag (getenv "MAKEFLAGS"))
-	case-fold-search)
+	(case-fold-search nil))
     (princ (format "%s\n" flag))
     (if flag
-	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag)
-      )))
+	(string-match "^\\(\\(--[^ ]+ \\)+-\\|[^ =-]\\)*n" flag))))
 
 (defun install-update-package-files (package dir &optional just-print)
-  (cond (just-print
-	 (princ (format "Updating autoloads in directory %s..\n\n" dir))
-	   
-	 (princ (format "Processing %s\n" dir))
-	 (princ "Generating custom-load.el...\n\n")
-	    
-	 (princ (format "Compiling %s...\n"
-			(expand-file-name "auto-autoloads.el" dir)))
-	 (princ (format "Wrote %s\n"
-			(expand-file-name "auto-autoloads.elc" dir)))
-	   
-	 (princ (format "Compiling %s...\n"
-			(expand-file-name "custom-load.el" dir)))
-	 (princ (format "Wrote %s\n"
-			(expand-file-name "custom-load.elc" dir)))
-	 )
-	(t
-	 (setq autoload-package-name package)
-	 (add-to-list 'command-line-args-left dir)
-	 (batch-update-directory)
-	
-	 (add-to-list 'command-line-args-left dir)
-	 (Custom-make-dependencies)
-	   
-	 (byte-compile-file (expand-file-name "auto-autoloads.el" dir))
-	 (byte-compile-file (expand-file-name "custom-load.el" dir))
-	 )))
+  (cond
+   (just-print
+    (princ (format "Updating autoloads in directory %s..\n\n" dir))
+
+    (princ (format "Processing %s\n" dir))
+    (princ "Generating custom-load.el...\n\n")
+
+    (princ (format "Compiling %s...\n"
+		   (expand-file-name "auto-autoloads.el" dir)))
+    (princ (format "Wrote %s\n"
+		   (expand-file-name "auto-autoloads.elc" dir)))
+
+    (princ (format "Compiling %s...\n"
+		   (expand-file-name "custom-load.el" dir)))
+    (princ (format "Wrote %s\n"
+		   (expand-file-name "custom-load.elc" dir))))
+   (t
+    (setq autoload-package-name package)
+
+    (let ((command-line-args-left (list dir)))
+      (batch-update-directory))
+
+    (let ((command-line-args-left (list dir)))
+      (Custom-make-dependencies))
+
+    (byte-compile-file (expand-file-name "auto-autoloads.el" dir))
+    (byte-compile-file (expand-file-name "custom-load.el" dir)))))
+
+
+;;; Configure, Compile, and Install.
 
 (defun config-apel ()
+  ;; Override everything you want.
+  (load-file "APEL-CFG")
+  ;; Override PREFIX, LISPDIR, and VERSION_SPECIFIC_LISPDIR with
+  ;; command-line options.
   (let (prefix lisp-dir version-specific-lisp-dir)
-    (and (setq prefix (car command-line-args-left))
+    (and (setq prefix
+	       ;; Avoid using `pop'.
+	       ;; (pop command-line-args-left)
+	       (prog1
+		   (car command-line-args-left)
+		 (setq command-line-args-left
+		       (cdr command-line-args-left))))
 	 (or (string-equal "NONE" prefix)
-	     (defvar PREFIX prefix)
-	     ))
-    (setq command-line-args-left (cdr command-line-args-left))
-    (and (setq lisp-dir (car command-line-args-left))
+	     (setq PREFIX prefix)))
+    (and (setq lisp-dir
+	       ;; Avoid using `pop'.
+	       ;; (pop command-line-args-left)
+	       (prog1
+		   (car command-line-args-left)
+		 (setq command-line-args-left
+		       (cdr command-line-args-left))))
 	 (or (string-equal "NONE" lisp-dir)
-	     (defvar LISPDIR lisp-dir)
-	     ))
-    (setq command-line-args-left (cdr command-line-args-left))
-    (and (setq version-specific-lisp-dir (car command-line-args-left))
+	     (setq LISPDIR lisp-dir)))
+    (and (setq version-specific-lisp-dir
+	       ;; Avoid using `pop'.
+	       ;; (pop command-line-args-left)
+	       (prog1
+		   (car command-line-args-left)
+		 (setq command-line-args-left
+		       (cdr command-line-args-left))))
 	 (or (string-equal "NONE" version-specific-lisp-dir)
-	     (progn
-	       (defvar VERSION_SPECIFIC_LISPDIR version-specific-lisp-dir)
-	       (princ (format "VERSION_SPECIFIC_LISPDIR=%s\n"
-			      VERSION_SPECIFIC_LISPDIR)))
-	     ))
-    (setq command-line-args-left (cdr command-line-args-left))
-    (load-file "APEL-CFG")
-    (or (boundp 'apel-modules)
-	(load-file "APEL-ELS")
-	)
-    (princ (format "PREFIX=%s\n" PREFIX))
-    ))
+	     (setq VERSION_SPECIFIC_LISPDIR version-specific-lisp-dir))))
+  ;; Load some APEL modules from this directory.
+  (defvar default-load-path load-path)
+  (setq load-path (cons (expand-file-name ".") load-path))
+  (require 'poe)
+  (require 'path-util)
+  (require 'install)
+
+  ;; Import `apel-modules'.
+  (load-file "APEL-ELS")
+  ;; Import `emu-modules' and `emu-modules-to-compile'.
+  (load-file "EMU-ELS")
+
+  ;; Set PREFIX, LISPDIR, and VERSION_SPECIFIC_LISPDIR if not set yet.
+  (or PREFIX
+      (setq PREFIX install-prefix))
+  (or LISPDIR
+      (setq LISPDIR (install-detect-elisp-directory PREFIX)))
+  (or VERSION_SPECIFIC_LISPDIR
+      (setq VERSION_SPECIFIC_LISPDIR
+	    (install-detect-elisp-directory PREFIX nil 'version-specific)))
+  ;; The directories where APEL and EMU will be installed.
+  (or APEL_DIR
+      (setq APEL_DIR (expand-file-name APEL_PREFIX LISPDIR)))
+  (or EMU_DIR
+      (setq EMU_DIR (expand-file-name EMU_PREFIX VERSION_SPECIFIC_LISPDIR)))
+  (princ (format "\nLISPDIR=%s\n" LISPDIR))
+  (princ (format "VERSION_SPECIFIC_LISPDIR=%s\n" VERSION_SPECIFIC_LISPDIR)))
 
 (defun compile-apel ()
   (config-apel)
-  (load-file "EMU-ELS")
-  (load-file "APEL-ELS")
+  ;; Compile emu modules first.
   (compile-elisp-modules emu-modules-to-compile	".")
-  (compile-elisp-modules apel-modules		".")
-  )
+  (compile-elisp-modules apel-modules		"."))
 
 (defun install-apel ()
-  (compile-apel)
+  (config-apel)
   (let ((just-print (install-just-print-p)))
-    (install-elisp-modules emu-modules	"." EMU_DIR	just-print)
-    (install-elisp-modules apel-modules	"." APEL_DIR	just-print)
-    ))
+    (install-elisp-modules emu-modules	"." EMU_DIR  just-print)
+    (install-elisp-modules apel-modules	"." APEL_DIR just-print)))
 
+;; For XEmacs package system.
 (defun config-apel-package ()
+  ;; Override everything you want.
+  (load-file "APEL-CFG")
+  ;; Override PACKAGEDIR with command-line option.
   (let (package-dir)
-    (and (setq package-dir (car command-line-args-left))
+    (and (setq package-dir
+	       ;; Avoid using `pop'.
+	       ;; (pop command-line-args-left)
+	       (prog1
+		   (car command-line-args-left)
+		 (setq command-line-args-left
+		       (cdr command-line-args-left))))
 	 (or (string= "NONE" package-dir)
-	     (defvar PACKAGEDIR package-dir)
-	     ))
-    (setq command-line-args-left (cdr command-line-args-left))
-    (load-file "APEL-CFG")
-    (load-file "APEL-ELS")
-    (load-file "EMU-ELS")
-  
-    (princ (format "PACKAGEDIR=%s\n" PACKAGEDIR))
-    ))
+	     (setq PACKAGEDIR package-dir))))
+  ;; Load some APEL modules from this directory.
+  (defvar default-load-path load-path)
+  (setq load-path (cons (expand-file-name ".") load-path))
+  (require 'poe)
+  (require 'path-util)
+  (require 'install)
+
+  ;; Import `apel-modules'.
+  (load-file "APEL-ELS")
+  ;; Import `emu-modules' and `emu-modules-to-compile'.
+  (load-file "EMU-ELS")
+
+  ;; Set PACKAGEDIR if not set yet.
+  (or PACKAGEDIR
+      (setq PACKAGEDIR
+	    (if (boundp 'early-packages)
+		(let ((dirs (append (if early-package-load-path
+					early-packages)
+				    (if late-package-load-path
+					late-packages)
+				    (if last-package-load-path
+					last-packages)))
+		      dir)
+		  (while (not (file-exists-p (setq dir (car dirs))))
+		    (setq dirs (cdr dirs)))
+		  dir))))
+  (if PACKAGEDIR
+      (princ (format "\nPACKAGEDIR=%s\n" PACKAGEDIR))
+    (error "XEmacs package system is not available")))
 
 (defun compile-apel-package ()
   (config-apel-package)
+  ;; Compile emu modules first.
   (compile-elisp-modules emu-modules-to-compile	".")
-  (compile-elisp-modules apel-modules		".")
-  )
+  (compile-elisp-modules apel-modules		"."))
 
 (defun install-apel-package ()
   (config-apel-package)
@@ -110,12 +221,10 @@
 			       (expand-file-name "lisp" PACKAGEDIR))))
     (install-elisp-modules emu-modules	"." dir just-print)
     (install-elisp-modules apel-modules	"." dir just-print)
-    (install-update-package-files "apel" dir just-print)
-    ))
+    (install-update-package-files "apel" dir just-print)))
 
 (defun what-where-apel ()
   (config-apel)
-  (load-file "EMU-ELS")
   (princ (format "
 The files that belong to the EMU modules:
   %s
@@ -124,10 +233,12 @@ The files that belong to the EMU modules:
 The files that belong to the APEL modules:
   %s
   -> %s
+
+Do `make elc', `make install', `make package', or `make install-package'.
 "
-		 (mapconcat 'symbol-name emu-modules ", ")
+		 (mapconcat (function symbol-name) emu-modules ", ")
 		 EMU_DIR
-		 (mapconcat 'symbol-name apel-modules ", ")
+		 (mapconcat (function symbol-name) apel-modules ", ")
 		 APEL_DIR)))
 
 ;;; APEL-MK ends here

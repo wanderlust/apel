@@ -4,7 +4,7 @@
 ;; Copyright (C) 1998 Tanaka Akira
 
 ;; Author: Tanaka Akira <akr@jaist.ac.jp>
-;;         Shuhei KOBAYASHI <shuhei-k@jaist.ac.jp>
+;;	Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
 ;; Keywords: emulation, compatibility, Mule
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -48,16 +48,14 @@ CODING-SYSTEM, DECODER and ENCODER must be symbol."
 
 (defun ccl-execute (ccl-prog reg)
   "Execute CCL-PROG with registers initialized by REGISTERS.
-If CCL-PROG is symbol, it is dereferenced.
-\[Emacs 20.3 emulating function]"
+If CCL-PROG is symbol, it is dereferenced."
   (exec-ccl
    (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
    reg))
 
 (defun ccl-execute-on-string (ccl-prog status string &optional contin)
   "Execute CCL-PROG with initial STATUS on STRING.
-If CCL-PROG is symbol, it is dereferenced.
-\[Emacs 20.3 emulating function]"
+If CCL-PROG is symbol, it is dereferenced."
   (exec-ccl-string
    (if (symbolp ccl-prog) (symbol-value ccl-prog) ccl-prog)
    status string))

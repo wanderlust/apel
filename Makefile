@@ -21,25 +21,25 @@ GOMI	= *.elc
 
 ARCHIVE_DIR_PREFIX = /pub/mule
 
+what-where:
+	$(EMACS) $(FLAGS) -f what-where-apel \
+		$(PREFIX) $(LISPDIR) $(VERSION_SPECIFIC_LISPDIR)
+
 elc:
-	$(EMACS) $(FLAGS) -f compile-apel
+	$(EMACS) $(FLAGS) -f compile-apel \
+		$(PREFIX) $(LISPDIR) $(VERSION_SPECIFIC_LISPDIR)
 
-install:
-	$(EMACS) $(FLAGS) -f install-apel $(PREFIX) $(LISPDIR) \
-		$(VERSION_SPECIFIC_LISPDIR)	# $(MAKE)
-
+install:	elc
+	$(EMACS) $(FLAGS) -f install-apel \
+		$(PREFIX) $(LISPDIR) $(VERSION_SPECIFIC_LISPDIR) # $(MAKE)
 
 package:
-	$(XEMACS) $(FLAGS) -f compile-apel-package $(PACKAGEDIR)
+	$(XEMACS) $(FLAGS) -f compile-apel-package \
+		$(PACKAGEDIR)
 
 install-package:	package
-	$(XEMACS) $(FLAGS) -f install-apel-package $(PACKAGEDIR) \
-		# $(MAKE)
-
-
-what-where:
-	$(EMACS) $(FLAGS) -f what-where-apel $(PREFIX) $(LISPDIR) \
-		$(VERSION_SPECIFIC_LISPDIR)
+	$(XEMACS) $(FLAGS) -f install-apel-package \
+		$(PACKAGEDIR) # $(MAKE)
 
 
 clean:
