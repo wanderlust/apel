@@ -14,4 +14,9 @@
 			   ;; atype file-detect
 			   ))
 
+(if (or (< emacs-major-version 19)
+	(and (eq emacs-major-version 19) (< emacs-minor-version 16)))
+    (setq apel-modules (cons 'time-stamp apel-modules))
+  )
+
 ;;; APEL-ELS ends here
