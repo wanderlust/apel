@@ -241,7 +241,7 @@ TABLE defaults to the current buffer's category table.
       )
     col))
 
-(defalias 'string-width 'string-column)
+(defalias 'string-width 'string-columns)
 
 (defun string-to-int-list (str)
   (mapcar #'char-int str)

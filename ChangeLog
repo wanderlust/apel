@@ -1,3 +1,51 @@
+Wed Oct 16 00:12:13 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.10 was released.
+
+Tue Oct 15 22:58:28 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* TL-ELS (tl-modules): Add `char-util' and `char-table' for
+ 	Emacs/mule.
+
+	* char-table.el, char-util.el: New module.
+
+	* sinfo.el: New module.
+
+Sat Oct 12 19:22:43 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* TL-ELS (tl-modules): Add `texi-util'; add `sinfo' for mule
+ 	merged Emacs.
+
+Thu Oct 10 19:42:30 1996  Martin Buchholz   <mrb@Eng.Sun.COM>
+
+	* emu-x20.el (string-width): fixed typo.
+
+Thu Oct 10 14:21:35 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* texi-util.el: New module.
+
+	* ol-to-texi.el: Function `ol-to-texi-add-menu-title' was renamed
+ 	to `texinfo-all-menu-titles-update' and moved to texi-util.el.
+
+	* tl-str.el: Function `file-name-non-extension' was moved from
+ 	ol-to-texi.el.
+
+	* ol-to-texi.el: Function `file-name-non-extension' was moved to
+ 	tl-str.el.
+
+	* ol-to-texi.el: require tl-list.
+
+Mon Oct  7 07:11:36 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e20.el (charset-iso-class): New function.
+
+	* tl-list.el (remove-alist): New function.
+
+Sat Oct  5 08:12:16 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* ol-to-texi.el (ol-to-texi-add-menu-title): New function.
+
+
 Tue Oct  1 15:03:36 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.9 was released.

@@ -51,6 +51,12 @@
 
 (defalias 'charset-columns 'charset-width)
 
+(defun charset-iso-class (charset)
+  "Return ISO-class of CHARSET.
+\(0/CLASS94, 1/CLASS96, 2/CLASS94x94, 3/CLASS96x96) [emu-e20.el]"
+  (aref (charset-info charset) 5)
+  )
+
 (defun find-non-ascii-charset-string (string)
   "Return a list of charsets in the STRING except ascii.
 \[emu-e20.el; Mule emulating function]"
