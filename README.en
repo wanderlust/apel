@@ -9,7 +9,6 @@ What's APEL?
     poe.el --- emulation module mainly for basic functions and special
 	       forms/macros of latest emacsen
       poe-xemacs.el  --- for XEmacs
-      poe-19.el	     --- for Emacs 19
       poe-18.el	     --- for Emacs 18/Nemacs
          env.el      --- env.el for Emacs 18
 
@@ -22,6 +21,11 @@ What's APEL?
       poem-e20_2.el  --- for Emacs 20.1/20.2
       poem-e20_3.el  --- for Emacs 20.3
       poem-xm.el     --- for XEmacs-MULE
+
+    invisible.el --- provide features about invisible region
+      inv-18.el     --- for Emacs 18
+      inv-19.el     --- for Emacs 19
+      inv-xemacs.el --- for XEmacs
 
     mcharset.el --- provide MIME charset related features
       mcs-nemacs.el --- for Nemacs
