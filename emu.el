@@ -78,7 +78,10 @@
 (require 'mcharset)
 
 (cond ((featurep 'mule)
-       (cond ((featurep 'xemacs) ; for XEmacs with MULE
+       (cond ((featurep 'xemacs)
+	      ;; for XEmacs with MULE
+	      (require 'emu-x20)
+	      
 	      ;; old Mule emulating aliases
 
 	      ;;(defalias 'char-leading-char 'char-charset)
@@ -92,7 +95,9 @@ TABLE defaults to the current buffer's category table."
 			   (char-category-list character)
 			   ""))
 	      )
-	     ((>= emacs-major-version 20) ; for Emacs 20
+	     ((>= emacs-major-version 20)
+	      ;; for Emacs 20
+	      (require 'emu-e20)
 	      (defalias 'insert-binary-file-contents-literally
 		'insert-file-contents-literally)
 	      
@@ -103,7 +108,8 @@ CHAR can be any multilingual character
 TABLE defaults to the current buffer's category table."
 		(category-set-mnemonics (char-category-set character)))
 	      )
-	     (t ; for MULE 1.* and 2.*
+	     (t
+	      ;; for MULE 1.* and 2.*
 	      (require 'emu-mule)
 	      ))
        )

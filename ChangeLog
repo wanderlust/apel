@@ -1,10 +1,5 @@
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
-	* emu.el, emu-x20.el, emu-e20.el: Move function `char-category'
-	from emu-e20.el and emu-x20.el to emu.el.
-
-1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
 	* emu.el, emu-nemacs.el, emu-latin1.el, EMU-ELS: Move definitions
 	of emu-nemacs.el and emu-latin1.el to emu.el; abolish
 	emu-nemacs.el and emu-latin1.el.
