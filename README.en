@@ -38,7 +38,7 @@ What's APEL?
     broken.el --- provide information of broken facilities of Emacs.
 
     pccl.el --- utility to write portable CCL program
-      pccl-om.el --- for MULE 2.*
+      pccl-om.el --- for MULE 1.*, 2.*
       pccl-20.el --- for Emacs 20/XEmacs-21-MULE
 
     alist.el: utility for Association-list

@@ -1,4 +1,4 @@
-;;; pccl.el --- Portable CCL utility for Mule 2.*
+;;; pccl.el --- Portable CCL utility for Mule 1.* and Mule 2.*
 
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 
@@ -29,11 +29,11 @@
 ;; The condition for non-XEmacs mule t may be wrong.
 ;; But I don't know exact version which introduce CCL on mule.
 (broken-facility ccl-usable
-  "Emacs has not CCL."
+  "Emacs has CCL."
   (and (featurep 'mule)
        (if (featurep 'xemacs)
            (>= emacs-major-version 21)
-         (>= emacs-major-version 19))))
+         t)))
 
 (unless-broken ccl-usable
   (require 'ccl)
@@ -42,12 +42,12 @@
   (if (featurep 'mule)
       (if (featurep 'xemacs)
           (if (>= emacs-major-version 21)
-              ;; for XEmacs 21 with mule
+              ;; for XEmacs-21-mule
               (require 'pccl-20))
         (if (>= emacs-major-version 20)
             ;; for Emacs 20
             (require 'pccl-20)
-          ;; for Mule 2.*
+          ;; for MULE 1.* and 2.*
           (require 'pccl-om))))
 
   (defadvice define-ccl-program
