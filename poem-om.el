@@ -231,15 +231,15 @@ find-file-hooks, etc.
 (defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but it does not code and format conversion
 except for line-break code."
-  (let ((buffer (get-file-buffer filename)))
-    (save-current-buffer
-      (prog1
-	  (set-buffer (find-file-noselect-as-binary filename nowarn rawfile))
-	(unless buffer
-	  (while (re-search-forward "\r$" nil t)
-	    (replace-match ""))
+  (save-current-buffer
+    (prog1
+	(set-buffer (find-file-noselect-as-binary filename nowarn rawfile))
+      (let ((flag (buffer-modified-p)))
+	(save-excursion
 	  (goto-char (point-min))
-	  (set-buffer-modified-p nil))))))
+	  (while (re-search-forward "\r$" nil t)
+	    (replace-match "")))
+	(set-buffer-modified-p flag)))))
 
 (defun open-network-stream-as-binary (name buffer host service)
   "Like `open-network-stream', q.v., but don't code conversion."
