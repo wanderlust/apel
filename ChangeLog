@@ -1,3 +1,8 @@
+1998-08-31  Katsumi Yamoaka   <yamaoka@jpl.org>
+
+	* emu.el (with-temp-file): New macro (Emacs 20/XEmacs 20
+	emulating macro).
+
 1998-08-29  Tanaka Akira  <akr@jaist.ac.jp>
 
         * emu-e20.el: require 'ccl only for byte-compile time.
