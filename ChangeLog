@@ -1,3 +1,28 @@
+Sat Jan 20 13:25:43 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.09 was released.
+
+Thu Jan 18 17:16:05 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* mu-cite.el: new method `in-id': default value of variable
+ 	`mu-cite/top-format' was changed to use it.
+
+Thu Jan 18 14:48:33 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-822.el (rfc822/non-qtext-char-list): new constant
+
+	* tl-822.el: Constant `rfc822/non-qtext-chars' was deleted.
+
+	* tl-822.el (rfc822/wrap-as-quoted-string): new function
+
+	* tl-str.el (char-list-to-string): new macro
+
+	* genjis.el: new module
+
+Thu Jan 18 01:55:25 1996  Yoshiyuki Yamagami <yamagami@hb.nmcc.co.jp>
+
+	* Makefile: specify `-no-site-file' option (cf. [tm-ja:1474])
+
 Wed Jan 17 08:23:41 1996  Morioka Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: version 7.08 was released.

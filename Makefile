@@ -3,6 +3,7 @@
 #
 
 EMACS	= mule
+FLAGS   = -batch -q -no-site-file -l mk-tl
 
 
 # Please specfy Emacs Lisp install directory:
@@ -19,17 +20,17 @@ TLDIR19 = $(HOME)/lib/emacs19/lisp
 FILES	= tl/README.eng tl/Makefile tl/mk-tl tl/*.el tl/doc/*.texi \
 		tl/ChangeLog
 
-TARFILE = tl-7.08.tar
+TARFILE = tl-7.09.tar
 
 
 elc:
-	$(EMACS) -batch -l mk-tl -f compile-tl
+	$(EMACS) $(FLAGS) -f compile-tl
 
 install-18:	elc
-	$(EMACS) -batch -l mk-tl -f install-tl $(TLDIR18)
+	$(EMACS) $(FLAGS) -f install-tl $(TLDIR18)
 
 install-19:	elc
-	$(EMACS) -batch -l mk-tl -f install-tl $(TLDIR19)
+	$(EMACS) $(FLAGS) -f install-tl $(TLDIR19)
 
 
 clean:
