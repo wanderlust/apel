@@ -24,6 +24,8 @@
 
 ;;; Code:
 
+(require 'poe)
+
 (defvar default-load-path load-path
   "*Base of `load-path'.
 It is used as default value of target path to search file or
