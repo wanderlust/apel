@@ -521,6 +521,72 @@ This function does not move point."
   (save-excursion
     (end-of-line (or n 1))
     (point)))
+
+;; FSF Emacs 19.29 and later
+;; (read-file-name PROMPT &optional DIR DEFAULT-FILENAME MUSTMATCH INITIAL)
+;; XEmacs 19.14 and later:
+;; (read-file-name (PROMPT &optional DIR DEFAULT MUST-MATCH INITIAL-CONTENTS
+;;                         HISTORY)
+
+;; In FSF Emacs 19.28 and earlier (except for v18) or XEmacs 19.13 and
+;; earlier, this function is incompatible with the other Emacsen.
+;; For instance, if DEFAULT-FILENAME is nil, INITIAL is not and user
+;; enters a null string, it returns the visited file name of the current
+;; buffer if it is non-nil.
+
+;; It does not assimilate the different numbers of the optional arguments
+;; on various Emacsen (yet).
+(static-cond
+ ((and (not (featurep 'xemacs))
+       (eq emacs-major-version 19)
+       (< emacs-minor-version 29))
+  (if (fboundp 'si:read-file-name)
+      nil
+    (fset 'si:read-file-name (symbol-function 'read-file-name))
+    (defun read-file-name (prompt &optional dir default-filename mustmatch
+				  initial)
+      "Read file name, prompting with PROMPT and completing in directory DIR.
+Value is not expanded---you must call `expand-file-name' yourself.
+Default name to DEFAULT-FILENAME if user enters a null string.
+ (If DEFAULT-FILENAME is omitted, the visited file name is used,
+  except that if INITIAL is specified, that combined with DIR is used.)
+Fourth arg MUSTMATCH non-nil means require existing file's name.
+ Non-nil and non-t means also require confirmation after completion.
+Fifth arg INITIAL specifies text to start with.
+DIR defaults to current buffer's directory default."
+      (si:read-file-name prompt dir
+			 (or default-filename
+			     (if initial
+				 (expand-file-name initial dir)))
+			 mustmatch initial))))
+ ((and (featurep 'xemacs)
+       (eq emacs-major-version 19)
+       (< emacs-minor-version 14))
+  (if (fboundp 'si:read-file-name)
+      nil
+    (fset 'si:read-file-name (symbol-function 'read-file-name))
+    (defun read-file-name (prompt &optional dir default must-match
+				  initial-contents history)
+      "Read file name, prompting with PROMPT and completing in directory DIR.
+This will prompt with a dialog box if appropriate, according to
+ `should-use-dialog-box-p'.
+Value is not expanded---you must call `expand-file-name' yourself.
+Value is subject to interpreted by substitute-in-file-name however.
+Default name to DEFAULT if user enters a null string.
+ (If DEFAULT is omitted, the visited file name is used,
+  except that if INITIAL-CONTENTS is specified, that combined with DIR is
+  used.)
+Fourth arg MUST-MATCH non-nil means require existing file's name.
+ Non-nil and non-t means also require confirmation after completion.
+Fifth arg INITIAL-CONTENTS specifies text to start with.
+Sixth arg HISTORY specifies the history list to use.  Default is
+ `file-name-history'.
+DIR defaults to current buffer's directory default."
+      (si:read-file-name prompt dir
+			 (or default
+			     (if initial-contents
+				 (expand-file-name initial-contents dir)))
+			 must-match initial-contents history)))))
 
 
 ;;; @ Basic lisp subroutines emulation. (lisp/subr.el)
