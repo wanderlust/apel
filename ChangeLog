@@ -1,3 +1,7 @@
+1998-06-08  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (split-char): fixed.
+
 1998-06-08  Katsumi Yamaoka   <yamaoka@jpl.org>
 
 	* emu-mule.el (insert-file-contents-as-binary): Use
