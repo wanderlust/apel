@@ -1,10 +1,11 @@
-;;; file-detect.el --- Emacs Lisp file detection utility
+;;; file-detect.el --- Path management or file detection utility
 
 ;; Copyright (C) 1996,1997 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Version: $Id$
 ;; Keywords: file detection, install, module
+;; Status: obsoleted
 
 ;; This file is part of APEL (A Portable Emacs Library).
 
@@ -23,147 +24,14 @@
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;;; Commentary:
+
+;;	This file is existed only for compatibility.  Please use
+;;	path-util.el instead of this file.
+
 ;;; Code:
 
-(defvar default-load-path load-path
-  "*Base of `load-path'.
-It is used as default value of target path to search file or
-subdirectory under load-path.")
-
-;;;###autoload
-(defun add-path (path &rest options)
-  "Add PATH to `load-path' if it exists under `default-load-path'
-directories and it does not exist in `load-path'.
-
-You can use following PATH styles:
-	load-path relative: \"PATH/\"
-			(it is searched from `defaul-load-path')
-	home directory relative: \"~/PATH/\" \"~USER/PATH/\"
-	absolute path: \"/HOO/BAR/BAZ/\"
-
-You can specify following OPTIONS:
-	'all-paths	search from `load-path'
-			instead of `default-load-path'
-	'append		add PATH to the last of `load-path'"
-  (let ((rest (if (memq 'all-paths options)
-		  load-path
-		default-load-path))
-	p)
-    (if (and (catch 'tag
-	       (while rest
-		 (setq p (expand-file-name path (car rest)))
-		 (if (file-directory-p p)
-		     (throw 'tag p)
-		   )
-		 (setq rest (cdr rest))
-		 ))
-	     (not (member p load-path))
-	     )
-	(setq load-path
-	      (if (memq 'append options)
-		  (append load-path (list p))
-		(cons p load-path)
-		))
-      )))
-
-;;;###autoload
-(defun add-latest-path (pattern &optional all-paths)
-  "Add latest path matched by PATTERN to `load-path'
-if it exists under `default-load-path' directories
-and it does not exist in `load-path'.
-
-If optional argument ALL-PATHS is specified, it is searched from all
-of load-path instead of default-load-path. [file-detect.el]"
-  (let ((path (get-latest-path pattern all-paths)))
-    (if path
-	(add-to-list 'load-path path)
-      )))
-
-;;;###autoload
-(defun get-latest-path (pattern &optional all-paths)
-  "Return latest directory in default-load-path
-which is matched to regexp PATTERN.
-If optional argument ALL-PATHS is specified,
-it is searched from all of load-path instead of default-load-path."
-  (catch 'tag
-    (let ((paths (if all-paths
-		    load-path
-		  default-load-path))
-	  dir)
-      (while (setq dir (car paths))
-	(if (and (file-exists-p dir)
-		 (file-directory-p dir)
-		 )
-	    (let ((files (sort (directory-files dir t pattern t)
-			       (function file-newer-than-file-p)))
-		  file)
-	      (while (setq file (car files))
-		(if (file-directory-p file)
-		    (throw 'tag file)
-		  )
-		(setq files (cdr files))
-		)))
-	(setq paths (cdr paths))
-	))))
-
-;;;###autoload
-(defun file-installed-p (file &optional paths)
-  "Return absolute-path of FILE if FILE exists in PATHS.
-If PATHS is omitted, `load-path' is used."
-  (if (null paths)
-      (setq paths load-path)
-    )
-  (catch 'tag
-    (let (path)
-      (while paths
-	(setq path (expand-file-name file (car paths)))
-	(if (file-exists-p path)
-	    (throw 'tag path)
-	  )
-	(setq paths (cdr paths))
-	))))
-
-;;;###autoload
-(defvar exec-suffix-list '("")
-  "*List of suffixes for executable.")
-
-;;;###autoload
-(defun exec-installed-p (file &optional paths suffixes)
-  "Return absolute-path of FILE if FILE exists in PATHS.
-If PATHS is omitted, `exec-path' is used.
-If suffixes is omitted, `exec-suffix-list' is used."
-  (or paths
-      (setq paths exec-path)
-      )
-  (or suffixes
-      (setq suffixes exec-suffix-list)
-      )
-  (catch 'tag
-    (while paths
-      (let ((stem (expand-file-name file (car paths)))
-	    (sufs suffixes)
-	    )
-	(while sufs
-	  (let ((file (concat stem (car sufs))))
-	    (if (file-exists-p file)
-		(throw 'tag file)
-	      ))
-	  (setq sufs (cdr sufs))
-	  ))
-      (setq paths (cdr paths))
-      )))
-
-;;;###autoload
-(defun module-installed-p (module &optional paths)
-  "Return t if module is provided or exists in PATHS.
-If PATHS is omitted, `load-path' is used."
-  (or (featurep module)
-      (exec-installed-p (symbol-name module) load-path '(".elc" ".el"))
-      ))
-
-
-;;; @ end
-;;;
+(require 'path-util)
 
 (provide 'file-detect)
 

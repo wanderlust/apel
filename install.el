@@ -27,7 +27,7 @@
 ;;; Code:
 
 (require 'emu)
-(require 'file-detect)
+(require 'path-util)
 
 
 ;;; @ compile Emacs Lisp files

@@ -2,7 +2,7 @@
 # $Id$
 #
 
-VERSION = 4.2
+VERSION = 7.1
 
 TAR	= tar
 RM	= /bin/rm -f
@@ -13,10 +13,6 @@ FLAGS   = -batch -q -no-site-file -l APEL-MK
 
 PREFIX = NONE
 LISPDIR = NONE
-
-EMU_FILES =	EMU-ELS *.el
-
-APEL_FILES =	README.?? Makefile APEL-MK APEL-CFG APEL-ELS *.el ChangeLog
 
 
 elc:
@@ -41,12 +37,6 @@ tar:
 		$(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
 	cd /tmp; $(RM) -r apel-$(VERSION)
 	sed "s/VERSION/$(VERSION)/" < ftp.in > ftp
-#	-cd ..; mkdir apel-$(VERSION)
-#	-cd ../emu; $(CP) $(EMU_FILES) ../apel-$(VERSION)
-#	-cd ../emu; $(CP) ChangeLog ../apel-$(VERSION)/ChangeLog.emu
-#	-$(CP) $(APEL_FILES) ../apel-$(VERSION)
-#	cd ..; $(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
-#	cd ..; $(RM) -r apel-$(VERSION)
 
 release:
 	-$(RM) /pub/GNU/elisp/apel/apel-$(VERSION).tar.gz

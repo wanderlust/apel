@@ -65,7 +65,7 @@ List of characters represents characters not allowed as file-name.")
 		   filename-maybe-truncate-by-size
 		   filename-eliminate-bottom-low-lines
 		   )))
-    (require 'file-detect)
+    (require 'path-util)
     (if (exec-installed-p "kakasi")
 	(cons 'filename-japanese-to-roman-string filters)
       filters))

@@ -36,6 +36,10 @@
 ;;; @ for tm-7.106
 ;;;
 
+(defalias 'tl:make-overlay 'make-overlay)
+(defalias 'tl:overlay-put 'overlay-put)
+(defalias 'tl:overlay-buffer 'overlay-buffer)
+
 (make-obsolete 'tl:make-overlay 'make-overlay)
 (make-obsolete 'tl:overlay-put 'overlay-put)
 (make-obsolete 'tl:overlay-buffer 'overlay-buffer)

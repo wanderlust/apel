@@ -1,3 +1,26 @@
+1997-11-08  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* APEL: Version 7.1 was released.
+
+1997-11-06  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* README.en (What's APEL?): Rename file-detect.el -> path-util.el.
+
+1997-11-06  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* install.el, filename.el (filename-filters): Use path-util.el
+	instead of file-detect.el.
+
+	* path-util.el, file-detect.el, APEL-ELS: Rename file-detect.el ->
+	path-util.el (file name should be less than 13 bytes).
+
+1997-11-06  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-19.el (tl:make-overlay): New alias.
+	(tl:overlay-put): New alias.
+	(tl:overlay-buffer): New alias.
+
+
 1997-11-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* APEL: Version 4.2 was released.
