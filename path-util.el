@@ -1,9 +1,8 @@
 ;;; path-util.el --- Emacs Lisp file detection utility
 
-;; Copyright (C) 1996,1997 Free Software Foundation, Inc.
+;; Copyright (C) 1996,1997,1999 Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
-;; Version: $Id$
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: file detection, install, module
 
 ;; This file is part of APEL (A Portable Emacs Library).
@@ -24,6 +23,25 @@
 ;; Boston, MA 02111-1307, USA.
 
 ;;; Code:
+
+(condition-case nil
+    (directory-files "." nil nil t)
+  (file-error nil);; unreadable directory.
+  (wrong-number-of-arguments
+   (or (fboundp 'si:directory-files)
+       (fset 'si:directory-files (symbol-function 'directory-files)))
+   ;; This function is also defined in poe-18, but it is needed here
+   ;; for compiling other packages under old Emacsen.
+   (defun directory-files (directory &optional full match nosort)
+     "Return a list of names of files in DIRECTORY.
+There are three optional arguments:
+If FULL is non-nil, return absolute file names.  Otherwise return names
+ that are relative to the specified directory.
+If MATCH is non-nil, mention only file names that match the regexp MATCH.
+If NOSORT is dummy for compatibility.
+\[poe-18.el; EMACS 19 emulating function]"
+     (si:directory-files directory full match))
+   ))
 
 (defvar default-load-path load-path
   "*Base of `load-path'.
@@ -78,25 +96,6 @@ of load-path instead of default-load-path."
     (if path
 	(add-to-list 'load-path path)
       )))
-
-(condition-case nil
-    (directory-files "." nil nil t)
-  (file-error nil);; unreadable directory.
-  (wrong-number-of-arguments
-   (or (fboundp 'si:directory-files)
-       (fset 'si:directory-files (symbol-function 'directory-files)))
-   ;; This function is also defined in poe-18, but it is needed here
-   ;; for compiling other packages under old Emacsen.
-   (defun directory-files (directory &optional full match nosort)
-     "Return a list of names of files in DIRECTORY.
-There are three optional arguments:
-If FULL is non-nil, return absolute file names.  Otherwise return names
- that are relative to the specified directory.
-If MATCH is non-nil, mention only file names that match the regexp MATCH.
-If NOSORT is dummy for compatibility.
-\[poe-18.el; EMACS 19 emulating function]"
-     (si:directory-files directory full match))
-   ))
 
 ;;;###autoload
 (defun get-latest-path (pattern &optional all-paths)
