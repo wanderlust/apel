@@ -32,9 +32,9 @@
 (require 'mcs-20)
 
 
-(defun encode-mime-charset-region (start end charset &optional lbt)
+(defun encode-mime-charset-region (start end charset)
   "Encode the text between START and END as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset lbt)))
+  (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(encode-coding-region start end cs)
       )))
@@ -125,9 +125,9 @@
 		       (assq t mime-charset-decoder-alist)))))
     (funcall func start end charset lbt)))
 
-(defsubst encode-mime-charset-string (string charset &optional lbt)
+(defsubst encode-mime-charset-string (string charset)
   "Encode the STRING as MIME CHARSET."
-  (let ((cs (mime-charset-to-coding-system charset lbt)))
+  (let ((cs (mime-charset-to-coding-system charset)))
     (if cs
 	(encode-coding-string string cs)
       string)))
