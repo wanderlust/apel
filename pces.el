@@ -31,7 +31,7 @@
     (require 'tcp)))
 
 (cond ((featurep 'xemacs)
-       (if (or (featurep 'mule) (featurep 'file-coding))
+       (if (featurep 'file-coding)
 	   (require 'pces-xfc)
 	 (require 'pces-raw)
 	 ))
