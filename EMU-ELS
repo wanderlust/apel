@@ -61,7 +61,9 @@
        '(pccl-20 pccl))
       (t
        ;; Mule 1.* and 2.*.
-       '(pccl-om pccl)))))
+       '(pccl-om pccl))))
+     (t
+      '(pccl)))
 
    ;; pces modules; pces modules depend on poe.
    (cond
