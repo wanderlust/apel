@@ -1,3 +1,7 @@
+1999-08-20  Yuuichi Teranishi  <teranisi@gohome.org>
+
+	* poe-18.el (delete): Return nil when argument 'list' is nil.
+
 1999-08-17  Yoshiki Hayashi  <t90553@mail.ecc.u-tokyo.ac.jp>
 
 	* README.en, README.ja (Anonymous FTP): New section.
