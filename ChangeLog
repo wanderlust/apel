@@ -1,5 +1,7 @@
 1998-11-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* poe.el (defun-maybe-cond): fixed problem in Emacs 18.
+
 	* poe.el (defsubst): Moved from poe-18.el.
 
 	* poe-18.el: Move macro `defsubst' to poe.el.
