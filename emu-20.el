@@ -73,7 +73,7 @@ This constant is defined to emulate old MULE anything older than MULE
 
 (defcustom mime-charset-coding-system-alist
   `,(let ((rest
-	   '((us-ascii      . iso-8859-1)
+	   '((us-ascii      . raw-text)
 	     (gb2312	    . cn-gb-2312)
 	     (iso-2022-jp-2 . iso-2022-7bit-ss2)
 	     (x-ctext       . ctext)
