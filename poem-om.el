@@ -301,7 +301,7 @@ automatic uncompression, etc.
 Like `insert-file-contents-as-binary', but it converts line-break
 code."
   ;; Returns list absolute file name and length of data inserted.
-  (insert-file-contents-as-coding-system 'raw-text
+  (insert-file-contents-as-coding-system 'raw-text-dos
 					 filename visit beg end replace))
 
 (defun write-region-as-binary (start end filename
@@ -323,7 +323,7 @@ code."
 (defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
   "Like `find-file-noselect', q.v., but it does not code and format
 conversion except for line-break code."
-  (find-file-noselect-as-coding-system 'raw-text filename nowarn rawfile))
+  (find-file-noselect-as-coding-system 'raw-text-dos filename nowarn rawfile))
 
 (defun save-buffer-as-binary (&optional args)
   "Like `save-buffer', q.v., but don't encode."

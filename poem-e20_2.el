@@ -112,7 +112,7 @@ automatic uncompression, etc.
 Like `insert-file-contents-as-binary', but it converts line-break
 code."
   (let ((flag enable-multibyte-characters)
-	(coding-system-for-read 'raw-text)
+	(coding-system-for-read 'raw-text-dos)
 	format-alist)
     (prog1
 	;; Returns list absolute file name and length of data inserted.
@@ -134,7 +134,7 @@ code."
   "Like `find-file-noselect', q.v., but it does not code and format conversion
 except for line-break code."
   (let ((flag enable-multibyte-characters)
-	(coding-system-for-read 'raw-text)
+	(coding-system-for-read 'raw-text-dos)
 	format-alist)
     (save-current-buffer
       (prog1
