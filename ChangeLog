@@ -1,10 +1,47 @@
+1999-10-22  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* EMU-ELS (mcs-modules): Add `mcs-xmu' if the feature `utf-2000' is
+	not provided.
+
+	* mcs-xm.el (mime-iso646-character-unification-alist): Move to
+	mcs-xmu.el.
+	(mime-unified-character-face): Move to mcs-xmu.el.
+	(mime-character-unification-limit-size): Move to mcs-xmu.el.
+	(decode-mime-charset-region-with-iso646-unification): Move to
+	mcs-xmu.el.
+
+	* mcs-xmu.el: New file.
+
+1999-10-22  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* EMU-ELS (pces-modules): Don't check for the feature `mule'
+	whether `pces-xfc' is required.
+	* pces.el: Likewise.
+
+	* mcs-xm.el: (decode-mime-charset-region-with-iso646-unification):
+	Narrow to the region while decoding; bind `case-fold-search' to nil.
+	(mime-character-unification-limit-size): Make it can also be nil
+	which means the size is unlimited.
+
+1999-10-14  Mikio Nakajima    <minakaji@osaka.email.ne.jp>
+
+	* mcs-xm.el (decode-mime-charset-region-with-iso646-unification):
+	Don't put `mime-unified-character-face' to unified text if it is
+	nil.
+	(mime-character-unification-limit-size): Fix doc string.
+
+1999-10-13  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* poe.el (file-coding): Provide it for XEmacs 20.4 or earlier with
+	MULE.
+
 1999-10-13  Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
 
 	* EMU-ELS (pces-modules): Add `pces-raw' if file-coding feature is
-	not available in a XEmacs-without-MULE. 
+	not available in a XEmacs-without-MULE.
 
 	* pces.el: Require `pces-raw' if file-coding feature is	not
-	available in a XEmacs-without-MULE. 
+	available in a XEmacs-without-MULE.
 
 1999-10-04  Katsumi Yamaoka   <yamaoka@jpl.org>
 
