@@ -1,3 +1,33 @@
+1998-04-09  MORIOKA Tomohiko  <morioka@ks-pc0.jaist.ac.jp>
+
+	* emu-e20.el, emu-mule.el, emu-nemacs.el, emu-e19.el: Abolish
+	obsolete alias `char-columns'.
+
+	* emu-e19.el: Abolish constant `charset-ascii' and
+	`charset-iso8859-1'.
+	(charset-description): New implementation.
+	(charset-registry): New implementation.
+	(charset-width): Renamed from `charset-columns'; new
+	implementation.
+	(find-charset-string): New implementation.
+	(find-charset-region): New implementation.
+	(charsets-mime-charset-alist): New initial value.
+	(detect-mime-charset-region): New implementation.
+	(char-charset): New implementation.
+
+	* emu-nemacs.el: Rename `charset-columns' -> `charset-width'.
+
+	* emu-nemacs.el: Abolish constant `charset-ascii' and
+	`charset-jisx0208'.
+	Abolish constant `lc-ascii' and `lc-jp'.
+	(charset-description): New implementation.
+	(charset-registry): New implementation.
+	(charset-columns): New implementation.
+	(find-charset-string): New implementation.
+	(find-charset-region): New implementation.
+	(charsets-mime-charset-alist): New initial value.
+	(char-charset): New implementation.
+
 1998-04-09  MORIOKA Tomohiko  <morioka@mousai.jaist.ac.jp>
 
 	* emu-e20.el, emu-x20.el, emu-e19.el, emu-mule.el, emu-nemacs.el
