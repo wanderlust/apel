@@ -293,18 +293,18 @@ The value of the last form in FORMS is returned, like `progn'.
 See also `with-temp-buffer'."
   (let ((temp-file (make-symbol "temp-file"))
 	(temp-buffer (make-symbol "temp-buffer")))
-    `(let ((,temp-file ,file)
-	   (,temp-buffer
-	    (get-buffer-create (generate-new-buffer-name " *temp file*"))))
-       (unwind-protect
-	   (prog1
-	       (with-current-buffer ,temp-buffer
-		 ,@forms)
-	     (with-current-buffer ,temp-buffer
-	       (widen)
-	       (write-region (point-min) (point-max) ,temp-file nil 0)))
-	 (and (buffer-name ,temp-buffer)
-	      (kill-buffer ,temp-buffer))))))
+    (` (let (((, temp-file) (, file))
+	     ((, temp-buffer)
+	      (get-buffer-create (generate-new-buffer-name " *temp file*"))))
+	 (unwind-protect
+	     (prog1
+		 (with-current-buffer (, temp-buffer)
+		   (,@ forms))
+	       (with-current-buffer (, temp-buffer)
+		 (widen)
+		 (write-region (point-min) (point-max) (, temp-file) nil 0)))
+	   (and (buffer-name (, temp-buffer))
+		(kill-buffer (, temp-buffer))))))))
 
 ;; This macro was imported Emacs 20.2.
 (defmacro-maybe with-temp-buffer (&rest forms)
