@@ -68,6 +68,12 @@
 ;;; @ coding system
 ;;;
 
+(defun encode-coding-region (start end coding-system)
+  "Encode the text between START and END to CODING-SYSTEM.
+\[emu-mule.el; EMACS 20 emulating function]"
+  (code-convert-region start end *internal* coding-system)
+  )
+
 (defun decode-coding-string (str coding-system)
   "Decode the string STR which is encoded in CODING-SYSTEM.
 \[emu-mule.el]"
@@ -115,6 +121,7 @@
    (cons (list lc-ascii lc-ltn5)			'iso-8859-9)
    (cons (list lc-ascii lc-roman lc-jpold lc-jp)	'iso-2022-jp)
    (cons (list lc-ascii lc-kr)				'euc-kr)
+   (cons (list lc-ascii lc-cn)				'gb2312)
    (cons (list lc-ascii lc-big5-1 lc-big5-2)		'big5)
    (cons (list lc-ascii lc-roman lc-ltn1 lc-grk
 	       lc-jpold lc-cn lc-jp lc-kr lc-jp2)	'iso-2022-jp-2)

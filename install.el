@@ -26,6 +26,12 @@
 
 ;;; Code:
 
+(require 'emu)
+(require 'file-detect)
+
+;;; @ compile Emacs Lisp files
+;;;
+
 (defun compile-elisp-module (module &optional path every-time)
   (setq module (expand-file-name (symbol-name module) path))
   (let ((el-file (concat module ".el"))
@@ -44,6 +50,9 @@
 	     ))
 	  modules))
 
+
+;;; @ install files
+;;;
 
 (defvar install-overwritten-file-modes (+ (* 64 6)(* 8 4) 4))
 
@@ -78,6 +87,10 @@
 		      (install-file file src dest move overwrite)
 		      ))
 	  files))
+
+
+;;; @@ install Emacs Lisp files
+;;;
 
 (defun install-elisp-module (module src dest)
   (let (el-file elc-file)
@@ -119,6 +132,62 @@
 		      (install-elisp-module module src dest)
 		      ))
 	  modules))
+
+
+;;; @ detect install path
+;;;
+
+(defvar install-prefix
+  (if (or running-emacs-18 running-xemacs)
+      (expand-file-name "../../.." exec-directory)
+    (expand-file-name "../../../.." data-directory)
+    )) ; install to shared directory (maybe "/usr/local")
+
+(defvar install-elisp-prefix
+  (if (>= emacs-major-version 19)
+      "site-lisp"
+    "local.lisp"))
+
+(defun install-detect-elisp-directory (&optional prefix elisp-prefix)
+  (or prefix
+      (setq prefix install-prefix)
+      )
+  (or elisp-prefix
+      (setq elisp-prefix install-elisp-prefix)
+      )
+  (or
+   (catch 'tag
+     (let ((rest default-load-path)
+	   dir)
+       (while (setq dir (car rest))
+	 (if (string-match
+	      (concat "^"
+		      (expand-file-name (concat ".*/" elisp-prefix) prefix)
+		      "$")
+	      dir)
+	     (or (string-match (format "%d\\.%d"
+				       emacs-major-version
+				       emacs-minor-version) dir)
+		 (throw 'tag dir)
+		 ))
+	 (setq rest (cdr rest))
+	 )))
+   (expand-file-name (concat
+		      (if running-emacs-19_29-or-later
+			  "share/"
+			"lib/")
+		      (cond ((boundp 'NEMACS) "nemacs/")
+			    ((boundp 'MULE)   "mule/")
+			    (running-xemacs
+			     (if (featurep 'mule)
+				 "xmule/"
+			       "xemacs/"))
+			    (t "emacs/"))
+		      elisp-prefix) prefix)
+   ))
+
+(defvar install-default-elisp-directory
+  (install-detect-elisp-directory))
 
 
 ;;; @ end

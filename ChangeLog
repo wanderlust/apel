@@ -1,3 +1,62 @@
+Thu Sep  5 13:28:51 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.2 was released.
+
+	* emu-nemacs.el (encode-coding-region): New function.
+
+	* emu-nemacs.el (decode-coding-region): New function.
+
+	* emu-nemacs.el (encode-coding-string): New function.
+
+Thu Sep  5 12:29:01 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-e19.el (decode-coding-region): New function.
+	(encode-coding-region): New function.
+
+	* emu-e19.el (encode-coding-string): New function.
+
+Thu Sep  5 08:58:28 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (charsets-mime-charset-alist): add gb2312
+ 	charset. (cf. [kanji:704])
+
+	* smiley-mule.el: Comment was fixed. (cf. [tm-ja:2074])
+
+Wed Sep  4 21:20:32 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-mule.el (encode-coding-region): New function.
+
+	* tl-list.el (ASSOC): New function.
+
+Wed Sep  4 19:00:01 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* TL-ELS: add cless.el.
+
+	* tl-list.el: Use cless.el if new cl is installed.
+
+Wed Sep  4 18:39:20 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* cless.el: New module.
+
+Wed Sep  4 15:49:30 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* install.el (install-detect-elisp-directory): New function.
+
+Wed Sep  4 13:24:03 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* install.el (install-prefix): New variable.
+	(install-elisp-prefix): New variable.
+	(install-default-elisp-directory): New variable.
+
+Wed Sep  4 11:00:37 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el (buffer-live-p): New function. (cf. [tm-ja:2072])
+
+Wed Sep  4 01:25:35 1996  Katsumi Yamaoka   <yamaoka@ga.sony.co.jp>
+
+	* smiley-mule.el: add DOC-strings for smiley-bitmap-for-*.
+
+
 Tue Sep  3 15:02:47 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.1 was released.

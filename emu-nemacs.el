@@ -91,7 +91,7 @@
 	)
       str)))
 
-;;; @@ for Mule emulation
+;;; @@ for old MULE emulation
 ;;;
 
 (defconst lc-ascii 0)
@@ -108,32 +108,41 @@
 (defconst *internal*  3)
 (defconst *euc-japan* 3)
 
-(defun code-convert-string (str ic oc)
-  "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
-else returns nil. [emu-nemacs.el; Mule emulating function]"
-  (if (not (eq ic oc))
-      (convert-string-kanji-code str ic oc)
-    str))
-
-(defun code-convert-region (beg end ic oc)
-  "Convert code of the text between BEGIN and END from SOURCE
-to TARGET. On successful conversion returns t,
-else returns nil. [emu-nemacs.el; Mule emulating function]"
-  (if (/= ic oc)
-      (save-excursion
-	(save-restriction
-	  (narrow-to-region beg end)
-	  (convert-region-kanji-code beg end ic oc)
-	  ))))
-
 (defun decode-coding-string (string coding-system)
   "Decode the STRING which is encoded in CODING-SYSTEM.
-\[emu-nemacs.el]"
+\[emu-nemacs.el; EMACS 20 emulating function]"
   (if (eq coding-system 3)
       string
     (convert-string-kanji-code string coding-system 3)
     ))
+
+(defun encode-coding-string (string coding-system)
+  "Encode the STRING to CODING-SYSTEM.
+\[emu-nemacs.el; EMACS 20 emulating function]"
+  (if (eq coding-system 3)
+      string
+    (convert-string-kanji-code string 3 coding-system)
+    ))
+
+(defun decode-coding-region (start end coding-system)
+  "Decode the text between START and END which is encoded in CODING-SYSTEM.
+\[emu-nemacs.el; EMACS 20 emulating function]"
+  (if (/= ic oc)
+      (save-excursion
+	(save-restriction
+	  (narrow-to-region start end)
+	  (convert-region-kanji-code start end coding-system 3)
+	  ))))
+
+(defun encode-coding-region (start end coding-system)
+  "Encode the text between START and END to CODING-SYSTEM.
+\[emu-nemacs.el; EMACS 20 emulating function]"
+  (if (/= ic oc)
+      (save-excursion
+	(save-restriction
+	  (narrow-to-region start end)
+	  (convert-region-kanji-code start end 3 coding-system)
+	  ))))
 
 (defun code-detect-region (start end)
   "Detect coding-system of the text in the region between START and END.
@@ -159,6 +168,28 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
 	   program-kanji-code-alist)
        (,@ body)
        )))
+
+;;; @@ for old MULE emulation
+;;;
+
+(defun code-convert-string (str ic oc)
+  "Convert code in STRING from SOURCE code to TARGET code,
+On successful converion, returns the result string,
+else returns nil. [emu-nemacs.el; Mule emulating function]"
+  (if (not (eq ic oc))
+      (convert-string-kanji-code str ic oc)
+    str))
+
+(defun code-convert-region (beg end ic oc)
+  "Convert code of the text between BEGIN and END from SOURCE
+to TARGET. On successful conversion returns t,
+else returns nil. [emu-nemacs.el; Mule emulating function]"
+  (if (/= ic oc)
+      (save-excursion
+	(save-restriction
+	  (narrow-to-region beg end)
+	  (convert-region-kanji-code beg end ic oc)
+	  ))))
 
 
 ;;; @ MIME charset

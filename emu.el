@@ -97,12 +97,13 @@ and `default-mime-charset'. [emu.el]"
 	  default-mime-charset)))
 
 
-;;; @ Emacs 19.29 emulation
+;;; @ EMACS 19.29 emulation
 ;;;
 
 (or (fboundp 'buffer-substring-no-properties)
     (defun buffer-substring-no-properties (beg end)
-      "Return the text from BEG to END, without text properties, as a string."
+      "Return the text from BEG to END, without text properties, as a string.
+\[emu.el; EMACS 19.29 emulating function]"
       (let ((string (buffer-substring beg end)))
         (tl:set-text-properties 0 (length string) nil string)
 	string))
@@ -131,9 +132,24 @@ See `read-from-minibuffer' for details of HISTORY argument."
 If you want to use `add-to-list' on a variable that is not defined
 until a certain package is loaded, you should put the call to `add-to-list'
 into a hook function that will be run only after loading the package.
-\[emu.el; Emacs 19.30 emulating function]"
+\[emu.el; EMACS 19.30 emulating function]"
       (or (member element (symbol-value list-var))
 	  (set list-var (cons element (symbol-value list-var)))))
+    )
+
+
+;;; @ EMACS 19.32 emulation
+;;;
+
+(or (fboundp 'buffer-live-p)
+    (defun buffer-live-p (object)
+      "Return non-nil if OBJECT is a buffer which has not been killed.
+Value is nil if OBJECT is not a buffer or if it has been killed.
+\[emu.el; EMACS 19.32 emulating function]"
+      (and object
+	   (get-buffer object)
+	   (buffer-name (get-buffer object))
+	   ))
     )
 
 

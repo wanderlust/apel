@@ -84,7 +84,7 @@
       (list lc-ltn1)
     ))
 
-;;; @@ for Mule emulation
+;;; @@ for old MULE emulation
 ;;;
 
 (defconst lc-ascii 0)
@@ -98,22 +98,25 @@
 (defconst *ctext* nil)
 (defconst *noconv* nil)
 
-(defun code-convert-string (str ic oc)
-  "Convert code in STRING from SOURCE code to TARGET code,
-On successful converion, returns the result string,
-else returns nil. [emu-e19.el; Mule emulating function]"
-  str)
-
-(defun code-convert-region (beg end ic oc)
-  "Convert code of the text between BEGIN and END from SOURCE
-to TARGET. On successful conversion returns t,
-else returns nil. [emu-e19.el; Mule emulating function]"
-  t)
-
 (defun decode-coding-string (string coding-system)
   "Decode the STRING which is encoded in CODING-SYSTEM.
-\[emu-e19.el]"
+\[emu-e19.el; EMACS 20 emulating function]"
   string)
+
+(defun encode-coding-string (string coding-system)
+  "Encode the STRING as CODING-SYSTEM.
+\[emu-e19.el; EMACS 20 emulating function]"
+  string)
+
+(defun decode-coding-region (start end coding-system)
+  "Decode the text between START and END which is encoded in CODING-SYSTEM.
+\[emu-e19.el; EMACS 20 emulating function]"
+  0)
+
+(defun encode-coding-region (start end coding-system)
+  "Encode the text between START and END to CODING-SYSTEM.
+\[emu-e19.el; EMACS 20 emulating function]"
+  0)
 
 (defun code-detect-region (beg end)
   "Detect coding-system of the text in the region
@@ -127,6 +130,22 @@ between START and END. [emu-e19.el; Mule emulating function]"
   (` (let (selective-display)	; Disable ^M to nl translation.
        (,@ body)
        )))
+
+
+;;; @@ for old MULE emulation
+;;;
+
+(defun code-convert-string (str ic oc)
+  "Convert code in STRING from SOURCE code to TARGET code,
+On successful converion, returns the result string,
+else returns nil. [emu-e19.el; old MULE emulating function]"
+  str)
+
+(defun code-convert-region (beg end ic oc)
+  "Convert code of the text between BEGIN and END from SOURCE
+to TARGET. On successful conversion returns t,
+else returns nil. [emu-e19.el; old MULE emulating function]"
+  t)
 
 
 ;;; @ MIME charset
@@ -188,7 +207,7 @@ between START and END. [emu-e19.el; Mule emulating function]"
 
 (defun char-bytes (char)
   "Return number of bytes a character in CHAR occupies in a buffer.
-\[emu-e19.el; Mule emulating function]"
+\[emu-e19.el; MULE emulating function]"
   1)
 
 (defalias 'char-length 'char-bytes)
@@ -198,7 +217,7 @@ between START and END. [emu-e19.el; Mule emulating function]"
 \[emu-nemacs.el]"
   1)
 
-;;; @@ for Mule emulation
+;;; @@ for old MULE emulation
 ;;;
 
 (defalias 'char-width 'char-columns)
@@ -222,13 +241,13 @@ between START and END. [emu-e19.el; Mule emulating function]"
 (defun truncate-string (str width &optional start-column)
   "Truncate STR to fit in WIDTH columns.
 Optional non-nil arg START-COLUMN specifies the starting column.
-\[emu-e19.el; Mule 2.3 emulating function]"
+\[emu-e19.el; MULE 2.3 emulating function]"
   (or start-column
       (setq start-column 0))
   (substring str start-column width)
   )
 
-;;; @@ for Mule emulation
+;;; @@ for old MULE emulation
 ;;;
 
 (defalias 'string-width 'length)
