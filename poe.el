@@ -1160,8 +1160,7 @@ which is made by replacing the part of STRING that was matched."
 		    (buffer-string)))
 	       (si:replace-match newtext fixedcase literal)))))))))
 
-;; Emacs 20: (format-time-string)
-;; The the third optional argument universal is yet to be implemented.
+;; Emacs 20: (format-time-string FORMAT &optional TIME UNIVERSAL)
 ;; Those format constructs are yet to be implemented.
 ;;   %c, %C, %j, %U, %W, %x, %X
 ;; Not fully compatible especially when invalid format is specified.
@@ -1235,7 +1234,6 @@ For example, to produce full ISO 8601 format, use \"%Y-%m-%dT%T%z\".
 
 Compatibility Note.
 
-The the third optional argument universal is yet to be implemented.
 Those format constructs are yet to be implemented.
   %c, %C, %j, %U, %W, %x, %X
 Not fully compatible especially when invalid format is specified."
