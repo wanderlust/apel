@@ -1,5 +1,33 @@
 1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
+	* poem-ltn1.el (set-buffer-multibyte): Use `defun-maybe' instead
+	of `defmacro-maybe'.
+
+	* poem-e20_2.el (set-buffer-multibyte): Use `defun-maybe' instead
+	of `defsubst-maybe'.
+
+1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* EMU-ELS: New implementation.
+
+1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu.el, emu-mule.el, EMU-ELS: Move code about CCL from
+	emu-mule.el to pccl-om.el.
+
+	* pccl.el: New file.
+
+	* pccl.el: - Rename emu-e20.el to pccl-20.el.
+	- Move definition of emu-x20.el to pccl-20.el.
+	- Move code about CCL from emu-mule.el to pccl-om.el.
+
+	* pccl-om.el: New file (move code about CCL from emu-mule.el).
+
+	* pccl-20.el: New file (renamed from emu-e20.el; move definition
+	of emu-x20.el to pccl-20.el; abolish emu-x20.el).
+
+1998-09-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
 	* emu.el, emu-x20.el, emu-e20.el: Move function `char-category'
 	from emu-e20.el and emu-x20.el to emu.el.
 
