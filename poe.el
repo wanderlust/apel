@@ -95,11 +95,6 @@
 	       ))
 	 )))
 
-(defsubst subr-fboundp (symbol)
-  "Return t if SYMBOL's function definition is a built-in function."
-  (and (fboundp symbol)
-       (subrp (symbol-function symbol))))
-
 (defconst-maybe emacs-major-version (string-to-int emacs-version))
 (defconst-maybe emacs-minor-version
   (string-to-int
@@ -116,10 +111,10 @@
        )
       ((> emacs-major-version 20))
       ((= emacs-major-version 20)
-       (cond ((subr-fboundp 'string)
+       (cond ((fboundp 'string)
 	      ;; Emacs 20.3 or later
 	      )
-	     ((subr-fboundp 'concat-chars)
+	     ((fboundp 'concat-chars)
 	      ;; Emacs 20.1 or later
 	      (defalias 'string 'concat-chars)
 	      ))
@@ -473,58 +468,6 @@ This makes calling OLDFUN equivalent to calling NEWFUN and marks OLDFUN
 as obsolete. [XEmacs emulating function]"
   (defalias oldfun newfun)
   (make-obsolete oldfun newfun)
-  )
-
-(when (subr-fboundp 'read-event)
-  ;; for Emacs 19 or later
-  (cond
-   ((subr-fboundp 'string)
-    ;; for Emacs 20.3 or later
-    (defun-maybe next-command-event (&optional event prompt)
-      "Read an event object from the input stream.
-If EVENT is non-nil, it should be an event object and will be filled
-in and returned; otherwise a new event object will be created and
-returned.
-If PROMPT is non-nil, it should be a string and will be displayed in
-the echo area while this function is waiting for an event.
-\[XEmacs emulating function]"
-      (read-event prompt t)
-      )
-    )
-   (t
-    (defun-maybe next-command-event (&optional event prompt)
-      "Read an event object from the input stream.
-If EVENT is non-nil, it should be an event object and will be filled
-in and returned; otherwise a new event object will be created and
-returned.
-If PROMPT is non-nil, it should be a string and will be displayed in
-the echo area while this function is waiting for an event.
-\[XEmacs emulating function]"
-      (message prompt)
-      (read-event)
-      )
-    ))
-
-  (defsubst-maybe character-to-event (ch)
-    "Convert keystroke CH into an event structure, replete with bucky bits.
-Note that CH (the keystroke specifier) can be an integer, a character
-or a symbol such as 'clear. [XEmacs emulating function]"
-    ch)
-
-  (defun-maybe event-to-character (event)
-    "Return the character approximation to the given event object.
-If the event isn't a keypress, this returns nil.
-\[XEmacs emulating function]"
-    (cond ((symbolp event)
-	   ;; mask is (BASE-TYPE MODIFIER-BITS) or nil.
-	   (let ((mask (get event 'event-symbol-element-mask)))
-	     (if mask
-		 (let ((base (get (car mask) 'ascii-character)))
-		   (if base
-		       (logior base (car (cdr mask)))
-		     )))))
-	  ((integerp event) event)
-	  ))
   )
 
 
