@@ -48,6 +48,26 @@
 
 (eval-and-compile
 
+  (static-if (featurep 'xemacs)
+      (defadvice make-coding-system (before ccl-compat (name type &rest ad-subr-args) activate)
+	(when (and (integerp type)
+		   (eq type 4)
+		   (characterp (ad-get-arg 2))
+		   (stringp (ad-get-arg 3))
+		   (consp (ad-get-arg 4))
+		   (symbolp (car (ad-get-arg 4)))
+		   (symbolp (cdr (ad-get-arg 4))))
+	  (setq type 'ccl)
+	  (setq ad-subr-args
+		(list
+		 (ad-get-arg 3)
+		 (append
+		  (list
+		   'mnemonic (char-to-string (ad-get-arg 2))
+		   'decode (symbol-value (car (ad-get-arg 4)))
+		   'encode (symbol-value (cdr (ad-get-arg 4))))
+		  (ad-get-arg 5)))))))
+
   (if (featurep 'xemacs)
       (defun make-ccl-coding-system (name mnemonic docstring decoder encoder)
 	"\

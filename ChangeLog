@@ -1,3 +1,8 @@
+2000-12-28  Tanaka Akira      <akr@m17n.org>
+
+	* pccl-20.el (ccl-compat): new advice for `make-coding-system' of
+	XEmacs to handle Emacs style CCL coding system definition.
+
 2000-12-28  Kenichi Handa     <handa@etl.go.jp>
 
 	* static.el: Doc-string fixed.
