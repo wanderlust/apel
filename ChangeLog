@@ -1,3 +1,8 @@
+2001-06-23  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
+
+	* install.el (install-files): Do not make DEST directory when
+	JUST-PRINT is non-nil.
+
 2001-06-20  Akihiro MOTOKI <amotoki@dd.iij4u.or.jp>
 
 	* install.el (install-elisp-modules): Do not make DEST directory

@@ -1,6 +1,6 @@
 ;;; install.el --- Emacs Lisp package install utility
 
-;; Copyright (C) 1996,1997,1998,1999 Free Software Foundation, Inc.
+;; Copyright (C) 1996,1997,1998,1999,2001 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
 ;; Created: 1996/08/18
@@ -74,7 +74,8 @@
 	    (princ (format "%s -> %s\n" file dest)))))))
 
 (defun install-files (files src dest &optional move overwrite just-print)
-  (or (file-exists-p dest)
+  (or just-print
+      (file-exists-p dest)
       (make-directory dest t))
   (mapcar
    (function
