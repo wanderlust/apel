@@ -1,3 +1,9 @@
+2000-02-17   Daiki Ueno  <ueno@ueda.info.waseda.ac.jp>
+
+	* EMU-ELS (emu-modules): Add 'pimage.
+
+	* pimage.el,image-xm.el,image-bm.el,tinyimage.el: New file.
+
 2000-02-10  Yuuichi Teranishi  <teranisi@gohome.org>
 
 	* poe.el (replace-match): Redefined to add `STRING' optional
