@@ -1,5 +1,9 @@
 1999-03-12  Keiichi Suzuki  <kei-suzu@mail.wbs.ne.jp>
 
+	* poe.el (condition-case-if): Abolish.
+
+1999-03-12  Keiichi Suzuki  <kei-suzu@mail.wbs.ne.jp>
+
 	* poe.el (condition-case-if): New macro.
 
 1999-03-11  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
