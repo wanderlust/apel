@@ -28,11 +28,11 @@
 
 ;;; Code:
 
-(defsubst encode-mime-charset-region (start end charset)
+(defsubst encode-mime-charset-region (start end charset &optional lbt)
   "Encode the text between START and END as MIME CHARSET."
   (let (cs)
     (if (and enable-multibyte-characters
-	     (setq cs (mime-charset-to-coding-system charset)))
+	     (setq cs (mime-charset-to-coding-system charset lbt)))
 	(encode-coding-region start end cs)
       )))
 
@@ -45,11 +45,11 @@
       )))
 
 
-(defsubst encode-mime-charset-string (string charset)
+(defsubst encode-mime-charset-string (string charset &optional lbt)
   "Encode the STRING as MIME CHARSET."
   (let (cs)
     (if (and enable-multibyte-characters
-	     (setq cs (mime-charset-to-coding-system charset)))
+	     (setq cs (mime-charset-to-coding-system charset lbt)))
 	(encode-coding-string string cs)
       string)))
 
