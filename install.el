@@ -146,8 +146,9 @@
 (defvar install-prefix
   (if (or (<= emacs-major-version 18)
 	  (featurep 'xemacs)
-	  (and (boundp 'system-configuration-options) ; 19.29 or later
-	       (string= system-configuration-options "NT"))) ; for Meadow
+	  (featurep 'meadow) ; for Meadow
+	  (and (eq system-type 'windows-nt) ; for NTEmacs
+	       (>= emacs-major-version 20)))
       (expand-file-name "../../.." exec-directory)
     (expand-file-name "../../../.." data-directory)))
 
