@@ -9,8 +9,23 @@
 ;;;	$Id$
 ;;; Keywords: emulation, compatibility, Mule
 ;;;
-;;; This file is part of tl and tm (Tools for MIME).
+;;; This file is part of tl (Tiny Library).
 ;;;
+;;; This program is free software; you can redistribute it and/or
+;;; modify it under the terms of the GNU General Public License as
+;;; published by the Free Software Foundation; either version 2, or
+;;; (at your option) any later version.
+;;;
+;;; This program is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;;; General Public License for more details.
+;;;
+;;; You should have received a copy of the GNU General Public License
+;;; along with This program.  If not, write to the Free Software
+;;; Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+;;;
+;;; Code:
 
 (defun some-element (pred seq)
   "Return the first element of sequence SEQ
@@ -26,6 +41,14 @@ whose return value applied function PRED is not nil.
        ))
    ))
 
+(if (not (boundp 'emacs-major-version))
+    (defconst emacs-major-version (string-to-int emacs-version))
+  )
+
+
+;;; @ leading-character
+;;;
+
 (defun get-lc (chr)
   "Return leading character of CHAR or LEADING-CHARACTER."
   (if (< chr 128)
@@ -33,9 +56,8 @@ whose return value applied function PRED is not nil.
     chr))
 
 
-(if (not (boundp 'emacs-major-version))
-    (defconst emacs-major-version (string-to-int emacs-version))
-  )
+;;; @ version specific features
+;;;
 
 (cond ((>= emacs-major-version 19)
        (require 'emu-19)
@@ -58,4 +80,47 @@ whose return value applied function PRED is not nil.
        ))
 
 
+;;; @@ truncate-string
+;;;
+
+(or (fboundp 'truncate-string)
+;;; Imported from Mule-2.3
+(defun truncate-string (str width &optional start-column)
+  "Truncate STR to fit in WIDTH columns.
+Optional non-nil arg START-COLUMN specifies the starting column.
+\[emu-mule.el; Mule 2.3 emulating function]"
+  (or start-column
+      (setq start-column 0))
+  (let ((max-width (string-width str))
+	(len (length str))
+	(from 0)
+	(column 0)
+	to-prev to ch)
+    (if (>= width max-width)
+	(setq width max-width))
+    (if (>= start-column width)
+	""
+      (while (< column start-column)
+	(setq ch (aref str from)
+	      column (+ column (char-width ch))
+	      from (+ from (char-bytes ch))))
+      (if (< width max-width)
+	  (progn
+	    (setq to from)
+	    (while (<= column width)
+	      (setq ch (aref str to)
+		    column (+ column (char-width ch))
+		    to-prev to
+		    to (+ to (char-bytes ch))))
+	    (setq to to-prev)))
+      (substring str from to))))
+;;;
+  )
+
+
+;;; @ end
+;;;
+
 (provide 'emu-mule)
+
+;;; emu-mule.el ends here

@@ -158,6 +158,37 @@ else returns nil. [emu-nemacs.el; Mule emulating function]"
 	)
       str)))
 
+;;; Imported from Mule-2.3
+(defun truncate-string (str width &optional start-column)
+  "Truncate STR to fit in WIDTH columns.
+Optional non-nil arg START-COLUMN specifies the starting column.
+\[emu-mule.el; Mule 2.3 emulating function]"
+  (or start-column
+      (setq start-column 0))
+  (let ((max-width (string-width str))
+	(len (length str))
+	(from 0)
+	(column 0)
+	to-prev to ch)
+    (if (>= width max-width)
+	(setq width max-width))
+    (if (>= start-column width)
+	""
+      (while (< column start-column)
+	(setq ch (aref str from)
+	      column (+ column (char-width ch))
+	      from (+ from (char-bytes ch))))
+      (if (< width max-width)
+	  (progn
+	    (setq to from)
+	    (while (<= column width)
+	      (setq ch (aref str to)
+		    column (+ column (char-width ch))
+		    to-prev to
+		    to (+ to (char-bytes ch))))
+	    (setq to to-prev)))
+      (substring str from to))))
+
 
 ;;; @ text property emulation
 ;;;

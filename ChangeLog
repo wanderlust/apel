@@ -1,3 +1,23 @@
+Thu Mar 14 16:27:21 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl-str.el: Function `truncate-string' was moved to emu-mule.el.
+  	Alias `top-short-string' and `rightful-boundary-short-string' were
+ 	deleted.
+	
+	* emu-mule.el (truncate-string): New function;
+	moved from tl-str.el.
+	
+	* emu-nemacs.el (truncate-string): New function;
+ 	imported from emu-mule.el.
+	
+	* emu-orig.el (truncate-string): New function.
+
+Thu Mar 14 04:23:25 1996  Shuhei KOBAYASHI  <shuhei@cmpt01.phys.tohoku.ac.jp>
+
+	* tl-str (truncate-string): New Implementation imported from Mule
+ 	2.3.
+
+
 Wed Mar 13 17:16:09 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.18 was released.
