@@ -1,3 +1,16 @@
+1997-02-06  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.17 was released.
+
+1997-02-05  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* char-table.el (char-position-to-string): Don't use
+ 	`row-line-to-char'; Don't require char-util.
+
+	* char-table.el (char-position-to-string): Use `make-char' instead
+ 	of `make-character'.
+
+
 1997-01-21  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61.16 was released.
