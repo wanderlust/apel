@@ -4,6 +4,10 @@
 
 	* calist.el: New module.
 
+1998-03-13  Katsumi Yamaoka   <yamaoka@jpl.org>
+
+	* emu-mule.el (charsets-mime-charset-alist) fixed.
+
 
 1998-03-13  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
