@@ -68,12 +68,19 @@ but the contents viewed as characters do change.
   "Return index of character succeeding CHAR whose index is INDEX."
   `(1+ ,index))
 
+(defun-maybe char-length (char)
+  "Return indexing length of multi-byte form of CHAR."
+  1)
+
 
 ;;; @ string
 ;;;
 
 (defun-maybe string-to-int-list (str)
   (mapcar #'char-int str))
+
+(defun-maybe string-to-char-list (str)
+  (mapcar #'identity str))
 
 (defalias 'looking-at-as-unibyte 'looking-at)
 
