@@ -94,6 +94,29 @@
 	"No conversion"
 	nil
 	(cons ccl-decode-raw-text ccl-encode-raw-text-CRLF))
+       )
+      (t
+       (defun poem-decode-raw-text (from to)
+	 (save-restriction
+	   (narrow-to-region from to)
+	   (goto-char (point-min))
+	   (while (re-search-forward "\r$" nil t)
+	     (replace-match "")
+	     )))
+       (defun poem-encode-raw-text-CRLF (from to)
+	 (save-restriction
+	   (narrow-to-region from to)
+	   (goto-char (point-min))
+	   (while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
+	     (replace-match "\\1\r\n")
+	     )))
+
+       (make-coding-system 'raw-text nil ?= "No conversion")
+       (put 'raw-text 'post-read-conversion 'poem-decode-raw-text)
+       
+       (make-coding-system 'raw-text-dos nil ?= "No conversion")
+       (put 'raw-text-dos 'post-read-conversion 'poem-decode-raw-text)
+       (put 'raw-text-dos 'pre-write-conversion 'poem-encode-raw-text-CRLF)
        ))
 
 
@@ -270,78 +293,27 @@ code conversion will not take place."
   "Like `find-file-noselect', q.v., but don't code and format conversion."
   (find-file-noselect-as-coding-system 'binary filename nowarn rawfile))
 
-(cond
- ((>= emacs-major-version 19)
-  ;; for MULE 2.*.
-  (defun insert-file-contents-as-raw-text (filename
-					   &optional visit beg end replace)
-    "Like `insert-file-contents', q.v., but don't code and format conversion.
+(defun insert-file-contents-as-raw-text (filename
+					 &optional visit beg end replace)
+  "Like `insert-file-contents', q.v., but don't code and format conversion.
 Like `insert-file-contents-literary', but it allows find-file-hooks,
 automatic uncompression, etc.
 Like `insert-file-contents-as-binary', but it converts line-break
 code."
-    ;; Returns list absolute file name and length of data inserted.
-    (insert-file-contents-as-coding-system 'raw-text
-					   filename visit beg end replace))
+  ;; Returns list absolute file name and length of data inserted.
+  (insert-file-contents-as-coding-system 'raw-text
+					 filename visit beg end replace))
 
-  (defun write-region-as-raw-text-CRLF (start end filename
-					      &optional append visit lockname)
-    "Like `write-region', q.v., but don't code conversion."
-    (write-region-as-coding-system 'raw-text-dos
-				   start end filename append visit lockname))
+(defun write-region-as-raw-text-CRLF (start end filename
+					    &optional append visit lockname)
+  "Like `write-region', q.v., but don't code conversion."
+  (write-region-as-coding-system 'raw-text-dos
+				 start end filename append visit lockname))
 
-  (defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
-    "Like `find-file-noselect', q.v., but it does not code and format
+(defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
+  "Like `find-file-noselect', q.v., but it does not code and format
 conversion except for line-break code."
-    (find-file-noselect-as-coding-system 'raw-text
-					 filename nowarn rawfile))
-  )
- (t
-  ;; for MULE 1.*.
-  (defun insert-file-contents-as-raw-text (filename
-					   &optional visit beg end replace)
-    "Like `insert-file-contents', q.v., but don't code and format conversion.
-Like `insert-file-contents-literary', but it allows find-file-hooks,
-automatic uncompression, etc.
-Like `insert-file-contents-as-binary', but it converts line-break
-code."
-    (save-excursion
-      (save-restriction
-	(narrow-to-region (point)(point))
-	(let ((return-val
-	       ;; Returns list absolute file name and length of data inserted.
-	       (insert-file-contents-as-binary filename
-					       visit beg end replace)))
-	  (goto-char (point-min))
-	  (while (re-search-forward "\r$" nil t)
-	    (replace-match ""))
-	  (list (car return-val) (buffer-size))))))
-
-  (defun write-region-as-raw-text-CRLF (start end filename
-					      &optional append visit lockname)
-    "Like `write-region', q.v., but don't code conversion."
-    (let ((the-buf (current-buffer)))
-      (with-temp-buffer
-	(insert-buffer-substring the-buf start end)
-	(goto-char (point-min))
-	(while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
-	  (replace-match "\\1\r\n"))
-	(write-region-as-binary (point-min)(point-max)
-				filename append visit))))
-
-  (defun find-file-noselect-as-raw-text (filename &optional nowarn rawfile)
-    "Like `find-file-noselect', q.v., but it does not code and format
-conversion except for line-break code."
-    (save-current-buffer
-      (prog1
-	  (set-buffer (find-file-noselect-as-binary filename nowarn rawfile))
-	(let ((flag (buffer-modified-p)))
-	  (save-excursion
-	    (goto-char (point-min))
-	    (while (re-search-forward "\r$" nil t)
-	      (replace-match "")))
-	  (set-buffer-modified-p flag)))))
-  ))
+  (find-file-noselect-as-coding-system 'raw-text filename nowarn rawfile))
 
 (defun open-network-stream-as-binary (name buffer host service)
   "Like `open-network-stream', q.v., but don't code conversion."
