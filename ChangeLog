@@ -1,6 +1,7 @@
 2000-12-30  NAKAJIMA Mikio  <minakaji@osaka.email.ne.jp>
 
 	*  APEL: Version 10.3 released.
+	* apel-ver.el (apel-ver): Change APEL version to 10.3.
  
 2000-12-28  Tanaka Akira      <akr@m17n.org>
 
