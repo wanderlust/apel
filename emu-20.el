@@ -30,7 +30,7 @@
 ;;; Code:
 
 (require 'custom)
-(eval-when-compile (require 'widget))
+(eval-when-compile (require 'wid-edit))
 
 
 ;;; @ binary access
