@@ -27,6 +27,8 @@
 
 (require 'std11)
 
+(autoload 'find-charset-string "emu")
+
 
 ;;; @ lexical analyze
 ;;;
@@ -131,6 +133,304 @@
       )
     (nreverse dest)
     ))
+
+
+;;; @ parser
+;;;
+
+(defun std11-ignored-token-p (token)
+  (let ((type (car token)))
+    (or (eq type 'spaces)(eq type 'comment))
+    ))
+
+(defun std11-parse-token (lal)
+  (let (token itl)
+    (while (and lal
+		(progn
+		  (setq token (car lal))
+		  (std11-ignored-token-p token)
+		  ))
+      (setq lal (cdr lal))
+      (setq itl (cons token itl))
+      )
+    (cons (nreverse (cons token itl))
+	  (cdr lal))
+    ))
+
+(defun std11-parse-ascii-token (lal)
+  (let (token itl parsed token-value)
+    (while (and lal
+		(setq token (car lal))
+		(if (and (setq token-value (cdr token))
+			 (find-charset-string token-value)
+			 )
+		    (setq token nil)
+		  (std11-ignored-token-p token)
+		  ))
+      (setq lal (cdr lal))
+      (setq itl (cons token itl))
+      )
+    (if (and token
+	     (setq parsed (nreverse (cons token itl)))
+	     )
+	(cons parsed (cdr lal))
+      )))
+
+(defun std11-parse-token-or-comment (lal)
+  (let (token itl)
+    (while (and lal
+		(progn
+		  (setq token (car lal))
+		  (eq (car token) 'spaces)
+		  ))
+      (setq lal (cdr lal))
+      (setq itl (cons token itl))
+      )
+    (cons (nreverse (cons token itl))
+	  (cdr lal))
+    ))
+
+(defun std11-parse-word (lal)
+  (let ((ret (std11-parse-ascii-token lal)))
+    (if ret
+	(let ((elt (car ret))
+	      (rest (cdr ret))
+	      )
+	  (if (or (assq 'atom elt)
+		  (assq 'quoted-string elt))
+	      (cons (cons 'word elt) rest)
+	    )))))
+
+(defun std11-parse-word-or-comment (lal)
+  (let ((ret (std11-parse-token-or-comment lal)))
+    (if ret
+	(let ((elt (car ret))
+	      (rest (cdr ret))
+	      )
+	  (cond ((or (assq 'atom elt)
+		     (assq 'quoted-string elt))
+		 (cons (cons 'word elt) rest)
+		 )
+		((assq 'comment elt)
+		 (cons (cons 'comment-word elt) rest)
+		 ))
+	  ))))
+
+(defun std11-parse-phrase (lal)
+  (let (ret phrase)
+    (while (setq ret (std11-parse-word-or-comment lal))
+      (setq phrase (append phrase (cdr (car ret))))
+      (setq lal (cdr ret))
+      )
+    (if phrase
+	(cons (cons 'phrase phrase) lal)
+      )))
+
+(defun std11-parse-local-part (lal)
+  (let ((ret (std11-parse-word lal)))
+    (if ret
+	(let ((local-part (cdr (car ret))) dot)
+	  (setq lal (cdr ret))
+	  (while (and (setq ret (std11-parse-ascii-token lal))
+		      (setq dot (car ret))
+		      (string-equal (cdr (assq 'specials dot)) ".")
+		      (setq ret (std11-parse-word (cdr ret)))
+		      (setq local-part
+			    (append local-part dot (cdr (car ret)))
+			    )
+		      (setq lal (cdr ret))
+		      ))
+	  (cons (cons 'local-part local-part) lal)
+	  ))))
+
+(defun std11-parse-sub-domain (lal)
+  (let ((ret (std11-parse-ascii-token lal)))
+    (if ret
+	(let ((sub-domain (car ret)))
+	  (if (or (assq 'atom sub-domain)
+		  (assq 'domain-literal sub-domain)
+		  )
+	      (cons (cons 'sub-domain sub-domain)
+		    (cdr ret)
+		    )
+	    )))))
+
+(defun std11-parse-domain (lal)
+  (let ((ret (std11-parse-sub-domain lal)))
+    (if ret
+	(let ((domain (cdr (car ret))) dot)
+	  (setq lal (cdr ret))
+	  (while (and (setq ret (std11-parse-ascii-token lal))
+		      (setq dot (car ret))
+		      (string-equal (cdr (assq 'specials dot)) ".")
+		      (setq ret (std11-parse-sub-domain (cdr ret)))
+		      (setq domain
+			    (append domain dot (cdr (car ret)))
+			    )
+		      (setq lal (cdr ret))
+		      ))
+	  (cons (cons 'domain domain) lal)
+	  ))))
+
+(defun std11-parse-at-domain (lal)
+  (let ((ret (std11-parse-ascii-token lal)) at-sign)
+    (if (and ret
+	     (setq at-sign (car ret))
+	     (string-equal (cdr (assq 'specials at-sign)) "@")
+	     (setq ret (std11-parse-domain (cdr ret)))
+	     )
+	(cons (cons 'at-domain (append at-sign (cdr (car ret))))
+	      (cdr ret))
+      )))
+
+(defun std11-parse-addr-spec (lal)
+  (let ((ret (std11-parse-local-part lal))
+	addr)
+    (if (and ret
+	     (prog1
+		 (setq addr (cdr (car ret)))
+	       (setq lal (cdr ret))
+	       (and (setq ret (std11-parse-at-domain lal))
+		    (setq addr (append addr (cdr (car ret))))
+		    (setq lal (cdr ret))
+		    )))
+	(cons (cons 'addr-spec addr) lal)
+      )))
+
+(defun std11-parse-route (lal)
+  (let ((ret (std11-parse-at-domain lal))
+	route comma colon)
+    (if (and ret
+	     (progn
+	       (setq route (cdr (car ret)))
+	       (setq lal (cdr ret))
+	       (while (and (setq ret (std11-parse-ascii-token lal))
+			   (setq comma (car ret))
+			   (string-equal (cdr (assq 'specials comma)) ",")
+			   (setq ret (std11-parse-at-domain (cdr ret)))
+			   )
+		 (setq route (append route comma (cdr (car ret))))
+		 (setq lal (cdr ret))
+		 )
+	       (and (setq ret (std11-parse-ascii-token lal))
+		    (setq colon (car ret))
+		    (string-equal (cdr (assq 'specials colon)) ":")
+		    (setq route (append route colon))
+		    )
+	       ))
+	(cons (cons 'route route)
+	      (cdr ret)
+	      )
+      )))
+
+(defun std11-parse-route-addr (lal)
+  (let ((ret (std11-parse-ascii-token lal))
+	< route addr-spec >)
+    (if (and ret
+	     (setq < (car ret))
+	     (string-equal (cdr (assq 'specials <)) "<")
+	     (setq lal (cdr ret))
+	     (progn (and (setq ret (std11-parse-route lal))
+			 (setq route (cdr (car ret)))
+			 (setq lal (cdr ret))
+			 )
+		    (setq ret (std11-parse-addr-spec lal))
+		    )
+	     (setq addr-spec (cdr (car ret)))
+	     (setq lal (cdr ret))
+	     (setq ret (std11-parse-ascii-token lal))
+	     (setq > (car ret))
+	     (string-equal (cdr (assq 'specials >)) ">")
+	     )
+	(cons (cons 'route-addr (append route addr-spec))
+	      (cdr ret)
+	      )
+      )))
+
+(defun std11-parse-phrase-route-addr (lal)
+  (let ((ret (std11-parse-phrase lal)) phrase)
+    (if ret
+	(progn
+	  (setq phrase (cdr (car ret)))
+	  (setq lal (cdr ret))
+	  ))
+    (if (setq ret (std11-parse-route-addr lal))
+	(cons (list 'phrase-route-addr
+		    phrase
+		    (cdr (car ret)))
+	      (cdr ret))
+      )))
+
+(defun std11-parse-mailbox (lal)
+  (let ((ret (or (std11-parse-phrase-route-addr lal)
+		 (std11-parse-addr-spec lal)))
+	mbox comment)
+    (if (and ret
+	     (prog1
+		 (setq mbox (car ret))
+	       (setq lal (cdr ret))
+	       (if (and (setq ret (std11-parse-token-or-comment lal))
+			(setq comment (cdr (assq 'comment (car ret))))
+			)
+		   (setq lal (cdr ret))
+		 )))
+	(cons (list 'mailbox mbox comment)
+	      lal)
+      )))
+
+(defun std11-parse-group (lal)
+  (let ((ret (std11-parse-phrase lal))
+	phrase colon comma mbox semicolon)
+    (if (and ret
+	     (setq phrase (cdr (car ret)))
+	     (setq lal (cdr ret))
+	     (setq ret (std11-parse-ascii-token lal))
+	     (setq colon (car ret))
+	     (string-equal (cdr (assq 'specials colon)) ":")
+	     (setq lal (cdr ret))
+	     (progn
+	       (and (setq ret (std11-parse-mailbox lal))
+		    (setq mbox (list (car ret)))
+		    (setq lal (cdr ret))
+		    (progn
+		      (while (and (setq ret (std11-parse-ascii-token lal))
+				  (setq comma (car ret))
+				  (string-equal
+				   (cdr (assq 'specials comma)) ",")
+				  (setq lal (cdr ret))
+				  (setq ret (std11-parse-mailbox lal))
+				  (setq mbox (cons (car ret) mbox))
+				  (setq lal (cdr ret))
+				  )
+			)))
+	       (and (setq ret (std11-parse-ascii-token lal))
+		    (setq semicolon (car ret))
+		    (string-equal (cdr (assq 'specials semicolon)) ";")
+		    )))
+	(cons (list 'group phrase (nreverse mbox))
+	      (cdr ret)
+	      )
+      )))
+
+(defun std11-parse-address (lal)
+  (or (std11-parse-group lal)
+      (std11-parse-mailbox lal)
+      ))
+
+(defun std11-parse-addresses (lal)
+  (let ((ret (std11-parse-address lal)))
+    (if ret
+	(let ((dest (list (car ret))))
+	  (setq lal (cdr ret))
+	  (while (and (setq ret (std11-parse-ascii-token lal))
+		      (string-equal (cdr (assq 'specials (car ret))) ",")
+		      (setq ret (std11-parse-address (cdr ret)))
+		      )
+	    (setq dest (cons (car ret) dest))
+	    (setq lal (cdr ret))
+	    )
+	  (nreverse dest)
+	  ))))
 
 
 ;;; @ end
