@@ -1,4 +1,17 @@
-1998-04-17  MORIOKA Tomohiko  <morioka@mousai.jaist.ac.jp>
+1998-04-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* EMU-ELS (emu-modules): Add 'emu-e20_3 for Emacs 20.3.
+
+	* emu-e20_3.el: New module.
+
+	* emu-e20.el: Select to require 'emu-e20_2 or 'emu-e20_3.
+
+	* emu-e20_2.el (set-buffer-multibyte): New function.
+
+	* emu-e20.el (insert-file-contents-as-binary): Use
+	'set-buffer-multibyte.
+
+1998-04-17  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-e20_2.el, emu-e20.el, EMU-ELS: Separate Emacs 20.1 and 20.2
 	depended definitions from emu-e20.el to emu-e20_2.el.
