@@ -3,11 +3,11 @@
 	* install.el (emacs-major-version): Deleted.
 	(emacs-minor-version): Deleted.
 
-	* path-util.el: Require `poe'.
+	* path-util.el: Require `poe'. [cf. <tm-ja:5051>]
 
 1999-08-27  Katsumi Yamaoka   <yamaoka@jpl.org>
 
-	* install.el: Require `poe'. <cf. [tm-ja:5051]>
+	* install.el: Require `poe'. <cf. [tm-ja:5055]>
 
 	* path-util.el (directory-files): Don't redefine.
 
