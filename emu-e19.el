@@ -37,37 +37,35 @@
 ;;; @ character set
 ;;;
 
-(defconst charset-ascii 0 "Character set of ASCII")
-(defconst charset-latin-iso8859-1 129 "Character set of ISO-8859-1")
+(put 'ascii 'charset-description "Character set of ASCII")
+(put 'ascii 'charset-registry "ASCII")
+
+(put 'latin-iso8859-1 'charset-description "Character set of ISO-8859-1")
+(put 'latin-iso8859-1 'charset-registry "ISO8859-1")
 
 (defun charset-description (charset)
-  "Return description of CHARSET. [emu-e19.el]"
-  (if (< charset 128)
-      (documentation-property 'charset-ascii 'variable-documentation)
-    (documentation-property 'charset-latin-iso8859-1 'variable-documentation)
-    ))
+  "Return description of CHARSET."
+  (get charset 'charset-description)
+  )
 
 (defun charset-registry (charset)
-  "Return registry name of CHARSET. [emu-e19.el]"
-  (if (< charset 128)
-      "ASCII"
-    "ISO8859-1"))
+  "Return registry name of CHARSET."
+  (get charset 'charset-registry)
+  )
 
-(defun charset-columns (charset)
-  "Return number of columns a CHARSET occupies when displayed.
-\[emu-e19.el]"
+(defun charset-width (charset)
+  "Return number of columns a CHARSET occupies when displayed."
   1)
 
 (defun charset-direction (charset)
   "Return the direction of a character of CHARSET by
-  0 (left-to-right) or 1 (right-to-left). [emu-e19.el]"
+  0 (left-to-right) or 1 (right-to-left)."
   0)
 
 (defun find-charset-string (str)
-  "Return a list of charsets in the string.
-\[emu-e19.el; Mule emulating function]"
+  "Return a list of charsets in the string."
   (if (string-match "[\200-\377]" str)
-      (list charset-latin-iso8859-1)
+      '(latin-iso8859-1)
     ))
 
 (defalias 'find-non-ascii-charset-string 'find-charset-string)
@@ -76,12 +74,10 @@
   "Return a list of charsets in the region between START and END.
 \[emu-e19.el; Mule emulating function]"
   (if (save-excursion
-	(save-restriction
-	  (narrow-to-region start end)
-	  (goto-char start)
-	  (re-search-forward "[\200-\377]" nil t)
-	  ))
-      (list charset-latin-iso8859-1)
+	(goto-char start)
+	(re-search-forward "[\200-\377]" end t)
+	)
+      '(latin-iso8859-1)
     ))
 
 (defalias 'find-non-ascii-charset-region 'find-charset-region)
@@ -197,7 +193,7 @@ find-file-hooks, etc.
 ;;;
 
 (defvar charsets-mime-charset-alist
-  (list (cons (list charset-ascii) 'us-ascii)))
+  '(((ascii) . us-ascii)))
 
 (defvar default-mime-charset 'iso-8859-1)
 
@@ -210,33 +206,28 @@ find-file-hooks, etc.
   )
 
 (defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END.
-\[emu-e19.el]"
+  "Return MIME charset for region between START and END."
   (if (save-excursion
-	(save-restriction
-	  (narrow-to-region start end)
-	  (goto-char start)
-	  (re-search-forward "[\200-\377]" nil t)
-	  ))
+	(goto-char start)
+	(re-search-forward "[\200-\377]" end t)
+	)
       default-mime-charset
     'us-ascii))
 
 (defun encode-mime-charset-region (start end charset)
-  "Encode the text between START and END as MIME CHARSET.
-\[emu-e19.el]"
+  "Encode the text between START and END as MIME CHARSET."
   )
 
 (defun decode-mime-charset-region (start end charset)
-  "Decode the text between START and END as MIME CHARSET.
-\[emu-e19.el]"
+  "Decode the text between START and END as MIME CHARSET."
   )
 
 (defun encode-mime-charset-string (string charset)
-  "Encode the STRING as MIME CHARSET. [emu-e19.el]"
+  "Encode the STRING as MIME CHARSET."
   string)
 
 (defun decode-mime-charset-string (string charset)
-  "Decode the STRING as MIME CHARSET. [emu-e19.el]"
+  "Decode the STRING as MIME CHARSET."
   string)
 
 
@@ -246,8 +237,8 @@ find-file-hooks, etc.
 (defun char-charset (char)
   "Return the character set of char CHAR."
   (if (< chr 128)
-      charset-ascii
-    charset-latin-iso8859-1))
+      'ascii
+    'latin-iso8859-1))
 
 (defun char-bytes (char)
   "Return number of bytes a character in CHAR occupies in a buffer."
@@ -257,28 +248,17 @@ find-file-hooks, etc.
   "Return number of columns a CHAR occupies when displayed."
   1)
 
+(defalias 'char-length 'char-bytes)
+
 (defmacro char-next-index (char index)
   "Return index of character succeeding CHAR whose index is INDEX."
   (` (1+ index)))
-
-;;; @@ Mule emulating aliases
-;;;
-;;; You should not use them.
-
-(defalias 'char-leading-char 'char-charset)
-
-;;; @@ obsoleted aliases
-;;;
-;;; You should not use them.
-
-(defalias 'char-length 'char-bytes)
-(defalias 'char-columns 'char-width)
 
 
 ;;; @ string
 ;;;
 
-(defalias 'string-columns 'length)
+(defalias 'string-width 'length)
 
 (defun string-to-char-list (str)
   (mapcar (function identity) str)
@@ -297,10 +277,12 @@ Optional non-nil arg START-COLUMN specifies the starting column.
   (substring str start-column width)
   )
 
-;;; @@ for old MULE emulation
+;;; @@ obsoleted aliases
 ;;;
+;;; You should not use them.
 
-(defalias 'string-width 'length)
+(defalias 'string-columns 'length)
+(make-obsolete 'string-columns 'string-width)
 
 
 ;;; @ end

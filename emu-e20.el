@@ -174,6 +174,8 @@ code conversion will not take place."
 ;;; @ character
 ;;;
 
+(defalias 'char-length 'char-bytes)
+
 (defmacro char-next-index (char index)
   "Return index of character succeeding CHAR whose index is INDEX."
   `(+ index (char-bytes char)))
@@ -189,18 +191,9 @@ TABLE defaults to the current buffer's category table."
   (category-set-mnemonics (char-category-set character))
   )
 
-;;; @@ obsoleted aliases
-;;;
-;;; You should not use them.
-
-(defalias 'char-length 'char-bytes)
-(defalias 'char-columns 'char-width)
-
 
 ;;; @ string
 ;;;
-
-(defalias 'string-columns 'string-width)
 
 (defalias 'sset 'store-substring)
 
@@ -218,6 +211,13 @@ TABLE defaults to the current buffer's category table."
     ))
 
 (defalias 'string-to-int-list 'string-to-char-list)
+
+;;; @@ obsoleted aliases
+;;;
+;;; You should not use them.
+
+(defalias 'string-columns 'string-width)
+(make-obsolete 'string-columns 'string-width)
 
 
 ;;; @ end

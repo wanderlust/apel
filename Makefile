@@ -1,8 +1,8 @@
 #
-# $Id$
+# Makefile for APEL.
 #
 
-VERSION = 7.1.1
+VERSION = 8.0
 
 TAR	= tar
 RM	= /bin/rm -f
