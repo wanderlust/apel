@@ -151,13 +151,8 @@
        ))
 
 
-;;; @ Emacs 19 emulation
+;;; @ Emacs 19.23 emulation
 ;;;
-
-(defmacro-maybe eval-and-compile (&rest body)
-  "Like `progn', but evaluates the body at compile time and at load time."
-  ;; Remember, it's magic.
-  (cons 'progn body))
 
 (defun-maybe minibuffer-prompt-width ()
   "Return the display width of the minibuffer prompt."
