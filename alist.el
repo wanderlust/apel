@@ -1,11 +1,13 @@
-;;; alist.el --- utility functions about association-list
+;;; alist.el --- utility functions about assoc-list
 
-;; Copyright (C) 1993,1994,1995,1996,1998 Free Software Foundation, Inc.
+;; Copyright (C) 1993,1994,1995,1996 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Version:
+;;	$Id$
 ;; Keywords: alist
 
-;; This file is part of APEL (A Portable Emacs Library).
+;; This file is part of SEMI (SEMI is Emacs MIME Interfaces).
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -24,7 +26,6 @@
 
 ;;; Code:
 
-;;;###autoload
 (defun put-alist (item value alist)
   "Modify ALIST to set VALUE to ITEM.
 If there is a pair whose car is ITEM, replace its cdr by VALUE.
@@ -39,7 +40,6 @@ return new alist whose car is the new pair and cdr is ALIST.
       (cons (cons item value) alist)
       )))
 
-;;;###autoload
 (defun del-alist (item alist)
   "If there is a pair whose key is ITEM, delete it from ALIST.
 \[tomo's ELIS emulating function]"
@@ -59,7 +59,6 @@ return new alist whose car is the new pair and cdr is ALIST.
 	  )
 	alist))))
 
-;;;###autoload
 (defun set-alist (symbol item value)
   "Modify a alist indicated by SYMBOL to set VALUE to ITEM."
   (or (boundp symbol)
@@ -68,14 +67,12 @@ return new alist whose car is the new pair and cdr is ALIST.
   (set symbol (put-alist item value (symbol-value symbol)))
   )
 
-;;;###autoload
 (defun remove-alist (symbol item)
   "Remove ITEM from the alist indicated by SYMBOL."
   (and (boundp symbol)
        (set symbol (del-alist item (symbol-value symbol)))
        ))
 
-;;;###autoload
 (defun modify-alist (modifier default)
   "Modify alist DEFAULT into alist MODIFIER."
   (mapcar (function
@@ -85,7 +82,6 @@ return new alist whose car is the new pair and cdr is ALIST.
 	  modifier)
   default)
 
-;;;###autoload
 (defun set-modified-alist (sym modifier)
   "Modify a value of a symbol SYM into alist MODIFIER.
 The symbol SYM should be alist. If it is not bound,

@@ -1,25 +1,8 @@
-1998-10-23  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* APEL: Version 9.5 was released.
-
-1998-10-22  Yoshiki Hayashi   <g740685@komaba.ecc.u-tokyo.ac.jp>
-
-	* README.ja: New file.
-
-1998-10-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* alist.el: Add autoload cookies.
-
-1998-10-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
-
-	* poe.el, EMU-ELS, README.en: Move `find-face' from poe-19.el to
-	poe.el; abolish poe-19.el.
-
 1998-10-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* invisible.el, inv-18.el, inv-19.el, inv-xemacs.el, poe-18.el,
-	poe-19.el, poe-xemacs.el, emu.el, EMU-ELS, README.en: Separate
-	invisible features from poe to invisible.
+	poe-19.el, poe-xemacs.el, emu.el, EMU-ELS: Separate invisible
+	features from poe to invisible.
 
 1998-10-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
@@ -38,7 +21,7 @@
 
 	* poe-18.el: Abolish function `char-list-to-string'.
 
-1998-10-18  Tanaka Akira  <akr@jaist.ac.jp>
+1998-10-18  Tanaka Akira  <morioka@jaist.ac.jp>
 
 	* broken.el (check-broken-facility): Also use compile time
 	description.
@@ -48,7 +31,7 @@
 
 	* APEL: Version 9.4 was released.
 
-1998-10-17  Tanaka Akira  <akr@jaist.ac.jp>
+1998-10-17  Tanaka Akira  <morioka@jaist.ac.jp>
 
 	* broken.el (check-broken-facility): New macro.
 
