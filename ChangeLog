@@ -1,3 +1,11 @@
+1999-04-09  Tanaka Akira  <akr@jaist.ac.jp>
+
+	* EMU-ELS (emu-modules): Add `static'.
+
+	* static.el: New file.
+
+	* broken.el: New implementation using `static'.
+
 1999-04-09  MORIOKA Tomohiko  <tomo@etl.go.jp>
 
 	* EMU-ELS (poem-modules): Add `poem-xfc' if file-coding feature is

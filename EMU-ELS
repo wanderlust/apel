@@ -83,6 +83,7 @@
 			    pccl-modules pcustom-modules
 			    emu-modules))
   (setq emu-modules (cons 'broken emu-modules))
-  )
+  (setq emu-modules (cons 'static emu-modules))
+    )
 
 ;;; EMU-ELS ends here
