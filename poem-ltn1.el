@@ -163,6 +163,30 @@ code conversion will not take place."
 
 (defalias find-file-noselect-as-raw-text 'find-file-noselect)
 
+(defun save-buffer-as-binary (&optional args)
+  "Like `save-buffer', q.v., but don't encode."
+  (let ((emx-binary-mode t))
+    (save-buffer args)))
+
+(defun save-buffer-as-raw-text-CRLF (&optional args)
+  "Like `save-buffer', q.v., but save as network representation."
+  (if (buffer-modified-p)
+      (save-restriction
+	(widen)
+	(let ((the-buf (current-buffer))
+	      (filename (buffer-file-name)))
+	  (if filename
+	      (prog1
+		  (with-temp-buffer
+		    (insert-buffer the-buf)
+		    (goto-char (point-min))
+		    (while (re-search-forward "\\(\\=\\|[^\r]\\)\n" nil t)
+		      (replace-match "\\1\r\n"))
+		    (setq buffer-file-name filename)
+		    (save-buffer args))
+		(set-buffer-modified-p nil)
+		(clear-visited-file-modtime)))))))
+
 (defun open-network-stream-as-binary (name buffer host service)
   "Like `open-network-stream', q.v., but don't code conversion."
   (let ((emx-binary-mode t))
@@ -189,6 +213,10 @@ ignored."
   "Like `find-file-noselect', q.v., CODING-SYSTEM the first arg will be
 ignored."
   (find-file-noselect filename nowarn rawfile))
+
+(defun save-buffer-as-coding-system (coding-system &optional args)
+  "Like `save-buffer', q.v., CODING-SYSTEM the first arg will be ignored."
+  (save-buffer args))
 
 
 ;;; @ character
