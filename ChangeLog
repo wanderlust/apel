@@ -1,3 +1,62 @@
+Tue Sep  3 15:02:47 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* tl: Version 7.61.1 was released.
+
+	* ol-to-texi.el: New file.
+
+	* smiley-mule.el (smiley-face-bitmap-list): changed from
+ 	`smiley-face-bitmap-alist'.
+	(smiley-buffer): put faces.
+	(smiley-encode-buffer): delete faces.
+
+	* smiley-mule.el (smiley-face-bitmap-alist): cdr was changed to
+ 	composed bitmap string.
+	(smiley-buffer): modified for new `smiley-face-bitmap-alist'
+ 	format.
+	(smiley-encode-buffer): New function.
+
+Tue Sep  3 12:16:49 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* smiley-mule.el: Merge some bitmaps of Yamaoka's
+ 	smiley-mule-faces.el. (cf. [tm-ja:2069])
+
+Mon Sep  2 15:54:57 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* TL-ELS: latex-math-symbol.el was moved to MU package.
+
+Mon Sep  2 14:34:00 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* emu-18.el (file-relative-name): New function.
+
+	* mk-tl: Constant `el-file-mode' was abolished.  Function
+ 	`install-el', `install-el-files', `install-elc' and
+ 	`install-elc-files' were abolished.
+	(install-tl): Use function `install-elisp-modules'.
+
+	* TL-ELS: Variable `tl-uncompile-el-files', `tl-el-files' and
+ 	`tl-elc-files' were abolished.
+
+Mon Sep  2 13:10:54 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* TL-ELS: mu-bbdb.el was moved to ../mu/.
+
+	* TL-ELS: std11.el, std11-parse.el tl-822.el and mu-cite.el were
+ 	moved to ../mu/; mu-replace.el and mu-comment.el were renamed to
+ 	tu-replace.el and tu-comment.el.
+
+	* tu-replace.el: mu-replace.el was renamed to tu-replace.el.
+
+	* tu-comment.el: mu-comment.el was renamed to tu-comment.el.
+
+Mon Sep  2 08:21:39 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
+
+	* bitmap.el (bitmap-insert-xbm-file): fixed. (cf. [tm-ja:2057])
+
+Sun Sep  1 16:11:01 1996  Fujikazu OKUNISHI <fuji0924@mbox.kyoto-inet.or.jp>
+	
+	* tl-822.el (rfc822/field-end): fixed a typo. (cf. [tm-ja:2056])
+
+
 Sat Aug 31 15:08:42 1996  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* tl: Version 7.61 was released.

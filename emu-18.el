@@ -193,6 +193,18 @@ to create parent directories if they don't exist.
     (make-directory-internal dir)
     ))
 
+;; Imported from files.el of EMACS 19.33.
+(defun file-relative-name (filename &optional directory)
+  "Convert FILENAME to be relative to DIRECTORY (default: default-directory)."
+  (setq filename (expand-file-name filename)
+	directory (file-name-as-directory (expand-file-name
+					   (or directory default-directory))))
+  (let ((ancestor ""))
+    (while (not (string-match (concat "^" (regexp-quote directory)) filename))
+      (setq directory (file-name-directory (substring directory 0 -1))
+	    ancestor (concat "../" ancestor)))
+    (concat ancestor (substring filename (match-end 0)))))
+
 
 ;;; @ mark
 ;;;
