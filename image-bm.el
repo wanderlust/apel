@@ -81,7 +81,15 @@ means display it in the right marginal area.
   "Remove images between START and END in BUFFER.
 Remove only images that were put in BUFFER with calls to `put-image'.
 BUFFER nil or omitted means use the current buffer.
-\[Emacs 21 emulating function]")
+\[Emacs 21 emulating function]"
+  (save-restriction
+    (narrow-to-region start end)
+    (goto-char (point-min))
+    (while (setq start (next-single-property-change (point) 'pimage-bitmap))
+      (when (get-text-property start 'pimage-bitmap)
+	(delete-region start (next-single-property-change
+			      start 'pimage-bitmap nil end))
+	(goto-char start)))))
 
 (defmacro-maybe defimage (symbol specs &optional doc)
   "Define SYMBOL as an image.
