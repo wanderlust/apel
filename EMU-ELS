@@ -5,8 +5,15 @@
 ;;; Code:
 
 (setq emu-modules (cons 'emu
-			(if (or running-emacs-19_29-or-later
-				running-xemacs-19_14-or-later)
+			(if (if (featurep 'xemacs)
+				;; running-xemacs-19_14-or-later
+				(or (>= emacs-major-version 20)
+				    (and (= emacs-major-version 19)
+					 (>= emacs-minor-version 14)))
+			      ;; running-emacs-19_29-or-later
+			      (or (>= emacs-major-version 20)
+				  (and (= emacs-major-version 19)
+				       (>= emacs-minor-version 29))))
 			    '(richtext)
 			  '(tinyrich))))
 
