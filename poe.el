@@ -35,20 +35,25 @@
 ;;; @ Version information.
 ;;;
 
-(defconst-maybe emacs-major-version
-  (progn (string-match "^[0-9]+" emacs-version)
-	 (string-to-int (substring emacs-version
-				   (match-beginning 0)(match-end 0))))
-  "Major version number of this version of Emacs.")
-
-(defconst-maybe emacs-minor-version
-  (progn (string-match "^[0-9]+\\.\\([0-9]+\\)" emacs-version)
-	 (string-to-int (substring emacs-version
-				   (match-beginning 1)(match-end 1))))
-  "Minor version number of this version of Emacs.")
-
-(static-when (= emacs-major-version 18)
+;; v18 does not have many features we expect,
+;; notably `eval-when-compile' and `eval-and-compile'.
+(static-when (string= (substring emacs-version 0 2) "18")
   (require 'poe-18))
+
+;; Now we can use them!
+(eval-and-compile
+  ;; We must define these two constants at compile-time as well as
+  ;; load-time since they are used for compile-time version checking.
+  (defconst-maybe emacs-major-version
+    (progn (string-match "^[0-9]+" emacs-version)
+	   (string-to-int (substring emacs-version
+				     (match-beginning 0)(match-end 0))))
+    "Major version number of this version of Emacs.")
+  (defconst-maybe emacs-minor-version
+    (progn (string-match "^[0-9]+\\.\\([0-9]+\\)" emacs-version)
+	   (string-to-int (substring emacs-version
+				     (match-beginning 1)(match-end 1))))
+    "Minor version number of this version of Emacs."))
 
 ;; Some ancient version of XEmacs did not provide 'xemacs.
 (static-when (string-match "XEmacs" emacs-version)
@@ -64,6 +69,10 @@
 
 (static-when (featurep 'xemacs)
   (require 'poe-xemacs))
+
+;; must be load-time check to share .elc between different systems.
+(or (fboundp 'open-network-stream)
+    (require 'tcp))
 
 
 ;;; @ C primitives emulation.
