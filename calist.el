@@ -85,8 +85,10 @@
 
 (defsubst calist-field-match-method (field-type)
   (symbol-function
-   (or (intern-soft
-	(symbol-name field-type) calist-field-match-method-obarray)
+   (or (intern-soft (if (symbolp field-type)
+			(symbol-name field-type)
+		      field-type)
+		    calist-field-match-method-obarray)
        (intern-soft "t" calist-field-match-method-obarray))))
 
 (defsubst calist-field-match (calist field-type field-value)
