@@ -142,7 +142,7 @@ Associates the function with the current load file, if any."
 ;;;  macros; they are "nuked" by rms in FSF version.)
 
 (put 'inline 'lisp-indent-hook 0)
-(defalias-maybe 'inline 'progn)
+(defalias 'inline 'progn)
 
 (put 'defsubst 'lisp-indent-hook 'defun)
 (put 'defsubst 'edebug-form-spec 'defun)
