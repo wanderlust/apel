@@ -269,7 +269,7 @@ find-file-hooks, etc.
 ;;; @ string
 ;;;
 
-(defalias 'string-columns 'length)
+(defalias 'string-width 'length)
 
 (defun string-to-char-list (str)
   (mapcar (function identity) str)
@@ -291,7 +291,8 @@ Optional non-nil arg START-COLUMN specifies the starting column.
 ;;; @@ for old MULE emulation
 ;;;
 
-(defalias 'string-width 'length)
+(defalias 'string-columns 'length)
+(make-obsolete 'string-columns 'string-width)
 
 
 ;;; @ end

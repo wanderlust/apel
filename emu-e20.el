@@ -200,8 +200,6 @@ TABLE defaults to the current buffer's category table."
 ;;; @ string
 ;;;
 
-(defalias 'string-columns 'string-width)
-
 (defalias 'sset 'store-substring)
 
 (defun string-to-char-list (string)
@@ -218,6 +216,13 @@ TABLE defaults to the current buffer's category table."
     ))
 
 (defalias 'string-to-int-list 'string-to-char-list)
+
+;;; @@ obsoleted aliases
+;;;
+;;; You should not use them.
+
+(defalias 'string-columns 'string-width)
+(make-obsolete 'string-columns 'string-width)
 
 
 ;;; @ end
