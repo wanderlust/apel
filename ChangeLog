@@ -1,4 +1,4 @@
-1998-04-09  MORIOKA Tomohiko  <morioka@ks-pc0.jaist.ac.jp>
+1998-04-09  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
 
 	* emu-e19.el, emu-e20.el: Use 'make-obsolete for 'string-columns.
 
