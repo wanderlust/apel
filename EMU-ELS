@@ -15,10 +15,10 @@
 (setq emu-modules
       (nconc
        (cond (running-mule-merged-emacs
-	      '(emu-e20)
+	      '(emu-e20 emu-20)
 	      )
 	     (running-xemacs-with-mule
-	      '(emu-x20)
+	      '(emu-x20 emu-20)
 	      )
 	     ((boundp 'MULE)
 	      '(emu-mule)
