@@ -1709,13 +1709,12 @@ If SUFFIX is non-nil, add that at the end of the file name."
                                ;; `make-directory' returns nil for success,
                                ;; otherwise signals an error.
                                (make-directory dir))
-                           (file-already-exists t))
-                    ;; the dir was somehow created by someone else
-                    ;; between `make-temp-name' and `make-directory',
-                    ;; let's try again.
-                    )
+                           ;; the dir was somehow created by someone else
+                           ;; between `make-temp-name' and `make-directory',
+                           ;; let's try again.
+                           (file-already-exists t)))
                   dir)
-              ;; Create a temporary file.
+              ;; Create a new empty file.
               (let (tempdir tempfile)
                 (unwind-protect
                     (let (file)
@@ -1728,9 +1727,8 @@ If SUFFIX is non-nil, add that at the end of the file name."
                                                    "DIR")))
                                    ;; return nil or signal an error.
                                    (make-directory tempdir))
-                               (file-already-exists t))
-                        ;; let's try again.
-                        )
+                               ;; let's try again.
+                               (file-already-exists t)))
                       ;; Second, create a temporary file in the tempdir.
                       ;; There *is* a race condition between `make-temp-name'
                       ;; and `write-region', but we don't care it since we are
@@ -1745,9 +1743,8 @@ If SUFFIX is non-nil, add that at the end of the file name."
                                        (setq file (concat file suffix)))
                                    ;; return nil or signal an error.
                                    (add-name-to-file tempfile file))
-                               (file-already-exists t))
-                        ;; let's try again.
-                        )
+                               ;; let's try again.
+                               (file-already-exists t)))
                       file)
                   ;; Cleanup the tempfile.
                   (and tempfile
