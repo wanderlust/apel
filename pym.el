@@ -56,14 +56,19 @@
 
 ;;; Conditional define.
 
-(defvar def*-maybe-enable-compile-time-hack nil
-  "If non-nil, `def*-maybe' macros will do compile-time check.
+; Hack for "old" byte-compiler; we can't use `eval-and-compile' here.
+(require
+ (prog1
+     ;;(or (car features) (provide 'feature-for-dummy))
+     (car features)
+   (defvar def*-maybe-enable-compile-time-hack nil
+     "If non-nil, `def*-maybe' macros will do compile-time check.
 `def*-maybe' macro normally checks existence of its target function or
 variable at load-time.  But if this variable is non-nil at compile-time,
 existence of its target is first checked at compile-time, and if exists,
 it will emit no compiled code at all!
 You should set this variable to non-nil only when you really know what
-you are doing.")
+you are doing.")))
 
 (put 'defun-maybe 'lisp-indent-function 'defun)
 (defmacro defun-maybe (name &rest everything-else)
@@ -303,17 +308,19 @@ macro `defsubst'."
 ;;; Conditional define (always do load-time check).
 
 (put 'defun-when-void 'lisp-indent-function 'defun)
-(defmacro defun-when-void (name &rest everything-else)
-  "Define NAME as a function if NAME is not defined at the load-time.
-See also the function `defun' and the macro `defun-maybe'.  Note that
-the macro with the same name in XEmacs will be replaced with it."
-  (let ((qname (` (quote (, name)))))
+(defmacro defun-when-void (&rest args)
+  "Define a function, just like `defun', unless it's already defined.
+Used for compatibility among different emacs variants.  Note that the
+macro with the same name in XEmacs will be replaced with it.  See also
+the macro `defun-maybe'."
+  (let ((qname (list 'quote (car args))))
+    (setq args (cdr args))
     (` (prog1
 	   (, qname)
 	 (if (not (fboundp (, qname)))
 	     ;; Use `defalias' to update `load-history'.
 	     (defalias (, qname)
-	       (function (lambda (,@ everything-else)))))))))
+	       (function (lambda (,@ args)))))))))
 
 (put 'defmacro-when-void 'lisp-indent-function 'defun)
 (defmacro defmacro-when-void (name &rest everything-else)
@@ -405,7 +412,7 @@ Both SYMBOL and SPEC are unevaluated. The SPEC can be 0, t, a symbol
 	   &rest (&rest sexp)))
 
 ;; edebug-spec for `static-*' macros are also defined here.
-(def-edebug-spec static-if t) 
+(def-edebug-spec static-if t)
 (def-edebug-spec static-when when)
 (def-edebug-spec static-unless unless)
 (def-edebug-spec static-condition-case condition-case)
