@@ -1,3 +1,51 @@
+1999-05-15  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe.el (path-separator): Doc sync with 20.3.
+	(add-to-list): Ditto.
+	(buffer-live-p): Return bool value.
+	(cadr, cdar, cddr): New functions.
+	(save-current-buffer): Check whether orig-buffer is alive.
+	(functionp): Sync with 20.3; use `car-safe'.
+	(line-beginning-position, line-end-position): Simplified.
+	(point-at-bol, point-at-eol): Ditto.
+
+1999-05-15  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* localhook.el: New file; local hook variable support.
+
+	* poe.el (add-hook, remove-hook, make-local-hook): Removed;
+	require 'localhook instead.
+
+	* poe-18.el: (default-boundp): New function.
+
+	* EMU-ELS: Added localhook.
+
+1999-05-14  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* pcustom.el: Rewrite using static.el.
+
+	* tinycustom.el (defface): Use `defmacro-maybe-cond'.
+
+	* EMU-ELS: Compilation order of tinycustom and pcustom was changed.
+
+1999-05-14  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe-18.el: Require 'poe.
+	Move provide to the top to avoid circular dependency.
+	(eval-when-compile, eval-and-compile): Modified for old compiler.
+	(defsubst): Moved from poe.el.
+	(make-obsolete): Do nothing.
+
+	* poe.el (read-string): Don't use `eval-and-compile'.
+
+1999-05-14  Shuhei KOBAYASHI  <shuhei@aqua.ocn.ne.jp>
+
+	* poe.el (defmacro-maybe-cond): New macro.
+	(defun-maybe, defmacro-maybe, defsubst-maybe, defalias-maybe,
+	defvar-maybe, defconst-maybe, defun-maybe-cond): Return NAME.
+	(defun-maybe, defmacro-maybe, defsubst-maybe): Put edebug spec.
+	(defsubst): Moved to poe-18.el.
+	
 1999-05-13  Tanaka Akira      <akr@jaist.ac.jp>
 
 	* pccl-om.el: pccl-om.el does not support Mule 1.*.
