@@ -77,9 +77,15 @@ If POS is out of range, the value is nil.
 
 (defalias-maybe 'int-char 'identity)
 
-(defalias-maybe 'characterp 'integerp)
+(defalias-maybe 'characterp
+  (cond
+   ((fboundp 'char-valid-p) 'char-valid-p)
+   (t 'integerp)))
 
-(defalias-maybe 'char-or-char-int-p 'integerp)
+(defalias-maybe 'char-or-char-int-p
+  (cond
+   ((fboundp 'char-valid-p) 'char-valid-p)
+   (t 'integerp)))
 
 (defun-maybe char-octet (ch &optional n)
   "Return the octet numbered N (should be 0 or 1) of char CH.

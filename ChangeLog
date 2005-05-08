@@ -1,3 +1,8 @@
+2005-05-03  Tatsuya Kinoshita  <tats@vega.ocn.ne.jp>
+
+	* poem.el (characterp): Use `char-valid-p' if it exists.
+	* poem.el (char-or-char-int-p): Ditto.
+
 2005-02-23  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* poe-xemacs.el (run-at-time): Attempt to load `timer-funcs'
