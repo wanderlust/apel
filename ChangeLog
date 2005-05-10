@@ -1,3 +1,8 @@
+2005-05-10  TAKAHASHI Kaoru  <kaoru@kaisei.org>
+
+	* poe.el (split-string): Import from Emacs 22. Add omit-nulls
+	argument.
+
 2005-05-03  Tatsuya Kinoshita  <tats@vega.ocn.ne.jp>
 
 	* poem.el (characterp): Use `char-valid-p' if it exists.
