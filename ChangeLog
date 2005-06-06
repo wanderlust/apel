@@ -1,3 +1,10 @@
+2005-06-06  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* filename.el (filename-special-filter-1): New macro defined for
+	filename-special-filter to use aref instead of sref for the recent
+	Emacsen.
+	(filename-special-filter): Use it.
+
 2005-06-05  Tatsuya Kinoshita  <tats@vega.ocn.ne.jp>
 
 	* poe-xemacs.el: Load `timer' even if `timer-funcs' exists.
