@@ -102,12 +102,11 @@ Moreover, if you want to convert Japanese filename to roman string by kakasi,
 		inc-i '(1+ i))
 	(setq sref 'aref
 	      inc-i '(+ i (char-length chr))))
-      (` (let* ((string (, string))
-		(len (length string))
-		(b 0)(i 0)
-		(dest ""))
+      (` (let ((len (length (, string)))
+	       (b 0)(i 0)
+	       (dest ""))
 	   (while (< i len)
-	     (let ((chr ((, sref) string i))
+	     (let ((chr ((, sref) (, string) i))
 		   (lst filename-replacement-alist)
 		   ret)
 	       (while (and lst (not ret))
@@ -117,12 +116,12 @@ Moreover, if you want to convert Japanese filename to roman string by kakasi,
 		     t			; quit this loop.
 		   (setq lst (cdr lst))))
 	       (if ret
-		   (setq dest (concat dest (substring string b i)
+		   (setq dest (concat dest (substring (, string) b i)
 				      (cdr (car lst)))
 			 i (, inc-i)
 			 b i)
 		 (setq i (, inc-i)))))
-	   (concat dest (substring string b)))))))
+	   (concat dest (substring (, string) b)))))))
 
 (defun filename-special-filter (string)
   (filename-special-filter-1 string))
