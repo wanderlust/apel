@@ -900,7 +900,7 @@ On other systems, this variable is normally always nil.")
 ;; Emacs 20.3 or later.
 (defvar-maybe minor-mode-overriding-map-alist nil
   "Alist of keymaps to use for minor modes, in current major mode.
-APEL provides this as dummy for a compatibility.")
+APEL provides this as dummy for compatibility.")
 
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (save-current-buffer &rest BODY)
 ;;

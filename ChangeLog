@@ -1,3 +1,20 @@
+2006-04-24  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* install.el (install-detect-elisp-directory): Fix 2002-11-29
+	change; assume default-load-path contains nil; use regexp-quote to
+	compare directories even in Emacs.
+
+2005-12-06  Ville Skyttä  <scop@xemacs.org>
+
+	* poe.el (minor-mode-overriding-map-alist): Doc fix.
+
+	* product.el (product-version-as-string): Doc fix.
+
+2002-11-29  Ben Wing  <ben@xemacs.org>
+
+	* install.el (install-detect-elisp-directory): Fix problems
+	handling backslashes in filenames (Windows).
+
 2005-06-06  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* filename.el (filename-special-filter-1): New macro defined for

@@ -158,6 +158,9 @@
     ;; v18 does not have standard site directory.
     "local.lisp"))
 
+;; Avoid compile warning.
+(eval-when-compile (autoload 'replace-in-string "subr"))
+
 (defun install-detect-elisp-directory (&optional prefix elisp-prefix
 						 allow-version-specific)
   (or prefix
@@ -165,18 +168,36 @@
   (or elisp-prefix
       (setq elisp-prefix install-elisp-prefix))
   (or (catch 'tag
-	(let ((rest default-load-path)
-	      (regexp (concat "^"
-			      (expand-file-name (concat ".*/" elisp-prefix)
-						prefix)
-			      "/?$")))
+	(let ((rest (delq nil (copy-sequence default-load-path)))
+	      (regexp
+	       (concat "^"
+		       (regexp-quote (if (featurep 'xemacs)
+					 ;; Handle backslashes (Windows)
+					 (replace-in-string
+					  (file-name-as-directory
+					   (expand-file-name prefix))
+					  "\\\\" "/")
+				       (file-name-as-directory
+					(expand-file-name prefix))))
+		       ".*/"
+		       (regexp-quote
+			(if (featurep 'xemacs)
+			    ;; Handle backslashes (Windows)
+			    (replace-in-string elisp-prefix "\\\\" "/")
+			  elisp-prefix))
+		       "/?$"))
+	      dir)
 	  (while rest
-	    (if (string-match regexp (car rest))
+	    (setq dir (if (featurep 'xemacs)
+			  ;; Handle backslashes (Windows)
+			  (replace-in-string (car rest) "\\\\" "/")
+			(car rest)))
+	    (if (string-match regexp dir)
 		(if (or allow-version-specific
 			(not (string-match (format "/%d\\.%d"
 						   emacs-major-version
 						   emacs-minor-version)
-					   (car rest))))
+					   dir)))
 		    (throw 'tag (car rest))))
 	    (setq rest (cdr rest)))))
       (expand-file-name (concat (if (and (not (featurep 'xemacs))
