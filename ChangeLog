@@ -1,3 +1,12 @@
+2006-11-13  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* time-stamp.el: Remove.  Suggested by Stephen Gildea, the
+	maintainer of time-stamp.el.
+
+	* EMU-ELS (emu-modules): Exclude it.
+
+	* README.en, README.ja: Remove time-stamp.el entry.
+
 2006-04-24  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* install.el (install-detect-elisp-directory): Fix 2002-11-29

@@ -99,11 +99,6 @@ required poe, poem and mcharset.
 
   tinycustom.el --- emulation module of custom.el
 
-** time-stamp.el
-
-This is a utility to maintain last change time stamps in files edited
-by Emacs.
-
 ** timezone.el
 
 This is a utility of time zone.  This is a Y2K fixed version.   This

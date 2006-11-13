@@ -150,15 +150,6 @@
     (t
      '(mcs-ltn1 mcharset)))
 
-   ;; time-stamp.el; First appeared in Emacs 19.16.
-   (if (and (not (featurep 'xemacs))
-	    (or (< emacs-major-version 19)
-		(and (= emacs-major-version 19)
-		     (< emacs-minor-version 16))))
-       '(time-stamp)
-     ;; no problem.
-     '())
-
    ;; timezone.el; Some versions have Y2K problem.
    (condition-case nil
        (let ((load-path (delete (expand-file-name ".")

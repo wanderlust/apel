@@ -95,10 +95,6 @@ mcharset を require する。
 
   tinycustom.el --- custom.el のエミュレーションを行なう
 
-** time-stamp.el
-
-Emacs による編集の際、最終修正時刻を保存するためのユーティリティ。
-
 ** timezone.el
 
 タイムゾーンユーティリティ。2000 年問題対応版。Emacs 18 と GNUS 3.14.4
