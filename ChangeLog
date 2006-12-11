@@ -1,3 +1,9 @@
+2006-12-11  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* APEL-MK (config-apel-package): Check for
+	(early|late|last)-package-hierarchies and configure-package-path
+	as well as (early|late|last)-packages.
+
 2006-11-13  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* time-stamp.el: Remove.  Suggested by Stephen Gildea, the
