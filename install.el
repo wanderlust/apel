@@ -244,10 +244,13 @@
     (princ (format "Wrote %s\n"
 		   (expand-file-name "custom-load.elc" dir))))
    (t
-    (setq autoload-package-name package)
-
-    (let ((command-line-args-left (list dir)))
-      (batch-update-directory))
+    (if (fboundp 'batch-update-directory-autoloads)
+	;; XEmacs 21.5.19 and newer.
+	(let ((command-line-args-left (list package dir)))
+	  (batch-update-directory-autoloads))
+      (setq autoload-package-name package)
+      (let ((command-line-args-left (list dir)))
+	(batch-update-directory)))
 
     (let ((command-line-args-left (list dir)))
       (Custom-make-dependencies))
