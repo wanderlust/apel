@@ -1,3 +1,8 @@
+2006-12-13  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* APEL-MK (config-apel-package): Avoid an error concerning
+	PACKAGEDIR with old XEmacs that doesn't use the package system.
+
 2006-12-12  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* install.el (install-update-package-files): Use
