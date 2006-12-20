@@ -1,3 +1,11 @@
+2006-12-20  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* APEL-MK (config-apel-package): Use
+	`install-get-default-package-directory'.
+
+	* install.el (install-get-default-package-directory): New
+	function.
+
 2006-12-13  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* APEL-MK (config-apel-package): Avoid an error concerning
@@ -30,7 +38,7 @@
 	change; assume default-load-path contains nil; use regexp-quote to
 	compare directories even in Emacs.
 
-2005-12-06  Ville Skytt$(D+#(B  <scop@xemacs.org>
+2005-12-06  Ville Skyttä  <scop@xemacs.org>
 
 	* poe.el (minor-mode-overriding-map-alist): Doc fix.
 
@@ -383,7 +391,7 @@
 	(minor-mode-map-alist): Ditto.
 
 	* README.en ((d) make.bat (for MS-DOS family)): New section.
-	* README.ja ((d) make.bat $B$rMxMQ$9$k(B (MS-DOS $B7O(B OS $B$N>l9g(B)):
+	* README.ja ((d) make.bat $(B$rMxMQ$9$k(B (MS-DOS $(B7O(B OS $(B$N>l9g(B)):
 	Ditto.
 
 2000-12-22  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
@@ -3169,7 +3177,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A ($B$"(B) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A ($(B$"(B) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>
