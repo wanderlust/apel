@@ -1,8 +1,9 @@
 ;;; install.el --- Emacs Lisp package install utility
 
-;; Copyright (C) 1996,1997,1998,1999,2001 Free Software Foundation, Inc.
+;; Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2006
+;; 	Free Software Foundation, Inc.
 
-;; Author: MORIOKA Tomohiko <morioka@jaist.ac.jp>
+;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Created: 1996/08/18
 ;; Keywords: install, byte-compile, directory detection
 
@@ -225,6 +226,32 @@
 
 ;;; @ for XEmacs package system
 ;;;
+
+(defun install-get-default-package-directory ()
+  (let ((dirs (append
+	       (cond
+		((boundp 'early-package-hierarchies)
+		 (append (if early-package-load-path
+			     early-package-hierarchies)
+			 (if late-package-load-path
+			     late-package-hierarchies)
+			 (if last-package-load-path
+			     last-package-hierarchies)) )
+		((boundp 'early-packages)
+		 (append (if early-package-load-path
+			     early-packages)
+			 (if late-package-load-path
+			     late-packages)
+			 (if last-package-load-path
+			     last-packages)) ))
+	       (if (and (boundp 'configure-package-path)
+			(listp configure-package-path))
+		   (delete "" configure-package-path))))
+	dir)
+    (while (and (setq dir (car dirs))
+		(not (file-exists-p dir)))
+      (setq dirs (cdr dirs)))
+    dir))
 
 (defun install-update-package-files (package dir &optional just-print)
   (cond
