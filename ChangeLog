@@ -6,6 +6,10 @@
 	* install.el (install-get-default-package-directory): New
 	function.
 
+2005-05-08  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* poem-xm.el (char-valid-p): New alias.
+
 2006-12-13  Katsumi Yamaoka  <yamaoka@jpl.org>
 
 	* APEL-MK (config-apel-package): Avoid an error concerning
