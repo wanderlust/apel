@@ -1,6 +1,6 @@
 ;;; poem-xm.el --- poem module for XEmacs-mule; -*-byte-compile-dynamic: t;-*-
 
-;; Copyright (C) 1998,1999 Free Software Foundation, Inc.
+;; Copyright (C) 1998,1999,2002,2003,2005 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: emulation, compatibility, Mule
@@ -74,6 +74,8 @@ but the contents viewed as characters do change.
 	"Return number of bytes a CHARACTER occupies in a string or buffer.
 It always returns 1 in XEmacs.  It is for compatibility with MULE 2.3."
 	1)))
+
+(defalias-maybe 'char-valid-p 'characterp)
 
 
 ;;; @ string
