@@ -2,20 +2,14 @@
 
   It is available from
 
-    ftp://ftp.m17n.org/pub/mule/apel/
+    http://kanji.zinbun.kyoto-u.ac.jp/~tomo/lemi/dist/apel/
 
-or
-
-    ftp://ftp.etl.go.jp/pub/mule/apel/
-
---[[message/external-body;
-	access-type=anon-ftp;
-	site="ftp.m17n.org";
-	directory="/pub/mule/apel";
-	name="apel-VERSION.tar.gz";
-	mode=image]]
-Content-Type: application/octet-stream;
-	name="apel-VERSION.tar.gz";
-	type=tar;
-	conversions=gzip
+--[[message/external-body; access-type=URL;
+	URL*0="http://";
+	URL*1="www.kanji.zinbun.kyoto-u.ac.jp/~tomo/";
+	URL*2="lemi/dist/";
+	URL*3="apel/";
+	URL*4="apel-VERSION.tar.gz"]]
+Content-Type: application/octet-stream
+Content-Disposition: attachment; filename="apel-VERSION.tar.gz"
 --}-<<alternative>>
