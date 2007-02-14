@@ -19,7 +19,7 @@ VERSION_SPECIFIC_LISPDIR = NONE
 
 GOMI	= *.elc
 
-ARCHIVE_DIR_PREFIX = /pub/mule
+ARCHIVE_DIR_PREFIX = /home/kanji/tomo/public_html/lemi/dist
 
 default: elc
 
