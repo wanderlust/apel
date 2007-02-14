@@ -1,6 +1,6 @@
 ;;; apel-ver.el --- Declare APEL version.
 
-;; Copyright (C) 1999 Free Software Foundation, Inc.
+;; Copyright (C) 1999, 2000, 2003, 2006 Free Software Foundation, Inc.
 
 ;; Author: Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
 ;;	Keiichi Suzuki <keiichi@nanap.org>
@@ -43,7 +43,8 @@
   ;; (product-define "APEL" nil '(10 3))	; Released 30 December 2000
   ;; (product-define "APEL" nil '(10 4))	; Released 04 October 2002
   ;; (product-define "APEL" nil '(10 5))	; Released 06 June 2003
-  (product-define "APEL" nil '(10 6))		; Released 05 July 2003
+  ;; (product-define "APEL" nil '(10 6))	; Released 05 July 2003
+  (product-define "APEL" nil '(10 7))
   )
 
 (defun apel-version ()
