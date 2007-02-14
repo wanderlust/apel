@@ -1,6 +1,8 @@
 2007-02-14  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
-	* apel-ver.el (apel-ver): Change APEL version to 10.7.
+	* APEL: Version 10.7 released.
+
+	* Makefile (VERSION): Update to 10.7.
 
 2006-12-20  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
@@ -9,6 +11,10 @@
 
 	* install.el (install-get-default-package-directory): New
 	function.
+
+2006-12-20  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* apel-ver.el (apel-ver): Change APEL version to 10.7.
 
 2005-05-08  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
