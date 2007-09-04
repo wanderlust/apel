@@ -1,3 +1,28 @@
+2007-09-04  Katsumi Yamaoka  <yamaoka@jpl.org>
+
+	* broken.el (broken-facility, if-broken, when-broken)
+	(unless-broken, check-broken-facility): Don't use backquotes.
+
+	* filename.el (filename-special-filter-1): Don't use backquotes.
+
+	* pccl.el (define-ccl-program, transform-make-coding-system-args):
+	Don't use backquotes.
+
+	* poe.el (save-current-buffer, with-current-buffer)
+	(with-temp-file, with-temp-message, with-temp-buffer)
+	(with-output-to-string): Don't use backquotes.
+
+	* product.el (product-provide): Don't use backquotes.
+
+	* pym.el (defun-maybe, defmacro-maybe, defsubst-maybe)
+	(defalias-maybe, defvar-maybe, defconst-maybe, defun-maybe-cond)
+	(defmacro-maybe-cond, defsubst-maybe-cond, def-edebug-spec): Don't
+	use backquotes.
+
+	* static.el (static-if, static-when, static-unless)
+	(static-condition-case, static-defconst): Don't use backquotes.
+
+
 2007-02-14  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* APEL: Version 10.7 released.

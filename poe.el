@@ -915,20 +915,20 @@ APEL provides this as dummy for compatibility.")
 (defmacro-maybe save-current-buffer (&rest body)
   "Save the current buffer; execute BODY; restore the current buffer.
 Executes BODY just like `progn'."
-  (` (let ((orig-buffer (current-buffer)))
-       (unwind-protect
-	   (progn (,@ body))
-	 (if (buffer-live-p orig-buffer)
-	     (set-buffer orig-buffer))))))
+  (list 'let '((orig-buffer (current-buffer)))
+	(list 'unwind-protect
+	      (cons 'progn body)
+	      '(if (buffer-live-p orig-buffer)
+		   (set-buffer orig-buffer)))))
 
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (with-current-buffer BUFFER &rest BODY)
 (defmacro-maybe with-current-buffer (buffer &rest body)
   "Execute the forms in BODY with BUFFER as the current buffer.
 The value returned is the value of the last form in BODY.
 See also `with-temp-buffer'."
-  (` (save-current-buffer
-       (set-buffer (, buffer))
-       (,@ body))))
+  (cons 'save-current-buffer
+	(cons (list 'set-buffer buffer)
+	      body)))
 
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (with-temp-file FILE &rest FORMS)
 (defmacro-maybe with-temp-file (file &rest forms)
@@ -937,18 +937,22 @@ The value of the last form in FORMS is returned, like `progn'.
 See also `with-temp-buffer'."
   (let ((temp-file (make-symbol "temp-file"))
 	(temp-buffer (make-symbol "temp-buffer")))
-    (` (let (((, temp-file) (, file))
-	     ((, temp-buffer)
-	      (get-buffer-create (generate-new-buffer-name " *temp file*"))))
-	 (unwind-protect
-	     (prog1
-		 (with-current-buffer (, temp-buffer)
-		   (,@ forms))
-	       (with-current-buffer (, temp-buffer)
-		 (widen)
-		 (write-region (point-min) (point-max) (, temp-file) nil 0)))
-	   (and (buffer-name (, temp-buffer))
-		(kill-buffer (, temp-buffer))))))))
+    (list 'let (list (list temp-file file)
+		     (list temp-buffer
+			   '(get-buffer-create
+			     (generate-new-buffer-name " *temp file*"))))
+	  (list
+	   'unwind-protect
+	   (list
+	    'prog1
+	    (cons 'with-current-buffer (cons temp-buffer forms))
+	    (list 'with-current-buffer temp-buffer
+		  '(widen)
+		  (list 'write-region '(point-min) '(point-max)
+			temp-file nil 0)))
+	   (list 'and
+		 (list 'buffer-name temp-buffer)
+		 (list 'kill-buffer temp-buffer))))))
 
 ;; Emacs 20.4 and later: (with-temp-message MESSAGE &rest BODY)
 ;; This macro uses `current-message', which appears in v20.
@@ -964,41 +968,48 @@ If MESSAGE is nil, the echo area and message log buffer are unchanged.
 Use a MESSAGE of \"\" to temporarily clear the echo area."
     (let ((current-message (make-symbol "current-message"))
 	  (temp-message (make-symbol "with-temp-message")))
-      (` (let (((, temp-message) (, message))
-	       ((, current-message)))
-	   (unwind-protect
-	       (progn
-		 (when (, temp-message)
-		   (setq (, current-message) (current-message))
-		   (message "%s" (, temp-message))
-		   (,@ body))
-		 (and (, temp-message) (, current-message)
-		      (message "%s" (, current-message))))))))))
+      (list 'let (list (list temp-message message)
+		       (list current-message))
+	    (list
+	     'unwind-protect
+	     (list
+	      'progn
+	      (nconc (list 'when temp-message
+			   (list 'setq current-message '(current-message))
+			   (list 'message "%s" temp-message))
+		     body)
+	      (list 'and temp-message current-message
+		    (list 'message "%s" current-message))))))))
 
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (with-temp-buffer &rest FORMS)
 (defmacro-maybe with-temp-buffer (&rest forms)
   "Create a temporary buffer, and evaluate FORMS there like `progn'.
 See also `with-temp-file' and `with-output-to-string'."
   (let ((temp-buffer (make-symbol "temp-buffer")))
-    (` (let (((, temp-buffer)
-	      (get-buffer-create (generate-new-buffer-name " *temp*"))))
-	 (unwind-protect
-	     (with-current-buffer (, temp-buffer)
-	       (,@ forms))
-	   (and (buffer-name (, temp-buffer))
-		(kill-buffer (, temp-buffer))))))))
+    (list 'let (list (list temp-buffer
+			   '(get-buffer-create
+			     (generate-new-buffer-name " *temp*"))))
+	  (list
+	   'unwind-protect
+	   (cons 'with-current-buffer
+		 (cons temp-buffer
+		       forms))
+	   (list 'and
+		 (list 'buffer-name temp-buffer)
+		 (list 'kill-buffer temp-buffer))))))
 
 ;; Emacs 20.1/XEmacs 20.3(?) and later: (with-output-to-string &rest BODY)
 (defmacro-maybe with-output-to-string (&rest body)
   "Execute BODY, return the text it sent to `standard-output', as a string."
-  (` (let ((standard-output
-	    (get-buffer-create (generate-new-buffer-name " *string-output*"))))
-       (let ((standard-output standard-output))
-	 (,@ body))
-       (with-current-buffer standard-output
-	 (prog1
-	     (buffer-string)
-	   (kill-buffer nil))))))
+  (list 'let '((standard-output
+		(get-buffer-create
+		 (generate-new-buffer-name " *string-output*"))))
+	(cons 'let (cons '((standard-output standard-output))
+			 body))
+	'(with-current-buffer standard-output
+	   (prog1
+	       (buffer-string)
+	     (kill-buffer nil)))))
 
 ;; Emacs 20.1 and later: (combine-after-change-calls &rest BODY)
 (defmacro-maybe combine-after-change-calls (&rest body)

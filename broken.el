@@ -58,51 +58,59 @@ FACILITY must be symbol.
 
 If ASSERTION is not omitted and evaluated to nil and NO-NOTICE is nil,
 it is noticed."
-  (` (static-if (, assertion)
-	 (eval-and-compile
-	   (broken-facility-internal '(, facility) (, docstring) t))
-       (eval-when-compile
-	 (when (and '(, assertion) (not '(, no-notice))
-		    notice-non-obvious-broken-facility)
-	   (message "BROKEN FACILITY DETECTED: %s" (, docstring)))
-	 nil)
-       (eval-and-compile
-	 (broken-facility-internal '(, facility) (, docstring) nil)))))
+  (list 'static-if assertion
+	(list 'eval-and-compile
+	      (list 'broken-facility-internal
+		    (list 'quote facility) docstring t))
+	(list 'eval-when-compile
+	      (list 'when (list 'and
+				(list 'quote assertion)
+				(list 'not (list 'quote no-notice))
+				'notice-non-obvious-broken-facility)
+		    (list 'message "BROKEN FACILITY DETECTED: %s"
+			  docstring))
+	      nil)
+	(list 'eval-and-compile
+	      (list 'broken-facility-internal
+		    (list 'quote facility) docstring nil))))
 
 (put 'if-broken 'lisp-indent-function 2)
 (defmacro if-broken (facility then &rest else)
   "If FACILITY is broken, expand to THEN, otherwise (progn . ELSE)."
-  (` (static-if (broken-p '(, facility))
-	 (, then)
-       (,@ else))))
-
+  (nconc (list 'static-if (list 'broken-p (list 'quote facility))
+	       then)
+	 else))
 
 (put 'when-broken 'lisp-indent-function 1)
 (defmacro when-broken (facility &rest body)
   "If FACILITY is broken, expand to (progn . BODY), otherwise nil."
-  (` (static-when (broken-p '(, facility))
-       (,@ body))))
+  (nconc (list 'static-when (list 'broken-p (list 'quote facility)))
+	 body))
 
 (put 'unless-broken 'lisp-indent-function 1)
 (defmacro unless-broken (facility &rest body)
   "If FACILITY is not broken, expand to (progn . BODY), otherwise nil."
-  (` (static-unless (broken-p '(, facility))
-       (,@ body))))
+  (nconc (list 'static-unless (list 'broken-p (list 'quote facility)))
+	 body))
 
 (defmacro check-broken-facility (facility)
   "Check FACILITY is broken or not. If the status is different on
 compile(macro expansion) time and run time, warn it."
-  (` (if-broken (, facility)
-	 (unless (broken-p '(, facility))
-	   (message "COMPILE TIME ONLY BROKEN FACILITY DETECTED: %s" 
-		    (or
-		     '(, (broken-facility-description facility))
-		     (broken-facility-description '(, facility)))))
-       (when (broken-p '(, facility))
-	 (message "RUN TIME ONLY BROKEN FACILITY DETECTED: %s" 
-		  (or
-		   (broken-facility-description '(, facility))
-		   '(, (broken-facility-description facility))))))))
+  (list 'if-broken facility
+	(list 'unless (list 'broken-p (list 'quote facility))
+	      (list 'message "COMPILE TIME ONLY BROKEN FACILITY DETECTED: %s"
+		    (list 'or
+			  (list 'quote (broken-facility-description
+					facility))
+			  (list 'broken-facility-description
+				(list 'quote facility)))))
+	(list 'when (list 'broken-p (list 'quote facility))
+	      (list 'message "RUN TIME ONLY BROKEN FACILITY DETECTED: %s"
+		    (list 'or
+			  (list 'broken-facility-description
+				(list 'quote facility))
+			  (list 'quote (broken-facility-description
+					facility)))))))
 
 
 ;;; @ end
