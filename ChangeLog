@@ -1,3 +1,9 @@
+2008-09-06  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* poe.el (format-time-string): Fix problem on GNU Emacs 22.2
+	<cf. http://www.rubyist.net/~matz/20080905.html#p01>.
+
+
 2007-02-14  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* APEL: Version 10.7 released.
