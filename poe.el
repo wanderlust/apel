@@ -1,7 +1,7 @@
 ;;; poe.el --- Portable Outfit for Emacsen
 
-;; Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2005
-;;   Free Software Foundation, Inc.
+;; Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2005,
+;;   2008 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;;	Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
