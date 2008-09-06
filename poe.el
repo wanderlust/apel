@@ -1,6 +1,7 @@
 ;;; poe.el --- Portable Outfit for Emacsen
 
-;; Copyright (C) 1995,1996,1997,1998,1999 Free Software Foundation, Inc.
+;; Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2005
+;;   Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;;	Shuhei KOBAYASHI <shuhei@aqua.ocn.ne.jp>
@@ -1484,7 +1485,7 @@ Not fully compatible especially when invalid format is specified."
 
 ;; Emacs 19.29-19.34/XEmacs: `format-time-string' neither supports the
 ;; format string "%z" nor the third argument `universal'.
-(unless (string-match "\\`[\\-\\+][0-9]+\\'"
+(unless (string-match "\\`[---+][0-9]+\\'"
 		      (format-time-string "%z" (current-time)))
   (defadvice format-time-string
     (before support-timezone-in-numeric-form-and-3rd-arg
