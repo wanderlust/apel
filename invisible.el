@@ -27,6 +27,8 @@
 (cond
  ((featurep 'xemacs)
   (require 'inv-xemacs))
+ ((>= emacs-major-version 23)
+  (require 'inv-23))
  ((>= emacs-major-version 19)
   (require 'inv-19))
  (t
