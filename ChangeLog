@@ -1,3 +1,12 @@
+2010-06-15  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* EMU-ELS (emu-modules): Add setting for GNU Emacs 23 or later.
+
+	* invisible.el: Require `inv-23' when running with GNU Emacs 23 or
+	later.
+
+	* inv-23.el: New file.
+
 2008-09-06  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* poe.el (format-time-string): Fix problem on GNU Emacs 22.2
