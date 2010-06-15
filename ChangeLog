@@ -1,3 +1,7 @@
+2010-06-15  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+
+	* apel-ver.el (apel-ver): Change APEL version to 10.8.
+
 2010-02-13  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* EMU-ELS (emu-modules): Add setting for GNU Emacs 23 or later.
