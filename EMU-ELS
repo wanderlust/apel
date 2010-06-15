@@ -180,6 +180,9 @@
     ((featurep 'xemacs)
      ;; XEmacs.
      '(inv-xemacs invisible))
+    ((>= emacs-major-version 23)
+     ;; Emacs 23 and later
+     '(inv-23 invisible))
     ((>= emacs-major-version 19)
      ;; Emacs 19 and later.
      '(inv-19 invisible))
