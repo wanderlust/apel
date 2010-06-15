@@ -1,11 +1,15 @@
-2010-06-15  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
+2010-02-13  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* EMU-ELS (emu-modules): Add setting for GNU Emacs 23 or later.
 
-	* invisible.el: Require `inv-23' when running with GNU Emacs 23 or
-	later.
+	* invisible.el: In GNU Emacs 23, inv-19.el overrides builtin
+	function `invisible-p'.  To fix the bug, require `inv-23' when
+	running with GNU Emacs 23 or later.
 
-	* inv-23.el: New file.
+	* inv-23.el: New file [copied from inv-19.el, but `invisible-p' is
+	removed].
+
+	[Contributed by David Maus <maus.david@gmail.com>]
 
 2008-09-06  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
