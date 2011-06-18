@@ -90,7 +90,11 @@
      ((ascii korean-ksc5601)				. euc-kr)
      ((ascii chinese-gb2312)				. gb2312)
      ((ascii chinese-big5-1 chinese-big5-2)		. big5)
-     ((ascii thai-tis620 composition)			. tis-620)
+     ,(static-cond
+       ((null (string< mule-version "6.0"))
+	'((ascii thai-tis620)				. tis-620))
+       (t
+	'((ascii thai-tis620 composition)      		. tis-620)))
      ((ascii latin-iso8859-1 greek-iso8859-7
 	     latin-jisx0201 japanese-jisx0208-1978
 	     chinese-gb2312 japanese-jisx0208

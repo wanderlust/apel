@@ -209,6 +209,28 @@ It must be symbol."
 	(setq rest (cdr rest)))
       default-mime-charset-for-write)))
 )
+
+((eval-when-compile (null (string< mule-version "6.0")))
+;; for Emacs 23 and later
+(defun detect-mime-charset-region (start end)
+  "Return MIME charset for region between START and END."
+  (let* ((src (string-to-list (buffer-substring-no-properties start end)))
+	 (tmp src)
+	 charsets)
+    ;; Uniquify the list of characters.
+    (while tmp
+      (setq tmp (setcdr tmp (delq (car tmp) (cdr tmp)))))
+    ;; Detect charset from the list of characters.
+    (catch 'found
+      (mapc (lambda (cons)
+	      (setq charsets (car cons))
+	      (catch 'next
+		(mapc (lambda (ch) (unless (char-charset ch charsets)
+				     (throw 'next nil)))
+		      src)
+		(throw 'found (cdr cons))))
+	    charsets-mime-charset-alist)
+      default-mime-charset-for-write))))
 (t
 ;; for legacy Mule
 (defun detect-mime-charset-region (start end)
