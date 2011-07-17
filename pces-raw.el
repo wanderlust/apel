@@ -56,16 +56,16 @@
 ;;;
 
 (defmacro as-binary-process (&rest body)
-  (` (let (selective-display)	; Disable ^M to nl translation.
-       (,@ body))))
+  `(let (selective-display)	; Disable ^M to nl translation.
+     ,@ body))
 
 (defmacro as-binary-input-file (&rest body)
-  (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
-       (,@ body))))
+  `(let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
+     ,@ body))
 
 (defmacro as-binary-output-file (&rest body)
-  (` (let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
-       (,@ body))))
+  `(let ((emx-binary-mode t)) ; Stop CRLF to LF conversion in OS/2
+     ,@ body))
 
 (defun write-region-as-binary (start end filename
 				     &optional append visit lockname)

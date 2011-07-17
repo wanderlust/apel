@@ -227,24 +227,24 @@ applied to `coding-system-for-write'."
 (make-coding-system 'binary nil ?= "No conversion")
 
 (defmacro as-binary-process (&rest body)
-  (` (let (selective-display	; Disable ^M to nl translation.
-	   ;; Mule
-	   mc-flag
-	   (default-process-coding-system (cons *noconv* *noconv*))
-	   program-coding-system-alist)
-       (,@ body))))
+  `(let (selective-display	; Disable ^M to nl translation.
+	 ;; Mule
+	 mc-flag
+	 (default-process-coding-system (cons *noconv* *noconv*))
+	 program-coding-system-alist)
+     ,@ body))
 
 (defmacro as-binary-input-file (&rest body)
-  (` (let (mc-flag
-	   (file-coding-system-for-read *noconv*)
-	   )
-       (,@ body))))
+  `(let (mc-flag
+	 (file-coding-system-for-read *noconv*)
+	 )
+     ,@ body))
 
 (defmacro as-binary-output-file (&rest body)
-  (` (let (mc-flag
-	   (file-coding-system *noconv*)
-	   )
-       (,@ body))))
+  `(let (mc-flag
+	 (file-coding-system *noconv*)
+	 )
+     ,@ body))
 
 (defalias 'set-process-input-coding-system 'set-process-coding-system)
 

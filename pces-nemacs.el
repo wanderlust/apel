@@ -100,20 +100,20 @@
 ;;;
 
 (defmacro as-binary-process (&rest body)
-  (` (let (selective-display	; Disable ^M to nl translation.
-	   ;; Nemacs
-	   kanji-flag
-	   (default-kanji-process-code 0)
-	   program-kanji-code-alist)
-       (,@ body))))
+  `(let (selective-display	; Disable ^M to nl translation.
+	 ;; Nemacs
+	 kanji-flag
+	 (default-kanji-process-code 0)
+	 program-kanji-code-alist)
+     ,@ body))
 
 (defmacro as-binary-input-file (&rest body)
-  (` (let (kanji-flag default-kanji-flag)
-       (,@ body))))
+  `(let (kanji-flag default-kanji-flag)
+     ,@ body))
 
 (defmacro as-binary-output-file (&rest body)
-  (` (let (kanji-flag)
-       (,@ body))))
+  `(let (kanji-flag)
+     ,@ body))
 
 (defun write-region-as-binary (start end filename
 				     &optional append visit lockname)

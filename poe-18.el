@@ -492,9 +492,9 @@ With optional non-nil ALL, force redisplay of all mode-lines."
 ;; that works ok in practice (people should not use that variable elsewhere).
 (defmacro save-match-data (&rest body)
   "Execute the BODY forms, restoring the global value of the match data."
-  (` (let ((save-match-data-internal (match-data)))
-       (unwind-protect (progn (,@ body))
-         (set-match-data save-match-data-internal)))))
+  `(let ((save-match-data-internal (match-data)))
+     (unwind-protect (progn ,@ body)
+       (set-match-data save-match-data-internal))))
 
 
 ;;; @ Basic editing commands.

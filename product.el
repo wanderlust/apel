@@ -232,21 +232,21 @@ PRODUCT-DEF is a definition of the product."
 	 (product-version (product-version product))
 	 (product-code-name (product-code-name product))
 	 (product-version-string (product-version-string product)))
-    (` (progn
-	 (, product-def)
-	 (put (, feature) 'product
-	      (let ((product (product-find-by-name (, product-name))))
-		(product-run-checkers product '(, product-version))
-		(and (, product-family)
-		     (product-add-to-family (, product-family)
-					    (, product-name)))
-		(product-add-feature product (, feature))
-		(if (equal '(, product-version) (product-version product))
-		    product
-		  (vector (, product-name) (, product-family)
-			  '(, product-version) (, product-code-name)
-			  nil nil nil (, product-version-string)))))
-	 (, feature-def)))))
+    `(progn
+       ,product-def
+       (put ,feature 'product
+            (let ((product (product-find-by-name ,product-name)))
+              (product-run-checkers product ',product-version)
+              (and ,product-family
+                   (product-add-to-family ,product-family
+                                          ,product-name))
+              (product-add-feature product ,feature)
+              (if (equal ',product-version (product-version product))
+                  product
+                (vector ,product-name ,product-family
+                        ',product-version ,product-code-name
+                        nil nil nil ,product-version-string))))
+       ,feature-def)))
 
 (defun product-version-as-string (product)
   "Return version number of product as a string.

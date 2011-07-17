@@ -50,7 +50,7 @@ DOC is the variable documentation.
 
 This is a defcustom only for emulating purpose.
 Its effect is just as same as that of defvar."
-  (` (defvar (, symbol) (, value) (, doc))))
+  `(defvar ,symbol ,value ,doc))
 
 (defvar-maybe frame-background-mode nil
   "*The brightness of the background.

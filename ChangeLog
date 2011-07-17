@@ -1,3 +1,32 @@
+2011-07-17  David Maus  <dmaus@ictsoc.de>
+
+	* tinycustom.el (defcustom): Use new style backquotes.
+	* static.el (static-if, static-when, static-unless)
+	(static-condition-case, static-defconst): Dto.
+	* pym.el (defun-maybe, defmacro-maybe, defsubst-maybe)
+	(defalias-maybe, defvar-maybe, defconst-maybe, defun-maybe-cond)
+	(defmacro-maybe-cond, defsubst-maybe-cond, def-edebug-spec): Dto.
+	* product.el (product-provide): Dto.
+	* poem-om.el (char-next-index): Dto.
+	* poem-nemacs.el (char-next-index): Dto.
+	* poem-ltn1.el (char-next-index): Dto.
+	* poe.el (save-current-buffer, with-current-buffer)
+	(with-temp-file, with-temp-message, with-temp-buffer)
+	(with-output-to-string): Dto.
+	* poe-18.el (save-match-data): Dto.
+	* pces-raw.el (as-binary-process, as-binary-input-file)
+	(as-binary-output-file): Dto
+	* pces-om.el (as-binary-process, as-binary-input-file)
+	(as-binary-output-file): Dto.
+	* pces-nemacs.el (as-binary-process, as-binary-input-file)
+	(as-binary-output-file): Dto.
+	* pccl.el (define-ccl-program): Dto.
+	* filename.el (filename-special-filter-1): Dto.
+	* broken.el (broken-facility, if-broken, when-broken)
+	(unless-broken, check-broken-facility): Dto.
+
+	[Patch created by HAMANO Kiyoto <khiker.mail@gmail.com>]
+
 2010-06-15  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* APEL: Version 10.8 released.
