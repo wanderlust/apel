@@ -540,17 +540,15 @@ STRING から安全なファイル名を返します。
 バグ報告や改善の提案を書いたときは、是非 APEL メーリングリストに送って
 ください:
 
-  apel-en@m17n.org	(英語)
-  apel-ja@m17n.org	(日本語)
+  apel-ja@lists.chise.org	（日本語）
+  apel-en@lists.chise.org	（英語）
 
 APEL ML を通して、APEL のバグを報告したり、APEL の最新のリリースを取得
 したり、APEL の将来の拡張の議論をしたりすることができます。APEL ML に
-参加するには、空の電子メールを
+参加するには、以下の頁の記述を見て手続きを行ってください：
 
-  apel-en-ctl@m17n.org	(英語)
-  apel-ja-ctl@m17n.org	(日本語)
-
-に送ってください。
+  http://lists.chise.org/mailman/listinfo/apel-ja	（日本語）
+  http://lists.chise.org/mailman/listinfo/apel-en	（英語）
 
 
 * Anonymous FTP
