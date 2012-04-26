@@ -1,3 +1,8 @@
+2012-04-26  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* README.ja, README.en (Bug reports): Modify for
+	apel-{en|ja}@lists.chise.org.
+
 2010-10-06  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
 
 	* mcs-xm.el (charsets-mime-charset-alist):
