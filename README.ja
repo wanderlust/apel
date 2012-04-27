@@ -202,7 +202,7 @@ MS-DOS $B7O$N(B OS $B$N$?$a$K(B MAKEIT.BAT $B$H(B MAKE1.BAT $B$,MQ0U$5$l$
 
 $B3+H/!"F0:n3NG'$,(B Windows $B$G$7$+9T$J$o$l$F$$$J$$$?$a!"8E$$%P!<%8%g%s$N(B
 DOS $B$G$OF0:n$7$J$$2DG=@-$,$"$j$^$9!#ITET9g$rH/8+$7$?J}$O(B
-apel-ja@m17n.org $B$^$G$4O"Mm2<$5$$!#(B
+apel-ja@lists.chise.org $B$^$G$4O"Mm2<$5$$!#(B
 
 *** MAKEIT.BAT $B$NJT=8(B
 
@@ -243,8 +243,8 @@ c:\usr\Meadow\1.10\site-lisp) $B$,B8:_$;$:!"%G%#%U%)%k%H$G$O(B load-path $B$b
 $B$&!#(B
 
 Demacs $B$N@_DjNc$r=`Hw$9$k$3$H$,$G$-$^$;$s$G$7$?!#(BDemacs $B$K(B APEL $B$r%$%s(B
-$B%9%H!<%k$7$?J}$O!"@_DjNc$r(B apel-ja@m17n.org $B$KAw$C$F2<$5$$(B ($BHs9XFI<T$G(B
-$B$bAw?.$O$G$-$^$9(B)$B!#(B
+$B%9%H!<%k$7$?J}$O!"@_DjNc$r(B apel-ja@lists.chise.org $B$KAw$C$F2<$5$$(B ($BHs(B
+$B9XFI<T$G$bAw?.$O$G$-$^$9(B)$B!#(B
 
 
 *** MAKEIT.BAT $B$NJT=8$N:]!"CN$C$F$*$/$HJXMx$J(B Tips
