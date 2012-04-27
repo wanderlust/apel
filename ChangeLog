@@ -1,3 +1,8 @@
+2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* README.en: (make.bat (for MS-DOS family)): Modify for
+	apel-en@lists.chise.org.
+
 2012-04-26  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
 
 	* README.ja, README.en (Bug reports): Modify for
