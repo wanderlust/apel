@@ -469,26 +469,18 @@ Latest release of APEL can be obtained from:
   ftp://ftp.m17n.org/pub/mule/apel/
 
 
-* CVS
+* Git
 
-Development of APEL uses CVS.  So latest developing version is
-available at CVS.
+Development of APEL uses Git.  So the latest developing version is
+available at the following Git repository:
 
-** cvs login (first time only)
+  % git clone http://git.chise.org/git/elisp/apel.git
 
-  % cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root login
+Or you can view the APEL repository via WWW at:
 
-  CVS password: [CR] # NULL string
+    http://git.chise.org/gitweb/?p=elisp/apel.git
 
-** checkout
-
-  % cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root checkout apel
-
-  If you would like to join CVS based development, please send mail to
-
-  cvs@cvs.m17n.org
-
-with your account name and your public key for ssh.  cvsroot is
-:ext:cvs@cvs.m17n.org:/cvs/root.
+If you would like to join Git based development, please declare it in
+the APEL mailing list.
 
 We hope you will join the open development.
