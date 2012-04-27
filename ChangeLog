@@ -1,6 +1,11 @@
 2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
 
-	* README.en: (make.bat (for MS-DOS family)): Modify for
+	* README.ja, README.en: Remove descriptions about CVS and add
+	description about the new Git repository.
+
+2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* README.en (make.bat (for MS-DOS family)): Modify for
 	apel-en@lists.chise.org.
 
 2012-04-26  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
