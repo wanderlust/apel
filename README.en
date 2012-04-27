@@ -444,20 +444,21 @@ Limit size of file-name.
 Alist list of characters vs. string as replacement.  List of
 characters represents characters not allowed as file-name.
 
+
 * Bug reports
 
 If you write bug-reports and/or suggestions for improvement, please
 send them to the APEL Mailing List:
 
-  apel-en@m17n.org	(English)
-  apel-ja@m17n.org	(Japanese)
+  apel-en@lists.chise.org	(English)
+  apel-ja@lists.chise.org	(Japanese)
 
 Via the APEL ML, you can report APEL bugs, obtain the latest release
 of APEL, and discuss future enhancements to APEL.  To join the APEL
-ML, send an empty e-mail to
+ML, please see the descriptions of the following pages:
 
-  apel-en-ctl@m17n.org	(English)
-  apel-ja-ctl@m17n.org	(Japanese)
+  http://lists.chise.org/mailman/listinfo/apel-en	(English)
+  http://lists.chise.org/mailman/listinfo/apel-ja	(Japanese)
 
 
 * Anonymous FTP

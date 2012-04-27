@@ -7,6 +7,21 @@
 	* mcs-e20.el (charsets-mime-charset-alist): Remove non charset
 	symbol for Emacs 23 and later.
 
+2012-04-26  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* README.ja, README.en (Bug reports): Modify for
+	apel-{en|ja}@lists.chise.org.
+
+2010-10-06  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* mcs-xm.el (charsets-mime-charset-alist):
+	- Don't use `japanese-jisx0208-1990' for `iso-2022-jp'
+	- Don't use `iso-2022-jp-3'
+	- Use `utf-8' instead of `shift_jis' for
+	  '(ascii latin-jisx0201 katakana-jisx0201 japanese-jisx0208-1990)
+	- Don't use `iso-2022-jp-2'
+
+
 2010-06-15  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* APEL: Version 10.8 released.
