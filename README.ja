@@ -558,26 +558,18 @@ APEL ML $B$rDL$7$F!"(BAPEL $B$N%P%0$rJs9p$7$?$j!"(BAPEL $B$N:G?7$N%j%j!<%9$
     ftp://ftp.m17n.org/pub/mule/apel/
 
 
-* CVS
+* Git
 
-APEL $B$N3+H/$O(B CVS $B$r;H$C$F$$$^$9!#:G?7$N3+H/%P!<%8%g%s$r(B CVS $B$G<hF@$G(B
-$B$-$^$9!#(B
+APEL $B$N3+H/$K$O(B Git $B$r;H$C$F$$$^$9!#:G?7$N3+H/%P!<%8%g%s$r0J2<$N(B Git$B%j(B
+$B%]%8%H%j!<$+$i<hF@$G$-$^$9!#(B
 
-** cvs login ($B0l2sL\$@$1(B)
+  % git clone http://git.chise.org/git/elisp/apel.git
 
-  % cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root login
+$B$3$N(B APEL $B$N%j%]%8%H%j!<$O(B WWW $B7PM3$G$b1\Mw$9$k$3$H$,$G$-$^$9!'(B
 
-  CVS password: [CR] # $B6uJ8;zNs(B
+    http://git.chise.org/gitweb/?p=elisp/apel.git
 
-** checkout
+Git $B$K4p$E$$$?3+H/$K;22C$7$?$$$H$-$O!"(BAPEL $B%a!<%j%s%0%j%9%H$G$=$N;]$r(B
+$B@k8@$7$F$/$@$5$$!#(B
 
-  % cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root checkout apel
-
-CVS $B$K4p$E$$$?3+H/$K;22C$7$?$$$H$-$O!"(B
-
-  cvs@cvs.m17n.org
-
-$B$K%"%+%&%s%HL>$H!"(Bssh $B$N8x3+80$rAw$C$F$/$@$5$$!#(Bssh $B7PM3$G$O!"(Bcvsroot
-$B$O(B :ext:cvs@cvs.m17n.org:/cvs/root $B$H$J$j$^$9!#(B
-
-$B3+$+$l$?3+H/$K;22C$7$F$/$@$5$k$3$H$r4|BT$7$^$9!#(B
+$B2f!9$OB?$/$NJ}$,$3$N3+$+$l$?3+H/$K;22C$7$F$/$@$5$k$3$H$rK>$s$G$$$^$9!#(B
