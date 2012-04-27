@@ -1,5 +1,9 @@
 2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
 
+	* README.ja (MAKEIT.BAT): Modify for apel-ja@lists.chise.org.
+
+2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
 	* README.ja, README.en: Remove descriptions about CVS and add
 	description about the new Git repository.
 
