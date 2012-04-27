@@ -462,11 +462,11 @@ ML, please see the descriptions of the following pages:
   http://lists.chise.org/mailman/listinfo/apel-ja	(Japanese)
 
 
-* Anonymous FTP
+* Download
 
-Latest release of APEL can be obtained from:
+The latest release of APEL can be obtained from:
 
-  ftp://ftp.m17n.org/pub/mule/apel/
+  http://git.chise.org/elisp/dist/apel/
 
 
 * Git
