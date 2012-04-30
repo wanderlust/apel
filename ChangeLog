@@ -1,3 +1,22 @@
+2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* README.ja (MAKEIT.BAT): Modify for apel-ja@lists.chise.org.
+
+2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* README.ja, README.en: Remove descriptions about CVS and add
+	description about the new Git repository.
+
+2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* README.en (make.bat (for MS-DOS family)): Modify for
+	apel-en@lists.chise.org.
+
+2012-04-26  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* README.ja, README.en (Bug reports): Modify for
+	apel-{en|ja}@lists.chise.org.
+
 2011-06-17  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* mcs-20.el (detect-mime-charset-region): (Emacs23 or later) Do
@@ -6,11 +25,6 @@
 
 	* mcs-e20.el (charsets-mime-charset-alist): Remove non charset
 	symbol for Emacs 23 and later.
-
-2012-04-26  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
-
-	* README.ja, README.en (Bug reports): Modify for
-	apel-{en|ja}@lists.chise.org.
 
 2010-10-06  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
 
