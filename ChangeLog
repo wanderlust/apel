@@ -1,3 +1,9 @@
+2012-07-28  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-20.el (detect-mime-charset-string): (Emacs23 and later) New
+	function.
+	(detect-mime-charset-region): Use it.
+
 2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
 
 	* README.ja (MAKEIT.BAT): Modify for apel-ja@lists.chise.org.
@@ -19,7 +25,7 @@
 
 2011-06-17  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
-	* mcs-20.el (detect-mime-charset-region): (Emacs23 or later) Do
+	* mcs-20.el (detect-mime-charset-region): (Emacs23 and later) Do
 	not check whether `charsets-mime-charset-alist' contains non
 	charset symbol.
 

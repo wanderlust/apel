@@ -212,25 +212,30 @@ It must be symbol."
 
 ((eval-when-compile (null (string< mule-version "6.0")))
 ;; for Emacs 23 and later
-(defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END."
-  (let* ((src (string-to-list (buffer-substring-no-properties start end)))
-	 (tmp src)
-	 charsets)
+(defun detect-mime-charset-string (string)
+  "Return MIME charset for STRING."
+  (let ((src (string-to-list string))
+	tmp)
+    (setq tmp src)
     ;; Uniquify the list of characters.
     (while tmp
       (setq tmp (setcdr tmp (delq (car tmp) (cdr tmp)))))
     ;; Detect charset from the list of characters.
     (catch 'found
       (mapc (lambda (cons)
-	      (setq charsets (car cons))
 	      (catch 'next
-		(mapc (lambda (ch) (unless (char-charset ch charsets)
+		(mapc (lambda (ch) (unless (char-charset ch (car cons))
 				     (throw 'next nil)))
 		      src)
 		(throw 'found (cdr cons))))
 	    charsets-mime-charset-alist)
-      default-mime-charset-for-write))))
+      default-mime-charset-for-write)))
+
+(defsubst detect-mime-charset-region (start end)
+  "Return MIME charset for region between START and END."
+  (detect-mime-charset-string
+   (buffer-substring-no-properties start end))))
+
 (t
 ;; for legacy Mule
 (defun detect-mime-charset-region (start end)
