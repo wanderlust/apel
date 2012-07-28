@@ -95,10 +95,10 @@
 	'((ascii thai-tis620)				. tis-620))
        (t
 	'((ascii thai-tis620 composition)      		. tis-620)))
-     ((ascii latin-iso8859-1 greek-iso8859-7
-	     latin-jisx0201 japanese-jisx0208-1978
-	     chinese-gb2312 japanese-jisx0208
-	     korean-ksc5601 japanese-jisx0212)		. iso-2022-jp-2)
+     ;; ((ascii latin-iso8859-1 greek-iso8859-7
+     ;; 	     latin-jisx0201 japanese-jisx0208-1978
+     ;; 	     chinese-gb2312 japanese-jisx0208
+     ;; 	     korean-ksc5601 japanese-jisx0212)		. iso-2022-jp-2)
      ;;((ascii latin-iso8859-1 greek-iso8859-7
      ;;        latin-jisx0201 japanese-jisx0208-1978
      ;;        chinese-gb2312 japanese-jisx0208
