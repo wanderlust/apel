@@ -1996,8 +1996,9 @@ in and returned; otherwise a new event object will be created and
 returned.
 If PROMPT is non-nil, it should be a string and will be displayed in
 the echo area while this function is waiting for an event."
-  ((and (>= emacs-major-version 20)
-	(>= emacs-minor-version 4))
+  ((or (>= emacs-major-version 21)
+       (and (>= emacs-major-version 20)
+	    (>= emacs-minor-version 4)))
    ;; Emacs 20.4 and later.
    (read-event prompt))			; should specify 2nd arg?
   ((and (= emacs-major-version 20)
