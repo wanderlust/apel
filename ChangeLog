@@ -1,3 +1,10 @@
+2012-09-07  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-e20.el (coding-system-to-mime-charset): Coding system's
+	setting is preferred to mime-charset-coding-system-alist's value.
+	Detect MIME name from mime-charset-coding-system-alist's value
+	more permissively.
+
 2012-08-08  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* poe.el (next-command-event): Fix that Emacs 21 and later were
