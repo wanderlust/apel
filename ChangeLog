@@ -1,3 +1,8 @@
+2013-07-04  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-20.el: Chack whether the mule-vesion variable is defined.
+	Cf. https://github.com/ikazuhiro/apel/commit/328c02e022340b36dd7e5f9250c7f86d2bafd793
+
 2013-03-24  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* mcs-20.el (mime-charset-to-coding-system): Display the message
