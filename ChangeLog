@@ -1,3 +1,10 @@
+2013-03-24  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-20.el (mime-charset-to-coding-system): Display the message
+	and use charset name as coding system when
+	`mime-charset-coding-system-alist' indicates invalid coding
+	system.
+
 2012-09-07  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* mcs-e20.el (coding-system-to-mime-charset): Coding system's

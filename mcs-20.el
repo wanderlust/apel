@@ -84,11 +84,13 @@ is specified, it is used as line break code type of coding-system."
   (if (stringp charset)
       (setq charset (intern (downcase charset)))
     )
-  (let ((cs (assq charset mime-charset-coding-system-alist)))
-    (setq cs
-	  (if cs
-	      (cdr cs)
-	    charset))
+  (let ((cs (cdr (assq charset mime-charset-coding-system-alist))))
+    (unless (or (null cs) (find-coding-system cs))
+      (message
+       "Invalid coding system: %s.  Confirm mime-charset-coding-system-alist."
+       cs)
+      (setq cs nil))
+    (unless cs (setq cs charset))
     (if lbt
 	(setq cs (intern (format "%s-%s" cs
 				 (cond ((eq lbt 'CRLF) 'dos)
@@ -96,12 +98,11 @@ is specified, it is used as line break code type of coding-system."
 				       ((eq lbt 'CR) 'mac)
 				       (t lbt)))))
       )
-    (if (find-coding-system cs)
-	cs
-      (if mime-charset-to-coding-system-default-method
-	  (funcall mime-charset-to-coding-system-default-method
-		   charset lbt cs)
-	))))
+    (or (find-coding-system cs)
+	(if mime-charset-to-coding-system-default-method
+	    (funcall mime-charset-to-coding-system-default-method
+		     charset lbt cs)
+	  ))))
 
 (defalias 'mime-charset-p 'mime-charset-to-coding-system)
 
