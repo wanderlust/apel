@@ -211,8 +211,8 @@ It must be symbol."
       default-mime-charset-for-write)))
 )
 
-((eval-when-compile (null (and (boundp 'mule-version)
-			       (string< mule-version "6.0"))))
+((eval-when-compile (and (boundp 'mule-version)
+			 (null (string< mule-version "6.0"))))
 ;; for Emacs 23 and later
 (defun detect-mime-charset-string (string)
   "Return MIME charset for STRING."
