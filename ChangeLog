@@ -1,3 +1,7 @@
+2013-07-05  Tatsuya Kinoshita  <tats@vega.ocn.ne.jp>
+
+	* mcs-20.el: Really check whether the mule-vesion variable is defined.
+
 2013-07-04  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* mcs-20.el: Check whether the mule-vesion variable is defined.
