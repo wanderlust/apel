@@ -37,6 +37,11 @@
 	function.
 	(detect-mime-charset-region): Use it.
 
+2012-04-27  MORIOKA Tomohiko  <tomo.git@chise.org>
+
+	* README.en, README.ja (Download): Renamed from "Anonymous FTP";
+	modify for http://git.chise.org/elisp/dist/apel/.
+
 2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
 
 	* README.ja (MAKEIT.BAT): Modify for apel-ja@lists.chise.org.

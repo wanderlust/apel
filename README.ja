@@ -551,11 +551,11 @@ APEL ML $B$rDL$7$F!"(BAPEL $B$N%P%0$rJs9p$7$?$j!"(BAPEL $B$N:G?7$N%j%j!<%9$
   http://lists.chise.org/mailman/listinfo/apel-en	$B!J1Q8l!K(B
 
 
-* Anonymous FTP
+* Download
 
 $B:G?7$N(B APEL $B$N%j%j!<%9$O0J2<$N>l=j$+$i<hF@$G$-$^$9(B:
 
-    ftp://ftp.m17n.org/pub/mule/apel/
+    http://git.chise.org/elisp/dist/apel/
 
 
 * Git
