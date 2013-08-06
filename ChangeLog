@@ -1,3 +1,9 @@
+2013-08-07  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* poe.el: Fix the case that `make-temp-file' is byte compiled with
+	lexical-binding.
+	Cf. https://github.com/ikazuhiro/apel/pull/3
+
 2013-07-05  Tatsuya Kinoshita  <tats@vega.ocn.ne.jp>
 
 	* mcs-20.el: Really check whether the mule-vesion variable is defined.
