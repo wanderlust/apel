@@ -1,6 +1,6 @@
 ;;; mcs-xm.el --- MIME charset implementation for XEmacs-mule
 
-;; Copyright (C) 1997,1998,1999,2000 Free Software Foundation, Inc.
+;; Copyright (C) 1997,1998,1999,2000,2002,2010 Free Software Foundation, Inc.
 
 ;; Author: MORIOKA Tomohiko <tomo@m17n.org>
 ;; Keywords: MIME-charset, coding-system, emulation, compatibility, Mule
@@ -120,48 +120,50 @@
 	  '((ascii latin-iso8859-14)			. iso-8859-14))
      ,(if (find-coding-system 'iso-8859-15)
 	  '((ascii latin-iso8859-15)			. iso-8859-15))
-     ,(if (featurep 'utf-2000)
-	  '((ascii latin-jisx0201
-		   japanese-jisx0208-1978
-		   japanese-jisx0208
-		   japanese-jisx0208-1990)		. iso-2022-jp)
-	'((ascii latin-jisx0201
-		 japanese-jisx0208-1978 japanese-jisx0208)
-	  . iso-2022-jp))
-     ,(if (featurep 'utf-2000)
-	  '((ascii latin-jisx0201
-		   japanese-jisx0208-1978
-		   japanese-jisx0208
-		   japanese-jisx0208-1990
-		   japanese-jisx0213-1
-		   japanese-jisx0213-2)			. iso-2022-jp-3)
-	'((ascii latin-jisx0201
-		 japanese-jisx0208-1978 japanese-jisx0208
-		 japanese-jisx0213-1
-		 japanese-jisx0213-2)			. iso-2022-jp-3))
+     ;; ,(if (featurep 'utf-2000)
+     ;;      '((ascii latin-jisx0201
+     ;;               japanese-jisx0208-1978
+     ;;               japanese-jisx0208
+     ;;               japanese-jisx0208-1990)              . iso-2022-jp)
+     ;;    '((ascii latin-jisx0201
+     ;;             japanese-jisx0208-1978 japanese-jisx0208)
+     ;;      . iso-2022-jp))
+     ((ascii latin-jisx0201
+	     japanese-jisx0208-1978 japanese-jisx0208)	. iso-2022-jp)
+     ;; ,(if (featurep 'utf-2000)
+     ;;      '((ascii latin-jisx0201
+     ;;               japanese-jisx0208-1978
+     ;;               japanese-jisx0208
+     ;;               japanese-jisx0208-1990
+     ;;               japanese-jisx0213-1
+     ;;               japanese-jisx0213-2)                 . iso-2022-jp-3)
+     ;;    '((ascii latin-jisx0201
+     ;;             japanese-jisx0208-1978 japanese-jisx0208
+     ;;             japanese-jisx0213-1
+     ;;             japanese-jisx0213-2)                   . iso-2022-jp-3))
      ,(if (featurep 'utf-2000)
 	  '((ascii latin-jisx0201 katakana-jisx0201
-		   japanese-jisx0208-1990)		. shift_jis)
+		   japanese-jisx0208-1990)		. utf-8)
 	'((ascii latin-jisx0201
 		 katakana-jisx0201 japanese-jisx0208)	. shift_jis))
      ((ascii korean-ksc5601)				. euc-kr)
      ((ascii chinese-gb2312)				. gb2312)
      ((ascii chinese-big5-1 chinese-big5-2)		. big5)
      ((ascii thai-xtis)					. tis-620)
-     ,(if (featurep 'utf-2000)
-	  '((ascii latin-jisx0201 latin-iso8859-1
-		   greek-iso8859-7
-		   japanese-jisx0208-1978 japanese-jisx0208
-		   japanese-jisx0208-1990
-		   japanese-jisx0212
-		   chinese-gb2312
-		   korean-ksc5601)		. iso-2022-jp-2)
-	'((ascii latin-jisx0201 latin-iso8859-1
-		 greek-iso8859-7
-		 japanese-jisx0208-1978 japanese-jisx0208
-		 japanese-jisx0212
-		 chinese-gb2312
-		 korean-ksc5601)			. iso-2022-jp-2))
+     ;; ,(if (featurep 'utf-2000)
+     ;;      '((ascii latin-jisx0201 latin-iso8859-1
+     ;;               greek-iso8859-7
+     ;;               japanese-jisx0208-1978 japanese-jisx0208
+     ;;               japanese-jisx0208-1990
+     ;;               japanese-jisx0212
+     ;;               chinese-gb2312
+     ;;               korean-ksc5601)              . iso-2022-jp-2)
+     ;;    '((ascii latin-jisx0201 latin-iso8859-1
+     ;;             greek-iso8859-7
+     ;;             japanese-jisx0208-1978 japanese-jisx0208
+     ;;             japanese-jisx0212
+     ;;             chinese-gb2312
+     ;;             korean-ksc5601)                        . iso-2022-jp-2))
      ;;((ascii latin-iso8859-1 greek-iso8859-7
      ;;        latin-jisx0201 japanese-jisx0208-1978
      ;;        chinese-gb2312 japanese-jisx0208

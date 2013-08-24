@@ -1638,14 +1638,14 @@ See `walk-windows' for the meaning of MINIBUF and FRAME."
 	  (or (getenv "TMPDIR") (getenv "TMP") (getenv "TEMP") "/tmp"))))
   "The directory for writing temporary files.")
 
-;; Emacs 21 CVS         ; nothing to do.
+;; Emacs 21 CVS and later ; nothing to do.
 ;;  (make-temp-file PREFIX &optional DIR-FLAG SUFFIX)
 ;;
-;; Emacs 21.1-21.3      ; replace with CVS version of `make-temp-file'.
+;; Emacs 21.1-21.3        ; replace with CVS version of `make-temp-file'.
 ;;  (make-temp-file PREFIX &optional DIR-FLAG)
 ;;
-;; Emacs 20 and earlier ; install our version of `make-temp-file', for
-;;  or XEmacs		; single-user system or for multi-user system.
+;; Emacs 20 and earlier   ; install our version of `make-temp-file', for
+;;  or XEmacs		  ; single-user system or for multi-user system.
 (eval-when-compile
   (cond
    ((get 'make-temp-file 'defun-maybe)
@@ -1667,11 +1667,15 @@ See `walk-windows' for the meaning of MINIBUF and FRAME."
                      )))
       ;; arglist: (prefix &optional dir-flag suffix)
       (cond
-       ((not arglist)
-        ;; `make-temp-file' is a built-in; expects 3-args.
-        (put 'make-temp-file 'defun-maybe '3-args))
-       ((> (length arglist) 3)
-        ;; Emacs 21 CVS.
+       ((or
+	 ;; `make-temp-file' is a built-in.
+	 (not arglist)
+	 ;; Emacs trunk r113642 and later.
+	 ;; `make-temp-file' is byte compiled with lexical-binding.
+	 (integerp arglist)
+	 ;; Emacs 21 CVS and later.
+	 ;; `make-temp-file' is byte compiled.
+	 (> (length arglist) 3))
         (put 'make-temp-file 'defun-maybe '3-args))
        (t
         ;; Emacs 21.1-21.3
@@ -1996,8 +2000,9 @@ in and returned; otherwise a new event object will be created and
 returned.
 If PROMPT is non-nil, it should be a string and will be displayed in
 the echo area while this function is waiting for an event."
-  ((and (>= emacs-major-version 20)
-	(>= emacs-minor-version 4))
+  ((or (>= emacs-major-version 21)
+       (and (>= emacs-major-version 20)
+	    (>= emacs-minor-version 4)))
    ;; Emacs 20.4 and later.
    (read-event prompt))			; should specify 2nd arg?
   ((and (= emacs-major-version 20)

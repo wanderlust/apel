@@ -1,3 +1,72 @@
+2013-08-07  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* poe.el: Fix the case that `make-temp-file' is byte compiled with
+	lexical-binding.
+	Cf. https://github.com/ikazuhiro/apel/pull/3
+
+2013-07-05  Tatsuya Kinoshita  <tats@vega.ocn.ne.jp>
+
+	* mcs-20.el: Really check whether the mule-vesion variable is defined.
+
+2013-07-04  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-20.el: Check whether the mule-vesion variable is defined.
+	Cf. https://github.com/ikazuhiro/apel/commit/328c02e022340b36dd7e5f9250c7f86d2bafd793
+
+2013-03-24  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-20.el (mime-charset-to-coding-system): Display the message
+	and use charset name as coding system when
+	`mime-charset-coding-system-alist' indicates invalid coding
+	system.
+
+2012-09-07  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-e20.el (coding-system-to-mime-charset): Coding system's
+	setting is preferred to mime-charset-coding-system-alist's value.
+	Detect MIME name from mime-charset-coding-system-alist's value
+	more permissively.
+
+2012-08-08  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* poe.el (next-command-event): Fix that Emacs 21 and later were
+	treated as 'Emacs 19, 20.1 and 20.2'.
+
+2012-07-28  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-e20.el (charsets-mime-charset-alist): Do not use
+	`iso-2022-jp-2'.
+
+2012-07-28  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-20.el (detect-mime-charset-string): (Emacs23 and later) New
+	function.
+	(detect-mime-charset-region): Use it.
+
+2012-04-27  MORIOKA Tomohiko  <tomo.git@chise.org>
+
+	* README.en, README.ja (Download): Renamed from "Anonymous FTP";
+	modify for http://git.chise.org/elisp/dist/apel/.
+
+2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* README.ja (MAKEIT.BAT): Modify for apel-ja@lists.chise.org.
+
+2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* README.ja, README.en: Remove descriptions about CVS and add
+	description about the new Git repository.
+
+2012-04-27  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* README.en (make.bat (for MS-DOS family)): Modify for
+	apel-en@lists.chise.org.
+
+2012-04-26  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* README.ja, README.en (Bug reports): Modify for
+	apel-{en|ja}@lists.chise.org.
+
 2011-07-17  David Maus  <dmaus@ictsoc.de>
 
 	* tinycustom.el (defcustom): Use new style backquotes.
@@ -27,11 +96,35 @@
 
 	[Patch created by HAMANO Kiyoto <khiker.mail@gmail.com>]
 
+2011-06-17  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-20.el (detect-mime-charset-region): (Emacs23 and later) Do
+	not check whether `charsets-mime-charset-alist' contains non
+	charset symbol.
+
+	* mcs-e20.el (charsets-mime-charset-alist): Remove non charset
+	symbol for Emacs 23 and later.
+
+2010-10-06  MORIOKA Tomohiko  <tomo@zinbun.kyoto-u.ac.jp>
+
+	* mcs-xm.el (charsets-mime-charset-alist):
+	- Don't use `japanese-jisx0208-1990' for `iso-2022-jp'
+	- Don't use `iso-2022-jp-3'
+	- Use `utf-8' instead of `shift_jis' for
+	  '(ascii latin-jisx0201 katakana-jisx0201 japanese-jisx0208-1990)
+	- Don't use `iso-2022-jp-2'
+
+
 2010-06-15  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 
 	* APEL: Version 10.8 released.
 
 	* apel-ver.el (apel-ver): Change APEL version to 10.8.
+
+2010-03-19  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-20.el (detect-mime-charset-region): Do not care priority of
+	charsets on Emacs 23 and later.
 
 2010-02-13  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
 

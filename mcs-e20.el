@@ -90,11 +90,15 @@
      ((ascii korean-ksc5601)				. euc-kr)
      ((ascii chinese-gb2312)				. gb2312)
      ((ascii chinese-big5-1 chinese-big5-2)		. big5)
-     ((ascii thai-tis620 composition)			. tis-620)
-     ((ascii latin-iso8859-1 greek-iso8859-7
-	     latin-jisx0201 japanese-jisx0208-1978
-	     chinese-gb2312 japanese-jisx0208
-	     korean-ksc5601 japanese-jisx0212)		. iso-2022-jp-2)
+     ,(static-cond
+       ((null (string< mule-version "6.0"))
+	'((ascii thai-tis620)				. tis-620))
+       (t
+	'((ascii thai-tis620 composition)      		. tis-620)))
+     ;; ((ascii latin-iso8859-1 greek-iso8859-7
+     ;; 	     latin-jisx0201 japanese-jisx0208-1978
+     ;; 	     chinese-gb2312 japanese-jisx0208
+     ;; 	     korean-ksc5601 japanese-jisx0212)		. iso-2022-jp-2)
      ;;((ascii latin-iso8859-1 greek-iso8859-7
      ;;        latin-jisx0201 japanese-jisx0208-1978
      ;;        chinese-gb2312 japanese-jisx0208
@@ -119,8 +123,16 @@
 (defun coding-system-to-mime-charset (coding-system)
   "Convert CODING-SYSTEM to a MIME-charset.
 Return nil if corresponding MIME-charset is not found."
-  (or (car (rassq coding-system mime-charset-coding-system-alist))
-      (coding-system-get coding-system 'mime-charset)
+  (or (coding-system-get coding-system 'mime-charset)
+      (let ((coding (coding-system-base coding-system))
+	    (alist mime-charset-coding-system-alist)
+	    result)
+	(while alist
+	  (if (eq (coding-system-base (cdar alist)) coding)
+	      (setq result (caar alist)
+		    alist nil)
+	    (setq alist (cdr alist))))
+	result)
       ))
 
 (defun-maybe-cond mime-charset-list ()
