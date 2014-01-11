@@ -1,3 +1,10 @@
+2014-01-11  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* pym.el (static-if, static-when, static-unless)
+	(static-condition-case, static-defconst, static-cond): Fix edebug
+	specs.  Suggested by Katsumi Yamaoka.
+	Cf. http://thread.gmane.org/gmane.mail.wanderlust.general.japanese/9479
+
 2013-08-07  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* poe.el: Fix the case that `make-temp-file' is byte compiled with
