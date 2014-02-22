@@ -1,3 +1,25 @@
+2014-02-22  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* pces-20.el (insert-file-contents-as-raw-text)
+	(insert-file-contents-as-raw-text-CRLF): Fix docstring.
+	`insert-file-contents-as-binary' is alias for
+	`insert-file-contents-literally' on Emacs 20 and XEmacs with
+	coding-system..
+
+2014-02-22  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	Fix typo in docstring.
+	* pces-20.el (insert-file-contents-as-raw-text)
+	(insert-file-contents-as-raw-text-CRLF)
+
+	* pces-e20_2.el (insert-file-contents-as-binary)
+	(insert-file-contents-as-raw-text)
+	(insert-file-contents-as-raw-text-CRLF)
+
+	* pces-om.el (insert-file-contents-as-binary)
+
+	* pces-raw.el (insert-file-contents-as-binary)
+
 2014-01-11  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* pym.el (static-if, static-when, static-unless)
