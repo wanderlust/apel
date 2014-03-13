@@ -149,7 +149,13 @@
 	  (featurep 'xemacs)
 	  (featurep 'meadow) ; for Meadow
 	  (and (eq system-type 'windows-nt) ; for NTEmacs
-	       (>= emacs-major-version 20)))
+	       (and (>= emacs-major-version 20)
+		    ;; Exclude the case that built by running the same
+		    ;; configure script as on all other platforms.
+		    (equal (file-name-nondirectory
+			    (expand-file-name "." exec-directory))
+			   "bin")
+		    )))
       (expand-file-name "../../.." exec-directory)
     (expand-file-name "../../../.." data-directory)))
 
