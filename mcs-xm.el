@@ -110,6 +110,8 @@
      ((ascii latin-iso8859-2)				. iso-8859-2)
      ((ascii latin-iso8859-3)				. iso-8859-3)
      ((ascii latin-iso8859-4)				. iso-8859-4)
+     ,(if (find-coding-system 'iso-8859-15)
+	  '((ascii latin-iso8859-15)			. iso-8859-15))
      ((ascii cyrillic-iso8859-5)			. iso-8859-5)
      ;;((ascii cyrillic-iso8859-5)			. koi8-r)
      ((ascii arabic-iso8859-6)				. iso-8859-6)
@@ -118,8 +120,6 @@
      ((ascii latin-iso8859-9)				. iso-8859-9)
      ,(if (find-coding-system 'iso-8859-14)
 	  '((ascii latin-iso8859-14)			. iso-8859-14))
-     ,(if (find-coding-system 'iso-8859-15)
-	  '((ascii latin-iso8859-15)			. iso-8859-15))
      ;; ,(if (featurep 'utf-2000)
      ;;      '((ascii latin-jisx0201
      ;;               japanese-jisx0208-1978
