@@ -271,12 +271,13 @@ Both SYMBOL and SPEC are unevaluated. The SPEC can be 0, t, a symbol
 	   &rest (&rest sexp)))
 
 ;; edebug-spec for `static-*' macros are also defined here.
-(def-edebug-spec static-if t) 
-(def-edebug-spec static-when when)
-(def-edebug-spec static-unless unless)
-(def-edebug-spec static-condition-case condition-case)
-(def-edebug-spec static-defconst defconst)
-(def-edebug-spec static-cond cond)
+(def-edebug-spec static-if (def-form form body))
+(def-edebug-spec static-when (def-form body))
+(def-edebug-spec static-unless (def-form body))
+(def-edebug-spec static-condition-case
+  (symbolp def-form &rest ([&or symbolp (&rest symbolp)] body)))
+(def-edebug-spec static-defconst (symbolp def-form &optional stringp))
+(def-edebug-spec static-cond (&rest (def-form body)))
 
 
 ;;; for backward compatibility.

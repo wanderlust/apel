@@ -76,7 +76,7 @@
 (defun insert-file-contents-as-binary (filename
 				       &optional visit beg end replace)
   "Like `insert-file-contents', q.v., but don't code and format conversion.
-Like `insert-file-contents-literary', but it allows find-file-hooks,
+Like `insert-file-contents-literally', but it allows find-file-hooks,
 automatic uncompression, etc.
 
 Namely this function ensures that only format decoding and character

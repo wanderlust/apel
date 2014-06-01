@@ -254,7 +254,7 @@ applied to `coding-system-for-write'."
   (defun insert-file-contents-as-binary (filename
 					 &optional visit beg end replace)
     "Like `insert-file-contents', q.v., but don't code and format conversion.
-Like `insert-file-contents-literary', but it allows find-file-hooks,
+Like `insert-file-contents-literally', but it allows find-file-hooks,
 automatic uncompression, etc.
 
 Namely this function ensures that only format decoding and character
@@ -267,7 +267,7 @@ code conversion will not take place."
   (defun insert-file-contents-as-binary (filename
 					 &optional visit beg end replace)
     "Like `insert-file-contents', q.v., but don't code and format conversion.
-Like `insert-file-contents-literary', but it allows find-file-hooks,
+Like `insert-file-contents-literally', but it allows find-file-hooks,
 automatic uncompression, etc.
 
 Namely this function ensures that only format decoding and character
@@ -279,7 +279,7 @@ code conversion will not take place."
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)
   "Like `insert-file-contents', q.v., but don't code and format conversion.
-Like `insert-file-contents-literary', but it allows find-file-hooks,
+Like `insert-file-contents-literally', but it allows find-file-hooks,
 automatic uncompression, etc.
 Like `insert-file-contents-as-binary', but it converts line-break
 code."
