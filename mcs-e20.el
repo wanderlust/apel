@@ -120,6 +120,9 @@
   (plist-get (coding-system-plist coding-system) prop)
   )
 
+(defvar coding-system-to-mime-charset-exclude-regexp
+  "^unknown$\\|^x-")
+
 (defun coding-system-to-mime-charset (coding-system)
   "Convert CODING-SYSTEM to a MIME-charset.
 Return nil if corresponding MIME-charset is not found."
@@ -132,8 +135,9 @@ Return nil if corresponding MIME-charset is not found."
 	      (setq result (caar alist)
 		    alist nil)
 	    (setq alist (cdr alist))))
-	result)
-      ))
+	(unless (string-match coding-system-to-mime-charset-exclude-regexp
+			      (symbol-name result))
+	  result))))
 
 (defun-maybe-cond mime-charset-list ()
   "Return a list of all existing MIME-charset."
