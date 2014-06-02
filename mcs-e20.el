@@ -135,8 +135,9 @@ Return nil if corresponding MIME-charset is not found."
 	      (setq result (caar alist)
 		    alist nil)
 	    (setq alist (cdr alist))))
-	(unless (string-match coding-system-to-mime-charset-exclude-regexp
-			      (symbol-name result))
+	(unless (and coding-system-to-mime-charset-exclude-regexp
+		     (string-match coding-system-to-mime-charset-exclude-regexp
+				   (symbol-name result)))
 	  result))))
 
 (defun-maybe-cond mime-charset-list ()
