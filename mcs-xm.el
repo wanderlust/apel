@@ -187,9 +187,8 @@ Return nil if corresponding MIME-charset is not found."
 	cs)
     (while rest
       (setq cs (coding-system-name (coding-system-base (car rest))))
-      (or (rassq cs mime-charset-coding-system-alist)
-	  (memq cs dest)
-	  (setq dest (cons cs dest)))
+      (unless (memq cs dest)
+	(setq dest (cons cs dest)))
       (setq rest (cdr rest)))
     dest))
 
