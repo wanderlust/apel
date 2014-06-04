@@ -1,5 +1,14 @@
 2014-06-04  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
+	* mcs-20.el (detect-mime-charset-list): (Emacs23 and later) New
+	function.
+	(detect-mime-charset-string, detect-mime-charset-region): (Emacs23
+	and later) Refactored to build a list of unique characters without
+	full list of characters in string or region.  Use
+	detect-mime-charset-list.
+
+2014-06-04  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
 	* mcs-e20.el (mime-charset-list): Fix the case that MIME charset
 	and coding system have n:1 relation.
 

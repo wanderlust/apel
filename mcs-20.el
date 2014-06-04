@@ -214,29 +214,36 @@ It must be symbol."
 ((eval-when-compile (and (boundp 'mule-version)
 			 (null (string< mule-version "6.0"))))
 ;; for Emacs 23 and later
+(defun detect-mime-charset-list (chars)
+  "Return MIME charset for the list of characters CHARS."
+  (catch 'found
+    (mapc (lambda (cons)
+	    (catch 'next
+	      (mapc (lambda (ch) (unless (char-charset ch (car cons))
+				   (throw 'next nil)))
+		    chars)
+	      (throw 'found (cdr cons))))
+	  charsets-mime-charset-alist)
+    default-mime-charset-for-write))
+
 (defun detect-mime-charset-string (string)
   "Return MIME charset for STRING."
-  (let ((src (string-to-list string))
-	tmp)
-    (setq tmp src)
-    ;; Uniquify the list of characters.
-    (while tmp
-      (setq tmp (setcdr tmp (delq (car tmp) (cdr tmp)))))
-    ;; Detect charset from the list of characters.
-    (catch 'found
-      (mapc (lambda (cons)
-	      (catch 'next
-		(mapc (lambda (ch) (unless (char-charset ch (car cons))
-				     (throw 'next nil)))
-		      src)
-		(throw 'found (cdr cons))))
-	    charsets-mime-charset-alist)
-      default-mime-charset-for-write)))
+  (let (list)
+    (mapc (lambda (ch) (unless (memq ch list)
+			 (setq list (cons ch list))))
+	  string)
+    (detect-mime-charset-list list)))
 
-(defsubst detect-mime-charset-region (start end)
+(defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END."
-  (detect-mime-charset-string
-   (buffer-substring-no-properties start end))))
+  (let ((point (min start end))
+	list)
+    (setq end (max start end))
+    (while (< point end)
+      (unless (memq (char-after point) list)
+	(setq list (cons (char-after point) list)))
+      (setq point (1+ point)))
+    (detect-mime-charset-list list))))
 
 (t
 ;; for legacy Mule
