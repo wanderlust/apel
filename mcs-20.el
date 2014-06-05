@@ -214,6 +214,13 @@ It must be symbol."
 ((eval-when-compile (and (boundp 'mule-version)
 			 (null (string< mule-version "6.0"))))
 ;; for Emacs 23 and later
+(defcustom detect-mime-charset-from-coding-system nil
+  "When non-nil, `detect-mime-charset-region' and `detect-mime-charset-string' functions decide charset by encodability in destination coding system.
+
+In that case, each car of `charsets-mime-charset-alist' element is ignored."
+  :group 'i18n
+  :type 'boolean)
+
 (defun detect-mime-charset-list (chars)
   "Return MIME charset for the list of characters CHARS."
   (catch 'found
@@ -226,24 +233,46 @@ It must be symbol."
 	  charsets-mime-charset-alist)
     default-mime-charset-for-write))
 
+(defun detect-mime-charset-from-coding-system (start end &optional string)
+  "Return MIME charset for the region between START and END, deciding by encodability in destination coding system.
+
+Optional 3rd argument STRING is non-nil, detect MIME charset from STRING.  In that case, START and END are indexes of the string."
+  (let ((alist charsets-mime-charset-alist)
+	result)
+    (while alist
+      (if (unencodable-char-position
+	   start end (mime-charset-to-coding-system (cdar alist)) nil string)
+	  (setq alist (cdr alist))
+	(setq result (cdar alist)
+	      alist nil)))
+    (or result default-mime-charset-for-write)))
+
 (defun detect-mime-charset-string (string)
-  "Return MIME charset for STRING."
-  (let (list)
-    (mapc (lambda (ch) (unless (memq ch list)
-			 (setq list (cons ch list))))
-	  string)
-    (detect-mime-charset-list list)))
+  "Return MIME charset for STRING.
+
+When `detect-mime-charset-from-coding-system' is non-nil, each car of `charsets-mime-charset-alist' element is ignored."
+  (if detect-mime-charset-from-coding-system
+      (detect-mime-charset-from-coding-system 0 (length string) string)
+    (let (list)
+      (mapc (lambda (ch) (unless (memq ch list)
+			   (setq list (cons ch list))))
+	    string)
+      (detect-mime-charset-list list))))
 
 (defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END."
-  (let ((point (min start end))
-	list)
-    (setq end (max start end))
-    (while (< point end)
-      (unless (memq (char-after point) list)
-	(setq list (cons (char-after point) list)))
-      (setq point (1+ point)))
-    (detect-mime-charset-list list))))
+  "Return MIME charset for region between START and END.
+
+When `detect-mime-charset-from-coding-system' is non-nil, each car of `charsets-mime-charset-alist' element is ignored."
+  (if detect-mime-charset-from-coding-system
+      (detect-mime-charset-from-coding-system start end)
+    (let ((point (min start end))
+	  list)
+      (setq end (max start end))
+      (while (< point end)
+	(unless (memq (char-after point) list)
+	  (setq list (cons (char-after point) list)))
+	(setq point (1+ point)))
+      (detect-mime-charset-list list)))))
 
 (t
 ;; for legacy Mule

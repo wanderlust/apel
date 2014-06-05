@@ -1,3 +1,12 @@
+2014-06-05  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-20.el (detect-mime-charset-from-coding-system): (Emacs23 and
+	later) New cutomizable variable and function.
+	(detect-mime-charset-region, detect-mime-charset-string): (Emacs23
+	and later) Use it.  When `detect-mime-charset-from-coding-system'
+	is non-nil, detect MIME charset by encodability in destination
+	coding system.
+
 2014-06-04  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* mcs-20.el (detect-mime-charset-list): (Emacs23 and later) New
