@@ -1,3 +1,9 @@
+2014-10-11  Erik Hetzner <egh@e6h.org>
+
+	* pces-20.el: Only check for broken insert-file-contents-literally
+	on emacs older than 23, to prevent error in byte-compilation via
+	package installation.
+
 2014-06-05  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* mcs-20.el (detect-mime-charset-from-coding-system): (Emacs23 and
