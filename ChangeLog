@@ -1,4 +1,8 @@
-2014-10-19 Erik Hetzner <egh@e6h.org>
+2014-10-28  Erik Hetzner <egh@e6h.org>
+
+	* apel-pkg.el: New file.
+
+2014-10-19  Erik Hetzner <egh@e6h.org>
 	* pces-20.el: Only check for broken insert-file-contents-literally
 	when literal-test-file is writable.
 
