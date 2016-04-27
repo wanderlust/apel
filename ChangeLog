@@ -1,3 +1,9 @@
+2016-04-27  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* poe.el (plist-get, replace-match, plist-put)
+	(split-string-default-separators, split-string): Fix misusage of
+	"\" in docstring.
+
 2014-10-28  Erik Hetzner <egh@e6h.org>
 
 	* apel-pkg.el: New file.
