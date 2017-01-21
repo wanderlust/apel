@@ -1,3 +1,42 @@
+2017-01-21  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* EMU-ELS (emu-modules): Remove support for Emacs 18-20.3 and
+	Nemacs.
+
+	* emu-mule.el: Removed.
+
+	* env.el: Removed.
+
+	* inv-18.el: Removed.
+
+	* localhook.el: Removed.
+
+	* mcs-nemacs.el: Removed.
+
+	* mcs-om.el: Removed.
+
+	* pccl-om.el: Removed.
+
+	* pces-e20_2.el: Removed.
+
+	* pces-nemacs.el: Removed.
+
+	* pces-om.el: Removed.
+
+	* poem-18: Removed.
+
+	* poem-e20_2.el: Removed.
+
+	* poem-nemacs.el: Removed.
+
+	* poem-om.el: Removed.
+
+	* timezone.el: Removed.
+
+	* tinycustom.el: Removed.
+
+	* tinyrich.el: Removed.
+
 2016-04-27  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* poe.el (plist-get, replace-match, plist-put)

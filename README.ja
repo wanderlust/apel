@@ -13,20 +13,14 @@ APEL は "A Portable Emacs Library." の略です。これは以下のモジュールで
 $Bのモジュール。
 
   poe-xemacs.el  --- XEmacs用
-  poe-18.el	 --- Emacs 18/Nemacs 用
-  env.el         --- Emacs 18 用の env.el
-  localhook.el   --- Emacs 18 と Emacs 19.28 以前用の hook 関数群
   pym.el         --- poe のための macros
 
 ** poem.el
 
 移植性の高い MULE プログラムを書くための基礎的な関数を提供する。
 
-  poem-nemacs.el --- Nemacs 用
   poem-ltn1.el   --- MULE なし Emacs 19/XEmacs 用
-  poem-om.el     --- MULE 1.*, 2.* 用
   poem-20.el     --- Emacs 20 と XEmacs-MULE の共有モジュール
-  poem-e20_2.el  --- Emacs 20.1/20.2 用
   poem-e20_3.el  --- Emacs 20.3 用
   poem-xm.el     --- XEmacs-MULE 用
 
@@ -36,24 +30,19 @@ APEL は "A Portable Emacs Library." の略です。これは以下のモジュールで
 
   pces-20.el     --- coding-system $B機能を持つ Emacs 20 and XEmacs 用
   pces-e20.el    --- Emacs 20 用
-  pces-e20_2.el  --- Emacs 20.1 and 20.2 用
-  pces-nemacs.el --- Nemacs 用
-  pces-om.el     --- Mule 1.* and Mule 2.* 用
   pces-raw.el    --- coding-system 機能を持たない emacsen 用
   pces-xfc.el    --- file coding 機能を持つ XEmacs 用
   pces-xm.el     --- XEmacs-mule 用
 
 ** invisible.el --- 不可視 region に関する機能を提供する
 
-  inv-18.el     --- for Emacs 18
   inv-19.el     --- for Emacs 19
+  inv-23.el     --- for Emacs 23
   inv-xemacs.el --- for XEmacs
 
 ** mcharset.el --- MIME charset 関連の機能を提供する
 
-  mcs-nemacs.el --- Nemacs 用
   mcs-ltn1.el   --- MULE Emacs 19/XEmacs 用
-  mcs-om.el     --- MULE 1.*, 2.* 用
   mcs-20.el     --- Emacs 20 と XEmacs-MULE 用の共有モジュール
   mcs-e20.el    --- Emacs 20 用
   mcs-xm.el     --- XEmacs-MULE 用
@@ -65,7 +54,6 @@ APEL は "A Portable Emacs Library." の略です。これは以下のモジュールで
 
 ** pccl.el --- $B移植可能な CCL プログラムを書くためのユーティリティー
 
-  pccl-om.el --- MULE 2.* 用
   pccl-20.el --- Emacs 20/XEmacs-21-MULE 用
 
 ** alist.el: 連想リストのためのユーティリティー
@@ -85,20 +73,10 @@ APEL は "A Portable Emacs Library." の略です。これは以下のモジュールで
 tm-7.106 $Bに入っていた emu との互換性を保つためのモジュール。poe, poem,
 mcharset を require する。
 
-  emu-mule:	MULE 1.*, 2.* 用
-
   richtext.el   --- Emacs 19.29 かそれ以降 XEmacs 19.14 かそれ以降のた
                     めの text/richtext モジュール
-  tinyrich.el   --- 古い emacs 環境のための text/richtext モジュール
 
 ** pcustom.el --- 移植性の高い custom 環境を提供する
-
-  tinycustom.el --- custom.el のエミュレーションを行なう
-
-** timezone.el
-
-タイムゾーンユーティリティ。2000 年問題対応版。Emacs 18 と GNUS 3.14.4
-でも動作可。
 
 ** product.el --- プロダクトのバージョン情報のための機能を提供するモジュール。
 
@@ -324,94 +302,6 @@ load-path に追加してください。もし Emacs 19.29 以降または Emacs 20.1
 
 もし Emacs 20.3 以降もしくは XEmacs を使って普通にインストールするの
 ならば、load-path を設定する必要はありません。
-
-
-* Emacs のバージョンに関連した情報
-
-** 「古い byte-compiler」と「新しい byte-compiler」
-
-Emacs 18 のユーザのみなさんへ:
-
-このパッケージではコンパイル時における条件判断をたくさん行なっていま
-す。残念ながら Emacs 18 に付属している byte-compiler には、例えば
-`eval-when-compile' や `eval-and-compile' の機能が無いので代用品のマ
-クロを用意してありますが、これらはコンパイル時だけでなく load 時また
-は実行時にも働いてしまいます!   加えて「古い byte-compiler」はトップ
-レベルのマクロをコンパイルしてくれないので、APEL の多くのコードがコ
-ンパイルされないままになってしまいます。
-
-そこで、最適化を行なう「新しい byte-compiler」を使うことをお勧めしま
-す。それは Emacs 19 以降に付属している byte-compiler の元になってい
-るものです。
-
-最適化を行なう byte-compiler は Emacs Lisp Archive およびそれらのミ
-ラーから入手することができます。
-
-Mule 1.* の時代には Mule 用の「新しい byte-compiler」を含む Mule 1.*
-用の "contrib" パッケージが配布されていました。しかし現在ではこのパッ
-ケージを手に入れることは難しいでしょう。
-
-我々の知る限りでは Emacs 18 用の「新しい byte-compiler」は SKK 9.6,
-または SKK 10.62a に付属しています。SKK 10.62a は
-
-  http://openlab.ring.gr.jp/skk/maintrunk
-
-から入手することができます。これらは Mule 1.* 用のパッチも含んでいます。
-
-
-** 「古い custom」と「新しい custom」
-
-Emacs 19.34 と XEmacs 19.14 のユーザのみなさんへ:
-
-Emacs 19.32〜19.34、XEmacs 19.14 および Gnus 5.2/5.3 に含まれている
-custom ライブラリは「古い」もので、これの API は Emacs 20.1 または
-XEmacs 19.15 より新しい Emacsen と Gnus 5.4/5.5 に含まれている
-「新しい custom」とは違っています。
-
-Emacs 19.34 と XEmacs 19.15〜20.2 用の「新しい custom」は、以下の
-URL から手に入れることができます。
-
-ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz
-
-(注: XEmacs 19.15〜20.2 と Gnus 5.4/5.5 に含まれている「新しい custom」
-はこの版より古いものです。)
-
-「新しい custom」をインストールする前に、次の各項目をチェックして下
-さい。
-
-  1) もしあなたが Gnus 5.2/5.3 (または他の「古い custom」を使うアプ
-     リケーション) を使うことに固執しているのならば「新しい custom」
-     をインストールしてはいけません。
-
-  2) Emacs 19 を元にした Mule を使うのならば、このパッチを「新しい
-     custom」に当てる必要があります。
-
-----8<------8<------8<------8<------8<------8<------8<------8<----
---- custom-1.9962/cus-face.el~	Wed Mar  4 19:52:39 1998
-+++ custom-1.9962/cus-face.el	Mon Mar  9 08:05:33 1998
-@@ -96,7 +96,7 @@
-       "Define a new FACE on all frames, ignoring X resources."
-       (interactive "SMake face: ")
-       (or (internal-find-face name)
--	  (let ((face (make-vector 8 nil)))
-+	  (let ((face (make-vector face-vector-length nil)))
- 	    (aset face 0 'face)
- 	    (aset face 1 name)
- 	    (let* ((frames (frame-list))
-----8<------8<------8<------8<------8<------8<------8<------8<----
-
-  3) custom を使うコンパイルされたアプリケーションは、それを load す
-     るときや実行するときに同じバージョンの custom を必要とします。
-     したがって、いつも load-path に「新しい custom」を含めておかな
-     ければなりません。
-     これを行なうためのもっとも簡単な方法は subdirs.el を使うことで
-     す。
-     「新しい custom」が /usr/local/share/emacs/19.34/site-lisp/custom/
-     にインストールされているのならば、
-     /usr/local/share/emacs/19.34/site-lisp/subdirs.el というファイ
-     ルに以下の行を書き込んで下さい。
-
-     (normal-top-level-add-to-load-path '("custom"))
 
 
 * 使い方

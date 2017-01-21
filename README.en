@@ -13,20 +13,14 @@ This is an emulation module mainly for basic functions and special
 forms/macros of latest emacsen.
 
   poe-xemacs.el  --- for XEmacs
-  poe-18.el	 --- for Emacs 18/Nemacs
-  env.el         --- env.el for Emacs 18
-  localhook.el   --- hook functions for Emacs 19.28 and earlier.
   pym.el         --- macros for poe.
 
 ** poem.el
 
 This module provides basic functions to write portable MULE programs.
 
-  poem-nemacs.el --- for Nemacs
   poem-ltn1.el   --- for Emacs 19/XEmacs without MULE
-  poem-om.el     --- for MULE 1.*, 2.*
   poem-20.el     --- shared module between Emacs 20 and XEmacs-MULE
-  poem-e20_2.el  --- for Emacs 20.1/20.2
   poem-e20_3.el  --- for Emacs 20.3
   poem-xm.el     --- for XEmacs-MULE
 
@@ -37,9 +31,6 @@ This module provides portable character encoding scheme
 
   pces-20.el     --- for Emacs 20 and XEmacs with coding-system.
   pces-e20.el    --- for Emacs 20.
-  pces-e20_2.el  --- for Emacs 20.1 and 20.2.
-  pces-nemacs.el --- for Nemacs.
-  pces-om.el     --- for Mule 1.* and Mule 2.*.
   pces-raw.el    --- for emacsen without coding-system features.
   pces-xfc.el    --- for XEmacs with file coding.
   pces-xm.el     --- for XEmacs-mule.
@@ -48,17 +39,15 @@ This module provides portable character encoding scheme
 
 This modules provides features about invisible region.
 
-  inv-18.el     --- for Emacs 18
   inv-19.el     --- for Emacs 19
+  inv-23.el     --- for Emacs 23
   inv-xemacs.el --- for XEmacs
 
 ** mcharset.el
 
 This modules provides MIME charset related features.
 
-  mcs-nemacs.el --- for Nemacs
   mcs-ltn1.el   --- for Emacs 19/XEmacs without MULE
-  mcs-om.el     --- for MULE 1.*, 2.*
   mcs-20.el     --- shared module between Emacs 20 and XEmacs-MULE
   mcs-e20.el    --- for Emacs 20
   mcs-xm.el     --- for XEmacs-MULE
@@ -70,7 +59,6 @@ This modules provides MIME charset related features.
 
 ** pccl.el --- utility to write portable CCL program
 
-  pccl-om.el --- for MULE 2.*
   pccl-20.el --- for Emacs 20/XEmacs-21-MULE
 
 ** alist.el: utility for Association-list
@@ -90,19 +78,10 @@ This modules provides MIME charset related features.
 This module provides emu bundled in tm-7.106 compatibility.  It
 required poe, poem and mcharset.
 
-  emu-mule:	--- for MULE 1.*, 2.*.
   richtext.el   --- text/richtext module for Emacs 19.29 or later,
 		     XEmacs 19.14 or later
-  tinyrich.el   --- text/richtext module for old emacsen
 
 ** pcustom.el --- provide portable custom environment
-
-  tinycustom.el --- emulation module of custom.el
-
-** timezone.el
-
-This is a utility of time zone.  This is a Y2K fixed version.   This
-works with old GNUS 3.14.4 under version 18 of Emacs, too.
 
 ** product.el --- Functions for product version information.
 
@@ -252,82 +231,6 @@ later or Emacs 20.1/20.2, you can write subdirs.el for example:
 
 If you are using Emacs 20.3 or later or XEmacs, there are no need to
 set up load-path with normal installation.
-
-
-* Version specific information
-
-** For Emacs 18 users: "old byte-compiler" vs "new byte-compiler"
-
-In this package, we use compile-time evaluation heavily.
-Unfortunately, the byte-compiler bundled with Emacs 18 (the "old
-byte-compiler") does not have features such as `eval-when-compile'
-and `eval-and-compile', and our emulation version of these macros
-evaluate "compile-time evaluation" at load-time or at run-time!
-In addition, the "old byte-compiler" cannot compile top-level use of
-macros and leaves most of our code uncompiled.
-
-Therefore, we recommend you to use the "new" optimizing byte-compiler.
-It is the origin of byte-compiler bundled with Emacs 19 and later.
-
-Optimizing byte-compiler for Emacs 18 is available from the Emacs
-Lisp Archive and its mirrors.
-
-In Mule 1.* days, "contrib" package for Mule 1.* was distributed and
-it contained the "new byte-compiler" for Mule.  But, I think it is
-difficult to obtain this package now.
-
-AFAIK, the "new byte-compiler" for Emacs 18 is also bundled with SKK
-9.6 or SKK 10.62a.  You can get SKK 10.62a from the following URL;
-
-  http://openlab.ring.gr.jp/skk/maintrunk
-
-They include patch for Mule 1.*.
-
-
-** For Emacs 19.34 and XEmacs 19.14 users: "old custom" vs "new custom"
-
-"custom" library bundled with Emacs 19.32 - 19.34, XEmacs 19.14, and
-Gnus 5.2/5.3 is "old", its API is incompatible with "new custom"
-bundled with Emacs 20.1, XEmacs 19.15, or newer, and Gnus 5.4/5.5.
-
-"new custom" for Emacs 19.34 and XEmacs 19.15 - 20.2 is available
-from the following URL.
-
-ftp://ftp.dina.kvl.dk/pub/Staff/Per.Abrahamsen/custom/custom-1.9962.tar.gz
-
-(Note that "new custom" bundled with XEmacs 19.15 - 20.2, and Gnus
-5.4/5.5 is older than this version.)
-
-Before installing "new custom", you should check the following points.
-
-  1) If you stick to Gnus 5.2/5.3 (or any other applications which
-     use "old custom"), you should not install "new custom".
-
-  2) If you use Mule (based on Emacs 19), you must apply this patch
-     to "new custom".
-
-----8<------8<------8<------8<------8<------8<------8<------8<----
---- custom-1.9962/cus-face.el~	Wed Mar  4 19:52:39 1998
-+++ custom-1.9962/cus-face.el	Mon Mar  9 08:05:33 1998
-@@ -96,7 +96,7 @@
-       "Define a new FACE on all frames, ignoring X resources."
-       (interactive "SMake face: ")
-       (or (internal-find-face name)
--	  (let ((face (make-vector 8 nil)))
-+	  (let ((face (make-vector face-vector-length nil)))
- 	    (aset face 0 'face)
- 	    (aset face 1 name)
- 	    (let* ((frames (frame-list))
-----8<------8<------8<------8<------8<------8<------8<------8<----
-
-  3) Applications compiled with "custom" require the same version of
-     "custom" at load-time (and run-time).  Therefore, if you use "new
-     custom", you must always include "new custom" in your load-path.
-     The easiest way to achieve this is "subdirs.el"; if you installed
-     "new custom" in "/usr/local/share/emacs/19.34/site-lisp/custom/",
-     put the following line to "/usr/local/share/emacs/19.34/site-lisp/subdirs.el".
-
-       (normal-top-level-add-to-load-path '("custom"))
 
 
 * How to use
