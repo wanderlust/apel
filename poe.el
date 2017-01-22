@@ -37,9 +37,6 @@
 ;;; @ Version information.
 ;;;
 
-(static-when (= emacs-major-version 18)
-  (require 'poe-18))
-
 ;; Some ancient version of XEmacs did not provide 'xemacs.
 (static-when (string-match "XEmacs" emacs-version)
   (provide 'xemacs))
@@ -164,23 +161,6 @@ The PLIST is modified by side effects."
     (set-buffer (window-buffer (minibuffer-window)))
     (current-column)))
 
-;; (read-string PROMPT &optional INITIAL-INPUT HISTORY)
-;; Emacs 19.29/XEmacs 19.14(?) and later takes optional 3rd arg HISTORY.
-(static-unless (or (featurep 'xemacs)
-		   (>= emacs-major-version 20)
-		   (and (= emacs-major-version 19)
-			(>= emacs-minor-version 29)))
-  (or (fboundp 'si:read-string)
-      (progn
-	(fset 'si:read-string (symbol-function 'read-string))
-	(defun read-string (prompt &optional initial-input history)
-	  "\
-Read a string from the minibuffer, prompting with string PROMPT.
-If non-nil, second arg INITIAL-INPUT is a string to insert before reading.
-The third arg HISTORY, is dummy for compatibility.
-See `read-from-minibuffer' for details of HISTORY argument."
-	  (si:read-string prompt initial-input)))))
-
 ;; (completing-read prompt table &optional
 ;; FSF Emacs
 ;;      --19.7  : predicate require-match init
@@ -195,53 +175,19 @@ See `read-from-minibuffer' for details of HISTORY argument."
 ;; We support following API.
 ;; (completing-read prompt table
 ;;                  &optional predicate require-match init hist def)
-(static-cond
- ;; add 'hist' and 'def' argument.
- ((< emacs-major-version 19)
+(static-when
+    ;; add 'def' argument.
+    (and (featurep 'xemacs)
+	 (or (and (eq emacs-major-version 21)
+		  (< emacs-minor-version 2))
+	     (< emacs-major-version 21)))
   (or (fboundp 'si:completing-read)
       (progn
 	(fset 'si:completing-read (symbol-function 'completing-read))
 	(defun completing-read
-	  (prompt table &optional predicate require-match init
-		                  hist def)
-	"Read a string in the minibuffer, with completion.
-PROMPT is a string to prompt with; normally it ends in a colon and a space.
-TABLE is an alist whose elements' cars are strings, or an obarray.
-PREDICATE limits completion to a subset of TABLE.
-See `try-completion' and `all-completions' for more details
- on completion, TABLE, and PREDICATE.
-
-If REQUIRE-MATCH is non-nil, the user is not allowed to exit unless
- the input is (or completes to) an element of TABLE or is null.
- If it is also not t, Return does not exit if it does non-null completion.
-If the input is null, `completing-read' returns an empty string,
- regardless of the value of REQUIRE-MATCH.
-
-If INIT is non-nil, insert it in the minibuffer initially.
-  If it is (STRING . POSITION), the initial input
-  is STRING, but point is placed POSITION characters into the string.
-HIST is ignored in this implementation.
-DEF, if non-nil, is the default value.
-
-Completion ignores case if the ambient value of
-  `completion-ignore-case' is non-nil."
-	(let ((string (si:completing-read prompt table predicate
-					  require-match init)))
-	  (if (and (string= string "") def)
-	      def string))))))
- ;; add 'def' argument.
- ((or (and (featurep 'xemacs)
-	   (or (and (eq emacs-major-version 21)
-		    (< emacs-minor-version 2))
-	       (< emacs-major-version 21)))
-      (< emacs-major-version 20))
-  (or (fboundp 'si:completing-read)
-      (progn
-	(fset 'si:completing-read (symbol-function 'completing-read))
-	(defun completing-read
-	  (prompt table &optional predicate require-match init
-		                  hist def)
-	"Read a string in the minibuffer, with completion.
+	    (prompt table &optional predicate require-match init
+		    hist def)
+	  "Read a string in the minibuffer, with completion.
 PROMPT is a string to prompt with; normally it ends in a colon and a space.
 TABLE is an alist whose elements' cars are strings, or an obarray.
 PREDICATE limits completion to a subset of TABLE.
@@ -269,76 +215,10 @@ DEF, if non-nil, is the default value.
 
 Completion ignores case if the ambient value of
   `completion-ignore-case' is non-nil."
-	(let ((string (si:completing-read prompt table predicate
-					  require-match init hist)))
-	  (if (and (string= string "") def)
-	      def string)))))))
-
-;; v18:	(string-to-int STRING)
-;; v19:	(string-to-number STRING)
-;; v20:	(string-to-number STRING &optional BASE)
-;;
-;; XXX: `string-to-number' of Emacs 20.3 and earlier is broken.
-;;	(string-to-number "1e1" 16) => 10.0, should be 481.
-(static-condition-case nil
-    ;; compile-time check.
-    (if (= (string-to-number "1e1" 16) 481)
-	(if (get 'string-to-number 'defun-maybe)
-	    (error "`string-to-number' is already redefined"))
-      (error "`string-to-number' is broken"))
-  (error
-   ;; load-time check.
-   (or (fboundp 'si:string-to-number)
-       (progn
-	 (if (fboundp 'string-to-number)
-	     (fset 'si:string-to-number (symbol-function 'string-to-number))
-	   (fset 'si:string-to-number (symbol-function 'string-to-int))
-	   ;; XXX: In v18, this causes infinite loop while byte-compiling.
-	   ;; (defalias 'string-to-int 'string-to-number)
-	   )
-	 (put 'string-to-number 'defun-maybe t)
-	 (defun string-to-number (string &optional base)
-	   "\
-Convert STRING to a number by parsing it as a decimal number.
-This parses both integers and floating point numbers.
-It ignores leading spaces and tabs.
-
-If BASE, interpret STRING as a number in that base.  If BASE isn't
-present, base 10 is used.  BASE must be between 2 and 16 (inclusive).
-If the base used is not 10, floating point is not recognized."
-	   (if (or (null base) (= base 10))
-	       (si:string-to-number string)
-	     (if (or (< base 2)(> base 16))
-		 (signal 'args-out-of-range (cons base nil)))
-	     (let ((len (length string))
-		   (pos 0))
-	       ;; skip leading whitespace.
-	       (while (and (< pos len)
-			   (memq (aref string pos) '(?\  ?\t)))
-		 (setq pos (1+ pos)))
-	       (if (= pos len)
-		   0
-		 (let ((number 0)(negative 1)
-		       chr num)
-		   (if (eq (aref string pos) ?-)
-		       (setq negative -1
-			     pos (1+ pos))
-		     (if (eq (aref string pos) ?+)
-			 (setq pos (1+ pos))))
-		   (while (and (< pos len)
-			       (setq chr (aref string pos)
-				     num (cond
-					  ((and (<= ?0 chr)(<= chr ?9))
-					   (- chr ?0))
-					  ((and (<= ?A chr)(<= chr ?F))
-					   (+ (- chr ?A) 10))
-					  ((and (<= ?a chr)(<= chr ?f))
-					   (+ (- chr ?a) 10))
-					  (t nil)))
-			       (< num base))
-		     (setq number (+ (* number base) num)
-			   pos (1+ pos)))
-		   (* negative number))))))))))
+	  (let ((string (si:completing-read prompt table predicate
+					    require-match init hist)))
+	    (if (and (string= string "") def)
+		def string))))))
 
 ;; Emacs 20.1 and 20.2: (concat-chars &rest CHARS)
 ;; Emacs 20.3/XEmacs 21.0 and later: (string &rest CHARS)
@@ -358,134 +238,6 @@ If the base used is not 10, floating point is not recognized."
     ;; We cannot use (apply 'concat chars) here because `concat' does not
     ;; work with multibyte chars on Mule 1.* and 2.*.
     (mapconcat (function char-to-string) chars ""))))
-
-;; Mule: (char-before POS)
-;; v20: (char-before &optional POS)
-(static-condition-case nil
-    ;; compile-time check.
-    (progn
-      (char-before)
-      (if (get 'char-before 'defun-maybe)
-	  (error "`char-before' is already defined")))
-  (wrong-number-of-arguments            ; Mule.
-   ;; load-time check.
-   (or (fboundp 'si:char-before)
-       (progn
-         (fset 'si:char-before (symbol-function 'char-before))
-         (put 'char-before 'defun-maybe t)
-         ;; takes IGNORED for backward compatibility.
-         (defun char-before (&optional pos ignored)
-           "\
-Return character in current buffer preceding position POS.
-POS is an integer or a buffer pointer.
-If POS is out of range, the value is nil."
-           (si:char-before (or pos (point)))))))
-  (void-function                        ; non-Mule.
-   ;; load-time check.
-   (defun-maybe char-before (&optional pos)
-     "\
-Return character in current buffer preceding position POS.
-POS is an integer or a buffer pointer.
-If POS is out of range, the value is nil."
-     (if pos
-         (save-excursion
-           (and (= (goto-char pos) (point))
-                (not (bobp))
-                (preceding-char)))
-       (and (not (bobp))
-            (preceding-char)))))
-  (error                                ; found our definition at compile-time.
-   ;; load-time check.
-   (condition-case nil
-       (char-before)
-     (wrong-number-of-arguments         ; Mule.
-      (or (fboundp 'si:char-before)
-          (progn
-            (fset 'si:char-before (symbol-function 'char-before))
-            (put 'char-before 'defun-maybe t)
-            ;; takes IGNORED for backward compatibility.
-            (defun char-before (&optional pos ignored)
-              "\
-Return character in current buffer preceding position POS.
-POS is an integer or a buffer pointer.
-If POS is out of range, the value is nil."
-              (si:char-before (or pos (point)))))))
-     (void-function                     ; non-Mule.
-      (defun-maybe char-before (&optional pos)
-        "\
-Return character in current buffer preceding position POS.
-POS is an integer or a buffer pointer.
-If POS is out of range, the value is nil."
-        (if pos
-            (save-excursion
-              (and (= (goto-char pos) (point))
-                   (not (bobp))
-                   (preceding-char)))
-          (and (not (bobp))
-               (preceding-char))))))))
-
-;; v18, v19: (char-after POS)
-;; v20: (char-after &optional POS)
-(static-condition-case nil
-    ;; compile-time check.
-    (progn
-      (char-after)
-      (if (get 'char-after 'defun-maybe)
-	  (error "`char-after' is already redefined")))
-  (wrong-number-of-arguments		; v18, v19
-   ;; load-time check.
-   (or (fboundp 'si:char-after)
-       (progn
-         (fset 'si:char-after (symbol-function 'char-after))
-         (put 'char-after 'defun-maybe t)
-         (defun char-after (&optional pos)
-           "\
-Return character in current buffer at position POS.
-POS is an integer or a buffer pointer.
-If POS is out of range, the value is nil."
-           (si:char-after (or pos (point)))))))
-  (void-function			; NEVER happen?
-   ;; load-time check.
-   (defun-maybe char-after (&optional pos)
-     "\
-Return character in current buffer at position POS.
-POS is an integer or a buffer pointer.
-If POS is out of range, the value is nil."
-     (if pos
-         (save-excursion
-           (and (= (goto-char pos) (point))
-                (not (eobp))
-                (following-char)))
-       (and (not (eobp))
-            (following-char)))))
-  (error                                ; found our definition at compile-time.
-   ;; load-time check.
-   (condition-case nil
-       (char-after)
-     (wrong-number-of-arguments         ; v18, v19
-      (or (fboundp 'si:char-after)
-          (progn
-            (fset 'si:char-after (symbol-function 'char-after))
-            (put 'char-after 'defun-maybe t)
-	    (defun char-after (&optional pos)
-	      "\
-Return character in current buffer at position POS.
-POS is an integer or a buffer pointer.
-If POS is out of range, the value is nil."
-	      (si:char-after (or pos (point)))))))
-     (void-function                     ; NEVER happen?
-      (defun-maybe char-after (&optional pos)
-	"\
-Return character in current buffer at position POS.
-POS is an integer or a buffer pointer.
-If POS is out of range, the value is nil."
-	(if pos
-	    (save-excursion
-	      (and (= (goto-char pos) (point))
-		   (not (eobp))
-		   (following-char)))
-	  (and (not (eobp))
-	       (following-char))))))))
 
 ;; Emacs 19.29 and later: (buffer-substring-no-properties START END)
 (defun-maybe buffer-substring-no-properties (start end)
@@ -524,72 +276,6 @@ This function does not move point."
   (save-excursion
     (end-of-line (or n 1))
     (point)))
-
-;; FSF Emacs 19.29 and later
-;; (read-file-name PROMPT &optional DIR DEFAULT-FILENAME MUSTMATCH INITIAL)
-;; XEmacs 19.14 and later:
-;; (read-file-name (PROMPT &optional DIR DEFAULT MUST-MATCH INITIAL-CONTENTS
-;;                         HISTORY)
-
-;; In FSF Emacs 19.28 and earlier (except for v18) or XEmacs 19.13 and
-;; earlier, this function is incompatible with the other Emacsen.
-;; For instance, if DEFAULT-FILENAME is nil, INITIAL is not and user
-;; enters a null string, it returns the visited file name of the current
-;; buffer if it is non-nil.
-
-;; It does not assimilate the different numbers of the optional arguments
-;; on various Emacsen (yet).
-(static-cond
- ((and (not (featurep 'xemacs))
-       (eq emacs-major-version 19)
-       (< emacs-minor-version 29))
-  (if (fboundp 'si:read-file-name)
-      nil
-    (fset 'si:read-file-name (symbol-function 'read-file-name))
-    (defun read-file-name (prompt &optional dir default-filename mustmatch
-				  initial)
-      "Read file name, prompting with PROMPT and completing in directory DIR.
-Value is not expanded---you must call `expand-file-name' yourself.
-Default name to DEFAULT-FILENAME if user enters a null string.
- (If DEFAULT-FILENAME is omitted, the visited file name is used,
-  except that if INITIAL is specified, that combined with DIR is used.)
-Fourth arg MUSTMATCH non-nil means require existing file's name.
- Non-nil and non-t means also require confirmation after completion.
-Fifth arg INITIAL specifies text to start with.
-DIR defaults to current buffer's directory default."
-      (si:read-file-name prompt dir
-			 (or default-filename
-			     (if initial
-				 (expand-file-name initial dir)))
-			 mustmatch initial))))
- ((and (featurep 'xemacs)
-       (eq emacs-major-version 19)
-       (< emacs-minor-version 14))
-  (if (fboundp 'si:read-file-name)
-      nil
-    (fset 'si:read-file-name (symbol-function 'read-file-name))
-    (defun read-file-name (prompt &optional dir default must-match
-				  initial-contents history)
-      "Read file name, prompting with PROMPT and completing in directory DIR.
-This will prompt with a dialog box if appropriate, according to
- `should-use-dialog-box-p'.
-Value is not expanded---you must call `expand-file-name' yourself.
-Value is subject to interpreted by substitute-in-file-name however.
-Default name to DEFAULT if user enters a null string.
- (If DEFAULT is omitted, the visited file name is used,
-  except that if INITIAL-CONTENTS is specified, that combined with DIR is
-  used.)
-Fourth arg MUST-MATCH non-nil means require existing file's name.
- Non-nil and non-t means also require confirmation after completion.
-Fifth arg INITIAL-CONTENTS specifies text to start with.
-Sixth arg HISTORY specifies the history list to use.  Default is
- `file-name-history'.
-DIR defaults to current buffer's directory default."
-      (si:read-file-name prompt dir
-			 (or default
-			     (if initial-contents
-				 (expand-file-name initial-contents dir)))
-			 must-match initial-contents history)))))
 
 
 ;;; @ Basic lisp subroutines emulation. (lisp/subr.el)
@@ -808,13 +494,6 @@ the value of `foo'."
 
 ;;; @@ Hook manipulation functions.
 
-;; "localhook" package is written for Emacs 19.28 and earlier.
-;; `run-hooks' was a lisp function in Emacs 19.29 and earlier.
-;; So, in Emacs 19.29, `run-hooks' and others will be overrided.
-;; But, who cares it?
-(static-unless (subrp (symbol-function 'run-hooks))
-  (require 'localhook))
-
 ;; Emacs 19.29/XEmacs 19.14(?) and later: (add-to-list LIST-VAR ELEMENT)
 (defun-maybe add-to-list (list-var element)
   "Add to the value of LIST-VAR the element ELEMENT if it isn't there yet.
@@ -851,32 +530,8 @@ FILE should be the name of a library, with no directory name."
 	    ;; If the file has been loaded already, run FORM right away.
 	    (and (assoc file load-history)
 		 (eval form)))))
-    form))
- ((>= emacs-major-version 20))
- ((and (= emacs-major-version 19)
-       (< emacs-minor-version 29))
-  ;; for Emacs 19.28 and earlier.
-  (defun eval-after-load (file form)
-    "Arrange that, if FILE is ever loaded, FORM will be run at that time.
-This makes or adds to an entry on `after-load-alist'.
-If FILE is already loaded, evaluate FORM right now.
-It does nothing if FORM is already on the list for FILE.
-FILE should be the name of a library, with no directory name."
-    ;; Make sure there is an element for FILE.
-    (or (assoc file after-load-alist)
-	(setq after-load-alist (cons (list file) after-load-alist)))
-    ;; Add FORM to the element if it isn't there.
-    (let ((elt (assoc file after-load-alist)))
-      (or (member form (cdr elt))
-	  (progn
-	    (nconc elt (list form))
-	    ;; If the file has been loaded already, run FORM right away.
-	    (and (assoc file load-history)
-		 (eval form)))))
-    form))
- (t
-  ;; should emulate for v18?
-  ))
+    form)))
+
 
 (defun-maybe eval-next-after-load (file)
   "Read the following input sexp, and run it whenever FILE is loaded.
@@ -1993,30 +1648,15 @@ If the event isn't a keypress, this returns nil."
 ;; Emacs 20.4: (read-event &optional PROMPT INHERIT-INPUT-METHOD)
 ;; XEmacs: (next-event &optional EVENT PROMPT),
 ;;         (next-command-event &optional EVENT PROMPT)
-(defun-maybe-cond next-command-event (&optional event prompt)
+(defun-maybe next-command-event (&optional event prompt)
   "Read an event object from the input stream.
 If EVENT is non-nil, it should be an event object and will be filled
 in and returned; otherwise a new event object will be created and
 returned.
 If PROMPT is non-nil, it should be a string and will be displayed in
 the echo area while this function is waiting for an event."
-  ((or (>= emacs-major-version 21)
-       (and (>= emacs-major-version 20)
-	    (>= emacs-minor-version 4)))
-   ;; Emacs 20.4 and later.
-   (read-event prompt))			; should specify 2nd arg?
-  ((and (= emacs-major-version 20)
-	(= emacs-minor-version 3))
-   ;; Emacs 20.3.
-   (read-event prompt))			; should specify 2nd arg?
-  ((and (fboundp 'read-event)
-	(subrp (symbol-function 'read-event)))
-   ;; Emacs 19, 20.1 and 20.2.
-   (if prompt (message "%s" prompt))
-   (read-event))
-  (t
-   (if prompt (message "%s" prompt))
-   (read-char)))
+  ;; Emacs 20.4 and later.
+  (read-event prompt))			; should specify 2nd arg?
 
 
 ;;; @ MULE 2 emulation.

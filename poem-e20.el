@@ -53,11 +53,7 @@ in the region between START and END."
 ;;; @ end
 ;;;
 
-(if (and (fboundp 'set-buffer-multibyte)
-	 (subrp (symbol-function 'set-buffer-multibyte)))
-    (require 'poem-e20_3) ; for Emacs 20.3
-  (require 'poem-e20_2) ; for Emacs 20.1 and 20.2
-  )
+(require 'poem-e20_3) ; for Emacs 20.3
 
 (require 'product)
 (product-provide (provide 'poem-e20) (require 'apel-ver))

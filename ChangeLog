@@ -1,7 +1,34 @@
+2017-01-23  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	Assume emacs-major-version is always bigger than 19.  Remove
+	support for unsupported old platforms.
+
+	* poem.el: Likewise.
+
+	* poem-e20.el: Likewise.
+
+	* poe.el: Likewise.
+
+	* pces.el: Likewise.
+
+	* pces-e20.el: Likewise.
+
+	* pccl.el: Likewise.
+
+	* mcharset.el: Likewise.
+
+	* invisible.el: Likewise.
+
+	* install.el: Likewise.
+
+	* emu.el: Likewise.
+
 2017-01-21  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
-	* EMU-ELS (emu-modules): Remove support for Emacs 18-20.3 and
-	Nemacs.
+	Remove support for Emacs 18-20.4, XEmacs
+	19 and Nemacs.
+
+	* EMU-ELS (emu-modules): Likewise.
 
 	* emu-mule.el: Removed.
 

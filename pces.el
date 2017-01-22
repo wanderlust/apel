@@ -36,14 +36,7 @@
 	 (require 'pces-raw)
 	 ))
       ((featurep 'mule)
-       (if (>= emacs-major-version 20)
-	   (require 'pces-e20)
-	 ;; for MULE 1.* and 2.*
-	 (require 'pces-om)
-	 ))
-      ((boundp 'NEMACS)
-       ;; for Nemacs and Nepoch
-       (require 'pces-nemacs)
+       (require 'pces-e20)
        )
       (t
        (require 'pces-raw)

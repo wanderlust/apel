@@ -159,11 +159,7 @@
       (expand-file-name "../../.." exec-directory)
     (expand-file-name "../../../.." data-directory)))
 
-(defvar install-elisp-prefix
-  (if (>= emacs-major-version 19)
-      "site-lisp"
-    ;; v18 does not have standard site directory.
-    "local.lisp"))
+(defvar install-elisp-prefix "site-lisp")
 
 ;; Avoid compile warning.
 (eval-when-compile (autoload 'replace-in-string "subr"))
@@ -207,22 +203,14 @@
 					   dir)))
 		    (throw 'tag (car rest))))
 	    (setq rest (cdr rest)))))
-      (expand-file-name (concat (if (and (not (featurep 'xemacs))
-					 (or (>= emacs-major-version 20)
-					     (and (= emacs-major-version 19)
-						  (> emacs-minor-version 28))))
-				    "share/"
-				  "lib/")
-				(cond
-				 ((featurep 'xemacs)
-				  (if (featurep 'mule)
-				      "xmule/"
-				    "xemacs/"))
-				 ;; unfortunately, unofficial mule based on
-				 ;; 19.29 and later use "emacs/" by default.
-				 ((boundp 'MULE) "mule/")
-				 ((boundp 'NEMACS) "nemacs/")
-				 (t "emacs/"))
+      (expand-file-name (concat (if (featurep 'xemacs)
+				    "lib/"
+				  "share/")
+				(if (featurep 'xemacs)
+				    (if (featurep 'mule)
+					"xmule/"
+				      "xemacs/")
+				  "emacs/")
 				elisp-prefix)
 			prefix)))
 

@@ -26,25 +26,19 @@
 
 (require 'poe)
 
-(defvar running-emacs-18 (<= emacs-major-version 18))
+(defvar running-emacs-18 nil)
 (defvar running-xemacs (featurep 'xemacs))
 
 (defvar running-mule-merged-emacs (and (not (boundp 'MULE))
 				       (not running-xemacs) (featurep 'mule)))
 (defvar running-xemacs-with-mule (and running-xemacs (featurep 'mule)))
 
-(defvar running-emacs-19 (and (not running-xemacs) (= emacs-major-version 19)))
-(defvar running-emacs-19_29-or-later
-  (or (and running-emacs-19 (>= emacs-minor-version 29))
-      (and (not running-xemacs)(>= emacs-major-version 20))))
+(defvar running-emacs-19 nil)
+(defvar running-emacs-19_29-or-later t)
 
-(defvar running-xemacs-19 (and running-xemacs
-			       (= emacs-major-version 19)))
-(defvar running-xemacs-20-or-later (and running-xemacs
-					(>= emacs-major-version 20)))
-(defvar running-xemacs-19_14-or-later
-  (or (and running-xemacs-19 (>= emacs-minor-version 14))
-      running-xemacs-20-or-later))
+(defvar running-xemacs-19 nil)
+(defvar running-xemacs-20-or-later running-xemacs)
+(defvar running-xemacs-19_14-or-later running-xemacs-20-or-later)
 
 (cond (running-xemacs
        ;; for XEmacs
@@ -52,17 +46,11 @@
        (defvar mouse-button-2 'button2)
        (defvar mouse-button-3 'button3)
        )
-      ((>= emacs-major-version 19)
+      (t
        ;; mouse
        (defvar mouse-button-1 [mouse-1])
        (defvar mouse-button-2 [mouse-2])
        (defvar mouse-button-3 [down-mouse-3])
-       )
-      (t
-       ;; mouse
-       (defvar mouse-button-1 nil)
-       (defvar mouse-button-2 nil)
-       (defvar mouse-button-3 nil)
        ))
 
 ;; for tm-7.106
@@ -107,7 +95,7 @@ TABLE defaults to the current buffer's category table."
 			   (char-category-list character)
 			   ""))
 	      )
-	     ((>= emacs-major-version 20) ; for Emacs 20
+	     (t ; for Emacs 20
 	      (defalias 'insert-binary-file-contents-literally
 		'insert-file-contents-literally)
 	      
@@ -117,40 +105,7 @@ TABLE defaults to the current buffer's category table."
 CHAR can be any multilingual character
 TABLE defaults to the current buffer's category table."
 		(category-set-mnemonics (char-category-set character)))
-	      )
-	     (t ; for MULE 1.* and 2.*
-	      (require 'emu-mule)
 	      ))
-       )
-      ((boundp 'NEMACS)
-       ;; for Nemacs and Nepoch
-
-       ;; old MULE emulation
-       (defconst *noconv*    0)
-       (defconst *sjis*      1)
-       (defconst *junet*     2)
-       (defconst *ctext*     2)
-       (defconst *internal*  3)
-       (defconst *euc-japan* 3)
-       
-       (defun code-convert-string (str ic oc)
-	 "Convert code in STRING from SOURCE code to TARGET code,
-On successful conversion, returns the result string,
-else returns nil."
-	 (if (not (eq ic oc))
-	     (convert-string-kanji-code str ic oc)
-	   str))
-       
-       (defun code-convert-region (beg end ic oc)
-	 "Convert code of the text between BEGIN and END from SOURCE
-to TARGET. On successful conversion returns t,
-else returns nil."
-	 (if (/= ic oc)
-	     (save-excursion
-	       (save-restriction
-		 (narrow-to-region beg end)
-		 (convert-region-kanji-code beg end ic oc)))
-	   ))
        )
       (t
        ;; for Emacs 19 and XEmacs without MULE
@@ -202,55 +157,6 @@ find-file-hooks, etc.
   (as-binary-input-file
    ;; Returns list absolute file name and length of data inserted.
    (insert-file-contents-literally filename visit beg end replace)))
-
-
-;;; @ for text/richtext and text/enriched
-;;;
-
-(cond ((fboundp 'richtext-decode)
-       ;; have richtext.el
-       )
-      ((or running-emacs-19_29-or-later running-xemacs-19_14-or-later)
-       ;; have enriched.el
-       (autoload 'richtext-decode "richtext")
-       (or (assq 'text/richtext format-alist)
-	   (setq format-alist
-		 (cons
-		  (cons 'text/richtext
-			'("Extended MIME text/richtext format."
-			  "Content-[Tt]ype:[ \t]*text/richtext"
-			  richtext-decode richtext-encode t enriched-mode))
-		  format-alist)))
-       )
-      (t
-       ;; don't have enriched.el
-       (autoload 'richtext-decode "tinyrich")
-       (autoload 'enriched-decode "tinyrich")
-       ))
-
-(if (or (and (eq emacs-major-version 19)
-	     (>= emacs-minor-version (if (featurep 'xemacs) 14 29)))
-	(and (eq emacs-major-version 20)
-	     (< emacs-minor-version (if (featurep 'xemacs) 3 1))))
-    (eval-after-load "enriched"
-      '(if (fboundp 'si:enriched-encode)
-	   nil
-	 (fset 'si:enriched-encode (symbol-function 'enriched-encode))
-	 (defun enriched-encode (from to &optional orig-buf)
-	   (let* ((si:enriched-initial-annotation enriched-initial-annotation)
-		  (enriched-initial-annotation
-		   (if (stringp si:enriched-initial-annotation)
-		       si:enriched-initial-annotation
-		     (function
-		      (lambda ()
-			(save-excursion
-			  ;; Eval this in the buffer we are annotating.  This
-			  ;; fixes a bug which was saving incorrect File-Width
-			  ;; information, since we were looking at local
-			  ;; variables in the wrong buffer.
-			  (if orig-buf (set-buffer orig-buf))
-			  (funcall si:enriched-initial-annotation)))))))
-	     (si::enriched-encode from to))))))
 
 
 ;;; @ end

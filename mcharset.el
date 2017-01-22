@@ -27,16 +27,9 @@
 (require 'poe)
 (require 'pcustom)
 
-(cond ((featurep 'mule)
-       (if (>= emacs-major-version 20)
-	   (require 'mcs-20)
-	 ;; for MULE 1.* and 2.*
-	 (require 'mcs-om)))
-      ((boundp 'NEMACS)
-       ;; for Nemacs and Nepoch
-       (require 'mcs-nemacs))
-      (t
-       (require 'mcs-ltn1)))
+(if (featurep 'mule)
+    (require 'mcs-20)
+  (require 'mcs-ltn1))
 
 (defcustom default-mime-charset-for-write
   (if (mime-charset-p 'utf-8)

@@ -26,25 +26,11 @@
 
 (require 'pces)
 
-(cond ((featurep 'mule)
-       (cond ((featurep 'xemacs)
-	      (require 'poem-xm)
-	      )
-	     ((>= emacs-major-version 20)
-	      (require 'poem-e20)
-	      )
-	     (t
-	      ;; for MULE 1.* and 2.*
-	      (require 'poem-om)
-	      ))
-       )
-      ((boundp 'NEMACS)
-       ;; for Nemacs and Nepoch
-       (require 'poem-nemacs)
-       )
-      (t
-       (require 'poem-ltn1)
-       ))
+(if (featurep 'mule)
+    (if (featurep 'xemacs)
+	(require 'poem-xm)
+      (require 'poem-e20))
+  (require 'poem-ltn1))
 
 
 ;;; @ Emacs 20.3 emulation

@@ -26,11 +26,6 @@
 
 (require 'pces-20)
 
-(unless (and (fboundp 'set-buffer-multibyte)
-	     (subrp (symbol-function 'set-buffer-multibyte)))
-  (require 'pces-e20_2) ; for Emacs 20.1 and 20.2
-  )
-
 (defsubst-maybe find-coding-system (obj)
   "Return OBJ if it is a coding-system."
   (if (coding-system-p obj)

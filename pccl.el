@@ -31,7 +31,7 @@
   (and (featurep 'mule)
        (if (featurep 'xemacs)
            (>= emacs-major-version 21)
-         (>= emacs-major-version 19))))
+	 t)))
 
 (unless-broken ccl-usable
   (require 'advice)
@@ -43,11 +43,8 @@
             (if (>= emacs-major-version 21)
                 ;; for XEmacs 21 with mule
                 (require 'pccl-20))
-          (if (>= emacs-major-version 20)
-              ;; for Emacs 20
-              (require 'pccl-20)
-            ;; for Mule 2.*
-            (require 'pccl-om)))))
+	  ;; for Emacs 20
+	  (require 'pccl-20))))
 
   (static-if (or (featurep 'xemacs) (< emacs-major-version 21))
     (defadvice define-ccl-program
