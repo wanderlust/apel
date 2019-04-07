@@ -1,3 +1,7 @@
+2019-02-16  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-20.el: Require pces.el (for find-coding-system).
+
 2017-01-23  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	Assume emacs-major-version is always bigger than 19.  Remove

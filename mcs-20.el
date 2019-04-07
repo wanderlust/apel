@@ -30,6 +30,7 @@
 ;;; Code:
 
 (require 'custom)
+(require 'pces)
 (eval-when-compile (require 'wid-edit))
 
 (if (featurep 'xemacs)
