@@ -1,5 +1,10 @@
 2020-05-21  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
+	* apel-ver.el (apel-version): Use called-interactively-p instead
+	of interactive-p.
+
+2020-05-21  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
 	* richtext.el (richtext-initial-annotation, richtext-decode): Use
 	fill-column instead of enriched-text-width function, which is not
 	defined on (at least) Emacs.

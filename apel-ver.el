@@ -52,7 +52,7 @@
   "Print APEL version."
   (interactive)
   (let ((product-info (product-string-1 'apel-ver t)))
-    (if (interactive-p)
+    (if (called-interactively-p 'interactive)
 	(message "%s" product-info)
       product-info)))
 
