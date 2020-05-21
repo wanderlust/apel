@@ -1,5 +1,10 @@
 2020-05-21  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
+	* poem-e20_3.el (string-to-char-list, string-to-int-list): Define
+	as alias for string-to-list.
+
+2020-05-21  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
 	Drop old platforms support, dependency on cl.el.  Now supported
 	Emacsen are version 24 and later.
 

@@ -48,11 +48,9 @@
 
 (defalias 'sset 'store-substring)
 
-(defun string-to-char-list (string)
-  "Return a list of which elements are characters in the STRING."
-  (mapcar #'identity string))
+(defalias 'string-to-char-list 'string-to-list)
 
-(defalias 'string-to-int-list 'string-to-char-list)
+(defalias 'string-to-int-list 'string-to-list)
 
 (defalias 'looking-at-as-unibyte 'looking-at)
 
