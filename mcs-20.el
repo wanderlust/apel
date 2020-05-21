@@ -33,9 +33,7 @@
 (require 'pces)
 (eval-when-compile (require 'wid-edit))
 
-(if (featurep 'xemacs)
-    (require 'mcs-xm)
-  (require 'mcs-e20))
+(require 'mcs-e20)
 
 
 ;;; @ MIME charset
@@ -146,75 +144,6 @@ It must be symbol."
   :group 'i18n
   :type 'mime-charset)
 
-(cond ((featurep 'utf-2000)
-;; for CHISE Architecture
-(defun mcs-region-repertoire-p (start end charsets &optional buffer)
-  (save-excursion
-    (if buffer
-	(set-buffer buffer))
-    (save-restriction
-      (narrow-to-region start end)
-      (goto-char (point-min))
-      (catch 'tag
-	(let (ch)
-	  (while (not (eobp))
-	    (setq ch (char-after (point)))
-	    (unless (some (lambda (ccs)
-			    (encode-char ch ccs))
-			  charsets)
-	      (throw 'tag nil))
-	    (forward-char)))
-	t))))
-
-(defun mcs-string-repertoire-p (string charsets &optional start end)
-  (let ((i (if start
-	       (if (< start 0)
-		   (error 'args-out-of-range string start end)
-		 start)
-	     0))
-	ch)
-    (if end
-	(if (> end (length string))
-	    (error 'args-out-of-range string start end))
-      (setq end (length string)))
-    (catch 'tag
-      (while (< i end)
-	(setq ch (aref string i))
-	(unless (some (lambda (ccs)
-			(encode-char ch ccs))
-		      charsets)
-	  (throw 'tag nil))
-	(setq i (1+ i)))
-      t)))
-
-(defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END."
-  (let ((rest charsets-mime-charset-alist)
-	cell)
-    (catch 'tag
-      (while rest
-	(setq cell (car rest))
-	(if (mcs-region-repertoire-p start end (car cell))
-	    (throw 'tag (cdr cell)))
-	(setq rest (cdr rest)))
-      default-mime-charset-for-write)))
-
-(defun detect-mime-charset-string (string)
-  "Return MIME charset for STRING."
-  (let ((rest charsets-mime-charset-alist)
-	cell)
-    (catch 'tag
-      (while rest
-	(setq cell (car rest))
-	(if (mcs-string-repertoire-p string (car cell))
-	    (throw 'tag (cdr cell)))
-	(setq rest (cdr rest)))
-      default-mime-charset-for-write)))
-)
-
-((eval-when-compile (and (boundp 'mule-version)
-			 (null (string< mule-version "6.0"))))
-;; for Emacs 23 and later
 (defcustom detect-mime-charset-from-coding-system nil
   "When non-nil, `detect-mime-charset-region' and `detect-mime-charset-string' functions decide charset by encodability in destination coding system.
 
@@ -273,15 +202,7 @@ When `detect-mime-charset-from-coding-system' is non-nil, each car of `charsets-
 	(unless (memq (char-after point) list)
 	  (setq list (cons (char-after point) list)))
 	(setq point (1+ point)))
-      (detect-mime-charset-list list)))))
-
-(t
-;; for legacy Mule
-(defun detect-mime-charset-region (start end)
-  "Return MIME charset for region between START and END."
-  (find-mime-charset-by-charsets (find-charset-region start end)
-				 'region start end))
-))
+      (detect-mime-charset-list list))))
 
 (defun write-region-as-mime-charset (charset start end filename
 					     &optional append visit lockname)

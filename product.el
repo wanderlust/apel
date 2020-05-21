@@ -382,17 +382,6 @@ VERSTR is a string."
 
 (require 'pym)
 
-(defconst-maybe emacs-major-version
-  (progn (string-match "^[0-9]+" emacs-version)
-	 (string-to-int (substring emacs-version
-				   (match-beginning 0)(match-end 0))))
-  "Major version number of this version of Emacs.")
-(defconst-maybe emacs-minor-version
-  (progn (string-match "^[0-9]+\\.\\([0-9]+\\)" emacs-version)
-	 (string-to-int (substring emacs-version
-				   (match-beginning 1)(match-end 1))))
-  "Minor version number of this version of Emacs.")
-
 ;;(or (product-find "emacs")
 ;;    (progn
 ;;      (product-define "emacs")

@@ -26,10 +26,7 @@
 
 (require 'poe)
 (require 'pcustom)
-
-(if (featurep 'mule)
-    (require 'mcs-20)
-  (require 'mcs-ltn1))
+(require 'mcs-20)
 
 (defcustom default-mime-charset-for-write
   (if (mime-charset-p 'utf-8)

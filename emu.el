@@ -27,11 +27,10 @@
 (require 'poe)
 
 (defvar running-emacs-18 nil)
-(defvar running-xemacs (featurep 'xemacs))
+(defvar running-xemacs nil)
 
-(defvar running-mule-merged-emacs (and (not (boundp 'MULE))
-				       (not running-xemacs) (featurep 'mule)))
-(defvar running-xemacs-with-mule (and running-xemacs (featurep 'mule)))
+(defvar running-mule-merged-emacs t)
+(defvar running-xemacs-with-mule nil)
 
 (defvar running-emacs-19 nil)
 (defvar running-emacs-19_29-or-later t)
@@ -40,18 +39,10 @@
 (defvar running-xemacs-20-or-later running-xemacs)
 (defvar running-xemacs-19_14-or-later running-xemacs-20-or-later)
 
-(cond (running-xemacs
-       ;; for XEmacs
-       (defvar mouse-button-1 'button1)
-       (defvar mouse-button-2 'button2)
-       (defvar mouse-button-3 'button3)
-       )
-      (t
-       ;; mouse
-       (defvar mouse-button-1 [mouse-1])
-       (defvar mouse-button-2 [mouse-2])
-       (defvar mouse-button-3 [down-mouse-3])
-       ))
+;; mouse
+(defvar mouse-button-1 [mouse-1])
+(defvar mouse-button-2 [mouse-2])
+(defvar mouse-button-3 [down-mouse-3])
 
 ;; for tm-7.106
 (unless (fboundp 'tl:make-overlay)
@@ -75,58 +66,15 @@
   "Convert list of character CHAR-LIST to string."
   (apply (function string) char-list))
 
-(cond ((featurep 'mule)
-       (cond ((featurep 'xemacs) ; for XEmacs with MULE
-	      ;; old Mule emulating aliases
+(defalias 'insert-binary-file-contents-literally
+  'insert-file-contents-literally)
 
-	      ;;(defalias 'char-leading-char 'char-charset)
-
-	      (defun char-category (character)
-		"Return string of category mnemonics for CHAR in TABLE.
+;; old Mule emulating aliases
+(defun char-category (character)
+  "Return string of category mnemonics for CHAR in TABLE.
 CHAR can be any multilingual character
 TABLE defaults to the current buffer's category table."
-		(mapconcat (lambda (chr)
-			     (if (integerp chr)
-				 (char-to-string (int-char chr))
-			       (char-to-string chr)))
-			   ;; `char-category-list' returns a list of
-			   ;; characters in XEmacs 21.2.25 and later,
-			   ;; otherwise integers.
-			   (char-category-list character)
-			   ""))
-	      )
-	     (t ; for Emacs 20
-	      (defalias 'insert-binary-file-contents-literally
-		'insert-file-contents-literally)
-	      
-	      ;; old Mule emulating aliases
-	      (defun char-category (character)
-		"Return string of category mnemonics for CHAR in TABLE.
-CHAR can be any multilingual character
-TABLE defaults to the current buffer's category table."
-		(category-set-mnemonics (char-category-set character)))
-	      ))
-       )
-      (t
-       ;; for Emacs 19 and XEmacs without MULE
-       
-       ;; old MULE emulation
-       (defconst *internal* nil)
-       (defconst *ctext* nil)
-       (defconst *noconv* nil)
-       
-       (defun code-convert-string (str ic oc)
-	 "Convert code in STRING from SOURCE code to TARGET code,
-On successful conversion, returns the result string,
-else returns nil. [emu-latin1.el; old MULE emulating function]"
-	 str)
-
-       (defun code-convert-region (beg end ic oc)
-	 "Convert code of the text between BEGIN and END from SOURCE
-to TARGET. On successful conversion returns t,
-else returns nil. [emu-latin1.el; old MULE emulating function]"
-	 t)
-       ))
+  (category-set-mnemonics (char-category-set character)))
 
 
 ;;; @ Mule emulating aliases

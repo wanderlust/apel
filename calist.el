@@ -26,8 +26,7 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
-
+(require 'cl-lib)
 (require 'alist)
 
 (defvar calist-package-alist nil)
@@ -285,11 +284,11 @@ even if other rules are matched for ALIST."
 					  (delete ret (copy-alist calist))))
 				   (cdr ctree)))
 		   (setcdr ctree
-			   (list* (list t)
-				  (cons (cdr ret)
-					(calist-to-ctree
-					 (delete ret (copy-alist calist))))
-				  (cdr ctree)))
+			   (cl-list* (list t)
+				     (cons (cdr ret)
+					   (calist-to-ctree
+					    (delete ret (copy-alist calist))))
+				     (cdr ctree)))
 		   ))
 	     (catch 'tag
 	       (while values

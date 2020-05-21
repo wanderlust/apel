@@ -30,17 +30,7 @@
   (unless (fboundp 'open-network-stream)
     (require 'tcp)))
 
-(cond ((featurep 'xemacs)
-       (if (featurep 'file-coding)
-	   (require 'pces-xfc)
-	 (require 'pces-raw)
-	 ))
-      ((featurep 'mule)
-       (require 'pces-e20)
-       )
-      (t
-       (require 'pces-raw)
-       ))
+(require 'pces-e20)
 
 	 
 ;;; @ end

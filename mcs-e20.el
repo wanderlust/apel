@@ -90,11 +90,7 @@
      ((ascii korean-ksc5601)				. euc-kr)
      ((ascii chinese-gb2312)				. gb2312)
      ((ascii chinese-big5-1 chinese-big5-2)		. big5)
-     ,(static-cond
-       ((null (string< mule-version "6.0"))
-	'((ascii thai-tis620)				. tis-620))
-       (t
-	'((ascii thai-tis620 composition)      		. tis-620)))
+     ((ascii thai-tis620)				. tis-620)
      ;; ((ascii latin-iso8859-1 greek-iso8859-7
      ;; 	     latin-jisx0201 japanese-jisx0208-1978
      ;; 	     chinese-gb2312 japanese-jisx0208
@@ -114,11 +110,6 @@
      ;;        chinese-cns11643-5 chinese-cns11643-6
      ;;        chinese-cns11643-7)			. iso-2022-int-1)
      )))
-
-(defun-maybe coding-system-get (coding-system prop)
-  "Extract a value from CODING-SYSTEM's property list for property PROP."
-  (plist-get (coding-system-plist coding-system) prop)
-  )
 
 (defvar coding-system-to-mime-charset-exclude-regexp
   "^unknown$\\|^x-")
@@ -140,55 +131,18 @@ Return nil if corresponding MIME-charset is not found."
 				   (symbol-name result)))
 	  result))))
 
-(defun-maybe-cond mime-charset-list ()
+(defun-maybe mime-charset-list ()
   "Return a list of all existing MIME-charset."
-  ((boundp 'coding-system-list)
-   (let ((dest (mapcar (function car) mime-charset-coding-system-alist))
-	 (rest coding-system-list)
-	 cs)
-     (while rest
-       (setq cs (car rest))
-       (when (and (setq cs (coding-system-get cs 'mime-charset))
-		  (null (memq cs dest)))
-	 (setq dest (cons cs dest)))
-       (setq rest (cdr rest)))
-     dest))
-   (t
-    (let ((dest (mapcar (function car) mime-charset-coding-system-alist))
-	  (rest (coding-system-list))
-	  cs)
-      (while rest
-	(setq cs (car rest))
-	(unless (rassq cs mime-charset-coding-system-alist)
-	  (when (setq cs (or (coding-system-get cs 'mime-charset)
-			     (and
-			      (setq cs (aref
-					(coding-system-get cs 'coding-spec)
-					2))
-			      (string-match "(MIME:[ \t]*\\([^,)]+\\)" cs)
-			      (match-string 1 cs))))
-	    (setq cs (intern (downcase cs)))
-	    (unless (memq cs dest)
-	      (setq dest (cons cs dest))
-	      )))
-	(setq rest (cdr rest)))
-      dest)
-    ))
-
-(static-when (and (string= (decode-coding-string "\e.A\eN!" 'ctext) "\eN!")
-		  (or (not (find-coding-system 'x-ctext))
-		      (coding-system-get 'x-ctext 'apel)))
-  (unless (find-coding-system 'x-ctext)
-    (make-coding-system
-     'x-ctext 2 ?x
-     "Compound text based generic encoding for decoding unknown messages."
-     '((ascii t) (latin-iso8859-1 t) t t
-       nil ascii-eol ascii-cntl nil locking-shift single-shift nil nil nil
-       init-bol nil nil)
-     '((safe-charsets . t)
-       (mime-charset . x-ctext)))
-    (coding-system-put 'x-ctext 'apel t)
-    ))
+  (let ((dest (mapcar (function car) mime-charset-coding-system-alist))
+	(rest coding-system-list)
+	cs)
+    (while rest
+      (setq cs (car rest))
+      (when (and (setq cs (coding-system-get cs 'mime-charset))
+		 (null (memq cs dest)))
+	(setq dest (cons cs dest)))
+      (setq rest (cdr rest)))
+    dest))
 
 
 ;;; @ end

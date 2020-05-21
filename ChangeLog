@@ -1,3 +1,61 @@
+2020-05-21  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	Drop old platforms support, dependency on cl.el.  Now supported
+	Emacsen are version 24 and later.
+
+	* EMU-ELS: Assume Emacs version 24 or later.
+
+	* emu.el: Likewise.
+
+	* install.el: Likewise.
+
+	* invisible.el: Likewise.
+
+	* mcharset.el: Likewise.
+
+	* mcs-20.el: Likewise.
+
+	* mcs-e20.el: Likewise.
+
+	* pccl.el: Likewise.
+
+	* pccl-20.el: Likewise.
+
+	* pces.el: Likewise.
+
+	* poe.el: Likewise.
+
+	* poem.el: Likewise.
+
+	* poem-e20_3.el: Likewise.
+
+	* product.el: Likewise.
+
+	* inv-19.el: Removed.
+
+	* inv-xemacs.el: Removed.
+
+	* mcs-ltn1.el: Removed.
+
+	* mcs-xm.el: Removed.
+
+	* mcs-xmu.el: Removed.
+
+	* pces-raw.el: Removed.
+
+	* pces-xfc.el: Removed.
+
+	* pces-xm.el: Removed.
+
+	* poe-xemacs.el: Removed.
+
+	* poem-ltn1.el: Removed.
+
+	* poem-xm.el: Removed.
+
+	* calist.el (cl-lib): Use cl-lib instead of cl.
+	(ctree-add-calist-with-default): Use cl-list* instead of list*.
+
 2019-02-16  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* mcs-20.el: Require pces.el (for find-coding-system).

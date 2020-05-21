@@ -25,36 +25,8 @@
 ;;; Code:
 
 (require 'pces)
+(require 'poem-e20)
 
-(if (featurep 'mule)
-    (if (featurep 'xemacs)
-	(require 'poem-xm)
-      (require 'poem-e20))
-  (require 'poem-ltn1))
-
-
-;;; @ Emacs 20.3 emulation
-;;;
-
-(defsubst-maybe string-as-unibyte (string)
-  "Return a unibyte string with the same individual bytes as STRING.
-If STRING is unibyte, the result is STRING itself.
-\[Emacs 20.3 emulating macro]"
-  string)
-
-(defsubst-maybe string-as-multibyte (string)
-  "Return a multibyte string with the same individual bytes as STRING.
-If STRING is multibyte, the result is STRING itself.
-\[Emacs 20.3 emulating macro]"
-  string)
-
-(defun-maybe charset-after (&optional pos)
-  "Return charset of a character in current buffer at position POS.
-If POS is nil, it defaults to the current point.
-If POS is out of range, the value is nil.
-\[Emacs 20.3 emulating function]"
-  (char-charset (char-after pos))
-  )
 
 ;;; @ XEmacs-mule emulation
 ;;;
@@ -62,11 +34,6 @@ If POS is out of range, the value is nil.
 (defalias-maybe 'char-int 'identity)
 
 (defalias-maybe 'int-char 'identity)
-
-(defalias-maybe 'characterp
-  (cond
-   ((fboundp 'char-valid-p) 'char-valid-p)
-   (t 'integerp)))
 
 (defalias-maybe 'char-or-char-int-p
   (cond
