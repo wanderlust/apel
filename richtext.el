@@ -35,7 +35,7 @@
 (defconst richtext-initial-annotation
   (lambda ()
     (format "Content-Type: text/richtext\nText-Width: %d\n\n"
-	    (enriched-text-width)))
+	    fill-column))
   "What to insert at the start of a text/richtext file.
 If this is a string, it is inserted.  If it is a list, it should be a lambda
 expression, which is evaluated to get the string to insert.")
@@ -167,7 +167,7 @@ Return value is \(begin end name positive-p), or nil if none was found."
 
 	;; Fill paragraphs
 	(if (and file-width		; possible reasons not to fill:
-		 (= file-width (enriched-text-width))) ; correct wd.
+		 (= file-width fill-column)) ; correct wd.
 	    ;; Minimally, we have to insert indentation and justification.
 	    (enriched-insert-indentation)
 	  (if enriched-verbose (message "Filling paragraphs..."))
