@@ -62,10 +62,10 @@ Return the modified ALIST."
 (defun modify-alist (modifier default)
   "Store elements in the alist MODIFIER in the alist DEFAULT.
 Return the modified alist."
-  (mapcar (function
-	   (lambda (as)
-	     (setq default (put-alist (car as)(cdr as) default))))
-	  modifier)
+  (mapc (function
+	 (lambda (as)
+	   (setq default (put-alist (car as)(cdr as) default))))
+	modifier)
   default)
 
 ;;;###autoload

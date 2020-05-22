@@ -26,12 +26,9 @@
 
 (require 'poe)
 (require 'pcustom)
-(require 'mcs-20)
 
 (defcustom default-mime-charset-for-write
-  (if (mime-charset-p 'utf-8)
-      'utf-8
-    default-mime-charset)
+  'utf-8
   "Default value of MIME-charset for encoding.
 It may be used when suitable MIME-charset is not found.
 It must be symbol."
@@ -48,6 +45,9 @@ CHARSETS is list of charset.
 If TYPE is 'region, ARGS has START and END."
   :group 'i18n
   :type '(choice function (const nil)))
+
+(provide 'mcharset)
+(require 'mcs-20)
 
 (defun charsets-to-mime-charset (charsets)
   "Return MIME charset from list of charset CHARSETS.

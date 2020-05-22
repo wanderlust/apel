@@ -78,8 +78,7 @@ Moreover, if you want to convert Japanese filename to roman string by kakasi,
 ;;;
 
 (defun filename-japanese-to-roman-string (str)
-  (save-excursion
-    (set-buffer (get-buffer-create " *temp kakasi*"))
+  (with-current-buffer (get-buffer-create " *temp kakasi*")
     (erase-buffer)
     (insert str)
     (call-process-region

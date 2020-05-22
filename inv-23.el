@@ -30,7 +30,7 @@
 (defun enable-invisible ())
 (defun disable-invisible ())
 (defalias 'end-of-invisible 'disable-invisible)
-(make-obsolete 'end-of-invisible 'disable-invisible)
+(make-obsolete 'end-of-invisible 'disable-invisible "15 Jun 2010")
 
 (defun invisible-region (start end)
   (if (save-excursion

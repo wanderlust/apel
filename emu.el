@@ -44,20 +44,6 @@
 (defvar mouse-button-2 [mouse-2])
 (defvar mouse-button-3 [down-mouse-3])
 
-;; for tm-7.106
-(unless (fboundp 'tl:make-overlay)
-  (defalias 'tl:make-overlay 'make-overlay)
-  (make-obsolete 'tl:make-overlay 'make-overlay)
-  )
-(unless (fboundp 'tl:overlay-put)
-  (defalias 'tl:overlay-put 'overlay-put)
-  (make-obsolete 'tl:overlay-put 'overlay-put)
-  )
-(unless (fboundp 'tl:overlay-buffer)
-  (defalias 'tl:overlay-buffer 'overlay-buffer)
-  (make-obsolete 'tl:overlay-buffer 'overlay-buffer)
-  )
-
 (require 'poem)
 (require 'mcharset)
 (require 'invisible)
@@ -92,7 +78,8 @@ It is obsolete, so don't use it."))
 ;;;
 
 (defalias 'insert-binary-file-contents 'insert-file-contents-as-binary)
-(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary)
+(make-obsolete 'insert-binary-file-contents 'insert-file-contents-as-binary
+	       "17 Sep 1998")
 
 (defun-maybe insert-binary-file-contents-literally (filename
 						    &optional visit

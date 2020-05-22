@@ -1,4 +1,3 @@
-;;; -*-byte-compile-dynamic: t;-*-
 ;;; pces-20.el --- pces submodule for Emacs 20 and XEmacs with coding-system
 
 ;; Copyright (C) 1997,1998,1999 Free Software Foundation, Inc.

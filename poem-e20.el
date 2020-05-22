@@ -1,4 +1,4 @@
-;;; poem-e20.el --- poem submodule for Emacs 20; -*-byte-compile-dynamic: t;-*-
+;;; poem-e20.el --- poem submodule for Emacs 20
 
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 

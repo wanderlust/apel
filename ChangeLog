@@ -1,3 +1,38 @@
+2020-05-22  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	Suppress byte-compiler's warnings.
+
+	* alist.el (modify-alist): Use mapc instead of mapcar.
+
+	* emu.el: Remove defalias for tm-7.106.
+	(insert-binary-file-contents): Add obsolete date.
+
+	* filename.el (filename-japanese-to-roman-string): Use
+	with-current-bufer instead of save-excursion + set-buffer.
+
+	* inv-23.el (end-of-invisible): Add obsolete date.
+
+	* mcharset.el: Add workaround for circular dependency.
+	(default-mime-charset-for-write): Always set defalt
+	value to utf-8.
+
+	* mcs-20.el: Add workaround for circular dependency.  Always
+	requrie wid-edit.el.
+
+	* mcs-e20.el (require): Don't require static.el.  Add workaround
+	for circular dependency.
+
+	* pccl-20.el (defun): Use define-coding-system instead of
+	make-coding-system.
+
+	* pces-20.el: Disable byte-compile-dynamic option.
+
+	* poem-e20.el: Disable byte-compile-dynamic option.
+
+	* poem-e20_3.el: Disable byte-compile-dynamic option.
+
+	* poem.el: Disable byte-compile-dynamic option.
+
 2020-05-21  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* apel-ver.el (apel-version): Use called-interactively-p instead

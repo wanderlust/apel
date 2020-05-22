@@ -1,4 +1,3 @@
-;;; -*-byte-compile-dynamic: t;-*-
 ;;; poem-e20_3.el --- poem submodule for Emacs 20.3
 
 ;; Copyright (C) 1998,1999,2000 Free Software Foundation, Inc.

@@ -31,9 +31,7 @@
 
 (require 'custom)
 (require 'pces)
-(eval-when-compile (require 'wid-edit))
-
-(require 'mcs-e20)
+(require 'wid-edit)
 
 
 ;;; @ MIME charset
@@ -103,6 +101,9 @@ is specified, it is used as line break code type of coding-system."
 		     charset lbt cs)
 	  ))))
 
+(provide 'mcs-20)
+(require 'mcs-e20)
+
 (defalias 'mime-charset-p 'mime-charset-to-coding-system)
 
 (defvar widget-mime-charset-prompt-value-history nil
@@ -150,6 +151,9 @@ It must be symbol."
 In that case, each car of `charsets-mime-charset-alist' element is ignored."
   :group 'i18n
   :type 'boolean)
+
+(provide 'mcs-20)
+(require 'mcharset)
 
 (defun detect-mime-charset-list (chars)
   "Return MIME charset for the list of characters CHARS."

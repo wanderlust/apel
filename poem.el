@@ -1,4 +1,4 @@
-;;; poem.el --- Emulate latest MULE features; -*-byte-compile-dynamic: t;-*-
+;;; poem.el --- Emulate latest MULE features
 
 ;; Copyright (C) 1998,1999 Free Software Foundation, Inc.
 

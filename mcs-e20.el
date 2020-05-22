@@ -29,7 +29,9 @@
 ;;; Code:
 
 (require 'pces)
-(eval-when-compile (require 'static))
+
+(provide 'mcs-e20)
+(require 'mcs-20)
 
 (defsubst encode-mime-charset-region (start end charset &optional lbt)
   "Encode the text between START and END as MIME CHARSET."
