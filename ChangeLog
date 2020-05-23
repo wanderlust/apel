@@ -1,3 +1,63 @@
+2020-05-23  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	Use lexical binding.
+
+	* apel-ver.el: Likewise.
+
+	* atype.el: Likewise.
+
+	* broken.el: Likewise.
+
+	* calist.el: Likewise.
+
+	* emu.el: Likewise.
+
+	* file-detect.el: Likewise.
+
+	* filename.el: Likewise.
+
+	* install.el: Likewise.
+
+	* inv-23.el: Likewise.
+
+	* invisible.el: Likewise.
+
+	* mcharset.el: Likewise.
+
+	* mcs-20.el: Likewise.
+
+	* mcs-e20.el: Likewise.
+
+	* mule-caesar.el: Likewise.
+
+	* path-util.el: Likewise.
+
+	* pccl-20.el: Likewise.
+
+	* pccl.el: Likewise.
+
+	* pces-20.el: Likewise.
+
+	* pces-e20.el: Likewise.
+
+	* pces.el: Likewise.
+
+	* pcustom.el: Likewise.
+
+	* poe.el: Likewise.
+
+	* poem-e20.el: Likewise.
+
+	* poem-e20_3.el: Likewise.
+
+	* poem.el: Likewise.
+
+	* product.el: Likewise.
+
+	* richtext.el: Likewise.
+
+	* static.el: Likewise.
+
 2020-05-22  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	Suppress byte-compiler's warnings.

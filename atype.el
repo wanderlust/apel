@@ -1,4 +1,4 @@
-;;; atype.el --- atype functions
+;;; atype.el --- atype functions  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1994,1995,1996,1997 Free Software Foundation, Inc.
 

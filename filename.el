@@ -1,4 +1,4 @@
-;;; filename.el --- file name filter
+;;; filename.el --- file name filter  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1996,1997 MORIOKA Tomohiko
 

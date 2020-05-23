@@ -1,4 +1,4 @@
-;;; product.el --- Functions for product version information.
+;;; product.el --- Functions for product version information  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1999,2000 Free Software Foundation, Inc.
 

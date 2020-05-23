@@ -1,4 +1,4 @@
-;;; poem-e20_3.el --- poem submodule for Emacs 20.3
+;;; poem-e20_3.el --- poem submodule for Emacs 20.3  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1998,1999,2000 Free Software Foundation, Inc.
 
@@ -33,11 +33,11 @@
 ;;; @ character
 ;;;
 
-(defsubst char-length (char)
+(defsubst char-length (_char)
   "Return indexing length of multi-byte form of CHAR."
   1)
 
-(defmacro char-next-index (char index)
+(defmacro char-next-index (_char index)
   "Return index of character succeeding CHAR whose index is INDEX."
   `(1+ ,index))
 

@@ -1,4 +1,4 @@
-;;; poem.el --- Emulate latest MULE features
+;;; poem.el --- Emulate latest MULE features  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1998,1999 Free Software Foundation, Inc.
 

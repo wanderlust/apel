@@ -1,4 +1,4 @@
-;;; inv-23.el --- invisible feature implementation for Emacs 23 or later
+;;; inv-23.el --- invisible feature implementation for Emacs 23 or later  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1995, 1996, 1997, 1998, 1999, 2001, 2010
 ;;   Free Software Foundation, Inc.

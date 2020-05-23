@@ -1,4 +1,4 @@
-;;; file-detect.el --- Path management or file detection utility
+;;; file-detect.el --- Path management or file detection utility  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1996,1997 Free Software Foundation, Inc.
 

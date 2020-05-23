@@ -1,4 +1,4 @@
-;;; emu.el --- Emulation module for each Emacs variants
+;;; emu.el --- Emulation module for each Emacs variants  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1995,1996,1997,1998 Free Software Foundation, Inc.
 

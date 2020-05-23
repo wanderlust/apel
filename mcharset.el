@@ -1,4 +1,4 @@
-;;; mcharset.el --- MIME charset API
+;;; mcharset.el --- MIME charset API  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1997,1998,1999,2000 Free Software Foundation, Inc.
 

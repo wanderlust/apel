@@ -1,4 +1,4 @@
-;;; pces-e20.el --- pces submodule for Emacs 20
+;;; pces-e20.el --- pces submodule for Emacs 20  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1998,1999 Free Software Foundation, Inc.
 

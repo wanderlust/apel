@@ -1,4 +1,4 @@
-;;; mcs-20.el --- MIME charset implementation for Emacs 20 and XEmacs/mule
+;;; mcs-20.el --- MIME charset implementation for Emacs 20 and XEmacs/mule  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1997,1998,1999,2000 Free Software Foundation, Inc.
 
@@ -117,7 +117,7 @@ is specified, it is used as line break code type of coding-system."
   :prompt-value 'widget-mime-charset-prompt-value
   :action 'widget-mime-charset-action)
 
-(defun widget-mime-charset-prompt-value (widget prompt value unbound)
+(defun widget-mime-charset-prompt-value (_widget prompt value _unbound)
   ;; Read mime-charset from minibuffer.
   (intern
    (completing-read (format "%s (default %s) " prompt value)

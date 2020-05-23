@@ -1,4 +1,4 @@
-;;; apel-ver.el --- Declare APEL version.
+;;; apel-ver.el --- Declare APEL version  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1999, 2000, 2003, 2006 Free Software Foundation, Inc.
 

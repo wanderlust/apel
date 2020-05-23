@@ -1,4 +1,4 @@
-;;; path-util.el --- Emacs Lisp file detection utility
+;;; path-util.el --- Emacs Lisp file detection utility  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1996,1997,1999 Free Software Foundation, Inc.
 

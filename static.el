@@ -1,4 +1,4 @@
-;;; static.el --- tools for static evaluation.
+;;; static.el --- tools for static evaluation  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1999 Tanaka Akira <akr@jaist.ac.jp>
 

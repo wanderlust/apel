@@ -1,4 +1,4 @@
-;;; mule-caesar.el --- ROT 13-47 Caesar rotation utility
+;;; mule-caesar.el --- ROT 13-47 Caesar rotation utility  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1997,1998 Free Software Foundation, Inc.
 

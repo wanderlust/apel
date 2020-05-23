@@ -1,4 +1,4 @@
-;;; mcs-e20.el --- MIME charset implementation for Emacs 20.1 and 20.2
+;;; mcs-e20.el --- MIME charset implementation for Emacs 20.1 and 20.2  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1996,1997,1998,1999,2000 Free Software Foundation, Inc.
 

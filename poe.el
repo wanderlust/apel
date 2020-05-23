@@ -1,4 +1,4 @@
-;;; poe.el --- Portable Outfit for Emacsen
+;;; poe.el --- Portable Outfit for Emacsen -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2005,
 ;;   2008 Free Software Foundation, Inc.
@@ -213,7 +213,7 @@ If the event isn't a keypress, this returns nil."
 ;; Emacs 20.4: (read-event &optional PROMPT INHERIT-INPUT-METHOD)
 ;; XEmacs: (next-event &optional EVENT PROMPT),
 ;;         (next-command-event &optional EVENT PROMPT)
-(defun-maybe next-command-event (&optional event prompt)
+(defun-maybe next-command-event (&optional _event prompt)
   "Read an event object from the input stream.
 If EVENT is non-nil, it should be an event object and will be filled
 in and returned; otherwise a new event object will be created and

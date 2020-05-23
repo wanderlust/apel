@@ -1,4 +1,4 @@
-;;; calist.el --- Condition functions
+;;; calist.el --- Condition functions  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 ;; Copyright (C) 1999 Electrotechnical Laboratory, JAPAN.

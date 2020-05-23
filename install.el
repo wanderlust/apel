@@ -1,4 +1,4 @@
-;;; install.el --- Emacs Lisp package install utility
+;;; install.el --- Emacs Lisp package install utility  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2006
 ;; 	Free Software Foundation, Inc.
@@ -199,7 +199,7 @@
   ;; Dummy function.  Do nothing.
   nil)
 
-(defun install-update-package-files (package dir &optional just-print)
+(defun install-update-package-files (_package _dir &optional _just-print)
   ;; Dummy function.  Do nothing.
   nil)
 

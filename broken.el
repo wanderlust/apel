@@ -1,4 +1,4 @@
-;;; broken.el --- Emacs broken facility information registry.
+;;; broken.el --- Emacs broken facility information registry  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1998, 1999 Tanaka Akira <akr@jaist.ac.jp>
 

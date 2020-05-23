@@ -1,4 +1,4 @@
-;;; richtext.el -- read and save files in text/richtext format
+;;; richtext.el -- read and save files in text/richtext format  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1995,1996,1997 Free Software Foundation, Inc.
 
@@ -93,7 +93,7 @@ of this structure.")
 		richtext-initial-annotation
 	      (funcall richtext-initial-annotation)))
     (enriched-map-property-regions 'hard
-      (lambda (v b e)
+      (lambda (_v b _e)
 	(goto-char b)
 	(if (eolp)
 	    (while (search-forward "\n" nil t)

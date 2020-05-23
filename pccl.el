@@ -1,4 +1,4 @@
-;;; pccl.el --- Portable CCL utility for Mule 2.*
+;;; pccl.el --- Portable CCL utility for Mule 2.*  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 

@@ -1,4 +1,4 @@
-;;; poem-e20.el --- poem submodule for Emacs 20
+;;; poem-e20.el --- poem submodule for Emacs 20  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1998 Free Software Foundation, Inc.
 

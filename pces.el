@@ -1,4 +1,4 @@
-;;; pces.el --- Portable Character Encoding Scheme (coding-system) features
+;;; pces.el --- Portable Character Encoding Scheme (coding-system) features  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1998,1999 Free Software Foundation, Inc.
 

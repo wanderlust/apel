@@ -1,4 +1,4 @@
-;;; pym.el --- Macros for Your Poe.
+;;; pym.el --- Macros for Your Poe  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1995,1996,1997,1998,1999 Free Software Foundation, Inc.
 

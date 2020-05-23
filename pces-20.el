@@ -1,4 +1,4 @@
-;;; pces-20.el --- pces submodule for Emacs 20 and XEmacs with coding-system
+;;; pces-20.el --- pces submodule for Emacs 20 and XEmacs with coding-system  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1997,1998,1999 Free Software Foundation, Inc.
 
@@ -55,6 +55,7 @@
 (defun write-region-as-binary (start end filename
 				     &optional append visit lockname)
   "Like `write-region', q.v., but don't encode."
+  (defvar jam-zcat-filename-list)
   (let ((coding-system-for-write 'binary)
 	jka-compr-compression-info-list jam-zcat-filename-list)
     (write-region start end filename append visit lockname)))
@@ -109,6 +110,7 @@ to Emacs features such as format decoding, character code
 conversion, find-file-hooks, automatic uncompression, etc.
 
 This function ensures that none of these modifications will take place."
+	(defvar jam-zcat-filename-list)
         (let ((format-alist nil)
               (after-insert-file-functions nil)
               (coding-system-for-read 'binary)
@@ -211,6 +213,7 @@ be applied to `coding-system-for-read'."
   (coding-system start end filename &optional append visit lockname)
   "Like `write-region', q.v., but CODING-SYSTEM the first arg will be
 applied to `coding-system-for-write'."
+  (defvar jam-zcat-filename-list)
   (let ((coding-system-for-write coding-system)
 	jka-compr-compression-info-list jam-zcat-filename-list)
     (write-region start end filename append visit lockname)))
