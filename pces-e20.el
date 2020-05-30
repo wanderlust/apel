@@ -25,6 +25,7 @@
 ;;; Code:
 
 (require 'pces-20)
+(require 'pym)
 
 (defsubst-maybe find-coding-system (obj)
   "Return OBJ if it is a coding-system."

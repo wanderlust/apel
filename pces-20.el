@@ -60,77 +60,7 @@
 	jka-compr-compression-info-list jam-zcat-filename-list)
     (write-region start end filename append visit lockname)))
 
-(require 'broken)
-
-(static-when (file-writable-p "literal-test-file")
-  (broken-facility insert-file-contents-literally-treats-binary
-    "Function `insert-file-contents-literally' decodes text."
-    (let* ((str "\r\n")
-           (coding-system-for-write 'binary)
-           (coding-system-for-read 'raw-text-dos)
-           ;; (default-enable-multibyte-characters (multibyte-string-p str))
-           )
-      (with-temp-buffer
-        (insert str)
-        (write-region (point-min)(point-max) "literal-test-file")
-        )
-      (string=
-       (with-temp-buffer
-         (let (file-name-handler-alist)
-           (insert-file-contents-literally "literal-test-file")
-           )
-         (buffer-string)
-         )
-       str)))
-
-  (broken-facility insert-file-contents-literally-treats-file-name-handler
-    "Function `insert-file-contents' doesn't call file-name-handler."
-    (let (called)
-      (with-temp-buffer
-        (let ((file-name-handler-alist
-               '(("literal-test-file" . (lambda (operation &rest args)
-                                          (setq called t)
-                                          (let (file-name-handler-alist)
-                                            (apply operation args)
-                                            ))))))
-          (insert-file-contents-literally "literal-test-file")
-          )
-        (delete-file "literal-test-file")
-        )
-      called))
-
-  (static-if
-      (or (broken-p 'insert-file-contents-literally-treats-binary)
-          (broken-p 'insert-file-contents-literally-treats-file-name-handler))
-      (defun insert-file-contents-as-binary (filename
-                                             &optional visit beg end replace)
-        "Like `insert-file-contents', but only reads in the file literally.
-A buffer may be modified in several ways after reading into the buffer,
-to Emacs features such as format decoding, character code
-conversion, find-file-hooks, automatic uncompression, etc.
-
-This function ensures that none of these modifications will take place."
-	(defvar jam-zcat-filename-list)
-        (let ((format-alist nil)
-              (after-insert-file-functions nil)
-              (coding-system-for-read 'binary)
-              (coding-system-for-write 'binary)
-              (jka-compr-compression-info-list nil)
-              (jam-zcat-filename-list nil)
-              (find-buffer-file-type-function
-               (if (fboundp 'find-buffer-file-type)
-                   (symbol-function 'find-buffer-file-type)
-                 nil)))
-          (unwind-protect
-              (progn
-                (fset 'find-buffer-file-type (lambda (filename) t))
-                (insert-file-contents filename visit beg end replace))
-            (if find-buffer-file-type-function
-                (fset 'find-buffer-file-type find-buffer-file-type-function)
-              (fmakunbound 'find-buffer-file-type)))))
-    (defalias 'insert-file-contents-as-binary 'insert-file-contents-literally)
-    )
-  )
+(defalias 'insert-file-contents-as-binary 'insert-file-contents-literally)
 
 (defun insert-file-contents-as-raw-text (filename
 					 &optional visit beg end replace)

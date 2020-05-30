@@ -24,9 +24,6 @@
 
 ;;; Code:
 
-(require 'poe)
-(require 'pcustom)
-
 (defcustom default-mime-charset-for-write
   'utf-8
   "Default value of MIME-charset for encoding.

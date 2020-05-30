@@ -30,11 +30,7 @@
   "Emacs has not CCL."
   t)
 
-(require 'advice)
-
-(require 'ccl)
 (require 'pccl-20)
-
 
 ;;; @ end
 ;;;

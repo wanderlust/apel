@@ -1,3 +1,44 @@
+2020-05-30  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* atype.el: Remove unneeded dependencies.
+	(replace-atype, delete-atype): Remove unused let-bindings.
+	(set-atype): Use mapc instead of mapcar.
+
+	* broken.el: Remove unneeded dependency.
+
+	* filename.el (filename-control-p): Assume Emacs 24 or later.
+	Remove unneeded dependencies.
+
+	* install.el: Remove unneeded dependency.
+
+	* inv-23.el: Remove unneeded dependency.
+
+	* mcharset.el: Remove unneeded dependencies.
+
+	* mcs-20.el: Remove unneeded dependencies.
+	(mime-charset-coding-system-alist): Use coding-system-p instead of
+	find-coding-system.
+
+	* mcs-e20.el: Remove unneeded dependency.
+
+	* mule-caesar.el: Remove unneeded dependencies.
+
+	* path-util.el: Remove unneeded dependency.
+
+	* pccl.el (ccl-usable): Remove unneeded dependencies.
+
+	* pces-20.el (insert-file-contents-as-binary): Remove test.  it is
+	always alias to insert-file-contents-literally.
+
+	* pces-e20.el: Require pym.el directlt.
+
+	* pces.el: Remove unneeded dependencies.
+
+	* pcustom.el: Assume Emacs 24 or later.  Remove unneeded
+	dependencies.
+
+	* poem.el: Require pym.el instead of pces.el.
+
 2020-05-23  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	Use lexical binding.

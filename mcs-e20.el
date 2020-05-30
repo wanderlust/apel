@@ -28,8 +28,6 @@
 
 ;;; Code:
 
-(require 'pces)
-
 (provide 'mcs-e20)
 (require 'mcs-20)
 

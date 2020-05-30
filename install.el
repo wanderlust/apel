@@ -26,7 +26,6 @@
 
 ;;; Code:
 
-(require 'poe)				; make-directory for v18
 (require 'path-util)			; default-load-path
 
 

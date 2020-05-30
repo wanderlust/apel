@@ -25,7 +25,6 @@
 ;;; Code:
 
 (require 'static)
-(require 'poe)
 
 (eval-and-compile
 

@@ -25,8 +25,6 @@
 
 ;;; Code:
 
-(require 'emu)				; for backward compatibility.
-(require 'poe)				; delete.
 (require 'alist)
 
 
@@ -130,11 +128,11 @@
 ;;;
 
 (defun delete-atype (atl al)
-  (let* ((r atl) ret oal)
+  (let* ((r atl) oal)
     (setq oal
 	  (catch 'tag
 	    (while r
-	      (if (setq ret (nth 1 (assoc-unify (car r) al)))
+	      (if (nth 1 (assoc-unify (car r) al))
 		  (throw 'tag (car r))
 		)
 	      (setq r (cdr r))
@@ -148,10 +146,10 @@
        ))
 
 (defun replace-atype (atl old-al new-al)
-  (let* ((r atl) ret oal)
+  (let ((r atl))
     (if (catch 'tag
 	  (while r
-	    (if (setq ret (nth 1 (assoc-unify (car r) old-al)))
+	    (if (nth 1 (assoc-unify (car r) old-al))
 		(throw 'tag (rplaca r new-al))
 	      )
 	    (setq r (cdr r))
@@ -165,10 +163,8 @@
 	   (ignore-fields (car (cdr (memq 'ignore options))))
 	   (remove (or (car (cdr (memq 'remove options)))
 		       (let ((ral (copy-alist al)))
-			 (mapcar (function
-				  (lambda (type)
-				    (setq ral (del-alist type ral))
-				    ))
+			 (mapc (lambda (type)
+				  (setq ral (del-alist type ral)))
 				 ignore-fields)
 			 ral)))
 	   )

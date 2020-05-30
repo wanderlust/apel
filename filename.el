@@ -25,9 +25,6 @@
 
 ;;; Code:
 
-(require 'emu)				; for backward compatibility.
-(require 'poe)				; functionp.
-(require 'poem)				; char-int, and char-length.
 (require 'path-util)
 
 (defsubst poly-funcall (functions argument)
@@ -87,20 +84,13 @@ Moreover, if you want to convert Japanese filename to roman string by kakasi,
     (buffer-string)))
 
 (defun filename-control-p (character)
-  (let ((code (char-int character)))
-    (or (< code 32)(= code 127))))
+  (or (< character 32) (= character 127)))
 
 (eval-when-compile
   (defmacro filename-special-filter-1 (string)
     (let (sref inc-i)
-      (if (or (not (fboundp 'sref))
-	      (>= emacs-major-version 21)
-	      (and (= emacs-major-version 20)
-		   (>= emacs-minor-version 3)))
-	  (setq sref 'aref
-		inc-i '(1+ i))
-	(setq sref 'aref
-	      inc-i '(+ i (char-length chr))))
+      (setq sref 'aref
+	    inc-i '(1+ i))
       `(let ((len (length ,string))
 	     (b 0)(i 0)
 	     (dest ""))

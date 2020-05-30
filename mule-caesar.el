@@ -24,11 +24,6 @@
 
 ;;; Code:
 
-(require 'emu)				; for backward compatibility.
-(require 'poe)				; char-after.
-(require 'poem)				; charset-chars, char-charset,
-					; and split-char.
-
 (defun mule-caesar-region (start end &optional stride-ascii)
   "Caesar rotation of current region.
 Optional argument STRIDE-ASCII is rotation-size for Latin alphabet

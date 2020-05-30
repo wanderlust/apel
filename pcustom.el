@@ -28,37 +28,6 @@
 
 ;;; Code:
 
-(require 'poe)
-(eval-when-compile (require 'static))
-
-(static-if (condition-case nil
-	       ;; compile-time check.
-	       (if (and (require 'custom)
-			(fboundp 'custom-declare-variable))
-		   ;; you have "new custom".
-		   t
-		 ;; you have custom, but it is "old".
-		 (message "\
-  ** \"old custom\" is loaded.  See README if you want to use \"new custom\".")
-		 (sleep-for 1)
-		 nil)
-	     ;; you don't have custom.
-	     (error nil))
-    ;; you have "new custom". no load-time check.
-    (require 'custom)
-  ;; your custom is "old custom",
-  ;; or you don't have custom library at compile-time.
-  (or (condition-case nil
-	  ;; load-time check.
-	  ;; load "custom" if exists.
-	  (and (require 'custom)
-	       (fboundp 'custom-declare-variable))
-	(error nil))
-      ;; your custom is "old custom",
-      ;; or you don't have custom library.
-      ;; load emulation version of "new custom".
-      (require 'tinycustom)))
-
 (require 'product)
 (product-provide (provide 'pcustom) (require 'apel-ver))
 

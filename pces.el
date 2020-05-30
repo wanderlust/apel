@@ -24,12 +24,6 @@
 
 ;;; Code:
 
-(require 'poe)
-
-(eval-and-compile
-  (unless (fboundp 'open-network-stream)
-    (require 'tcp)))
-
 (require 'pces-e20)
 
 	 

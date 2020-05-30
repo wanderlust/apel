@@ -29,8 +29,6 @@
 
 ;;; Code:
 
-(require 'custom)
-(require 'pces)
 (require 'wid-edit)
 
 
@@ -53,10 +51,8 @@
 	   ))
 	dest)
     (while rest
-      (let ((pair (car rest)))
-	(or (find-coding-system (car pair))
-	    (setq dest (cons pair dest))
-	    ))
+      (unless (coding-system-p (caar rest))
+	(setq dest (cons (car rest) dest)))
       (setq rest (cdr rest))
       )
     dest)

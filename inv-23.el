@@ -25,8 +25,6 @@
 
 ;;; Code:
 
-(require 'poe)
-
 (defun enable-invisible ())
 (defun disable-invisible ())
 (defalias 'end-of-invisible 'disable-invisible)
