@@ -117,9 +117,8 @@ is specified, it is used as line break code type of coding-system."
   ;; Read mime-charset from minibuffer.
   (intern
    (completing-read (format "%s (default %s) " prompt value)
-		    (mapcar (function
-			     (lambda (sym)
-			       (list (symbol-name sym))))
+		    (mapcar (lambda (sym)
+			      (list (symbol-name sym)))
 			    (mime-charset-list)))))
 
 (defun widget-mime-charset-action (widget &optional event)

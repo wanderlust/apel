@@ -293,13 +293,12 @@ The 1st argument is a product structure.  The rest arguments are ARGS."
 PRODUCT is a product structure which returned by `product-define'."
   (let (dest)
     (product-for-each product nil
-     (function
-      (lambda (product)
-	(let ((str (product-string-1 product nil)))
-	  (if str
-	      (setq dest (if dest
-			     (concat dest " " str)
-			   str)))))))
+     (lambda (product)
+       (let ((str (product-string-1 product nil)))
+	 (if str
+	     (setq dest (if dest
+			    (concat dest " " str)
+			  str))))))
     dest))
 
 (defun product-string-verbose (product)
@@ -307,13 +306,12 @@ PRODUCT is a product structure which returned by `product-define'."
 PRODUCT is a product structure which returned by `product-define'."
   (let (dest)
     (product-for-each product nil
-     (function
-      (lambda (product)
-	(let ((str (product-string-1 product t)))
-	  (if str
-	      (setq dest (if dest
-			     (concat dest " " str)
-			   str)))))))
+     (lambda (product)
+       (let ((str (product-string-1 product t)))
+	 (if str
+	     (setq dest (if dest
+			    (concat dest " " str)
+			  str))))))
     dest))
 
 (defun product-version-compare (v1 v2)
@@ -339,9 +337,8 @@ REQUIRE-VERSION is a list of integer."
   "List all products information."
   (let (dest)
     (mapatoms
-     (function
-      (lambda (sym)
-	(setq dest (cons (symbol-value sym) dest))))
+     (lambda (sym)
+       (setq dest (cons (symbol-value sym) dest)))
      product-obarray)
     dest))
 

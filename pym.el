@@ -156,15 +156,14 @@ See also the function `defun'."
            (prog1
                (static-cond
                 ,@ (mapcar
-                    (function
-                      (lambda (case)
-                        (list (car case)
-                              (if doc
-                                  `(defun ,name ,args
-                                     ,doc
-                                     ,@ (cdr case))
-                                ` (defun ,name ,args
-                                    ,@ (cdr case))))))
+                    (lambda (case)
+                      (list (car case)
+                            (if doc
+                                `(defun ,name ,args
+                                   ,doc
+                                   ,@ (cdr case))
+                              ` (defun ,name ,args
+                                  ,@ (cdr case)))))
                      clauses))
              ;; This `defun' will be compiled to `fset',
              ;; which does not update `load-history'.
@@ -188,15 +187,14 @@ See also the function `defmacro'."
            (prog1
                (static-cond
                 ,@ (mapcar
-                     (function
-                      (lambda (case)
-                        (list (car case)
-                              (if doc
-                                  `(defmacro ,name ,args
-                                     ,doc
-                                     ,@ (cdr case))
+                    (lambda (case)
+                      (list (car case)
+                            (if doc
                                 `(defmacro ,name ,args
-                                   ,@ (cdr case))))))
+                                   ,doc
+                                   ,@ (cdr case))
+                              `(defmacro ,name ,args
+                                 ,@ (cdr case)))))
                      clauses))
              ;; This `defmacro' will be compiled to `fset',
              ;; which does not update `load-history'.
@@ -220,15 +218,14 @@ See also the macro `defsubst'."
            (prog1
                (static-cond
                 ,@ (mapcar
-                     (function
-                      (lambda (case)
-                        (list (car case)
-                              (if doc
-                                  `(defsubst ,name ,args
-                                     ,doc
-                                     ,@ (cdr case))
+                    (lambda (case)
+                      (list (car case)
+                            (if doc
                                 `(defsubst ,name ,args
-                                   ,@ (cdr case))))))
+                                   ,doc
+                                   ,@ (cdr case))
+                              `(defsubst ,name ,args
+                                 ,@ (cdr case)))))
                      clauses))
              ;; This `defsubst' will be compiled to `fset',
              ;; which does not update `load-history'.

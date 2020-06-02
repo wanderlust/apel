@@ -1,3 +1,24 @@
+2020-06-02  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	Strip use of function wrapping lambda.
+
+	* alist.el (modify-alist): Likewise.
+
+	* install.el (compile-elisp-modules, install-files): Likewise.
+
+	* mcs-20.el (widget-mime-charset-prompt-value): Likewise.
+
+	* mule-caesar.el (mule-caesar-region): Likewise.
+
+	* product.el (product-list-products, product-string-verbose)
+	(product-string): Likewise.
+
+	* pym.el (defsubst-maybe-cond, defmacro-maybe-cond)
+	(defun-maybe-cond): Likewise.
+
+	* static.el (static-condition-case): Likewise.
+
+
 2020-05-30  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* atype.el: Remove unneeded dependencies.

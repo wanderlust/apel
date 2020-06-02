@@ -42,9 +42,8 @@
 
 (defun compile-elisp-modules (modules &optional path every-time)
   (mapcar
-   (function
-    (lambda (module)
-      (compile-elisp-module module path every-time)))
+   (lambda (module)
+     (compile-elisp-module module path every-time))
    modules))
 
 
@@ -79,9 +78,8 @@
       (file-exists-p dest)
       (make-directory dest t))
   (mapcar
-   (function
-    (lambda (file)
-      (install-file file src dest move overwrite just-print)))
+   (lambda (file)
+     (install-file file src dest move overwrite just-print))
    files))
 
 
@@ -133,9 +131,8 @@
       (file-exists-p dest)
       (make-directory dest t))
   (mapcar
-   (function
-    (lambda (module)
-      (install-elisp-module module src dest just-print del-elc)))
+   (lambda (module)
+     (install-elisp-module module src dest just-print del-elc))
    modules))
 
 

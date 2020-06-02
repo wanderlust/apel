@@ -61,12 +61,11 @@ for 96 or 96x96 graphic character set)."
 		 )
 		(t
 		 (let* ((stride (lsh (charset-chars (char-charset chr)) -1))
-			(ret (mapcar (function
-				      (lambda (octet)
-					(if (< octet 80)
-					    (+ octet stride)
-					  (- octet stride)
-					  )))
+			(ret (mapcar (lambda (octet)
+				       (if (< octet 80)
+					   (+ octet stride)
+					 (- octet stride)
+					 ))
 				     (cdr (split-char chr)))))
 		   (delete-char 1)
 		   (insert (make-char (char-charset chr)
