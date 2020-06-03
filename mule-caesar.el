@@ -39,7 +39,7 @@ for 96 or 96x96 graphic character set)."
       (narrow-to-region start end)
       (goto-char start)
       (while (< (point)(point-max))
-	(let* ((chr (char-after (point))))
+	(let* ((chr (following-char)))
 	  (cond ((and (<= ?A chr) (<= chr ?Z))
 		 (setq chr (+ chr stride-ascii))
 		 (if (> chr ?Z)
