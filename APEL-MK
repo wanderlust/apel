@@ -35,13 +35,7 @@
 ;; but have `normal-top-level-add-to-load-path' and you want to use it in
 ;; "subdirs.el", put the following line to "APEL-CFG".
 ;; (setq EMU_PREFIX "emu")
-(defvar EMU_PREFIX
-  (if (or (featurep 'xemacs)
-	  (fboundp 'normal-top-level-add-subdirs-to-load-path))
-      ;; Make "emu" subdirectory.
-      "emu"
-    ;; Don't make "emu" subdirectory.
-    ""))
+(defvar EMU_PREFIX "emu")
 
 ;; The directories where APEL and EMU modules will be installed.
 ;; These two variables will be generated from other variables above.
