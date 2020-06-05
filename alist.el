@@ -1,4 +1,4 @@
-;;; alist.el --- utility functions for association list
+;;; alist.el --- utility functions for association list  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 1993,1994,1995,1996,1998,2000 Free Software Foundation, Inc.
 
