@@ -1,3 +1,10 @@
+2020-06-07  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-20.el (mime-charset-to-coding-system): Don't use
+	find-coding-system.
+
+	* mcs-e20.el (charsets-mime-charset-alist): Ditto.
+
 2020-06-05  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* APEL-MK (EMU_PREFIX): Assume Emacs 24 or later.
