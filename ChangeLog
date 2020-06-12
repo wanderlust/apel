@@ -1,3 +1,8 @@
+2020-06-13  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	* mcs-20.el (detect-mime-charset-string)
+	(detect-mime-charset-region): Improve performance.
+
 2020-06-07  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* mcs-20.el (mime-charset-to-coding-system): Don't use

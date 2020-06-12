@@ -28,7 +28,7 @@
 ;;    or later.
 
 ;;; Code:
-
+(require 'subr-x)
 (require 'wid-edit)
 
 
@@ -183,11 +183,10 @@ Optional 3rd argument STRING is non-nil, detect MIME charset from STRING.  In th
 When `detect-mime-charset-from-coding-system' is non-nil, each car of `charsets-mime-charset-alist' element is ignored."
   (if detect-mime-charset-from-coding-system
       (detect-mime-charset-from-coding-system 0 (length string) string)
-    (let (list)
-      (mapc (lambda (ch) (unless (memq ch list)
-			   (setq list (cons ch list))))
+    (let ((table (make-hash-table :test 'eq)))
+      (mapc (lambda (ch) (puthash ch t table))
 	    string)
-      (detect-mime-charset-list list))))
+      (detect-mime-charset-list (hash-table-keys table)))))
 
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END.
@@ -196,13 +195,12 @@ When `detect-mime-charset-from-coding-system' is non-nil, each car of `charsets-
   (if detect-mime-charset-from-coding-system
       (detect-mime-charset-from-coding-system start end)
     (let ((point (min start end))
-	  list)
+	  (table (make-hash-table :test 'eq)))
       (setq end (max start end))
       (while (< point end)
-	(unless (memq (char-after point) list)
-	  (setq list (cons (char-after point) list)))
+	(puthash (char-after point) t table)
 	(setq point (1+ point)))
-      (detect-mime-charset-list list))))
+      (detect-mime-charset-list (hash-table-keys table)))))
 
 (defun write-region-as-mime-charset (charset start end filename
 					     &optional append visit lockname)
