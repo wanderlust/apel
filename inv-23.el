@@ -31,9 +31,7 @@
 (make-obsolete 'end-of-invisible 'disable-invisible "15 Jun 2010")
 
 (defun invisible-region (start end)
-  (if (save-excursion
-	(goto-char (1- end))
-	(eq (following-char) ?\n))
+  (if (eq (char-before end) ?\n)
       (setq end (1- end)))
   (put-text-property start end 'invisible t))
 
