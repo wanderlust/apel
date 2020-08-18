@@ -1,3 +1,11 @@
+2020-08-18  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
+
+	Change non-ASCII text files's coding-system to UTF-8
+
+	* ChangeLog:  Likewise.
+
+	* README.ja: Likewise.
+
 2020-06-13  Kazuhiro Ito  <kzhr@d1.dion.ne.jp>
 
 	* inv-23.el (invisible-region): Minor refactoring.
@@ -979,7 +987,7 @@
 	(minor-mode-map-alist): Ditto.
 
 	* README.en ((d) make.bat (for MS-DOS family)): New section.
-	* README.ja ((d) make.bat $(B$rMxMQ$9$k(B (MS-DOS $(B7O(B OS $(B$N>l9g(B)):
+	* README.ja ((d) make.bat を利用する (MS-DOS 系 OS の場合)):
 	Ditto.
 
 2000-12-22  MORIOKA Tomohiko  <tomo@kanji.zinbun.kyoto-u.ac.jp>
@@ -3765,7 +3773,7 @@
 
 	* APEL: Version 8.4 was released.
 
-	* EMU-ELS: Don't use HIRAGANA LETTER A ($(B$"(B) to detect character
+	* EMU-ELS: Don't use HIRAGANA LETTER A (あ) to detect character
  	indexing (Emacs 20.3 or later).
 
 1998-04-20  MORIOKA Tomohiko  <morioka@jaist.ac.jp>

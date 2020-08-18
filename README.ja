@@ -1,198 +1,198 @@
 -*- outline -*-
 
-[APEL $B$N(B README ($BF|K\8lHG(B)]
+[APEL の README (日本語版)]
 
-* APEL $B$H$O!)(B
+* APEL とは？
 
-APEL $B$O(B "A Portable Emacs Library." $B$NN,$G$9!#$3$l$O0J2<$N%b%8%e!<%k$G(B
-$B9=@.$5$l$F$$$^$9(B:
+APEL は "A Portable Emacs Library." の略です。これは以下のモジュールで
+構成されています:
 
 ** poe.el
 
-$B<g$K:G?7$N(B emacs $B4D6-$N$?$a$N4pACE*$J4X?t$HFC<l7A<0(B/$B%^%/%m$N(B emulation
-$B$N%b%8%e!<%k!#(B
+主に最新の emacs 環境のための基礎的な関数と特殊形式/マクロの emulation
+のモジュール。
 
-  poe-xemacs.el  --- XEmacs$BMQ(B
-  pym.el         --- poe $B$N$?$a$N(B macros
+  poe-xemacs.el  --- XEmacs用
+  pym.el         --- poe のための macros
 
 ** poem.el
 
-$B0\?"@-$N9b$$(B MULE $B%W%m%0%i%`$r=q$/$?$a$N4pACE*$J4X?t$rDs6!$9$k!#(B
+移植性の高い MULE プログラムを書くための基礎的な関数を提供する。
 
-  poem-ltn1.el   --- MULE $B$J$7(B Emacs 19/XEmacs $BMQ(B
-  poem-20.el     --- Emacs 20 $B$H(B XEmacs-MULE $B$N6&M-%b%8%e!<%k(B
-  poem-e20_3.el  --- Emacs 20.3 $BMQ(B
-  poem-xm.el     --- XEmacs-MULE $BMQ(B
+  poem-ltn1.el   --- MULE なし Emacs 19/XEmacs 用
+  poem-20.el     --- Emacs 20 と XEmacs-MULE の共有モジュール
+  poem-e20_3.el  --- Emacs 20.3 用
+  poem-xm.el     --- XEmacs-MULE 用
 
 ** pces.el
 
-$B0\?"@-$N9b$$(B character encoding $B%9%-!<%`(B (coding-system) $B$rDs6!$9$k!#(B
+移植性の高い character encoding スキーム (coding-system) を提供する。
 
-  pces-20.el     --- coding-system $B5!G=$r;}$D(B Emacs 20 and XEmacs $BMQ(B
-  pces-e20.el    --- Emacs 20 $BMQ(B
-  pces-raw.el    --- coding-system $B5!G=$r;}$?$J$$(B emacsen $BMQ(B
-  pces-xfc.el    --- file coding $B5!G=$r;}$D(B XEmacs $BMQ(B
-  pces-xm.el     --- XEmacs-mule $BMQ(B
+  pces-20.el     --- coding-system 機能を持つ Emacs 20 and XEmacs 用
+  pces-e20.el    --- Emacs 20 用
+  pces-raw.el    --- coding-system 機能を持たない emacsen 用
+  pces-xfc.el    --- file coding 機能を持つ XEmacs 用
+  pces-xm.el     --- XEmacs-mule 用
 
-** invisible.el --- $BIT2D;k(B region $B$K4X$9$k5!G=$rDs6!$9$k(B
+** invisible.el --- 不可視 region に関する機能を提供する
 
   inv-19.el     --- for Emacs 19
   inv-23.el     --- for Emacs 23
   inv-xemacs.el --- for XEmacs
 
-** mcharset.el --- MIME charset $B4XO"$N5!G=$rDs6!$9$k(B
+** mcharset.el --- MIME charset 関連の機能を提供する
 
-  mcs-ltn1.el   --- MULE Emacs 19/XEmacs $BMQ(B
-  mcs-20.el     --- Emacs 20 $B$H(B XEmacs-MULE $BMQ$N6&M-%b%8%e!<%k(B
-  mcs-e20.el    --- Emacs 20 $BMQ(B
-  mcs-xm.el     --- XEmacs-MULE $BMQ(B
-  mcs-xmu.el    --- XEmacs-MULE $BMQ(B (ISO646 $BJ8;z$NC10l2=(B)
+  mcs-ltn1.el   --- MULE Emacs 19/XEmacs 用
+  mcs-20.el     --- Emacs 20 と XEmacs-MULE 用の共有モジュール
+  mcs-e20.el    --- Emacs 20 用
+  mcs-xm.el     --- XEmacs-MULE 用
+  mcs-xmu.el    --- XEmacs-MULE 用 (ISO646 文字の単一化)
 
-** static.el --- $B@EE*I>2A$N$?$a$N%f!<%F%#%j%F%#!<(B
+** static.el --- 静的評価のためのユーティリティー
 
-** broken.el --- Emacs $B$N2u$l$F$$$k5!G=$N>pJs$rDs6!$9$k(B
+** broken.el --- Emacs の壊れている機能の情報を提供する
 
-** pccl.el --- $B0\?"2DG=$J(B CCL $B%W%m%0%i%`$r=q$/$?$a$N%f!<%F%#%j%F%#!<(B
+** pccl.el --- 移植可能な CCL プログラムを書くためのユーティリティー
 
-  pccl-20.el --- Emacs 20/XEmacs-21-MULE $BMQ(B
+  pccl-20.el --- Emacs 20/XEmacs-21-MULE 用
 
-** alist.el: $BO"A[%j%9%H$N$?$a$N%f!<%F%#%j%F%#!<(B
+** alist.el: 連想リストのためのユーティリティー
 
-** calist.el: $B>uBVLZ$H>uBV(B/$B>u67O"A[%j%9%HMQ$N%f!<%F%#%j%F%#!<(B
+** calist.el: 状態木と状態/状況連想リスト用のユーティリティー
 
-** path-util.el: $B%Q%94IM}$H%U%!%$%kC5:w$N$?$a$N%f!<%F%#%j%F%#!<(B
+** path-util.el: パス管理とファイル探索のためのユーティリティー
 
-** filename.el:$B%U%!%$%kL>$r:n$k$?$a$N%f!<%F%#%j%F%#(B
+** filename.el:ファイル名を作るためのユーティリティ
 
-** install.el: emacs-lisp $B%Q%C%1!<%8%$%s%9%H!<%k$9$k$?$a$N%f!<%F%#%j%F%#!<(B
+** install.el: emacs-lisp パッケージインストールするためのユーティリティー
 
-** mule-caesar.el: ROT 13-47-48 Caesar $BJQ49$N%f!<%F%#%j%F%#!<(B
+** mule-caesar.el: ROT 13-47-48 Caesar 変換のユーティリティー
 
 ** emu.el
 
-tm-7.106 $B$KF~$C$F$$$?(B emu $B$H$N8_49@-$rJ]$D$?$a$N%b%8%e!<%k!#(Bpoe, poem,
-mcharset $B$r(B require $B$9$k!#(B
+tm-7.106 に入っていた emu との互換性を保つためのモジュール。poe, poem,
+mcharset を require する。
 
-  richtext.el   --- Emacs 19.29 $B$+$=$l0J9_(B XEmacs 19.14 $B$+$=$l0J9_$N$?(B
-                    $B$a$N(B text/richtext $B%b%8%e!<%k(B
+  richtext.el   --- Emacs 19.29 かそれ以降 XEmacs 19.14 かそれ以降のた
+                    めの text/richtext モジュール
 
-** pcustom.el --- $B0\?"@-$N9b$$(B custom $B4D6-$rDs6!$9$k(B
+** pcustom.el --- 移植性の高い custom 環境を提供する
 
-** product.el --- $B%W%m%@%/%H$N%P!<%8%g%s>pJs$N$?$a$N5!G=$rDs6!$9$k%b%8%e!<%k!#(B
+** product.el --- プロダクトのバージョン情報のための機能を提供するモジュール。
 
 
-* $B%$%s%9%H!<%k(B
+* インストール
 
-** $BE83+$7$?>l=j$G<B9T(B
+** 展開した場所で実行
 
-$BB>$N%G%#%l%/%H%j!<$K%$%s%9%H!<%k$7$?$/$J$$$J$i!"0J2<$N$3$H$@$1$r$d$C$F(B
-$B$/$@$5$$(B (MS-DOS $B7O$N(B OS $B$N$?$a$K(B MAKEIT.BAT $B$,MQ0U$5$l$F$$$^$9!#(B
-MAKEIT.BAT $B$NMxMQ$K$D$$$F$O2<5-!V(BMAKEIT.BAT $B$rMxMQ$9$k(B (MS-DOS $B7O(B OS
-$B$N>l9g(B)$B!W$r;2>H$7$F2<$5$$(B)$B!#(B:
+他のディレクトリーにインストールしたくないなら、以下のことだけをやって
+ください (MS-DOS 系の OS のために MAKEIT.BAT が用意されています。
+MAKEIT.BAT の利用については下記「MAKEIT.BAT を利用する (MS-DOS 系 OS
+の場合)」を参照して下さい)。:
 
   % make
 
-emacs $B$N%3%^%s%IL>$r;XDj$9$k$3$H$,$G$-$^$9!#Nc$($P!"(B
+emacs のコマンド名を指定することができます。例えば、
 
   % make EMACS=xemacs
 
-`EMACS=...' $B$,>JN,$5$l$k$H!"(BEmacs=emacs $B$,;H$o$l$^$9!#(B
+`EMACS=...' が省略されると、Emacs=emacs が使われます。
 
 ** make install
 
-$BB>$N%G%#%l%/%H%j!<$K%$%s%9%H!<%k$7$?$$$J$i!"0J2<$N$3$H$r$7$F$/$@$5$$(B:
+他のディレクトリーにインストールしたいなら、以下のことをしてください:
 
   % make install
 
-emacs $B$N%3%^%s%IL>$r;XDj$9$k$3$H$,$G$-$^$9!#Nc$($P!"(B
+emacs のコマンド名を指定することができます。例えば、
 
   % make install EMACS=xemacs
 
-`EMACS=...' $B$,>JN,$5$l$k$H!"(BEmacs=emacs $B$,;H$o$l$^$9!#(B
+`EMACS=...' が省略されると、Emacs=emacs が使われます。
 
-Emacs Lisp $B%W%m%0%i%`$H%7%'%k%9%/%j%W%H$N$?$a$N%G%#%l%/%H%j!<LZ$N@\F,(B
-$B<-(B (prefix) $B$r;XDj$9$k$3$H$,$G$-$^$9!#Nc$($P!"(B
+Emacs Lisp プログラムとシェルスクリプトのためのディレクトリー木の接頭
+辞 (prefix) を指定することができます。例えば、
 
   % make install PREFIX=~/
 
-`PREFIX=...' $B$,>JN,$5$l$k$H!";XDj$5$l$?(B emacs $B%3%^%s%I$N%G%#%l%/%H%j!<(B
-$BLZ$N@\F,<-$,;HMQ$5$l$^$9(B ($B$*$=$i$/(B /usr/local $B$G$9(B)$B!#(B
+`PREFIX=...' が省略されると、指定された emacs コマンドのディレクトリー
+木の接頭辞が使用されます (おそらく /usr/local です)。
 
-$BNc$($P!"(BPREFIX=/usr/local $B$H(B Emacs 20.2 $B$,;XDj$5$l$l$P!"0J2<$N%G%#%l%/(B
-$B%H%j!<LZ$,:n@.$5$l$^$9!#(B
+例えば、PREFIX=/usr/local と Emacs 20.2 が指定されれば、以下のディレク
+トリー木が作成されます。
 
   /usr/local/share/emacs/20.2/site-lisp/	--- emu
   /usr/local/share/emacs/site-lisp/apel/	--- APEL
 
-Emacs Lisp $B%W%m%0%i%`$N$?$a$N(B lisp $B%G%#%l%/%H%j!<$r;XDj$9$k$3$H$,$G$-(B
-$B$^$9!#Nc$($P!"(B:
+Emacs Lisp プログラムのための lisp ディレクトリーを指定することができ
+ます。例えば、:
 
   % make install LISPDIR=~/elisp
 
-emu $B%b%8%e!<%k$,%$%s%9%H!<%k$5$l$k!"%P!<%8%g%sFCM-$N(B lisp $B%G%#%l%/%H%j!<(B
-$B$r;XDj$9$k$3$H$b$G$-$^$9!#Nc$($P!"(B:
+emu モジュールがインストールされる、バージョン特有の lisp ディレクトリー
+を指定することもできます。例えば、:
 
   % make install VERSION_SPECIFIC_LISPDIR=~/elisp
 
-$B$I$N%U%!%$%k$,(B emu $B%b%8%e!<%k$+(B apel $B%b%8%e!<%k$N0lIt$J$N$+!"$=$l$i$,(B
-$B$I$3$K%$%s%9%H!<%k$5$l$k$+$rCN$j$?$$$H$-$O!"<!$N$h$&$J%3%^%s%I$rF~NO$9(B
-$B$k$3$H$,$G$-$^$9!#(B
+どのファイルが emu モジュールか apel モジュールの一部なのか、それらが
+どこにインストールされるかを知りたいときは、次のようなコマンドを入力す
+ることができます。
 
   % make what-where LISPDIR=~/elisp VERSION_SPECIFIC_LISPDIR=~/elisp
 
-$B%U%!%$%k(B APEL-CFG $B$rJT=8$9$k$3$H$GB>$NA*Br<+M3$J@_Dj$r;XDj$9$k$3$H$,$G(B
-$B$-$^$9!#$=$NCf$N%3%a%s%H$rFI$s$G$/$@$5$$!#(B
+ファイル APEL-CFG を編集することで他の選択自由な設定を指定することがで
+きます。その中のコメントを読んでください。
 
-** XEmacs $B$N%Q%C%1!<%8$H$7$F%$%s%9%H!<%k$9$k(B
+** XEmacs のパッケージとしてインストールする
 
-XEmacs $B$N%Q%C%1!<%8%G%#%l%/%H%j!<$K%$%s%9%H!<%k$9$k>l9g$O!"0J2<$N$3$H(B
-$B$r$7$F$/$@$5$$(B:
+XEmacs のパッケージディレクトリーにインストールする場合は、以下のこと
+をしてください:
 
   % make install-package
 
-emacs $B$N%3%^%s%IL>$r;XDj$9$k$3$H$,$G$-$^$9!#Nc$($P!"(B
+emacs のコマンド名を指定することができます。例えば、
 
   % make install-package XEMACS=xemacs-21
 
-`XEMACS=...' $B$,>JN,$5$l$k$H!"(BXEMACS=xemacs $B$,;HMQ$5$l$^$9!#(B
+`XEMACS=...' が省略されると、XEMACS=xemacs が使用されます。
 
-$B%Q%C%1!<%8$N%G%#%l%/%H%j!<$r;XDj$9$k$3$H$,$G$-$^$9!#Nc$($P(B:
+パッケージのディレクトリーを指定することができます。例えば:
 
   % make install PACKAGEDIR=~/.xemacs
 
-`PACKAGEDIR=...' $B$,>JN,$5$l$k$H!"B8:_$9$k%Q%C%1!<%8%G%#%l%/%H%j!<$N:G(B
-$B=i$N$b$N$,;H$o$l$^$9!#(B
+`PACKAGEDIR=...' が省略されると、存在するパッケージディレクトリーの最
+初のものが使われます。
 
-XEmacs $B$N%Q%C%1!<%8%7%9%F%`$O(B XEmacs 21.0 $B$+$=$l0J9_$rMW5a$9$k$3$H$KCm(B
-$B0U$7$F$/$@$5$$!#(B
+XEmacs のパッケージシステムは XEmacs 21.0 かそれ以降を要求することに注
+意してください。
 
-** MAKEIT.BAT $B$rMxMQ$9$k(B (MS-DOS $B7O(B OS $B$N>l9g(B)
+** MAKEIT.BAT を利用する (MS-DOS 系 OS の場合)
 
-MS-DOS $B7O$N(B OS $B$N$?$a$K(B MAKEIT.BAT $B$H(B MAKE1.BAT $B$,MQ0U$5$l$F$$$^$9(B
-(cygwin $B4D6-$rMxMQ$7$F$$$kJ}$O(B make.exe $B$H(B Makefile $B$rMxMQ$9$k$3$H$,$G(B
-$B$-$^$9(B)$B!#(BMAKEIT.BAT $B$O!"%$%s%9%H!<%k$N4D6-JQ?t$r@_Dj$7$?8e$K(B MAKE1.BAT
-$B$r8F=P$7$^$9!#(BMAKE1.BAT $B$K$h$C$F<B:]$N%$%s%9%H!<%k$KI,MW$J%3%^%s%I$,<B(B
-$B9T$5$l$^$9!#(B
+MS-DOS 系の OS のために MAKEIT.BAT と MAKE1.BAT が用意されています
+(cygwin 環境を利用している方は make.exe と Makefile を利用することがで
+きます)。MAKEIT.BAT は、インストールの環境変数を設定した後に MAKE1.BAT
+を呼出します。MAKE1.BAT によって実際のインストールに必要なコマンドが実
+行されます。
 
-$B$3$l$i$rMxMQ$9$k$K$O(B MAKEIT.BAT $B$rJT=8$9$k$3$H$,I,MW$G$9!#0BA4$N$?$a$9(B
-$B$Y$F$N4D6-JQ?t$N%G%U%)%k%H$NCM$O6uJ8;zNs$K$J$C$F$$$^$9!#$*;H$$$N%7%9%F(B
-$B%`$K$"$o$;$F$3$l$i$NJQ?t$r;XDj$7$F$/$@$5$$!#(B
+これらを利用するには MAKEIT.BAT を編集することが必要です。安全のためす
+べての環境変数のデフォルトの値は空文字列になっています。お使いのシステ
+ムにあわせてこれらの変数を指定してください。
 
-$B3+H/!"F0:n3NG'$,(B Windows $B$G$7$+9T$J$o$l$F$$$J$$$?$a!"8E$$%P!<%8%g%s$N(B
-DOS $B$G$OF0:n$7$J$$2DG=@-$,$"$j$^$9!#ITET9g$rH/8+$7$?J}$O(B
-apel-ja@lists.chise.org $B$^$G$4O"Mm2<$5$$!#(B
+開発、動作確認が Windows でしか行なわれていないため、古いバージョンの
+DOS では動作しない可能性があります。不都合を発見した方は
+apel-ja@lists.chise.org までご連絡下さい。
 
-*** MAKEIT.BAT $B$NJT=8(B
+*** MAKEIT.BAT の編集
 
-DOS $B$N%P%C%A%U%!%$%k$NCf$G$O(B `rem' $B$,9TF,$K$"$k9T$O%3%a%s%H$H$7$F07$o(B
-$B$l$^$9!#I,MW$K1~$8!"(BMAKEIT.BAT $B$N3F9TF,$K(B `rem' $B$rA^F~$7$?$j!"$^$?$O:o(B
-$B=|$7$?$j$7$F2<$5$$!#(B
+DOS のバッチファイルの中では `rem' が行頭にある行はコメントとして扱わ
+れます。必要に応じ、MAKEIT.BAT の各行頭に `rem' を挿入したり、または削
+除したりして下さい。
 
-$B$^$?!"%P%C%A%U%!%$%kFb$N(B `%$BJQ?tL>(B%' $B$O<B9T;~$N4D6-JQ?t$NCM$HCV$-49$($i(B
-$B$l$^$9!#(B
+また、バッチファイル内の `%変数名%' は実行時の環境変数の値と置き換えら
+れます。
 
-c:\usr\Meadow $B$K%$%s%9%H!<%k$5$l$F$$$k(B 1.10 $B$N(B Meadow $B$r;HMQ(B
-$B$7$F$$$k>l9g$NJQ?t@_Dj$NNc$r5s$2$^$9!#(B
+c:\usr\Meadow にインストールされている 1.10 の Meadow を使用
+している場合の変数設定の例を挙げます。
 
   set PREFIX=c:\usr\Meadow
   set EMACS=%PREFIX%\1.10\bin\meadow95.exe
@@ -201,51 +201,51 @@ c:\usr\Meadow $B$K%$%s%9%H!<%k$5$l$F$$$k(B 1.10 $B$N(B Meadow $B$r;HMQ(B
   set VERSION_SPECIFIC_LISPDIR=%PREFIX%\1.10\site-lisp
   set DEFAULT_MAKE_ARG=elc
 
-$B>e5-$NNc$G$O!"(Bmeadow $B$N%P%$%J%j$,(B c:\usr\Meadow\1.10\bin\meadow95.exe
-$B$K%$%s%9%H!<%k$5$l$F$$$k$3$H$rA0Ds$K$7$F$$$^$9!#$=$NA0Ds$K4p$E$-!"(BAPEL
-$B$N%b%8%e!<%k$N$&$A!"(Bmeadow $B$N%P!<%8%g%s$K0MB8$7$J$$%b%8%e!<%k$r(B
+上記の例では、meadow のバイナリが c:\usr\Meadow\1.10\bin\meadow95.exe
+にインストールされていることを前提にしています。その前提に基づき、APEL
+のモジュールのうち、meadow のバージョンに依存しないモジュールを
 
   c:\usr\Meadow\site-lisp
 
-$B$K!"%P!<%8%g%s$K0MB8$9$k%b%8%e!<%k$r(B
+に、バージョンに依存するモジュールを
 
   c:\usr\Meadow\1.10\site-lisp
 
-$B$K%$%s%9%H!<%k$7$h$&$H$7$^$9!#(B
+にインストールしようとします。
 
-19.3x $B0JA0$N(B Emacs ($BNc$($P(B 19.28 $B%Y!<%9$N(B Mule for Windows) $B$K$O%P!<%8%g(B
-$B%s0MB8$N(B site-lisp $B%G%#%l%/%H%j(B ($B>e5-$NNc$G8@$($P(B
-c:\usr\Meadow\1.10\site-lisp) $B$,B8:_$;$:!"%G%#%U%)%k%H$G$O(B load-path $B$b(B
-$BDL$C$F$$$^$;$s!#$3$N>l9g$O(B c:\usr\mule\site-lisp $B$J$I$N%P!<%8%g%sHs0MB8(B
-$B$N(B site-lisp $B%G%#%l%/%H%j$K(B APEL $B$NA4$F$N%b%8%e!<%k$rF~$l$l$PNI$$$G$7$g(B
-$B$&!#(B
+19.3x 以前の Emacs (例えば 19.28 ベースの Mule for Windows) にはバージョ
+ン依存の site-lisp ディレクトリ (上記の例で言えば
+c:\usr\Meadow\1.10\site-lisp) が存在せず、ディフォルトでは load-path も
+通っていません。この場合は c:\usr\mule\site-lisp などのバージョン非依存
+の site-lisp ディレクトリに APEL の全てのモジュールを入れれば良いでしょ
+う。
 
-Demacs $B$N@_DjNc$r=`Hw$9$k$3$H$,$G$-$^$;$s$G$7$?!#(BDemacs $B$K(B APEL $B$r%$%s(B
-$B%9%H!<%k$7$?J}$O!"@_DjNc$r(B apel-ja@lists.chise.org $B$KAw$C$F2<$5$$(B ($BHs(B
-$B9XFI<T$G$bAw?.$O$G$-$^$9(B)$B!#(B
+Demacs の設定例を準備することができませんでした。Demacs に APEL をイン
+ストールした方は、設定例を apel-ja@lists.chise.org に送って下さい (非
+購読者でも送信はできます)。
 
 
-*** MAKEIT.BAT $B$NJT=8$N:]!"CN$C$F$*$/$HJXMx$J(B Tips
+*** MAKEIT.BAT の編集の際、知っておくと便利な Tips
 
-$B0z?t$r;XDj$7$J$$$G(B MAKEIT.BAT $B$r<B9T$5$;$k$H!"(BDEFAULT_MAKE_ARG $B$K;XDj(B
-$B$5$l$F$$$k(B target $B$,<B9T$5$l$^$9(B ($B%G%#%U%)%k%H$O0BA4$N$?$a$K(B target $B$,(B
-$B6u$K$J$C$F$*$j!"%a%C%;!<%8$@$1EG$$$F;_$^$k$h$&$K$J$C$F$^$9(B)$B!#(B
+引数を指定しないで MAKEIT.BAT を実行させると、DEFAULT_MAKE_ARG に指定
+されている target が実行されます (ディフォルトは安全のために target が
+空になっており、メッセージだけ吐いて止まるようになってます)。
 
-MAKEIT.BAT $B$rJT=8$7$F!"(B
+MAKEIT.BAT を編集して、
 
   set DEFAULT_MAKE_ARG=install
 
-$B$H5-=R$7$F$*$/$3$H$G!"(BMAKEIT.BAT $B$r%@%V%k%/%j%C%/$9$k$@$1$G%$%s%9%H!<(B
-$B%k$9$k$3$H$,$G$-$^$9!#(B
+と記述しておくことで、MAKEIT.BAT をダブルクリックするだけでインストー
+ルすることができます。
 
-MAKEIT.BAT $B$O!"2<5-$N$$$:$l$+$N%U%!%$%k$,B8:_$9$k$H$-$O!"$=$N%U%!%$%k(B
-$B$N@_Dj$rM%@h$7$FFI$_9~$`$N$G!"E,59JT=8$7$?(B MAKEIT.BAT $B$O2<5-$N$$$:$l$+(B
-$B$N%U%!%$%k$H$7$F!"%3%T!<$7$F%-!<%W$7$F$*$/$H!"%"%C%W%0%l!<%I$N:]$K(B
-MAKEIT.BAT $B$r:FJT=8$9$kI,MW$,$J$/JXMx$G$9!#(B
+MAKEIT.BAT は、下記のいずれかのファイルが存在するときは、そのファイル
+の設定を優先して読み込むので、適宜編集した MAKEIT.BAT は下記のいずれか
+のファイルとして、コピーしてキープしておくと、アップグレードの際に
+MAKEIT.BAT を再編集する必要がなく便利です。
 
-$BM%@h=g$KJB$Y$k$H2<5-$N$h$&$K$J$j$^$9!#2<5-$N(B 1-x $B$O(B apel $B@lMQ!"(B2-x $B$O(B
-$BF1<o$N(B MAKEIT.BAT $B$rMxMQ$7$F$$$k(B cmail, skk $B$H6&DL$7$FMxMQ$9$k$3$H$,$G(B
-$B$-$^$9!#(B
+優先順に並べると下記のようになります。下記の 1-x は apel 専用、2-x は
+同種の MAKEIT.BAT を利用している cmail, skk と共通して利用することがで
+きます。
 
   1-1. %HOME%\.elispmk.apel.bat
   1-2. %HOME%\elisp\elispmk.apel.bat
@@ -261,205 +261,205 @@ MAKEIT.BAT $B$r:FJT=8$9$kI,MW$,$J$/JXMx$G$9!#(B
   2-5. c:\Meadow\elispmk.bat
   2-6. d:\Meadow\elispmk.bat
 
-*** $B%P%C%A%U%!%$%k<B9T;~$NCm0U(B
+*** バッチファイル実行時の注意
 
-MAKEIT.BAT, MAKE1.BAT $B$O4D6-JQ?t$rMxMQ$7$F$$$k$?$a$K!"<B9T;~$K4D6-JQ?t(B
-$B$N$?$a$N%a%b%j3dEv$F$,$G$-$:$K!"%(%i!<$K$J$k$3$H$,$"$j$^$9!#(BWindows $B$r(B
-$BMxMQ$7$F$$$k>l9g$O!"(BDOSPROMPT $B$N%W%m%Q%F%#$G4D6-JQ?t$N=i4|%5%$%:$,!V<+(B
-$BF0!W$K$J$C$F$$$k$H!"4D6-JQ?t$,@_Dj$G$-$J$$$H$$$&%(%i!<$,=P$k$N$G!"E,Ev(B
-$B$JCM(B (2048 $B$J$I(B) $B$rF~$l$F$*$/I,MW$,$"$j$^$9!#(Bnon Windows $B$N(B DOS $B$N>l9g(B
-$B$O!"(Bconfig.sys $B$K(B
+MAKEIT.BAT, MAKE1.BAT は環境変数を利用しているために、実行時に環境変数
+のためのメモリ割当てができずに、エラーになることがあります。Windows を
+利用している場合は、DOSPROMPT のプロパティで環境変数の初期サイズが「自
+動」になっていると、環境変数が設定できないというエラーが出るので、適当
+な値 (2048 など) を入れておく必要があります。non Windows の DOS の場合
+は、config.sys に
 
    SHELL=C:\COMMAND.COM /E:4096 /P
 
-$B$J$I$H=q$-!"4D6-JQ?t$K3dEv$F2DG=$J%a%b%j$r3NJ]$7$^$9!#(BDOS $B$N%P!<%8%g%s(B
-$B$K$h$C$F(B /E:nnn $B$G;XDj$G$-$k4D6-JQ?tNN0h$N%5%$%:$N@)Ls$,0[$J$j!";XDj$N(B
-$B;EJ}$,0c$C$?$j!"FCDj$NCM$r;XDj$9$k$HIT6q9g$r@8$8$k2DG=@-$,$"$k$N$G>\$7(B
-$B$/$O$4MxMQ$N(B version $B$N%^%K%e%"%kEy$r$4Mw2<$5$$!#(B
+などと書き、環境変数に割当て可能なメモリを確保します。DOS のバージョン
+によって /E:nnn で指定できる環境変数領域のサイズの制約が異なり、指定の
+仕方が違ったり、特定の値を指定すると不具合を生じる可能性があるので詳し
+くはご利用の version のマニュアル等をご覧下さい。
 
-*** Windows $B$N(B cvs.exe $B$G%A%'%C%/%"%&%H$7$?(B MAKEIT.BAT $B$rMxMQ$9$k>l9g$NLdBjE@(B
+*** Windows の cvs.exe でチェックアウトした MAKEIT.BAT を利用する場合の問題点
 
-$B$J$*!"(BWindows $B%M%$%F%#%V$N(B cvs.exe (not cygwin) $B$rMxMQ$7$F(B APEL $B$r(B
-checkout $B$7$?>l9g$O!"(Bcvs.exe $B$K$h$j9TKv%3!<%I$,@55,2=$5$l$F(B CRCRLF $B$K(B
-$B$J$C$F$$$k2DG=@-$,$"$j$^$9!#$3$N$h$&$J>l9g!"(BMAKEIT.BAT, MAKE1.BAT $B$OF0(B
-$B$-$^$;$s$N$G9TKv%3!<%I$r(B CRLF $B$K=$@5$7$F$*;H$$2<$5$$!#$3$NLdBj$K$D$$$F(B
-$B>\$7$/$O!"(B
+なお、Windows ネイティブの cvs.exe (not cygwin) を利用して APEL を
+checkout した場合は、cvs.exe により行末コードが正規化されて CRCRLF に
+なっている可能性があります。このような場合、MAKEIT.BAT, MAKE1.BAT は動
+きませんので行末コードを CRLF に修正してお使い下さい。この問題について
+詳しくは、
 
   http://openlab.ring.gr.jp/skk/cvswin-ja.html
 
-$B$r$4;2>H2<$5$$!#(B
+をご参照下さい。
 
-* load-path$B!J(BEmacs $B$H(B MULE $B$N>l9g!K(B
+* load-path（Emacs と MULE の場合）
 
-$B$b$7(B Emacs $B$b$7$/$O(B Mule $B$r$*;H$$$J$i!"(BAPEL $B$r(B install $B$7$?>l=j$r(B
-load-path $B$KDI2C$7$F$/$@$5$$!#$b$7(B Emacs 19.29 $B0J9_$^$?$O(B Emacs 20.1,
-20.2 $B$r;H$C$F=i4|@_Dj$G%$%s%9%H!<%k$7$?$N$J$i!"<!$N$h$&$K(B subdirs.el
-$B$r=q$/$3$H$,$G$-$^$9!#(B
+もし Emacs もしくは Mule をお使いなら、APEL を install した場所を
+load-path に追加してください。もし Emacs 19.29 以降または Emacs 20.1,
+20.2 を使って初期設定でインストールしたのなら、次のように subdirs.el
+を書くことができます。
 
 --------------------------------------------------------------------
 (normal-top-level-add-to-load-path '("apel"))
 --------------------------------------------------------------------
 
-$B$b$7(B Emacs 20.3 $B0J9_$b$7$/$O(B XEmacs $B$r;H$C$FIaDL$K%$%s%9%H!<%k$9$k$N(B
-$B$J$i$P!"(Bload-path $B$r@_Dj$9$kI,MW$O$"$j$^$;$s!#(B
+もし Emacs 20.3 以降もしくは XEmacs を使って普通にインストールするの
+ならば、load-path を設定する必要はありません。
 
 
-* $B;H$$J}(B
+* 使い方
 
 ** alist
 
-*** $B4X?t(B put-alist (ITEM VALUE ALIST)
+*** 関数 put-alist (ITEM VALUE ALIST)
 
-ALIST $B$r(B ITEM $B$NCM$,(B VALUE $B$K$J$k$h$&$K=$@5$7$^$9!#(Bcar $B$,(B ITEM $B$G$"(B
-$B$kBP$,B8:_$9$l$P!"$=$N(B cdr $B$r(B VALUE $B$GCV$-49$($^$9!#$=$N$h$&$JBP$,$J(B
-$B$1$l$P!"?7$7$$BP(B (ITEM . VALUE) $B$r:n$j!"(Bcar $B$,?7$7$$BP$G!"(Bcdr $B$,(B
-ALIST $B$G$"$k?7$7$$O"A[%j%9%H$rJV$7$^$9!#(B
+ALIST を ITEM の値が VALUE になるように修正します。car が ITEM であ
+る対が存在すれば、その cdr を VALUE で置き換えます。そのような対がな
+ければ、新しい対 (ITEM . VALUE) を作り、car が新しい対で、cdr が
+ALIST である新しい連想リストを返します。
 
-*** $B4X?t(B del-alist (ITEM ALIST)
+*** 関数 del-alist (ITEM ALIST)
 
-$BO"A[%j%9%H(B ALIST $B$K(B key $B$,(B ITEM $B$G$"$kBP$,$"$l$P!"$=$l$r(B ALIST $B$+$i<h(B
-$B$j=|$-$^$9!#(B
+連想リスト ALIST に key が ITEM である対があれば、それを ALIST から取
+り除きます。
 
-*** $B4X?t(B set-alist (SYMBOL ITEM VALUE)
+*** 関数 set-alist (SYMBOL ITEM VALUE)
 
-SYMBOL $B$G;XDj$5$l$F$$$kO"A[%j%9%H$r!"(BITEM $B$NCM$,(B VALUE $B$G$"$k$h$&$K=$(B
-$B@5$7$^$9!#(B
+SYMBOL で指定されている連想リストを、ITEM の値が VALUE であるように修
+正します。
 
-  $BNc(B. (set-alist 'auto-mode-alist "\\.pln$" 'text-mode)
+  例. (set-alist 'auto-mode-alist "\\.pln$" 'text-mode)
 
-*** $B4X?t(B modify-alist (MODIFIER DEFAULT)
+*** 関数 modify-alist (MODIFIER DEFAULT)
 
-$BO"A[%j%9%H(B DEFAULT $B$rO"A[%j%9%H(B MODIFIER $B$K=$@5$7$^$9!#(B
+連想リスト DEFAULT を連想リスト MODIFIER に修正します。
 
-*** $B4X?t(B set-modified-alist (SYMBOL MODIFIER)
+*** 関数 set-modified-alist (SYMBOL MODIFIER)
 
-SYMBOL $B$NCM$rO"A[%j%9%H(B MODIFIER $B$K=$@5$7$^$9!#(BSYMBOL $B$OO"A[%j%9%H$G$"(B
-$B$kI,MW$,$"$j$^$9!#$=$l$,B+G{$5$l$F$$$J$1$l$P!"$=$NCM$r(B nil $B$H$_$J$7$^(B
-$B$9!#(B
+SYMBOL の値を連想リスト MODIFIER に修正します。SYMBOL は連想リストであ
+る必要があります。それが束縛されていなければ、その値を nil とみなしま
+す。
 
 ** path-util
 
-*** $B4X?t(B add-path (PATH &rest OPTIONS)
+*** 関数 add-path (PATH &rest OPTIONS)
 
-PATH $B$,(B `default-load-path' $B$N%G%#%l%/%H%j!<$N2<$KB8:_$7$F!"(B
-`load-path'$B$KB8:_$7$J$$$H$-$K!"$=$l$r(B `load-path' $B$KDI2C$7$^$9!#(B
+PATH が `default-load-path' のディレクトリーの下に存在して、
+`load-path'に存在しないときに、それを `load-path' に追加します。
 
-$B<!$N$h$&$J(B PATH $B$NMM<0$r;H$&$3$H$,$G$-$^$9(B:
+次のような PATH の様式を使うことができます:
 
-  load-path $B$+$i$NAjBP(B: "PATH" ($B$=$l$O(B `default-load-path $B$+$iC5$5$l$^(B
-                        $B$9!#(B)
+  load-path からの相対: "PATH" (それは `default-load-path から探されま
+                        す。)
 
-  $B%[!<%`%G%#%l%/%H%j!<$+$i$NAjBP(B: "~/PATH" "~USER/PATH"
+  ホームディレクトリーからの相対: "~/PATH" "~USER/PATH"
 
-  $B@dBP%Q%9(B: "/FOO/BAR/BAZ"
+  絶対パス: "/FOO/BAR/BAZ"
 
-$B<!$N$h$&$J(B OPTIONS $B$r;XDj$9$k$3$H$,$G$-$^$9(B:
+次のような OPTIONS を指定することができます:
 
-  'all-paths --- `default-load-path $B$NBe$o$j(B `load-path' $B$+$iC5$7$^(B
-	           $B$9!#(B
+  'all-paths --- `default-load-path の代わり `load-path' から探しま
+	           す。
 
-  'append --- PATH $B$r(B `load-path' $B$N:G8e$KDI2C$7$^$9!#(B
+  'append --- PATH を `load-path' の最後に追加します。
 
-*** $B4X?t(B add-latest-path (PATTERN &optional ALL-PATHS)
+*** 関数 add-latest-path (PATTERN &optional ALL-PATHS)
 
-$B@55,I=8=(B PATTERN $B$K9gCW$7$?:G?7$N%Q%9$,(B `default-load-path' $B$N2<$KB8:_(B
-$B$7$F$$$F!"(B`load-path' $B$N2<$KB8:_$7$F$$$J$$$H$-$K$=$l$r(B `load-path' $B$K(B
-$BDI2C$7$^$9!#(B
+正規表現 PATTERN に合致した最新のパスが `default-load-path' の下に存在
+していて、`load-path' の下に存在していないときにそれを `load-path' に
+追加します。
 
-$BNc$($P!"(Bbbdb-1.50 $B$H(B bbdb-1.51 $B$,(B site-lisp $B$N2<$K$"$C$F!"(Bbbdb-1.51 $B$,(B
-bbdb-1.50 $B$h$j$b?7$7$/!"(Bsite-lisp $B$,(B /usr/local/share/emacs/site-lisp
-$B$G$"$k$H$-$O!"(B
+例えば、bbdb-1.50 と bbdb-1.51 が site-lisp の下にあって、bbdb-1.51 が
+bbdb-1.50 よりも新しく、site-lisp が /usr/local/share/emacs/site-lisp
+であるときは、
 
   (add-latest-path "bbdb")
 
-$B$O(B "/usr/local/share/emacs/site-lisp/bbdb-1.51" $B$r(B `load-path' $B$N@hF,(B
-$B$KDI2C$7$^$9!#(B
+は "/usr/local/share/emacs/site-lisp/bbdb-1.51" を `load-path' の先頭
+に追加します。
 
-$B>JN,2DG=$J0z?t(B ALL-PATHS $B$,;XDj$5$l$k$H!"(B`default-load-path' $B$N$+$o$j(B
-$B$K(B `load-path' $B$+$iC5$7$^$9!#(B
+省略可能な引数 ALL-PATHS が指定されると、`default-load-path' のかわり
+に `load-path' から探します。
 
-*** $B4X?t(B get-latest-path (PATTERN &optional ALL-PATHS)
+*** 関数 get-latest-path (PATTERN &optional ALL-PATHS)
 
-$B@55,I=8=(B PATTERN $B$K9gCW$9$k(B default-load-path $B$K$"$k:G?7$N%G%#%l%/%H%j!<(B
-$B$rJV$7$^$9!#>JN,2DG=$J0z?t(B ALL-PATHS $B$,;XDj$5$l$k$H!"(Bdefault-load-path
-$B$NBe$o$j$K(B load-path $B$NA4$F$+$iC5$7$^$9!#(B
+正規表現 PATTERN に合致する default-load-path にある最新のディレクトリー
+を返します。省略可能な引数 ALL-PATHS が指定されると、default-load-path
+の代わりに load-path の全てから探します。
 
-  $BNc(B. (let ((gnus-path (get-latest-path "gnus")))
+  例. (let ((gnus-path (get-latest-path "gnus")))
         (add-path (expand-file-name "lisp" gnus-path))
         (add-to-list 'Info-default-directory-list
 		     (expand-file-name "texi" gnus-path)))
 
-*** $B4X?t(B file-installed-p (FILE &optional PATHS)
+*** 関数 file-installed-p (FILE &optional PATHS)
 
-FILE $B$,(B PATHS $B$KB8:_$7$?>l9g!"(BFILE $B$N@dBP%Q%9$rJV$7$^$9!#(BPATHS $B$,>JN,(B
-$B$5$l$k$H!"(B`load-path' $B$,;H$o$l$^$9!#(B
+FILE が PATHS に存在した場合、FILE の絶対パスを返します。PATHS が省略
+されると、`load-path' が使われます。
 
-*** $B4X?t(B exec-installed-p (FILE &optional PATHS SUFFIXES)
+*** 関数 exec-installed-p (FILE &optional PATHS SUFFIXES)
 
-FILE $B$,(B PATHS $B$KB8:_$7$?>l9g$K(B FILE $B$N@dBP%Q%9$rJV$7$^$9!#(BPATHS $B$,>JN,(B
-$B$5$l$k$H!"(B`exec-path' $B$,;H$o$l$^$9!#(BSUFFIXES $B$,>JN,$5$l$k$H!"(B
-`exec-suffix-list' $B$,;H$o$l$^$9!#(B
+FILE が PATHS に存在した場合に FILE の絶対パスを返します。PATHS が省略
+されると、`exec-path' が使われます。SUFFIXES が省略されると、
+`exec-suffix-list' が使われます。
 
-*** $B4X?t(B module-installed-p (MODULE &optional PATHS)
+*** 関数 module-installed-p (MODULE &optional PATHS)
 
-MODULE $B$,Ds6!$5$l$F$$$k(B (provided) $B$+!"(BPATHS $B$KB8:_$9$k>l9g$K(B nil $B$G(B
-$B$J$$CM$rJV$7$^$9!#(BPATHS $B$,>JN,$5$l$k$H!"(B`load-path' $B$,;H$o$l$^$9!#(B
+MODULE が提供されている (provided) か、PATHS に存在する場合に nil で
+ない値を返します。PATHS が省略されると、`load-path' が使われます。
 
 ** filename
 
-*** $B4X?t(B replace-as-filename (string)
+*** 関数 replace-as-filename (string)
 
-STRING $B$+$i0BA4$J%U%!%$%kL>$rJV$7$^$9!#(B
+STRING から安全なファイル名を返します。
 
-$B$=$l$OJQ?t(B 'filename-filters' $B$r;2>H$7$^$9!#$=$NJQ?t$O%U%!%$%kL>$NA*(B
-$BJL4o$N$?$a$N4X?t$N%j%9%H$G$9!#=i4|@_Dj$NA*JL4o$O0J2<$NJQ?t$r;2>H$7$F$$(B
-$B$^$9!#(B
+それは変数 'filename-filters' を参照します。その変数はファイル名の選
+別器のための関数のリストです。初期設定の選別器は以下の変数を参照してい
+ます。
 
-**** $BJQ?t(B filename-limit-length
+**** 変数 filename-limit-length
 
-$B%U%!%$%kL>$ND9$5$N@)8B!#(B
+ファイル名の長さの制限。
 
-**** $BJQ?t(B filename-replacement-alist
+**** 変数 filename-replacement-alist
 
-$BJ8;z$HJ8;zNs$,BP$K$J$C$?%j%9%H$NO"A[%j%9%H$G$9!#J8;z$N%j%9%H$O%U%!%$%k(B
-$BL>$H$7$F5v$5$l$J$$J8;z$r8=$o$7$^$9!#(B
+文字と文字列が対になったリストの連想リストです。文字のリストはファイル
+名として許されない文字を現わします。
 
 
-* $B%P%0Js9p(B
+* バグ報告
 
-$B%P%0Js9p$d2~A1$NDs0F$r=q$$$?$H$-$O!"@'Hs(B APEL $B%a!<%j%s%0%j%9%H$KAw$C$F(B
-$B$/$@$5$$(B:
+バグ報告や改善の提案を書いたときは、是非 APEL メーリングリストに送って
+ください:
 
-  apel-ja@lists.chise.org	$B!JF|K\8l!K(B
-  apel-en@lists.chise.org	$B!J1Q8l!K(B
+  apel-ja@lists.chise.org	（日本語）
+  apel-en@lists.chise.org	（英語）
 
-APEL ML $B$rDL$7$F!"(BAPEL $B$N%P%0$rJs9p$7$?$j!"(BAPEL $B$N:G?7$N%j%j!<%9$r<hF@(B
-$B$7$?$j!"(BAPEL $B$N>-Mh$N3HD%$N5DO@$r$7$?$j$9$k$3$H$,$G$-$^$9!#(BAPEL ML $B$K(B
-$B;22C$9$k$K$O!"0J2<$NJG$N5-=R$r8+$F<jB3$-$r9T$C$F$/$@$5$$!'(B
+APEL ML を通して、APEL のバグを報告したり、APEL の最新のリリースを取得
+したり、APEL の将来の拡張の議論をしたりすることができます。APEL ML に
+参加するには、以下の頁の記述を見て手続きを行ってください：
 
-  http://lists.chise.org/mailman/listinfo/apel-ja	$B!JF|K\8l!K(B
-  http://lists.chise.org/mailman/listinfo/apel-en	$B!J1Q8l!K(B
+  http://lists.chise.org/mailman/listinfo/apel-ja	（日本語）
+  http://lists.chise.org/mailman/listinfo/apel-en	（英語）
 
 
 * Download
 
-$B:G?7$N(B APEL $B$N%j%j!<%9$O0J2<$N>l=j$+$i<hF@$G$-$^$9(B:
+最新の APEL のリリースは以下の場所から取得できます:
 
     http://git.chise.org/elisp/dist/apel/
 
 
 * Git
 
-APEL $B$N3+H/$K$O(B Git $B$r;H$C$F$$$^$9!#:G?7$N3+H/%P!<%8%g%s$r0J2<$N(B Git$B%j(B
-$B%]%8%H%j!<$+$i<hF@$G$-$^$9!#(B
+APEL の開発には Git を使っています。最新の開発バージョンを以下の Gitリ
+ポジトリーから取得できます。
 
   % git clone http://git.chise.org/git/elisp/apel.git
 
-$B$3$N(B APEL $B$N%j%]%8%H%j!<$O(B WWW $B7PM3$G$b1\Mw$9$k$3$H$,$G$-$^$9!'(B
+この APEL のリポジトリーは WWW 経由でも閲覧することができます：
 
     http://git.chise.org/gitweb/?p=elisp/apel.git
 
-Git $B$K4p$E$$$?3+H/$K;22C$7$?$$$H$-$O!"(BAPEL $B%a!<%j%s%0%j%9%H$G$=$N;]$r(B
-$B@k8@$7$F$/$@$5$$!#(B
+Git に基づいた開発に参加したいときは、APEL メーリングリストでその旨を
+宣言してください。
 
-$B2f!9$OB?$/$NJ}$,$3$N3+$+$l$?3+H/$K;22C$7$F$/$@$5$k$3$H$rK>$s$G$$$^$9!#(B
+我々は多くの方がこの開かれた開発に参加してくださることを望んでいます。
