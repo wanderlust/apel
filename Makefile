@@ -43,23 +43,8 @@ install-package:	package
 	$(XEMACS) $(FLAGS) -f install-apel-package \
 		$(PACKAGEDIR) # $(MAKE)
 
-
 clean:
 	-$(RM) $(GOMI)
-
-
-tar:
-	cvs commit
-	sh -c 'cvs tag -R apel-`echo $(VERSION) \
-				| sed s/\\\\./_/ | sed s/\\\\./_/`; \
-	cd /tmp; \
-	cvs -d :pserver:anonymous@cvs.m17n.org:/cvs/root \
-		export -d apel-$(VERSION) \
-		-r apel-`echo $(VERSION) | tr . _` apel'
-	cd /tmp; $(RM) apel-$(VERSION)/ftp.in apel-$(VERSION)/.cvsignore ; \
-		$(TAR) cvzf apel-$(VERSION).tar.gz apel-$(VERSION)
-	cd /tmp; $(RM) -r apel-$(VERSION)
-	sed "s/VERSION/$(VERSION)/" < ftp.in > ftp
 
 release:
 	-$(RM) $(ARCHIVE_DIR_PREFIX)/apel/apel-$(VERSION).tar.gz
