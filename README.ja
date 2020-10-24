@@ -277,18 +277,6 @@ MAKEIT.BAT, MAKE1.BAT は環境変数を利用しているために、実行時�
 仕方が違ったり、特定の値を指定すると不具合を生じる可能性があるので詳し
 くはご利用の version のマニュアル等をご覧下さい。
 
-*** Windows の cvs.exe でチェックアウトした MAKEIT.BAT を利用する場合の問題点
-
-なお、Windows ネイティブの cvs.exe (not cygwin) を利用して APEL を
-checkout した場合は、cvs.exe により行末コードが正規化されて CRCRLF に
-なっている可能性があります。このような場合、MAKEIT.BAT, MAKE1.BAT は動
-きませんので行末コードを CRLF に修正してお使い下さい。この問題について
-詳しくは、
-
-  http://openlab.ring.gr.jp/skk/cvswin-ja.html
-
-をご参照下さい。
-
 * load-path（Emacs と MULE の場合）
 
 もし Emacs もしくは Mule をお使いなら、APEL を install した場所を

@@ -210,14 +210,6 @@ install APEL to Demacs, please send us such an example to
 apel-en@lists.chise.org (you can post a message to the ML, even if you
 are not a member).
 
-If you checkout APEL by using Windows native cvs.exe (not cygwin
-version), cvs.exe will regularize end of line codes, LF to CRLF.  And
-it also will try to convert CRLF to CRCRLF.  make.bat of which eol
-code is CRCRLF does not work, so if you get such a make.bat, edit it
-to really regularize eol codes to CRLF.  If you need further
-information, see the following URL (n.b. Japanese only)
-
-  http://openlab.ring.gr.jp/skk/cvswin-ja.html
 
 * load-path (for Emacs or MULE)
 
