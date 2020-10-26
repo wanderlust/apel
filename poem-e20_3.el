@@ -28,8 +28,6 @@
 
 ;;; Code:
 
-(require 'pym)
-
 ;;; @ character
 ;;;
 

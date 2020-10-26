@@ -372,43 +372,5 @@ VERSTR is a string."
 (provide 'product)			; beware of circular dependency.
 (require 'apel-ver)			; these two files depend on each other.
 (product-provide 'product 'apel-ver)
-
-
-;;; @ Define emacs versions.
-;;;
-
-(require 'pym)
-
-;;(or (product-find "emacs")
-;;    (progn
-;;      (product-define "emacs")
-;;      (cond
-;;       ((featurep 'meadow)
-;;	(let* ((info (product-parse-version-string (Meadow-version)))
-;;	       (version (nth 0 info))
-;;	       (code-name (nth 1 info))
-;;	       (version-string (nth 2 info)))
-;;	  (product-set-version-string
-;;	   (product-define "Meadow" "emacs" version code-name)
-;;	   version-string)
-;;	  (product-provide 'Meadow "Meadow"))
-;;	(and (featurep 'mule)
-;;	     (let* ((info (product-parse-version-string mule-version))
-;;		    (version (nth 0 info))
-;;		    (code-name (nth 1 info))
-;;		    (version-string (nth 2 info)))
-;;	       (product-set-version-string
-;;		(product-define "MULE" "Meadow" version code-name)
-;;		version-string)
-;;	       (product-provide 'mule "MULE")))
-;;	(let* ((info (product-parse-version-string emacs-version))
-;;	       (version (nth 0 info))
-;;	       (code-name (nth 1 info))
-;;	       (version-string (nth 2 info)))
-;;	  (product-set-version-string
-;;	   (product-define "Emacs" "Meadow" version code-name)
-;;	   version-string)
-;;	  (product-provide 'emacs "Emacs")))
-;;       )))
 
 ;;; product.el ends here
