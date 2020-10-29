@@ -35,10 +35,7 @@
 
 (defalias-maybe 'int-char 'identity)
 
-(defalias-maybe 'char-or-char-int-p
-  (cond
-   ((fboundp 'char-valid-p) 'char-valid-p)
-   (t 'integerp)))
+(defalias-maybe 'char-or-char-int-p 'characterp)
 
 (defun-maybe char-octet (ch &optional n)
   "Return the octet numbered N (should be 0 or 1) of char CH.

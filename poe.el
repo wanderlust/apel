@@ -34,9 +34,6 @@
 (require 'pym)
 
 
-;; must be load-time check to share .elc between different systems.
-(or (fboundp 'open-network-stream)
-    (require 'tcp))
 
 
 ;;; @ Basic lisp subroutines emulation. (lisp/subr.el)

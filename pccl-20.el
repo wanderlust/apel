@@ -34,15 +34,8 @@
     (define-ccl-program test-ccl-identity
       '(1 ((read r0) (loop (write-read-repeat r0)))))
     (condition-case nil
-        (progn
-          (funcall
-	   (if (fboundp 'ccl-vector-execute-on-string)
-	       'ccl-vector-execute-on-string
-	     'ccl-execute-on-string)
-           'test-ccl-identity
-           (make-vector 9 nil)
-           "")
-          t)
+        (ccl-execute-on-string
+	 'test-ccl-identity (make-vector 9 nil) "")
       (error nil)))
   t)
 
