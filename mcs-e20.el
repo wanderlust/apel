@@ -129,7 +129,7 @@ Return nil if corresponding MIME-charset is not found."
 				   (symbol-name result)))
 	  result))))
 
-(defun-maybe mime-charset-list ()
+(defun mime-charset-list ()
   "Return a list of all existing MIME-charset."
   (let ((dest (mapcar (function car) mime-charset-coding-system-alist))
 	(rest coding-system-list)
