@@ -24,20 +24,19 @@
 
 ;;; Code:
 
-(require 'pym)
 (require 'poem-e20)
 
 
 ;;; @ XEmacs-mule emulation
 ;;;
 
-(defalias-maybe 'char-int 'identity)
+(defalias 'char-int 'identity)
 
-(defalias-maybe 'int-char 'identity)
+(defalias 'int-char 'identity)
 
-(defalias-maybe 'char-or-char-int-p 'characterp)
+(defalias 'char-or-char-int-p 'characterp)
 
-(defun-maybe char-octet (ch &optional n)
+(defun char-octet (ch &optional n)
   "Return the octet numbered N (should be 0 or 1) of char CH.
 N defaults to 0 if omitted. [XEmacs-mule emulating function]"
   (or (nth (if n

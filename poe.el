@@ -31,8 +31,6 @@
 (require 'product)
 (product-provide (provide 'poe) (require 'apel-ver))
 
-(require 'pym)
-
 
 
 
@@ -47,7 +45,7 @@
 ;; (defun assoc-ignore-representation (key alist))
 
 ;; XEmacs 19.13 and later: (remassoc KEY ALIST)
-(defun-maybe remassoc (key alist)
+(defun remassoc (key alist)
   "Delete by side effect any elements of ALIST whose car is `equal' to KEY.
 The modified ALIST is returned.  If the first member of ALIST has a car
 that is `equal' to KEY, there is no way to remove it by side effect;
@@ -70,7 +68,7 @@ the value of `foo'."
   alist)
 
 ;; XEmacs 19.13 and later: (remassq KEY ALIST)
-(defun-maybe remassq (key alist)
+(defun remassq (key alist)
   "Delete by side effect any elements of ALIST whose car is `eq' to KEY.
 The modified ALIST is returned.  If the first member of ALIST has a car
 that is `eq' to KEY, there is no way to remove it by side effect;
@@ -93,7 +91,7 @@ the value of `foo'."
   alist)
 
 ;; XEmacs 19.13 and later: (remrassoc VALUE ALIST)
-(defun-maybe remrassoc (value alist)
+(defun remrassoc (value alist)
   "Delete by side effect any elements of ALIST whose cdr is `equal' to VALUE.
 The modified ALIST is returned.  If the first member of ALIST has a car
 that is `equal' to VALUE, there is no way to remove it by side effect;
@@ -116,7 +114,7 @@ the value of `foo'."
   alist)
 
 ;; XEmacs 19.13 and later: (remrassq VALUE ALIST)
-(defun-maybe remrassq (value alist)
+(defun remrassq (value alist)
   "Delete by side effect any elements of ALIST whose cdr is `eq' to VALUE.
 The modified ALIST is returned.  If the first member of ALIST has a car
 that is `eq' to VALUE, there is no way to remove it by side effect;
@@ -146,7 +144,7 @@ the value of `foo'."
 
 ;; Avoid compiler warnings about this variable,
 ;; which has a special meaning on certain system types.
-(defvar-maybe buffer-file-type nil
+(defvar buffer-file-type nil
   "Non-nil if the visited file is a binary file.
 This variable is meaningful on MS-DOG and Windows NT.
 On those systems, it is automatically local in every buffer.
@@ -159,7 +157,7 @@ On other systems, this variable is normally always nil.")
 
 ;; XEmacs 21.0 and later:
 ;;  (save-selected-frame &rest BODY)
-(defmacro-maybe save-selected-frame (&rest body)
+(defmacro save-selected-frame (&rest body)
   "Execute forms in BODY, then restore the selected frame."
   (list 'let
 	'((save-selected-frame-frame (selected-frame)))
@@ -175,7 +173,7 @@ On other systems, this variable is normally always nil.")
 ;;; @ XEmacs emulation.
 ;;;
 
-(defun-maybe find-face (face-or-name)
+(defun find-face (face-or-name)
   "Retrieve the face of the given name.
 If FACE-OR-NAME is a face object, it is simply returned.
 Otherwise, FACE-OR-NAME should be a symbol.  If there is no such face,
@@ -183,7 +181,7 @@ nil is returned.  Otherwise the associated face object is returned."
   (car (memq face-or-name (face-list))))
 
 ;; XEmacs 21: (character-to-event CH &optional EVENT DEVICE)
-(defun-maybe character-to-event (ch)
+(defun character-to-event (ch)
   "Convert keystroke CH into an event structure, replete with bucky bits.
 Note that CH (the keystroke specifier) can be an integer, a character
 or a symbol such as 'clear."
@@ -191,7 +189,7 @@ or a symbol such as 'clear."
 
 ;; XEmacs 21: (event-to-character EVENT
 ;;             &optional ALLOW-EXTRA-MODIFIERS ALLOW-META ALLOW-NON-ASCII)
-(defun-maybe event-to-character (event)
+(defun event-to-character (event)
   "Return the character approximation to the given event object.
 If the event isn't a keypress, this returns nil."
   (cond
@@ -210,7 +208,7 @@ If the event isn't a keypress, this returns nil."
 ;; Emacs 20.4: (read-event &optional PROMPT INHERIT-INPUT-METHOD)
 ;; XEmacs: (next-event &optional EVENT PROMPT),
 ;;         (next-command-event &optional EVENT PROMPT)
-(defun-maybe next-command-event (&optional _event prompt)
+(defun next-command-event (&optional _event prompt)
   "Read an event object from the input stream.
 If EVENT is non-nil, it should be an event object and will be filled
 in and returned; otherwise a new event object will be created and
@@ -224,7 +222,7 @@ the echo area while this function is waiting for an event."
 ;;; @ MULE 2 emulation.
 ;;;
 
-(defun-maybe cancel-undo-boundary ()
+(defun cancel-undo-boundary ()
   "Cancel undo boundary."
   (if (and (consp buffer-undo-list)
 	   (null (car buffer-undo-list)))
