@@ -24,6 +24,7 @@
 
 ;;; Code:
 
+(require 'pces)
 (require 'poem-e20)
 
 

@@ -31,6 +31,7 @@
 (require 'product)
 (product-provide (provide 'poe) (require 'apel-ver))
 
+(require 'pym)
 
 
 

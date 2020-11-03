@@ -24,6 +24,7 @@
 
 ;;; Code:
 
+(require 'poe)
 (require 'pces-e20)
 
 	 
