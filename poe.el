@@ -31,6 +31,9 @@
 (require 'product)
 (product-provide (provide 'poe) (require 'apel-ver))
 
+;; pym.el is a part of poe.el.
+(require 'pym)
+
 
 
 
