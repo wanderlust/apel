@@ -25,14 +25,10 @@
 ;;; Code:
 
 (defun fontset-pixel-size (fontset)
-  (let* ((info (fontset-info fontset))
-	 (height (aref info 1))
-	 )
-    (cond ((> height 0) height)
-	  ((string-match "-\\([0-9]+\\)-" fontset)
-	   (string-to-number
-	    (substring fontset (match-beginning 1)(match-end 1))))
-	  (t 0))))
+  (cond ((string-match "-\\([0-9]+\\)-" fontset)
+	 (string-to-number
+	  (substring fontset (match-beginning 1) (match-end 1))))
+	(t 0)))
 
 
 ;;; @ character set
