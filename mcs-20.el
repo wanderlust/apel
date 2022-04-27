@@ -142,7 +142,8 @@ It must be symbol."
   :type 'mime-charset)
 
 (defcustom detect-mime-charset-from-coding-system nil
-  "When non-nil, `detect-mime-charset-region' and `detect-mime-charset-string' functions decide charset by encodability in destination coding system.
+  "When non-nil, `detect-mime-charset-region' and `detect-mime-charset-string'
+functions decide charset by encodability in destination coding system.
 
 In that case, each car of `charsets-mime-charset-alist' element is ignored."
   :group 'i18n
@@ -164,9 +165,11 @@ In that case, each car of `charsets-mime-charset-alist' element is ignored."
     default-mime-charset-for-write))
 
 (defun detect-mime-charset-from-coding-system (start end &optional string)
-  "Return MIME charset for the region between START and END, deciding by encodability in destination coding system.
+  "Return MIME charset for the region between START and END,
+deciding by encodability in destination coding system.
 
-Optional 3rd argument STRING is non-nil, detect MIME charset from STRING.  In that case, START and END are indexes of the string."
+Optional 3rd argument STRING is non-nil, detect MIME charset from STRING.
+In that case, START and END are indexes of the string."
   (let ((alist charsets-mime-charset-alist)
 	result)
     (while alist
@@ -180,7 +183,8 @@ Optional 3rd argument STRING is non-nil, detect MIME charset from STRING.  In th
 (defun detect-mime-charset-string (string)
   "Return MIME charset for STRING.
 
-When `detect-mime-charset-from-coding-system' is non-nil, each car of `charsets-mime-charset-alist' element is ignored."
+When `detect-mime-charset-from-coding-system' is non-nil,
+each car of `charsets-mime-charset-alist' element is ignored."
   (if detect-mime-charset-from-coding-system
       (detect-mime-charset-from-coding-system 0 (length string) string)
     (let ((table (make-hash-table :test 'eq)))
@@ -191,7 +195,8 @@ When `detect-mime-charset-from-coding-system' is non-nil, each car of `charsets-
 (defun detect-mime-charset-region (start end)
   "Return MIME charset for region between START and END.
 
-When `detect-mime-charset-from-coding-system' is non-nil, each car of `charsets-mime-charset-alist' element is ignored."
+When `detect-mime-charset-from-coding-system' is non-nil,
+each car of `charsets-mime-charset-alist' element is ignored."
   (if detect-mime-charset-from-coding-system
       (detect-mime-charset-from-coding-system start end)
     (let ((point (min start end))
