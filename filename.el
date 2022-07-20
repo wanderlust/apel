@@ -31,10 +31,10 @@
   "Apply initial ARGUMENT to sequence of FUNCTIONS.
 FUNCTIONS is list of functions.
 
-\(poly-funcall '(f1 f2 .. fn) arg) is as same as
-\(fn .. (f2 (f1 arg)) ..).
+(poly-funcall \\='(f1 f2 .. fn) arg) is as same as
+(fn .. (f2 (f1 arg)) ..).
 
-For example, (poly-funcall '(car number-to-string) '(100)) returns
+For example, (poly-funcall \\='(car number-to-string) \\='(100)) returns
 \"100\"."
   (while functions
     (setq argument (funcall (car functions) argument)
@@ -59,17 +59,17 @@ List of characters represents characters not allowed as file-name.")
   "List of functions for file-name filter.
 
 Example:
-\(setq filename-filters '\(filename-special-filter
+(setq filename-filters \\='(filename-special-filter
 			 filename-eliminate-top-low-lines
 			 filename-canonicalize-low-lines
 			 filename-maybe-truncate-by-size
-			 filename-eliminate-bottom-low-lines\)\)
+			 filename-eliminate-bottom-low-lines))
 
 Moreover, if you want to convert Japanese filename to roman string by kakasi,
 
-\(if \(exec-installed-p \"kakasi\"\)
-    \(setq filename-filters
-	  \(append '\(filename-japanese-to-roman-string\) filename-filters\)\)\)")
+(if (exec-installed-p \"kakasi\")
+    (setq filename-filters
+	  (append \\='(filename-japanese-to-roman-string) filename-filters)))")
 
 ;;; @ filters
 ;;;

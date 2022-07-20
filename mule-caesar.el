@@ -27,7 +27,7 @@
 (defun mule-caesar-region (start end &optional stride-ascii)
   "Caesar rotation of current region.
 Optional argument STRIDE-ASCII is rotation-size for Latin alphabet
-\(A-Z and a-z).  For non-ASCII text, ROT-N/2 will be performed in any
+(A-Z and a-z).  For non-ASCII text, ROT-N/2 will be performed in any
 case (N=charset-chars; 94 for 94 or 94x94 graphic character set; 96
 for 96 or 96x96 graphic character set)."
   (interactive "r\nP")

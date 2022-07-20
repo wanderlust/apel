@@ -110,7 +110,7 @@ of this structure.")
 
 (defun richtext-next-annotation ()
   "Find and return next text/richtext annotation.
-Return value is \(begin end name positive-p), or nil if none was found."
+Return value is (begin end name positive-p), or nil if none was found."
   (catch 'tag
     (while (re-search-forward richtext-annotation-regexp nil t)
       (let* ((beg0 (match-beginning 0))

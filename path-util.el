@@ -41,9 +41,9 @@ You can use following PATH styles:
 	absolute path: \"/HOO/BAR/BAZ/\"
 
 You can specify following OPTIONS:
-	'all-paths	search from `load-path'
+	\\='all-paths	search from `load-path'
 			instead of `default-load-path'
-	'append		add PATH to the last of `load-path'"
+	\\='append		add PATH to the last of `load-path'"
   (let ((rest (if (memq 'all-paths options)
 		  load-path
 		default-load-path))

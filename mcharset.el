@@ -39,7 +39,7 @@ It must be nil or function.
 If it is nil, variable `default-mime-charset-for-write' is used.
 If it is a function, interface must be (TYPE CHARSETS &rest ARGS).
 CHARSETS is list of charset.
-If TYPE is 'region, ARGS has START and END."
+If TYPE is \\='region, ARGS has START and END."
   :group 'i18n
   :type '(choice function (const nil)))
 

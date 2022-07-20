@@ -187,7 +187,7 @@ nil is returned.  Otherwise the associated face object is returned."
 (defun character-to-event (ch)
   "Convert keystroke CH into an event structure, replete with bucky bits.
 Note that CH (the keystroke specifier) can be an integer, a character
-or a symbol such as 'clear."
+or a symbol such as \\='clear."
   ch)
 
 ;; XEmacs 21: (event-to-character EVENT
