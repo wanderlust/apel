@@ -60,7 +60,7 @@ for 96 or 96x96 graphic character set)."
 		 (forward-char)
 		 )
 		(t
-		 (let* ((stride (lsh (charset-chars (char-charset chr)) -1))
+		 (let* ((stride (ash (charset-chars (char-charset chr)) -1))
 			(ret (mapcar (lambda (octet)
 				       (if (< octet 80)
 					   (+ octet stride)
